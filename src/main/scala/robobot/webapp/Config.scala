@@ -4,8 +4,8 @@ abstract class Config {
 
   val id = 1
 
-  val numRows = 10
-  val numCols = 15
+  val numRows = 3
+  val numCols = 6
 
   def mainDivId = "robobot-" + id
 
@@ -17,7 +17,9 @@ abstract class Config {
   def svgBorderRxRy = cellSize / 4
   def svgBorderWidth = cellSize * numCols
   def svgBorderHeight = cellSize * numRows
-  def svgBorderFill = "#fff"
+
+  // grid lines
+  val svgGridStroke = "#ccc"
 
   // SVG element
   def svgId = mainDivId + "-svg"
