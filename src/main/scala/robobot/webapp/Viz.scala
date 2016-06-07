@@ -21,18 +21,6 @@ class Viz(val config: Config) {
 
   val svg = d3.select("#" + config.svgId)
 
-  // Draw border
-  svg.append("rect")
-    .attr("x", config.svgBorderStrokeWidth)
-    .attr("y", config.svgBorderStrokeWidth)
-    .attr("rx", config.svgBorderRxRy)
-    .attr("ry", config.svgBorderRxRy)
-    .attr("width", config.svgBorderWidth)
-    .attr("height", config.svgBorderHeight)
-    .style("stroke-width", config.svgBorderStrokeWidth)
-    .style("stroke", config.svgBorderStroke)
-    .style("fill-opacity", 0.0)
-
   // Draw horizontal grid lines
   {
     val rowLines = 1 to config.numRows - 1 toJSArray
@@ -65,9 +53,18 @@ class Viz(val config: Config) {
       .attr("y2", config.numRows * config.cellSize +
         config.svgBorderStrokeWidth)
       .style("stroke", config.svgGridStroke)
-
   }
 
-
+  // Draw border
+  svg.append("rect")
+    .attr("x", config.svgBorderStrokeWidth)
+    .attr("y", config.svgBorderStrokeWidth)
+    .attr("rx", config.svgBorderRxRy)
+    .attr("ry", config.svgBorderRxRy)
+    .attr("width", config.svgBorderWidth)
+    .attr("height", config.svgBorderHeight)
+    .style("stroke-width", config.svgBorderStrokeWidth)
+    .style("stroke", config.svgBorderStroke)
+    .style("fill-opacity", 0.0)
 
 }
