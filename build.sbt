@@ -1,5 +1,7 @@
 enablePlugins(ScalaJSPlugin)
 
-name := "Scala.js Tutorial"
+name := "Robobot"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
+
+scalaJSUseRhino in Global := false
