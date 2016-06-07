@@ -1,7 +1,6 @@
 package robobot.webapp
 
-import scala.scalajs.js
+class Robobot(config: Config) {
 
-class Robobot() {
-
+  val viz = new Viz(config)
 }
