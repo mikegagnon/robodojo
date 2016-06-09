@@ -1,5 +1,10 @@
 package robobot.webapp
 
+object Config {
+  val default = new Config(Map[String,Any]())
+}
+
+// TODO: change defs to vals?
 class Config(params: Map[String, Any]) {
 
   val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
@@ -26,5 +31,8 @@ class Config(params: Map[String, Any]) {
   def svgId = mainDivId + "-svg"
   def svgWidth = cellSize * numCols + svgBorderStrokeWidth * 2
   def svgHeight = cellSize * numRows + svgBorderStrokeWidth * 2
+
+  // simulation constants
+  val simMaxNumVariables = params.getOrElse("simMaxNumVariables", 20).asInstanceOf[Int]
 
 }
