@@ -38,8 +38,29 @@ object BoardTest extends TestSuite {
     }
 
     "moveBot"-{
-      val board = new Board()
-      val bot = new Bot(board)
+      "successfully"-{
+        val board = new Board()
+        val bot = Bot(board, 1, 1)
+        board.addBot(bot)
+        board.matrix(1)(1) ==> Some(bot)
+        board.moveBot(bot, 0, 1)
+        bot.row ==> 0
+        bot.col ==> 1
+        board.matrix(1)(1) ==> None
+        board.matrix(0)(1) ==> Some(bot)
+      }
+      "unsuccessfully"-{
+        val board = new Board()
+        val bot1 = Bot(board, 1, 1)
+        val bot2 = Bot(board, 0, 1)
+        board.addBot(bot1)
+        board.addBot(bot2)
+        board.matrix(1)(1) ==> Some(bot1)
+        board.matrix(0)(1) ==> Some(bot2)
+        intercept[IllegalArgumentException] {
+          board.moveBot(bot1, 0, 1)
+        }
+      }
     }
   }
 }

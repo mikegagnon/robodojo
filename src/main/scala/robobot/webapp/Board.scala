@@ -24,11 +24,11 @@ class Board(implicit val config: Config) {
     }
   }
 
-  // TODO: test
   def moveBot(bot: Bot, row: Int, col: Int) {
     matrix(row)(col) match {
       case None => {
         matrix(row)(col) = Some(bot)
+        matrix(bot.row)(bot.col) = None
         bot.row = row
         bot.col = col
       }
