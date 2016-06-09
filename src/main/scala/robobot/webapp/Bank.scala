@@ -1,7 +1,10 @@
 package robobot.webapp
 
+import scala.collection.mutable.ArrayBuffer
+
 class Bank {
 
-  val instructions = List[Instruction]()
+  // TODO: ensure instructions.length < max bank size
+  var instructions = ArrayBuffer[Instruction]()
 
 }

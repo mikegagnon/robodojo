@@ -101,6 +101,10 @@ class Viz(val config: Config) {
     bot1.row = 0
     bot1.col = 0
     bot1.direction = Direction.Right
+    val bank0 = new Bank()
+
+    bank0.instructions :+= MoveInstruction()
+    bot1.banks += (0 -> bank0)
 
     val bot2 = new Bot()
     bot2.row = 1

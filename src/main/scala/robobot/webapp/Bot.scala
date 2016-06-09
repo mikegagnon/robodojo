@@ -8,4 +8,6 @@ class Bot() {
 
   var direction: Direction.EnumVal = Direction.NoDir
 
+  var banks = Map[Int, Bank]()
+
 }

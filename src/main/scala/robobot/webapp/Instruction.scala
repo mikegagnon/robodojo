@@ -2,13 +2,17 @@ package robobot.webapp
 
 sealed abstract class Instruction
 
-object MoveInstruction {
+sealed trait InstructionSet {
+  val instructionSet: Int
+}
+
+object MoveInstruction extends InstructionSet {
   val instructionSet = 0
 }
 
 case class MoveInstruction() extends Instruction
 
-object TurnInstruction {
+object TurnInstruction extends InstructionSet {
   val instructionSet = 0
 }
 
