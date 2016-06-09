@@ -22,72 +22,72 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def addSvg() : Selection[dom.EventTarget] = {
 
-    jQuery("#" + config.id).append(s"<div id='${config.mainDivId}'></div>")
+    jQuery("#" + config.id).append(s"<div id='${config.viz.mainDivId}'></div>")
 
-    jQuery("#" + config.mainDivId).append(s"<svg id='${config.svgId}'></svg>")
+    jQuery("#" + config.viz.mainDivId).append(s"<svg id='${config.viz.svgId}'></svg>")
 
-    jQuery("#" + config.svgId)
+    jQuery("#" + config.viz.svgId)
       .attr("xmlns", "'http://www.w3.lrg/2000/svg'")
-      .attr("width", config.svgWidth)
-      .attr("height", config.svgHeight)
+      .attr("width", config.viz.svgWidth)
+      .attr("height", config.viz.svgHeight)
 
-    return d3.select("#" + config.svgId)
+    return d3.select("#" + config.viz.svgId)
   }
 
   // Draw horizontal grid lines
   def drawHorizGrid() = {
-    val rowLines = 1 to config.numRows - 1 toJSArray
+    val rowLines = 1 to config.sim.numRows - 1 toJSArray
 
     svg.selectAll(".row-grid-line")
       .data(rowLines)
       .enter()
       .append("line")
       .attr("class", "grid-line row-grid-line")
-      .attr("x1", config.svgBorderStrokeWidth)
-      .attr("y1", (r:Int) => r * config.cellSize + config.svgBorderStrokeWidth)
-      .attr("x2", config.numCols * config.cellSize +
-        config.svgBorderStrokeWidth)
-      .attr("y2", (r:Int) => r * config.cellSize + config.svgBorderStrokeWidth)
-      .style("stroke", config.svgGridStroke)
+      .attr("x1", config.viz.border.strokeWidth)
+      .attr("y1", (r:Int) => r * config.viz.cellSize + config.viz.border.strokeWidth)
+      .attr("x2", config.sim.numCols * config.viz.cellSize +
+        config.viz.border.strokeWidth)
+      .attr("y2", (r:Int) => r * config.viz.cellSize + config.viz.border.strokeWidth)
+      .style("stroke", config.viz.grid.stroke)
   }
 
   // Draw vertical grid lines
   def drawVertGrid() = {
-    val colLines = 1 to config.numCols - 1 toJSArray
+    val colLines = 1 to config.sim.numCols - 1 toJSArray
 
     svg.selectAll(".col-grid-line")
       .data(colLines)
       .enter()
       .append("line")
       .attr("class", "grid-line col-grid-line")
-      .attr("x1", (c:Int) => c * config.cellSize + config.svgBorderStrokeWidth)
-      .attr("y1", config.svgBorderStrokeWidth)
-      .attr("x2", (c:Int) => c * config.cellSize + config.svgBorderStrokeWidth)
-      .attr("y2", config.numRows * config.cellSize +
-        config.svgBorderStrokeWidth)
-      .style("stroke", config.svgGridStroke)
+      .attr("x1", (c:Int) => c * config.viz.cellSize + config.viz.border.strokeWidth)
+      .attr("y1", config.viz.border.strokeWidth)
+      .attr("x2", (c:Int) => c * config.viz.cellSize + config.viz.border.strokeWidth)
+      .attr("y2", config.sim.numRows * config.viz.cellSize +
+        config.viz.border.strokeWidth)
+      .style("stroke", config.viz.grid.stroke)
   }
 
   def drawBorder() = {
     svg.append("rect")
-      .attr("x", config.svgBorderStrokeWidth)
-      .attr("y", config.svgBorderStrokeWidth)
-      .attr("rx", config.svgBorderRxRy)
-      .attr("ry", config.svgBorderRxRy)
-      .attr("width", config.svgBorderWidth)
-      .attr("height", config.svgBorderHeight)
-      .style("stroke-width", config.svgBorderStrokeWidth)
-      .style("stroke", config.svgBorderStroke)
+      .attr("x", config.viz.border.strokeWidth)
+      .attr("y", config.viz.border.strokeWidth)
+      .attr("rx", config.viz.border.rxry)
+      .attr("ry", config.viz.border.rxry)
+      .attr("width", config.viz.border.width)
+      .attr("height", config.viz.border.height)
+      .style("stroke-width", config.viz.border.strokeWidth)
+      .style("stroke", config.viz.border.stroke)
       .style("fill-opacity", 0.0)
   }
 
   def botTransform(bot: Bot) : String = {
 
-    val x = bot.col * config.cellSize + config.svgBorderStrokeWidth
-    val y = bot.row * config.cellSize + config.svgBorderStrokeWidth
+    val x = bot.col * config.viz.cellSize + config.viz.border.strokeWidth
+    val y = bot.row * config.viz.cellSize + config.viz.border.strokeWidth
     val translate = "translate(" + x + ", " + y + ") "
 
-    val halfCell = config.cellSize / 2
+    val halfCell = config.viz.cellSize / 2
     val rotate = "rotate(" +
         Direction.toAngle(bot.direction) + " " +
         halfCell + " " + halfCell +")"
@@ -103,8 +103,8 @@ class Viz(val board: Board)(implicit val config: Config) {
       .append("svg:image")
       .attr("class", "bot")
       .attr("xlink:href", "./img/bluebot.svg")
-      .attr("height", config.cellSize)
-      .attr("width", config.cellSize)
+      .attr("height", config.viz.cellSize)
+      .attr("width", config.viz.cellSize)
       .attr("transform", botTransform _)
   }
 

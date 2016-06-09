@@ -4,7 +4,7 @@ import scala.collection.mutable.HashSet
 
 class Board(implicit val config: Config) {
 
-  val matrix = Array.fill[Option[Bot]](config.numRows, config.numCols)(None)
+  val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
   val bots = new HashSet[Bot]()
 
@@ -14,8 +14,8 @@ class Board(implicit val config: Config) {
       throw new IllegalArgumentException("Board already contains botd")
     }
 
-    if (bot.row < 0 || bot.row >= config.numRows ||
-        bot.col < 0 || bot.col >= config.numCols) {
+    if (bot.row < 0 || bot.row >= config.sim.numRows ||
+        bot.col < 0 || bot.col >= config.sim.numCols) {
       throw new IllegalArgumentException("Cannot add bot; it is out of bounds")
     }
 

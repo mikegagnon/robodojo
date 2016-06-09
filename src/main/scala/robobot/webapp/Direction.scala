@@ -37,7 +37,7 @@ object Direction {
 
   def dirRowCol(direction: EnumVal, row: Int, col: Int)(implicit config: Config) = {
 
-    if (row < 0 || row >= config.numRows || col < 0 || col >= config.numCols) {
+    if (row < 0 || row >= config.sim.numRows || col < 0 || col >= config.sim.numCols) {
       throw new IllegalArgumentException("row, col is out of bounds")
     }
 
@@ -50,12 +50,12 @@ object Direction {
     }
 
     if (rc.row == -1) {
-      RowCol(config.numRows - 1, rc.col)
-    } else if (rc.row == config.numRows) {
+      RowCol(config.sim.numRows - 1, rc.col)
+    } else if (rc.row == config.sim.numRows) {
       RowCol(0, rc.col)
     } else if (rc.col == -1)  {
-      RowCol(rc.row, config.numCols - 1)
-    } else if (rc.col == config.numCols) {
+      RowCol(rc.row, config.sim.numCols - 1)
+    } else if (rc.col == config.sim.numCols) {
       RowCol(rc.row, 0)
     } else {
       rc

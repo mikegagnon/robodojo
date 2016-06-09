@@ -9,7 +9,7 @@ sealed abstract class Instruction {
 
 case class MoveInstruction(implicit val config: Config) extends Instruction {
   val instructionSet = 0
-  val cycles = config.moveCycles
+  val cycles = config.sim.moveCycles
 
   // TODO: test
   def execute(bot: Bot) {
@@ -44,7 +44,7 @@ final case class Remote(value: Constant.EnumVal) extends Param with ParamValue
 final case class Variable(value: Either[Int, ActiveVariable])(implicit config: Config) extends Param
     with ParamValue {
   value match {
-    case Left(v) => if (v < 0 || v >= config.simMaxNumVariables) {
+    case Left(v) => if (v < 0 || v >= config.sim.maxNumVariables) {
       throw new IllegalArgumentException("variable value out of range: " + v)
     }
     case _ => ()
@@ -55,7 +55,7 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
-    val cycles = config.turnCycles
+    val cycles = config.sim.turnCycles
 
     def execute(bot: Bot) {
       bot.direction = direction match {
