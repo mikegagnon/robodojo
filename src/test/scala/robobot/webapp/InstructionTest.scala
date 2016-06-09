@@ -28,5 +28,44 @@ object InstructionTest extends TestSuite {
       }
     }
 
+    "MoveInstruction.execute"-{
+      "successfully"-{
+        val board = new Board()
+        val bot = Bot(board, 0, 0)
+        bot.direction = Direction.Right
+
+        val moveInstruction = MoveInstruction()
+
+        moveInstruction.execute(bot, board)
+
+        board.matrix(0)(0) ==> None
+        board.matrix(0)(1) ==> Some(bot)
+        bot.row ==> 0
+        bot.col ==> 1
+      }
+
+      "unsuccessfully"-{
+        val board = new Board()
+
+        val bot1 = Bot(board, 0, 0)
+        val bot2 = Bot(board, 0, 1)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        bot1.direction = Direction.Right
+
+        val moveInstruction = MoveInstruction()
+
+        moveInstruction.execute(bot1, board)
+
+        board.matrix(0)(0) ==> Some(bot1)
+        board.matrix(0)(1) ==> Some(bot2)
+        bot1.row ==> 0
+        bot1.col ==> 0
+      }
+
+    }
+
   }
 }

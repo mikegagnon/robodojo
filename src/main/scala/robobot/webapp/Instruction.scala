@@ -4,6 +4,7 @@ sealed abstract class Instruction {
   val instructionSet: Int
   val cycles: Int
 
+  // TODO: remove board from arguments
   def execute(bot: Bot, board: Board) : Unit
 }
 

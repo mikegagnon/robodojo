@@ -34,6 +34,8 @@ class Bot(val board: Board) {
 
   override def hashCode:Int = id.toInt
 
+  override def toString: String = "Bot" + id
+
   var row = -1
 
   var col = -1
