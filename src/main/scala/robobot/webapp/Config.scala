@@ -35,4 +35,8 @@ class Config(params: Map[String, Any]) {
   // simulation constants
   val simMaxNumVariables = params.getOrElse("simMaxNumVariables", 20).asInstanceOf[Int]
 
+  // instruction constants
+  val moveCycles = params.getOrElse("moveCycles", 18).asInstanceOf[Int]
+  val turnCycles = params.getOrElse("turnCycles", 5).asInstanceOf[Int]
+
 }

@@ -1,16 +1,20 @@
 package robobot.webapp
 
-sealed abstract class Instruction
-
-sealed trait InstructionSet {
+sealed abstract class Instruction {
   val instructionSet: Int
+  val cycles: Int
+
+  def execute(bot: Bot, board: Board) : Unit
 }
 
-object MoveInstruction extends InstructionSet {
+case class MoveInstruction(implicit val config: Config) extends Instruction {
   val instructionSet = 0
-}
+  val cycles = config.moveCycles
 
-case class MoveInstruction() extends Instruction
+  def execute(bot: Bot, board: Board) {
+
+  }
+}
 
 object Constant {
   sealed trait EnumVal
@@ -38,11 +42,13 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
     }
     case _ => ()
   }
-
 }
 
-object TurnInstruction extends InstructionSet {
-  val instructionSet = 0
-}
+case class TurnInstruction(direction: ParamValue)(implicit val config: Config) extends Instruction {
+    val instructionSet = 0
+    val cycles = config.turnCycles
 
-case class TurnInstruction(direction: ParamValue) extends Instruction
+    def execute(bot: Bot, board: Board) {
+
+    }
+}

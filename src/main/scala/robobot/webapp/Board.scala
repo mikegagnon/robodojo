@@ -23,4 +23,9 @@ class Board(implicit val config: Config) {
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
   }
+
+  def cycle = {
+    bots.foreach( (bot: Bot) => bot.cycle() )
+  }
+
 }
