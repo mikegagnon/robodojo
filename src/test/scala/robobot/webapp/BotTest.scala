@@ -2,6 +2,8 @@ package robobot.webapp
 
 import utest._
 
+import scala.collection.mutable.ArrayBuffer
+
 object BotTest extends TestSuite {
 
   implicit val config = Config.default
@@ -29,132 +31,107 @@ object BotTest extends TestSuite {
     // TODO: factor out common code
     "cycle"-{
 
-      "empty bank"-{
+      def getBot(row: Int, col: Int, dir: Direction.EnumVal,
+          instr: ArrayBuffer[Instruction] = ArrayBuffer[Instruction]()) = {
+
         val board = new Board()
-        val bot1 = Bot(board, 0, 0)
-        bot1.direction = Direction.Up
-        board.addBot(bot1)
+        val bot = Bot(board, row, col)
+        bot.direction = dir
+        board.addBot(bot)
+        val bank0 = new Bank()
+        bank0.instructions = instr
+        bot.banks += (0 -> bank0)
+        bot
+      }
 
-        board.matrix(0)(0) ==> Some(bot1)
-        bot1.direction ==> Direction.Up
+      "empty bank"-{
+        val bot = getBot(0, 0, Direction.Up)
 
-        bot1.cycle()
-        bot1.cycle()
-        bot1.cycle()
+        bot.board.matrix(0)(0) ==> Some(bot)
+        bot.direction ==> Direction.Up
+
+        bot.cycle()
+        bot.cycle()
+        bot.cycle()
         
-        board.matrix(0)(0) ==> Some(bot1)
-        bot1.direction ==> Direction.Up
-
-
+        bot.board.matrix(0)(0) ==> Some(bot)
+        bot.direction ==> Direction.Up
       }
 
       "one move instruction"-{
-        val board = new Board()
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(MoveInstruction()))
 
-        // A bot with only the move instruction
-        val bot1 = Bot(board, 0, 0)
-        bot1.direction = Direction.Right
-        val bank0 = new Bank()
-        bank0.instructions :+= MoveInstruction()
-        bot1.banks += (0 -> bank0)
-        board.addBot(bot1)
-
-        board.matrix(0)(0) ==> Some(bot1)
-        Range(0, config.moveCycles -1).foreach { (_) => bot1.cycle() }
-        board.matrix(0)(0) ==> Some(bot1)
-        bot1.cycle()
-        board.matrix(0)(0) ==> None
-        board.matrix(0)(1) ==> Some(bot1)
+        bot.board.matrix(0)(0) ==> Some(bot)
+        for ( _ <- 0 to config.moveCycles - 2) { bot.cycle() }
+        bot.board.matrix(0)(0) ==> Some(bot)
+        bot.cycle()
+        bot.board.matrix(0)(0) ==> None
+        bot.board.matrix(0)(1) ==> Some(bot)
       }
 
       "one turn instruction"-{
-        val board = new Board()
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(0)))
 
-        // A bot with only the turn instruction instruction
-        val bot1 = Bot(board, 0, 0)
-        bot1.direction = Direction.Right
-        val bank0 = new Bank()
-        bank0.instructions :+= TurnInstruction(0)
-        bot1.banks += (0 -> bank0)
-        board.addBot(bot1)
-
-        bot1.direction ==> Direction.Right
-        Range(0, config.turnCycles -1).foreach { (_) => bot1.cycle() }
-        bot1.direction ==> Direction.Right
-        bot1.cycle()
-        bot1.direction ==> Direction.Up
+        bot.direction ==> Direction.Right
+        Range(0, config.turnCycles -1).foreach { (_) => bot.cycle() }
+        bot.direction ==> Direction.Right
+        bot.cycle()
+        bot.direction ==> Direction.Up
       }
 
       "turn instruction followed by move instruction"-{
-        val board = new Board()
-
-        // A bot with only the turn instruction instruction
-        val bot1 = Bot(board, 0, 0)
-        bot1.direction = Direction.Right
-        val bank0 = new Bank()
-        bank0.instructions ++= TurnInstruction(1) :: MoveInstruction() :: Nil
-
-        bot1.banks += (0 -> bank0)
-        board.addBot(bot1)
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(1), MoveInstruction()))
 
         // Turn instruction
-        bot1.direction ==> Direction.Right
-        Range(0, config.turnCycles -1).foreach { (_) => bot1.cycle() }
-        bot1.direction ==> Direction.Right
-        bot1.cycle()
-        bot1.direction ==> Direction.Down
+        bot.direction ==> Direction.Right
+        Range(0, config.turnCycles -1).foreach { (_) => bot.cycle() }
+        bot.direction ==> Direction.Right
+        bot.cycle()
+        bot.direction ==> Direction.Down
 
         // Move instruction
-        board.matrix(0)(0) ==> Some(bot1)
-        Range(0, config.moveCycles -1).foreach { (_) => bot1.cycle() }
-        board.matrix(0)(0) ==> Some(bot1)
-        bot1.cycle()
-        board.matrix(0)(0) ==> None
-        board.matrix(1)(0) ==> Some(bot1)
+        bot.board.matrix(0)(0) ==> Some(bot)
+        Range(0, config.moveCycles -1).foreach { (_) => bot.cycle() }
+        bot.board.matrix(0)(0) ==> Some(bot)
+        bot.cycle()
+        bot.board.matrix(0)(0) ==> None
+        bot.board.matrix(1)(0) ==> Some(bot)
       }
 
       "turn instruction followed by move instruction, and then repeat"-{
 
-        val board = new Board()
-
-        // A bot with only the turn instruction instruction
-        val bot1 = Bot(board, 0, 0)
-        bot1.direction = Direction.Right
-        val bank0 = new Bank()
-        bank0.instructions ++= TurnInstruction(1) :: MoveInstruction() :: Nil
-
-        bot1.banks += (0 -> bank0)
-        board.addBot(bot1)
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(1), MoveInstruction()))
 
         // Turn instruction
-        bot1.direction ==> Direction.Right
-        Range(0, config.turnCycles -1).foreach { (_) => bot1.cycle() }
-        bot1.direction ==> Direction.Right
-        bot1.cycle()
-        bot1.direction ==> Direction.Down
+        bot.direction ==> Direction.Right
+        Range(0, config.turnCycles -1).foreach { (_) => bot.cycle() }
+        bot.direction ==> Direction.Right
+        bot.cycle()
+        bot.direction ==> Direction.Down
 
         // Move instruction
-        board.matrix(0)(0) ==> Some(bot1)
-        Range(0, config.moveCycles -1).foreach { (_) => bot1.cycle() }
-        board.matrix(0)(0) ==> Some(bot1)
-        bot1.cycle()
-        board.matrix(0)(0) ==> None
-        board.matrix(1)(0) ==> Some(bot1)
+        bot.board.matrix(0)(0) ==> Some(bot)
+        Range(0, config.moveCycles -1).foreach { (_) => bot.cycle() }
+        bot.board.matrix(0)(0) ==> Some(bot)
+        bot.cycle()
+        bot.board.matrix(0)(0) ==> None
+        bot.board.matrix(1)(0) ==> Some(bot)
 
         // Turn instruction
-        bot1.direction ==> Direction.Down
-        Range(0, config.turnCycles -1).foreach { (_) => bot1.cycle() }
-        bot1.direction ==> Direction.Down
-        bot1.cycle()
-        bot1.direction ==> Direction.Left
+        bot.direction ==> Direction.Down
+        Range(0, config.turnCycles -1).foreach { (_) => bot.cycle() }
+        bot.direction ==> Direction.Down
+        bot.cycle()
+        bot.direction ==> Direction.Left
 
         // Move instruction
-        board.matrix(1)(0) ==> Some(bot1)
-        Range(0, config.moveCycles -1).foreach { (_) => bot1.cycle() }
-        board.matrix(1)(0) ==> Some(bot1)
-        bot1.cycle()
-        board.matrix(1)(0) ==> None
-        board.matrix(1)(config.numCols - 1) ==> Some(bot1)
+        bot.board.matrix(1)(0) ==> Some(bot)
+        Range(0, config.moveCycles -1).foreach { (_) => bot.cycle() }
+        bot.board.matrix(1)(0) ==> Some(bot)
+        bot.cycle()
+        bot.board.matrix(1)(0) ==> None
+        bot.board.matrix(1)(config.numCols - 1) ==> Some(bot)
+
       }
     }
   }
