@@ -15,7 +15,6 @@ class Viz(val config: Config) {
 
   val svg = addSvg()
 
-  addSvgDefs()
   drawHorizGrid()
   drawVertGrid()
   drawBorder()
@@ -34,9 +33,6 @@ class Viz(val config: Config) {
 
     return d3.select("#" + config.svgId)
   }
-
-  def addSvgDefs() =
-    svg.append("defs").html(config.botTemplate)
 
   // Draw horizontal grid lines
   def drawHorizGrid() = {
@@ -99,9 +95,11 @@ class Viz(val config: Config) {
     svg.selectAll(".bot")
       .data(bots)
       .enter()
-      .append("svg:use")
+      .append("svg:image")
       .attr("class", "bot")
-      .attr("xlink:href", "#botTemplate")
+      .attr("xlink:href", "./img/bluebot.svg")
+      .attr("height", config.cellSize)
+      .attr("width", config.cellSize)
       .attr("transform", botTransform _)
   }
 
