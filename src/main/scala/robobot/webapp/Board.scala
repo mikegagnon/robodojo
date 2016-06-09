@@ -1,9 +1,12 @@
 package robobot.webapp
 
+import scala.collection.mutable.ListBuffer
+
 // TODO: implicit config?
 class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.numRows, config.numCols)(None)
+  val bots = new ListBuffer[Bot]()
 
   def addBot(bot: Bot) = {
 
@@ -13,10 +16,11 @@ class Board(implicit val config: Config) {
     }
 
     matrix(bot.row)(bot.col) match {
-      case None => matrix(bot.row)(bot.col) = Some(bot)
+      case None => {
+        matrix(bot.row)(bot.col) = Some(bot)
+        bots.append(bot)
+      }
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
-
   }
-
 }
