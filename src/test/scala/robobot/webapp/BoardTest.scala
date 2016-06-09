@@ -41,5 +41,10 @@ object BoardTest extends TestSuite {
         }
       }
     }
+
+    "moveBot"-{
+      val board = new Board()
+      val bot = new Bot(board)
+    }
   }
 }

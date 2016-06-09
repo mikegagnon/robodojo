@@ -24,8 +24,17 @@ class Board(implicit val config: Config) {
     }
   }
 
+  // TODO: test
   def moveBot(bot: Bot, row: Int, col: Int) {
-
+    matrix(row)(col) match {
+      case None => {
+        matrix(row)(col) = Some(bot)
+        bot.row = row
+        bot.col = col
+      }
+      case Some(_) => throw new IllegalArgumentException("Cannot move bot: matrix(r)(c) is " +
+        "already occupied")
+    }
   }
 
   def cycle {
