@@ -59,7 +59,7 @@ class Bot(val board: Board) {
 
       val instruction = bank.instructions(instructionNum)
 
-      if (cycleNum == instruction.cycles - 1) {
+      if (cycleNum == instruction.cycles) {
 
         cycleNum = 0
         instructionNum += 1
