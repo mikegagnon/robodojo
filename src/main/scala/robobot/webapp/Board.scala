@@ -41,6 +41,7 @@ class Board(implicit val config: Config) {
     }
   }
 
+  // TODO: test
   def cycle {
     bots.foreach{ (bot: Bot) => bot.cycle() }
   }
