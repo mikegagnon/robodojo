@@ -11,6 +11,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   val instructionSet = 0
   val cycles = config.moveCycles
 
+  // TODO: test
   def execute(bot: Bot, board: Board) {
 
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
