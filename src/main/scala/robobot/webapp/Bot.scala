@@ -1,6 +1,30 @@
 package robobot.webapp
 
+object Bot {
+
+  var nextId: Long = 0
+
+  def getNextId = {
+    val id = nextId
+    nextId += 1
+    id
+  }
+
+}
+
 class Bot(val board: Board) {
+
+  val id = Bot.getNextId
+
+  // TODO: test
+  override def equals(that: Any) = {
+    that match {
+      case thatBot: Bot => id == thatBot.id
+      case _ => false
+    }
+  }
+
+  override def hashCode:Int = id.toInt
 
   var row = -1
 
