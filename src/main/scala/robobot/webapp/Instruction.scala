@@ -4,7 +4,7 @@ sealed abstract class Instruction {
   val instructionSet: Int
   val cycles: Int
 
-  def execute(bot: Bot) : Unit
+  def execute(bot: Bot) : Option[Animation]
 }
 
 case class MoveInstruction(implicit val config: Config) extends Instruction {
@@ -12,13 +12,18 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   val cycles = config.moveCycles
 
   // TODO: test
-  def execute(bot: Bot) {
+  def execute(bot: Bot) = {
+
+    val start = RowCol(bot.row, bot.col)
 
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
 
     bot.board.matrix(row)(col) match {
-      case None => bot.board.moveBot(bot, row, col)
-      case Some(_) => ()
+      case None => {
+        bot.board.moveBot(bot, row, col)
+        Some(MoveAnimation(start, RowCol(row, col)))
+      }
+      case Some(_) => None
     }
   }
 }
@@ -57,10 +62,17 @@ case class TurnInstruction(direction: Int)(implicit val config: Config) extends 
     val instructionSet = 0
     val cycles = config.turnCycles
 
-    def execute(bot: Bot) {
+    def execute(bot: Bot) = {
+
+      val start = bot.direction
+
       bot.direction = direction match {
         case 0 => Direction.rotateLeft(bot.direction)
         case _ => Direction.rotateRight(bot.direction)
       }
+
+      val end = bot.direction
+
+      Some(TurnAnimation(start, end))
     }
 }
