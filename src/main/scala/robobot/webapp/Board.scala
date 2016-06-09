@@ -10,6 +10,10 @@ class Board(implicit val config: Config) {
 
   def addBot(bot: Bot) = {
 
+    if (bots.contains(bot)) {
+      throw new IllegalArgumentException("Board already contains bot")
+    }
+
     if (bot.row < 0 || bot.row >= config.numRows ||
         bot.col < 0 || bot.col >= config.numCols) {
       throw new IllegalArgumentException("Cannot add bot; it is out of bounds")

@@ -35,6 +35,16 @@ object BoardTest extends TestSuite {
           board.addBot(bot)
         }
       }
+
+      "unsuccessfully add Bot because bot is already in matrix"-{
+        val board = new Board()
+        val bot = Bot(board, 0, 0)
+        board.addBot(bot)
+        bot.row = 1
+        intercept[IllegalArgumentException] {
+          board.addBot(bot)
+        }
+      }
     }
 
     "moveBot"-{
