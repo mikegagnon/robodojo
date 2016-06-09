@@ -11,8 +11,9 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   val instructionSet = 0
   val cycles = config.moveCycles
 
+  // TODO
   def execute(bot: Bot, board: Board) {
-
+    //board.matrix(bot.row)(bot.col)
   }
 }
 

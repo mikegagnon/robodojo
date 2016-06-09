@@ -11,7 +11,7 @@ object BoardTest extends TestSuite {
     "addBot"-{
 
       val board = new Board()
-      val bot = new Bot()
+      val bot = new Bot(board)
 
       "successfully add Bot at 0,0"-{
         bot.row = 0
