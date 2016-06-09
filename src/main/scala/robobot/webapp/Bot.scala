@@ -66,7 +66,7 @@ class Bot(val board: Board) {
         instructionNum = 0
       }
 
-      instruction.execute(this, board)
+      instruction.execute(this)
     } else {
       cycleNum += 1
     }

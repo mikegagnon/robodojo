@@ -36,7 +36,7 @@ object InstructionTest extends TestSuite {
 
         val moveInstruction = MoveInstruction()
 
-        moveInstruction.execute(bot, board)
+        moveInstruction.execute(bot)
 
         board.matrix(0)(0) ==> None
         board.matrix(0)(1) ==> Some(bot)
@@ -57,7 +57,7 @@ object InstructionTest extends TestSuite {
 
         val moveInstruction = MoveInstruction()
 
-        moveInstruction.execute(bot1, board)
+        moveInstruction.execute(bot1)
 
         board.matrix(0)(0) ==> Some(bot1)
         board.matrix(0)(1) ==> Some(bot2)
