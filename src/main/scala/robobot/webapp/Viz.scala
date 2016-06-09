@@ -22,7 +22,8 @@ class Viz(val config: Config) {
   drawBots()
 
   def addSvg() : Selection[dom.EventTarget] = {
-    jQuery("body").append(s"<div id='${config.mainDivId}'></div>")
+
+    jQuery("#" + config.id).append(s"<div id='${config.mainDivId}'></div>")
 
     jQuery("#" + config.mainDivId).append(s"<svg id='${config.svgId}'></svg>")
 

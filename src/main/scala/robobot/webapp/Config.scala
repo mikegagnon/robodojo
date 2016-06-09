@@ -1,25 +1,26 @@
 package robobot.webapp
 
-abstract class Config {
+class Config(params: Map[String, Any]) {
 
-  val id = 1
+  val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
 
-  val numRows = 3
-  val numCols = 6
+  val numRows: Int = params.getOrElse("numRows", 3).asInstanceOf[Int]
+  val numCols: Int = params.getOrElse("numCols", 6).asInstanceOf[Int]
 
   def mainDivId = "robobot-" + id
 
-  val cellSize = 32
+  val cellSize = params.getOrElse("cellSize", 32).asInstanceOf[Int]
 
   // SVG border element
-  val svgBorderStrokeWidth = 2
-  val svgBorderStroke = "#777"
+  val svgBorderStrokeWidth = params.getOrElse("svgBorderStrokeWidth", 2).asInstanceOf[Int]
+  val svgBorderStroke = params.getOrElse("svgBorderStroke", "#777").asInstanceOf[String]
+
   def svgBorderRxRy = cellSize / 4
   def svgBorderWidth = cellSize * numCols
   def svgBorderHeight = cellSize * numRows
 
   // grid lines
-  val svgGridStroke = "#ccc"
+  val svgGridStroke = params.getOrElse("svgGridStroke", "#ccc").asInstanceOf[String]
 
   // SVG element
   def svgId = mainDivId + "-svg"
@@ -27,7 +28,7 @@ abstract class Config {
   def svgHeight = cellSize * numRows + svgBorderStrokeWidth * 2
 
   // TODO: do SVG templates belong somewhere else?
-  val botTemplate = """
+  private val botTemplateDefault = """
     <g id="botTemplate" height="32" width="32" >
 
       <circle
@@ -55,8 +56,6 @@ abstract class Config {
     </g>
   """
 
-}
-
-object ConfigPrimary extends Config {
+  val botTemplate = params.getOrElse("botTemplate", botTemplateDefault).asInstanceOf[String]
 
 }
