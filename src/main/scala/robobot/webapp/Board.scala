@@ -11,7 +11,7 @@ class Board(implicit val config: Config) {
   def addBot(bot: Bot) = {
 
     if (bots.contains(bot)) {
-      throw new IllegalArgumentException("Board already contains bot")
+      throw new IllegalArgumentException("Board already contains botd")
     }
 
     if (bot.row < 0 || bot.row >= config.numRows ||
@@ -42,7 +42,7 @@ class Board(implicit val config: Config) {
   }
 
   def cycle {
-    bots.foreach( (bot: Bot) => bot.cycle() )
+    bots.foreach{ (bot: Bot) => bot.cycle() }
   }
 
 }
