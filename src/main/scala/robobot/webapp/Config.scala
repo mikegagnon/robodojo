@@ -10,34 +10,43 @@ class Config(params: Map[String, Any]) {
 
   val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
 
-  val numRows: Int = params.getOrElse("numRows", 3).asInstanceOf[Int]
-  val numCols: Int = params.getOrElse("numCols", 6).asInstanceOf[Int]
-
-  def mainDivId = "robobot-" + id
-
-  val cellSize = params.getOrElse("cellSize", 32).asInstanceOf[Int]
-
-  // SVG border element
-  val svgBorderStrokeWidth = params.getOrElse("svgBorderStrokeWidth", 2).asInstanceOf[Int]
-  val svgBorderStroke = params.getOrElse("svgBorderStroke", "#777").asInstanceOf[String]
-
-  def svgBorderRxRy = cellSize / 4
-  def svgBorderWidth = cellSize * numCols
-  def svgBorderHeight = cellSize * numRows
-
-  // grid lines
-  val svgGridStroke = params.getOrElse("svgGridStroke", "#ccc").asInstanceOf[String]
-
-  // SVG element
-  def svgId = mainDivId + "-svg"
-  def svgWidth = cellSize * numCols + svgBorderStrokeWidth * 2
-  def svgHeight = cellSize * numRows + svgBorderStrokeWidth * 2
-
   // simulation constants
-  val simMaxNumVariables = params.getOrElse("simMaxNumVariables", 20).asInstanceOf[Int]
+  object sim {
+    val maxNumVariables = params.getOrElse("sim.maxNumVariables", 20).asInstanceOf[Int]
 
-  // instruction constants
-  val moveCycles = params.getOrElse("moveCycles", 18).asInstanceOf[Int]
-  val turnCycles = params.getOrElse("turnCycles", 5).asInstanceOf[Int]
+    val numRows: Int = params.getOrElse("sim.numRows", 3).asInstanceOf[Int]
+    val numCols: Int = params.getOrElse("sim.numCols", 6).asInstanceOf[Int]
+
+    // instruction constants
+    val moveCycles = params.getOrElse("sim.moveCycles", 18).asInstanceOf[Int]
+    val turnCycles = params.getOrElse("sim.turnCycles", 5).asInstanceOf[Int]
+  }
+
+  object viz {
+
+    def mainDivId = "robobot-" + id
+
+    val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
+
+    // SVG border element
+    object border {
+      val strokeWidth = params.getOrElse("viz.border.strokeWidth", 2).asInstanceOf[Int]
+      val stroke = params.getOrElse("viz.border.stroke", "#777").asInstanceOf[String]
+
+      def rxry = cellSize / 4
+      def width = cellSize * sim.numCols
+      def height = cellSize * sim.numRows
+    }
+
+    // grid lines
+    object grid {
+      val stroke = params.getOrElse("viz.grid.stroke", "#ccc").asInstanceOf[String]
+    }
+
+    // SVG element
+    def svgId = mainDivId + "-svg"
+    def svgWidth = cellSize * sim.numCols + viz.border.strokeWidth * 2
+    def svgHeight = cellSize * sim.numRows + viz.border.strokeWidth * 2
+  }
 
 }
