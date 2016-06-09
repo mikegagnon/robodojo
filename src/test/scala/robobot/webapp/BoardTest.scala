@@ -6,37 +6,39 @@ object BoardTest extends TestSuite {
 
   implicit val config = Config.default
 
-  def tests = TestSuite {
+  val tests = this {
 
-    // TODO: nest tests so board and bot are only in scope for specific tests
-    val board = new Board()
-    val bot = new Bot()
+    "addBot"-{
 
-    "successfully add Bot at 0,0"-{
-      bot.row = 0
-      bot.col = 0
-      board.addBot(bot)
-    }
+      val board = new Board()
+      val bot = new Bot()
 
-    "successfully add Bot at numRows-1,numCols-1"-{
-      bot.row = config.numRows - 1
-      bot.col = config.numCols - 1
-      board.addBot(bot)
-    }
-
-    "unsuccessfully add Bot at -1,-1"-{
-      bot.row = -1
-      bot.col = -1
-      intercept[IllegalArgumentException] {
+      "successfully add Bot at 0,0"-{
+        bot.row = 0
+        bot.col = 0
         board.addBot(bot)
       }
-    }
 
-    "unsuccessfully add Bot at numRows, numCols"-{
-      bot.row = config.numRows
-      bot.col = config.numCols
-      intercept[IllegalArgumentException] {
+      "successfully add Bot at numRows-1,numCols-1"-{
+        bot.row = config.numRows - 1
+        bot.col = config.numCols - 1
         board.addBot(bot)
+      }
+
+      "unsuccessfully add Bot at -1,-1"-{
+        bot.row = -1
+        bot.col = -1
+        intercept[IllegalArgumentException] {
+          board.addBot(bot)
+        }
+      }
+
+      "unsuccessfully add Bot at numRows, numCols"-{
+        bot.row = config.numRows
+        bot.col = config.numCols
+        intercept[IllegalArgumentException] {
+          board.addBot(bot)
+        }
       }
     }
   }
