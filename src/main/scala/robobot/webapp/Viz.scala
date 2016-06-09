@@ -19,6 +19,7 @@ class Viz(val board: Board)(implicit val config: Config) {
   drawVertGrid()
   drawBorder()
   drawBots()
+  addConsole()
 
   def addSvg() : Selection[dom.EventTarget] = {
 
@@ -31,11 +32,11 @@ class Viz(val board: Board)(implicit val config: Config) {
       .attr("width", config.viz.svgWidth)
       .attr("height", config.viz.svgHeight)
 
-    return d3.select("#" + config.viz.svgId)
+    d3.select("#" + config.viz.svgId)
   }
 
   // Draw horizontal grid lines
-  def drawHorizGrid() = {
+  def drawHorizGrid() {
     val rowLines = 1 to config.sim.numRows - 1 toJSArray
 
     svg.selectAll(".row-grid-line")
@@ -52,7 +53,7 @@ class Viz(val board: Board)(implicit val config: Config) {
   }
 
   // Draw vertical grid lines
-  def drawVertGrid() = {
+  def drawVertGrid() {
     val colLines = 1 to config.sim.numCols - 1 toJSArray
 
     svg.selectAll(".col-grid-line")
@@ -68,7 +69,7 @@ class Viz(val board: Board)(implicit val config: Config) {
       .style("stroke", config.viz.grid.stroke)
   }
 
-  def drawBorder() = {
+  def drawBorder() {
     svg.append("rect")
       .attr("x", config.viz.border.strokeWidth)
       .attr("y", config.viz.border.strokeWidth)
@@ -95,7 +96,7 @@ class Viz(val board: Board)(implicit val config: Config) {
     List(translate, rotate).mkString(" ")
   }
 
-  def drawBots() = {
+  def drawBots() {
 
     svg.selectAll(".bot")
       .data(board.bots.toJSArray)
@@ -106,6 +107,10 @@ class Viz(val board: Board)(implicit val config: Config) {
       .attr("height", config.viz.cellSize)
       .attr("width", config.viz.cellSize)
       .attr("transform", botTransform _)
+  }
+
+  def addConsole() {
+
   }
 
 }
