@@ -24,7 +24,11 @@ class Board(implicit val config: Config) {
     }
   }
 
-  def cycle = {
+  def moveBot(bot: Bot, row: Int, col: Int) {
+
+  }
+
+  def cycle {
     bots.foreach( (bot: Bot) => bot.cycle() )
   }
 

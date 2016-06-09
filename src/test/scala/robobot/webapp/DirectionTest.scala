@@ -5,11 +5,11 @@ import utest._
 object DirectionTest extends TestSuite {
 
   implicit val config = Config.default
-    
+
   val tests = this {
 
     "dirRowCol"-{
-      
+
       "no wrap around"-{
 
         "dir=Up"-{
