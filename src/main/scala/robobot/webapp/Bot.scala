@@ -10,6 +10,13 @@ object Bot {
     id
   }
 
+  def apply(board: Board, row: Int, col: Int) = {
+    val bot = new Bot(board)
+    bot.row = row
+    bot.col = col
+    bot
+  }
+
 }
 
 class Bot(val board: Board) {
