@@ -5,7 +5,6 @@ object Config {
 }
 
 // TODO: change defs to vals?
-// TODO: nested namespaces?
 class Config(params: Map[String, Any]) {
 
   val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
