@@ -6,4 +6,6 @@ class Bot() {
 
   var col = -1
 
+  var direction: Direction.EnumVal = Direction.NoDir
+
 }

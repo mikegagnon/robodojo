@@ -85,8 +85,14 @@ class Viz(val config: Config) {
 
     val x = bot.col * config.cellSize + config.svgBorderStrokeWidth
     val y = bot.row * config.cellSize + config.svgBorderStrokeWidth
+    val translate = "translate(" + x + ", " + y + ") "
 
-    "translate(" + x + ", " + y + ") "
+    val halfCell = config.cellSize / 2
+    val rotate = "rotate(" +
+        Direction.toAngle(bot.direction) + " " +
+        halfCell + " " + halfCell +")"
+
+    List(translate, rotate).mkString(" ")
   }
 
   def drawBots() = {
@@ -94,14 +100,17 @@ class Viz(val config: Config) {
     val bot1 = new Bot()
     bot1.row = 0
     bot1.col = 0
+    bot1.direction = Direction.Right
 
     val bot2 = new Bot()
     bot2.row = 1
     bot2.col = 1
+    bot2.direction = Direction.Left
 
     val bot3 = new Bot()
     bot3.row = 2
     bot3.col = 4
+    bot3.direction = Direction.Down
 
     val bots = js.Array(bot1, bot2, bot3)
 
