@@ -2,10 +2,10 @@ package robobot.webapp
 
 import scala.collection.mutable.ListBuffer
 
-// TODO: implicit config?
 class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.numRows, config.numCols)(None)
+
   val bots = new ListBuffer[Bot]()
 
   def addBot(bot: Bot) = {

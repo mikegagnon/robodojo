@@ -12,9 +12,9 @@ object RobobotApp extends JSApp {
   @JSExport
   def newRobobot(configJS: js.Dictionary[Any]) = {
 
-    val config = new Config(configJS.toMap)
+    implicit val config = new Config(configJS.toMap)
 
-    instances += (config.id -> new Robobot(config))
+    instances += (config.id -> new Robobot())
   }
 
   def main(): Unit = {}

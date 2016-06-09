@@ -11,7 +11,7 @@ import org.singlespaced.d3js.Ops._
 import org.singlespaced.d3js.Selection
 import org.scalajs.dom
 
-class Viz(val config: Config) {
+class Viz(val board: Board)(implicit val config: Config) {
 
   val svg = addSvg()
 
@@ -97,29 +97,8 @@ class Viz(val config: Config) {
 
   def drawBots() = {
 
-    val bot1 = new Bot()
-    bot1.row = 0
-    bot1.col = 0
-    bot1.direction = Direction.Right
-    val bank0 = new Bank()
-
-    bank0.instructions :+= MoveInstruction()
-    bot1.banks += (0 -> bank0)
-
-    val bot2 = new Bot()
-    bot2.row = 1
-    bot2.col = 1
-    bot2.direction = Direction.Left
-
-    val bot3 = new Bot()
-    bot3.row = 2
-    bot3.col = 4
-    bot3.direction = Direction.Down
-
-    val bots = js.Array(bot1, bot2, bot3)
-
     svg.selectAll(".bot")
-      .data(bots)
+      .data(board.bots.toJSArray)
       .enter()
       .append("svg:image")
       .attr("class", "bot")
