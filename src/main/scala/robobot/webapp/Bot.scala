@@ -55,22 +55,25 @@ class Bot(val board: Board) {
 
     var bank = banks(bankNum)
 
-    val instruction = bank.instructions(instructionNum)
+    if (bank.instructions.length > 0) {
 
-    if (cycleNum == instruction.cycles - 1) {
+      val instruction = bank.instructions(instructionNum)
 
-      cycleNum = 0
-      instructionNum += 1
+      if (cycleNum == instruction.cycles - 1) {
 
-      if (instructionNum == bank.instructions.length) {
-        instructionNum = 0
+        cycleNum = 0
+        instructionNum += 1
+
+        if (instructionNum == bank.instructions.length) {
+          instructionNum = 0
+        }
+
+        instruction.execute(this)
+      } else {
+        cycleNum += 1
       }
 
-      instruction.execute(this)
-    } else {
-      cycleNum += 1
     }
-
   }
 
 }

@@ -28,6 +28,26 @@ object BotTest extends TestSuite {
 
     // TODO: factor out common code
     "cycle"-{
+
+      "empty bank"-{
+        val board = new Board()
+        val bot1 = Bot(board, 0, 0)
+        bot1.direction = Direction.Up
+        board.addBot(bot1)
+
+        board.matrix(0)(0) ==> Some(bot1)
+        bot1.direction ==> Direction.Up
+
+        bot1.cycle()
+        bot1.cycle()
+        bot1.cycle()
+        
+        board.matrix(0)(0) ==> Some(bot1)
+        bot1.direction ==> Direction.Up
+
+
+      }
+
       "one move instruction"-{
         val board = new Board()
 
