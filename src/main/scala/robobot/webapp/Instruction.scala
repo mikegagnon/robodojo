@@ -26,6 +26,7 @@ sealed trait Param
 sealed trait ParamValue // Like Param, but without Label
 
 final case class Integer(value: Short) extends Param with ParamValue
+// TODO: should Label be under Param?
 final case class Label(value: String) extends Param
 final case class Constant(value: Constant.EnumVal) extends Param with ParamValue
 final case class Remote(value: Constant.EnumVal) extends Param with ParamValue
