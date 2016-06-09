@@ -51,11 +51,16 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
   }
 }
 
-case class TurnInstruction(direction: ParamValue)(implicit val config: Config) extends Instruction {
+// TODO: take direction as a ParamValue?
+case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
+
     val instructionSet = 0
     val cycles = config.turnCycles
 
     def execute(bot: Bot) {
-
+      bot.direction = direction match {
+        case 0 => Direction.rotateLeft(bot.direction)
+        case _ => Direction.rotateRight(bot.direction)
+      }
     }
 }

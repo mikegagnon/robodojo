@@ -64,8 +64,52 @@ object InstructionTest extends TestSuite {
         bot1.row ==> 0
         bot1.col ==> 0
       }
-
     }
 
+    "TurnInstruction.execute"-{
+
+      val board = new Board()
+      val bot = Bot(board, 0, 0)
+
+      "turn left"-{
+
+        bot.direction = Direction.Up
+
+        val turnInstruction = TurnInstruction(0)
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Left
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Down
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Right
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Up
+
+      }
+
+      "turn right"-{
+
+        bot.direction = Direction.Up
+
+        val turnInstruction = TurnInstruction(1)
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Right
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Down
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Left
+
+        turnInstruction.execute(bot)
+        bot.direction ==> Direction.Up
+
+      }
+    }
   }
 }
