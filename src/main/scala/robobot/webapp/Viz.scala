@@ -90,7 +90,20 @@ class Viz(val config: Config) {
   }
 
   def drawBots() = {
-    val bots = js.Array(new Bot(0,0), new Bot(1,1), new Bot(2,4))
+
+    val bot1 = new Bot()
+    bot1.row = 0
+    bot1.col = 0
+
+    val bot2 = new Bot()
+    bot2.row = 1
+    bot2.col = 1
+
+    val bot3 = new Bot()
+    bot3.row = 2
+    bot3.col = 4
+
+    val bots = js.Array(bot1, bot2, bot3)
 
     svg.selectAll(".bot")
       .data(bots)

@@ -1,4 +1,9 @@
 package robobot.webapp
 
-class Bot(var row: Int, var col: Int) {
+class Bot() {
+
+  var row = -1
+
+  var col = -1
+
 }
