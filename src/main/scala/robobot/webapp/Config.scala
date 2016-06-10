@@ -24,6 +24,7 @@ class Config(params: Map[String, Any]) {
   object viz {
 
     def mainDivId = "robobot-" + id
+    def consoleDivId = mainDivId + "-console"
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
 

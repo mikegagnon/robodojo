@@ -23,7 +23,7 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def addSvg() : Selection[dom.EventTarget] = {
 
-    jQuery("#" + config.id).append(s"<div id='${config.viz.mainDivId}'></div>")
+    jQuery("#" + config.id).append(s"<div id='${config.viz.mainDivId}' class='mainDiv'></div>")
 
     jQuery("#" + config.viz.mainDivId).append(s"<svg id='${config.viz.svgId}'></svg>")
 
@@ -111,6 +111,13 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def addConsole() {
 
+    val consoleDiv = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
+
+    jQuery("#" + config.viz.mainDivId).append(consoleDiv)
+
+    val playButton = jQuery("<button>Play</button>")
+
+    jQuery("#" + config.viz.consoleDivId).append("<button><span class='glyphicon glyphicon-play'></span></button>")
   }
 
 }
