@@ -5,6 +5,7 @@ object Config {
 }
 
 // TODO: change defs to vals?
+// TODO: remove all SVG config vals
 class Config(params: Map[String, Any]) {
 
   val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
@@ -29,11 +30,7 @@ class Config(params: Map[String, Any]) {
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
 
     // SVG border element
-    object border {
-      val strokeWidth = params.getOrElse("viz.border.strokeWidth", 2).asInstanceOf[Int]
-      val stroke = params.getOrElse("viz.border.stroke", "#777").asInstanceOf[String]
-
-      def rxry = cellSize / 4
+    object canvas {
       def width = cellSize * sim.numCols
       def height = cellSize * sim.numRows
     }
@@ -43,10 +40,6 @@ class Config(params: Map[String, Any]) {
       val stroke = params.getOrElse("viz.grid.stroke", "#ccc").asInstanceOf[String]
     }
 
-    // SVG element
-    def svgId = mainDivId + "-svg"
-    def svgWidth = cellSize * sim.numCols + viz.border.strokeWidth * 2
-    def svgHeight = cellSize * sim.numRows + viz.border.strokeWidth * 2
   }
 
 }
