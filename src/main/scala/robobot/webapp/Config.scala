@@ -30,6 +30,7 @@ class Config(params: Map[String, Any]) {
 
     // SVG border element
     object canvas {
+      val canvasId = id + "-canvas"
       def width = cellSize * sim.numCols
       def height = cellSize * sim.numRows
     }

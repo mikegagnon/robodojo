@@ -18,6 +18,17 @@ class Viz(val board: Board)(implicit val config: Config) {
   updateMainDiv()
   addCanvas()
 
+  val stage = new Stage(config.viz.canvas.canvasId)
+
+  var circle = new Shape()
+
+  circle.graphics.beginFill("slateblue").drawCircle(0, 0, 25)
+  circle.x = 25
+  circle.y = 25
+
+  stage.addChild(circle)
+  stage.update()
+
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
   }
@@ -26,11 +37,11 @@ class Viz(val board: Board)(implicit val config: Config) {
   // TODO: change all methods to have return type
   def addCanvas(): Unit = {
 
-    val canvasHtml = s"""<canvas id="testCanvas"
+    val canvasHtml = s"""<canvas id="${config.viz.canvas.canvasId}"
           width="${config.viz.canvas.width}"
-          height="${config.viz.canvas.height}"></canvas>"""
+          height="${config.viz.canvas.height}">"""
 
-    jQuery("#" + config.id).append(canvasHtml)
+    jQuery("#" + config.id).html(canvasHtml)
 
   }
 
