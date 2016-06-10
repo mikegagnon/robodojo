@@ -28,11 +28,14 @@ class Config(params: Map[String, Any]) {
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
 
-    // SVG border element
     object canvas {
       val canvasId = id + "-canvas"
       def width = cellSize * sim.numCols
       def height = cellSize * sim.numRows
+    }
+
+    object border {
+      val stroke = params.getOrElse("viz.grid.stroke", "#444").asInstanceOf[String]
     }
 
     // grid lines

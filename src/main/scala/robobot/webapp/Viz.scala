@@ -18,16 +18,10 @@ class Viz(val board: Board)(implicit val config: Config) {
   updateMainDiv()
   addCanvas()
 
-  val stage = new Stage(config.viz.canvas.canvasId)
+  val stage = addStage()
 
-  var circle = new Shape()
-
-  circle.graphics.beginFill("slateblue").drawCircle(0, 0, 25)
-  circle.x = 25
-  circle.y = 25
-
-  stage.addChild(circle)
-  stage.update()
+  addBorder()
+  addCircle()
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
@@ -41,8 +35,37 @@ class Viz(val board: Board)(implicit val config: Config) {
           width="${config.viz.canvas.width}"
           height="${config.viz.canvas.height}">"""
 
-    jQuery("#" + config.id).html(canvasHtml)
+    val canvas = jQuery("#" + config.id).html(canvasHtml)
 
+  }
+
+  def addStage(): Stage = {
+    val stage = new Stage(config.viz.canvas.canvasId)
+
+    // To prevent fuzziness of lines
+    // http://stackoverflow.com/questions/6672870/easeljs-line-fuzziness
+    stage.regX = -0.5
+    stage.regY = -0.5
+
+    stage
+  }
+
+  def addBorder(): Unit = {
+    val rect = new Shape()
+
+    rect.graphics.beginStroke(config.viz.border.stroke).drawRect(1, 1, config.viz.canvas.width-2,
+      config.viz.canvas.height-2)
+
+    stage.addChild(rect)
+  }
+
+  def addCircle(): Unit = {
+    val circle = new Shape()
+
+    circle.graphics.beginFill("slateblue").drawCircle(25.5, 25.5, 20.5)
+
+    stage.addChild(circle)
+    stage.update()
   }
 
 }
