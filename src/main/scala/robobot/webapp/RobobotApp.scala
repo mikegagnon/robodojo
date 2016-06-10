@@ -6,7 +6,6 @@ import scala.scalajs.js
 
 object RobobotApp extends JSApp {
 
-  // TODO: is this really needed?
   var instances = Map[String, Robobot]()
 
   @JSExport
@@ -15,6 +14,13 @@ object RobobotApp extends JSApp {
     implicit val config = new Config(configJS.toMap)
 
     instances += (config.id -> new Robobot())
+  }
+
+  @JSExport
+  def clickPlay(id: String) {
+    val robobot = instances(id)
+
+    robobot.controller.clickPlay
   }
 
   def main(): Unit = {}

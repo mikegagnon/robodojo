@@ -115,9 +115,10 @@ class Viz(val board: Board)(implicit val config: Config) {
 
     jQuery("#" + config.viz.mainDivId).append(consoleDiv)
 
-    val playButton = jQuery("<button>Play</button>")
-
-    jQuery("#" + config.viz.consoleDivId).append("<button><span class='glyphicon glyphicon-play'></span></button>")
+    jQuery("#" + config.viz.consoleDivId).append(s"""
+      <button onclick='robobot.webapp.RobobotApp().clickPlay("${config.id}")'>
+        <span class='glyphicon glyphicon-play'></span>
+      </button>""")
   }
 
 }

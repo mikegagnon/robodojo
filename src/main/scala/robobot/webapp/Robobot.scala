@@ -19,4 +19,6 @@ class Robobot(implicit val config: Config) {
   board.addBot(bot3)
 
   val viz = new Viz(board)
+
+  val controller = new Controller(config, board, viz)
 }
