@@ -21,7 +21,7 @@ class Viz(val board: Board)(implicit val config: Config) {
   val stage = addStage()
 
   addBorder()
-  addCircle()
+  addBot()
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
@@ -59,13 +59,17 @@ class Viz(val board: Board)(implicit val config: Config) {
     stage.addChild(rect)
   }
 
-  def addCircle(): Unit = {
-    val circle = new Shape()
-
-    circle.graphics.beginFill("slateblue").drawCircle(25.5, 25.5, 20.5)
-
-    stage.addChild(circle)
-    stage.update()
+  def addBot(): Unit = {
+    val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
+      img.src = "./img/bluebot.png";
+      img.onload = { event: dom.raw.Event =>
+        println("loaded")
+        val tempBitMap = new Bitmap(img);
+        stage.addChild(tempBitMap);
+        tempBitMap.x = 0
+        tempBitMap.y = 0
+        stage.update()
+    }
   }
 
 }
