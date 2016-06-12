@@ -71,13 +71,12 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     return stage
   }
 
-  // TODO: better name for this function?
-  def ratio(value: Int): Double = value * dom.window.devicePixelRatio
+  def retina(value: Int): Double = value * dom.window.devicePixelRatio
 
   def drawLine(x1: Int, y1: Int, x2: Int, y2: Int, color: String): Unit = {
     val line = new Shape()
 
-    line.graphics.setStrokeStyle(ratio(1))
+    line.graphics.setStrokeStyle(retina(1))
     line.graphics.beginStroke(color)
     line.graphics.moveTo(x1, y1)
     line.graphics.lineTo(x2, y2)
@@ -92,29 +91,29 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     for (row <- 1 until config.sim.numRows) {
       drawLine(
         0,
-        ratio(row * config.viz.cellSize).toInt,
-        ratio(config.sim.numCols * config.viz.cellSize).toInt,
-        ratio(row * config.viz.cellSize).toInt,
+        retina(row * config.viz.cellSize).toInt,
+        retina(config.sim.numCols * config.viz.cellSize).toInt,
+        retina(row * config.viz.cellSize).toInt,
         config.viz.grid.stroke)
     }
 
     for (col <- 1 until config.sim.numCols) {
       drawLine(
-        ratio(col * config.viz.cellSize).toInt,
+        retina(col * config.viz.cellSize).toInt,
         0,
-        ratio(col * config.viz.cellSize).toInt,
-        ratio(config.sim.numRows * config.viz.cellSize).toInt,
+        retina(col * config.viz.cellSize).toInt,
+        retina(config.sim.numRows * config.viz.cellSize).toInt,
         config.viz.grid.stroke)
     }
   }
 
   def addBorder(): Unit = {
 
-    for(i <- 1 to ratio(config.viz.border.thickness).toInt) {
+    for(i <- 1 to retina(config.viz.border.thickness).toInt) {
       val rect = new Shape()
 
       rect.graphics.beginStroke(config.viz.border.stroke).drawRect(i, i,
-        ratio(config.viz.canvas.width - i), ratio(config.viz.canvas.height - i))
+        retina(config.viz.canvas.width - i), retina(config.viz.canvas.height - i))
 
       stage.addChild(rect)
     }
@@ -146,7 +145,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     }
 
     val widthHeight = width
-    val cellPhysicalSize = ratio(config.viz.cellSize)
+    val cellPhysicalSize = retina(config.viz.cellSize)
     bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
     bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
 
@@ -155,10 +154,10 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
 
     val halfCell = config.viz.cellSize / 2
 
-    container.regX = ratio(halfCell)
-    container.regY = ratio(halfCell)
-    container.x = ratio(halfCell + config.viz.cellSize * bot.col)
-    container.y = ratio(halfCell + config.viz.cellSize * bot.row)
+    container.regX = retina(halfCell)
+    container.regY = retina(halfCell)
+    container.x = retina(halfCell + config.viz.cellSize * bot.col)
+    container.y = retina(halfCell + config.viz.cellSize * bot.row)
 
     stage.addChild(container);
 
