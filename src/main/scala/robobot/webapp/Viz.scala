@@ -67,20 +67,25 @@ class Viz(val board: Board)(implicit val config: Config) {
     return stage
   }
 
+  def addGrid(): Unit = {
+
+  }
+
+  def ratio(value: Int): Double = value * dom.window.devicePixelRatio
+
+  // TODO: factor out common code
   def addBorder(): Unit = {
     val rect = new Shape()
 
     rect.graphics.beginStroke(config.viz.border.stroke).drawRect(1, 1,
-      (config.viz.canvas.width -1) * dom.window.devicePixelRatio,
-      (config.viz.canvas.height -1) * dom.window.devicePixelRatio)
+      ratio(config.viz.canvas.width -1), ratio(config.viz.canvas.height -1))
 
     stage.addChild(rect)
 
     val rect2 = new Shape()
 
     rect2.graphics.beginStroke(config.viz.border.stroke).drawRect(2, 2,
-      (config.viz.canvas.width -2) * dom.window.devicePixelRatio,
-      (config.viz.canvas.height -2) * dom.window.devicePixelRatio)
+      ratio(config.viz.canvas.width -2), ratio(config.viz.canvas.height -2))
 
     stage.addChild(rect2)
   }
