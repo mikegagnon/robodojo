@@ -132,11 +132,10 @@ class Viz(val board: Board)(implicit val config: Config) {
       val container = new Container()
       container.addChild(bitmap)
 
-      container.x = ratio(32)
-      container.y = ratio(32)
-
-      container.regX = ratio(32 + 16)
-      container.regX = ratio(32 + 16)
+      container.regX = ratio(16)
+      container.regY = ratio(16)
+      container.x = ratio(16)
+      container.y = ratio(16)
 
       stage.addChild(container);
       //bitmap.x = ratio(16)
