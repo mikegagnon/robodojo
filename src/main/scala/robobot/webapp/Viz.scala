@@ -132,7 +132,8 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
   def addBot(bot: Bot): Unit = {
 
     // TODO: Conifg option
-    val img = preload.getResult("blueBotImage").asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
+    val img = preload.getResult(config.viz.preload.blueBotId)
+      .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
 
     val bitmap = new Bitmap(img);
 

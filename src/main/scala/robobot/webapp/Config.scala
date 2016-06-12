@@ -39,6 +39,11 @@ class Config(params: Map[String, Any]) {
       val thickness = params.getOrElse("viz.border.thickness", 2).asInstanceOf[Int]
     }
 
+    object preload {
+      val blueBotId = "blueBotId"
+      val blueBotPath = "./img/bluebot.png"
+    }
+
     // grid lines
     object grid {
       val stroke = params.getOrElse("viz.grid.stroke", "#ccc").asInstanceOf[String]

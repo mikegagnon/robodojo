@@ -43,8 +43,8 @@ object RobobotApp extends JSApp {
 
     val manifest = js.Array(
       js.Dynamic.literal(
-        id = "blueBotImage",
-        src = "./img/bluebot.png"
+        id = configs(0).viz.preload.blueBotId,
+        src = configs(0).viz.preload.blueBotPath
       )
     )
 
