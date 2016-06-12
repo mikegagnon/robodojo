@@ -23,7 +23,7 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   addGrid()
   addBorder()
-  addBot(1,3)
+  addBots()
 
   stage.update()
 
@@ -119,6 +119,28 @@ class Viz(val board: Board)(implicit val config: Config) {
       stage.addChild(rect)
     }
 
+  }
+
+  def addBots(): Unit = {
+
+    val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
+
+    // TODO: Conifg option
+    img.src = "./img/bluebot.png";
+    img.onload = { event: dom.raw.Event =>
+      val bitmap = new Bitmap(img);
+
+      if (bitmap.image.width != bitmap.image.height) {
+        throw new IllegalArgumentException("Bot image.width != image.height")
+      }
+
+      // scale the bitmap
+      val widthHeight = bitmap.image.width
+      val cellPhysicalSize = ratio(config.viz.cellSize)
+      bitmap.scaleX = cellPhysicalSize.toDouble / widthHeight
+      bitmap.scaleY = bitmap.scaleX
+
+    }
   }
 
   // TODO: if rotation is a performance issue, then rotate using pre-rotated sprites
