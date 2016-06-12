@@ -23,7 +23,7 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   addGrid()
   addBorder()
-  addBot()
+  addBot(1,3)
 
   stage.update()
 
@@ -121,7 +121,8 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   }
 
-  def addBot(): Unit = {
+  // TODO: if rotation is a performance issue, then rotate using pre-rotated sprites
+  def addBot(row: Int, col: Int): Unit = {
     val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
 
     // TODO: Conifg option
@@ -132,25 +133,19 @@ class Viz(val board: Board)(implicit val config: Config) {
       val container = new Container()
       container.addChild(bitmap)
 
-      container.regX = ratio(16)
-      container.regY = ratio(16)
-      container.x = ratio(16)
-      container.y = ratio(16)
+      val halfCell = config.viz.cellSize / 2
+
+      container.regX = ratio(halfCell)
+      container.regY = ratio(halfCell)
+      container.x = ratio(halfCell + config.viz.cellSize * col)
+      container.y = ratio(halfCell + config.viz.cellSize * row)
 
       stage.addChild(container);
-      //bitmap.x = ratio(16)
-      //bitmap.y = ratio(16)
-      /*bitmap.regX = ratio(16)
-      bitmap.regY = ratio(16)*/
-
-      //bitmap.rotation = 0
 
       bitmap.addEventListener("click", (event: Object) => {
         container.rotation+=15
-        container.regX = ratio(16)
-        container.regY = ratio(16)
-        container.x = ratio(16)
-        container.y = ratio(16)
+        container.x = ratio(halfCell + config.viz.cellSize * col)
+        container.y = ratio(halfCell + config.viz.cellSize * row)
         stage.update()
         false
       })
