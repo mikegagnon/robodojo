@@ -66,8 +66,10 @@ class Viz(val board: Board)(implicit val config: Config) {
     canvas.css("height", height+"px")
 
     // set CreateJS to render scaled
-    stage.scaleX = dom.window.devicePixelRatio
-    stage.scaleY = dom.window.devicePixelRatio
+
+    // removing scaleX/Y causes the bot to be rendered properly, but the bounding rect becomes small
+    //stage.scaleX = dom.window.devicePixelRatio
+    //stage.scaleY = dom.window.devicePixelRatio
 
     stage
   }
