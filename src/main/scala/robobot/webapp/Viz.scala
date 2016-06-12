@@ -39,7 +39,21 @@ class Viz(val board: Board)(implicit val config: Config) {
 
     jQuery("#" + config.id).html(canvasHtml)
 
-    return jQuery("#" + config.viz.canvas.canvasId)
+    val canvas = jQuery("#" + config.viz.canvas.canvasId)
+
+    // From http://www.unfocus.com/2014/03/03/hidpiretina-for-createjs-flash-pro-html5-canvas/
+    val height = canvas.attr("height").toOption.map{ h => h.toInt}.getOrElse(0)
+    val width = canvas.attr("width").toOption.map{ w => w.toInt}.getOrElse(0)
+
+    // Reset the canvas width and height with window.devicePixelRatio applied
+    canvas.attr("width", math.round(width * dom.window.devicePixelRatio))
+    canvas.attr("height", math.round(height * dom.window.devicePixelRatio))
+
+    // force the canvas back to the original size using css
+    canvas.css("width", width+"px")
+    canvas.css("height", height+"px")
+
+    return canvas
   }
 
   def addStage(): Stage = {
@@ -50,28 +64,7 @@ class Viz(val board: Board)(implicit val config: Config) {
     stage.regX = -0.5
     stage.regY = -0.5
 
-
-    // From http://www.unfocus.com/2014/03/03/hidpiretina-for-createjs-flash-pro-html5-canvas/
-    val height = canvas.attr("height").toOption.map{ h => h.toInt}.getOrElse(0)
-    val width = canvas.attr("width").toOption.map{ w => w.toInt}.getOrElse(0)
-
-    // reset the canvas width and height with window.devicePixelRatio applied
-    canvas.attr("width", math.round(width * dom.window.devicePixelRatio))
-    canvas.attr("height", math.round(height * dom.window.devicePixelRatio))
-
-    println(dom.window.devicePixelRatio)
-
-    // force the canvas back to the original size using css
-    canvas.css("width", width+"px")
-    canvas.css("height", height+"px")
-
-    // set CreateJS to render scaled
-
-    // removing scaleX/Y causes the bot to be rendered properly, but the bounding rect becomes small
-    //stage.scaleX = dom.window.devicePixelRatio
-    //stage.scaleY = dom.window.devicePixelRatio
-
-    stage
+    return stage
   }
 
   def addBorder(): Unit = {
