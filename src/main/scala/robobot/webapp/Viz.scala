@@ -77,8 +77,9 @@ class Viz(val board: Board)(implicit val config: Config) {
   def addBorder(): Unit = {
     val rect = new Shape()
 
-    rect.graphics.beginStroke(config.viz.border.stroke).drawRect(1, 1, config.viz.canvas.width-2,
-      config.viz.canvas.height-2)
+    rect.graphics.beginStroke(config.viz.border.stroke).drawRect(1, 1,
+      config.viz.canvas.width * dom.window.devicePixelRatio -2,
+      config.viz.canvas.height * dom.window.devicePixelRatio -2)
 
     stage.addChild(rect)
   }
