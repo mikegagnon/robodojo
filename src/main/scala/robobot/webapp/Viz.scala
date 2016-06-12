@@ -5,19 +5,20 @@ import scala.language.postfixOps
 
 import scala.scalajs.js
 import js.JSConverters._
-import org.scalajs.jquery.jQuery
+import org.scalajs.jquery.{jQuery, JQuery}
 import org.singlespaced.d3js.d3
 import org.singlespaced.d3js.Ops._
 import org.singlespaced.d3js.Selection
 import org.scalajs.dom
+
+import scala.math
 
 import com.scalawarrior.scalajs.createjs._
 
 class Viz(val board: Board)(implicit val config: Config) {
 
   updateMainDiv()
-  addCanvas()
-
+  val canvas = addCanvas()
   val stage = addStage()
 
   addBorder()
@@ -29,13 +30,14 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   // TODO: change all Unit methods to use this syntax
   // TODO: change all methods to have return type
-  def addCanvas(): Unit = {
+  // TODO: return type
+  def addCanvas(): JQuery = {
 
     val canvasHtml = s"""<canvas id="${config.viz.canvas.canvasId}"
           width="${config.viz.canvas.width}"
           height="${config.viz.canvas.height}">"""
 
-    val canvas = jQuery("#" + config.id).html(canvasHtml)
+    return jQuery("#" + config.id).html(canvasHtml)
 
   }
 
@@ -46,6 +48,24 @@ class Viz(val board: Board)(implicit val config: Config) {
     // http://stackoverflow.com/questions/6672870/easeljs-line-fuzziness
     stage.regX = -0.5
     stage.regY = -0.5
+
+    // From http://www.unfocus.com/2014/03/03/hidpiretina-for-createjs-flash-pro-html5-canvas/
+    val height = canvas.attr("height").toOption.map{ h => h.toInt}.getOrElse(0)
+    val width = canvas.attr("width").toOption.map{ w => w.toInt}.getOrElse(0)
+
+    // reset the canvas width and height with window.devicePixelRatio applied
+    canvas.attr("width", math.round(width * dom.window.devicePixelRatio))
+    canvas.attr("height", math.round(height * dom.window.devicePixelRatio))
+
+    println(dom.window.devicePixelRatio)
+
+    // force the canvas back to the original size using css
+    canvas.css("width", width+"px")
+    canvas.css("height", height+"px")
+
+    // set CreateJS to render scaled
+    stage.scaleX = dom.window.devicePixelRatio
+    stage.scaleY = dom.window.devicePixelRatio
 
     stage
   }
