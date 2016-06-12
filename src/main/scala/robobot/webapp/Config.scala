@@ -35,7 +35,8 @@ class Config(params: Map[String, Any]) {
     }
 
     object border {
-      val stroke = params.getOrElse("viz.grid.stroke", "#444").asInstanceOf[String]
+      val stroke = params.getOrElse("viz.border.stroke", "#444").asInstanceOf[String]
+      val thickness = params.getOrElse("viz.border.thickness", 2).asInstanceOf[Int]
     }
 
     // grid lines

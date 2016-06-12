@@ -73,21 +73,17 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def ratio(value: Int): Double = value * dom.window.devicePixelRatio
 
-  // TODO: factor out common code
   def addBorder(): Unit = {
-    val rect = new Shape()
 
-    rect.graphics.beginStroke(config.viz.border.stroke).drawRect(1, 1,
-      ratio(config.viz.canvas.width -1), ratio(config.viz.canvas.height -1))
+    for(i <- 1 to config.viz.border.thickness) {
+      val rect = new Shape()
 
-    stage.addChild(rect)
+      rect.graphics.beginStroke(config.viz.border.stroke).drawRect(i, i,
+        ratio(config.viz.canvas.width - i), ratio(config.viz.canvas.height - i))
 
-    val rect2 = new Shape()
+      stage.addChild(rect)
+    }
 
-    rect2.graphics.beginStroke(config.viz.border.stroke).drawRect(2, 2,
-      ratio(config.viz.canvas.width -2), ratio(config.viz.canvas.height -2))
-
-    stage.addChild(rect2)
   }
 
   def addBot(): Unit = {
