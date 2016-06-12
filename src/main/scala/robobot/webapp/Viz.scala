@@ -23,7 +23,7 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   addGrid()
   addBorder()
-  addBots()
+  addBot(1,2)
 
   stage.update()
 
