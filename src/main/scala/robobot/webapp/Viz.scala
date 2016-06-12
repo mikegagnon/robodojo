@@ -13,6 +13,7 @@ import org.scalajs.dom
 
 import scala.math
 
+// TODO: remove import all
 import com.scalawarrior.scalajs.createjs._
 
 class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config) {
