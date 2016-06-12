@@ -71,8 +71,12 @@ class Viz(val board: Board)(implicit val config: Config) {
     val rect = new Shape()
 
     rect.graphics.beginStroke(config.viz.border.stroke).drawRect(1, 1,
-      config.viz.canvas.width * dom.window.devicePixelRatio -2,
-      config.viz.canvas.height * dom.window.devicePixelRatio -2)
+      (config.viz.canvas.width -1) * dom.window.devicePixelRatio,
+      (config.viz.canvas.height -1) * dom.window.devicePixelRatio)
+
+    rect.graphics.beginStroke(config.viz.border.stroke).drawRect(2, 2,
+      (config.viz.canvas.width -2) * dom.window.devicePixelRatio,
+      (config.viz.canvas.height -2) * dom.window.devicePixelRatio)
 
     stage.addChild(rect)
   }
