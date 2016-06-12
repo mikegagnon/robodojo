@@ -123,13 +123,38 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def addBot(): Unit = {
     val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
+
+    // TODO: Conifg option
     img.src = "./img/bluebot.png";
     img.onload = { event: dom.raw.Event =>
-      println("loaded")
-      val tempBitMap = new Bitmap(img);
-      stage.addChild(tempBitMap);
-      tempBitMap.x = 0
-      tempBitMap.y = 0
+
+      val bitmap = new Bitmap(img);
+      val container = new Container()
+      container.addChild(bitmap)
+
+      container.x = ratio(32)
+      container.y = ratio(32)
+
+      container.regX = ratio(32 + 16)
+      container.regX = ratio(32 + 16)
+
+      stage.addChild(container);
+      //bitmap.x = ratio(16)
+      //bitmap.y = ratio(16)
+      /*bitmap.regX = ratio(16)
+      bitmap.regY = ratio(16)*/
+
+      //bitmap.rotation = 0
+
+      bitmap.addEventListener("click", (event: Object) => {
+        container.rotation+=15
+        container.regX = ratio(16)
+        container.regY = ratio(16)
+        container.x = ratio(16)
+        container.y = ratio(16)
+        stage.update()
+        false
+      })
 
       stage.update()
     }
