@@ -37,8 +37,9 @@ class Viz(val board: Board)(implicit val config: Config) {
           width="${config.viz.canvas.width}"
           height="${config.viz.canvas.height}">"""
 
-    return jQuery("#" + config.id).html(canvasHtml)
+    jQuery("#" + config.id).html(canvasHtml)
 
+    return jQuery("#" + config.viz.canvas.canvasId)
   }
 
   def addStage(): Stage = {
@@ -48,6 +49,7 @@ class Viz(val board: Board)(implicit val config: Config) {
     // http://stackoverflow.com/questions/6672870/easeljs-line-fuzziness
     stage.regX = -0.5
     stage.regY = -0.5
+
 
     // From http://www.unfocus.com/2014/03/03/hidpiretina-for-createjs-flash-pro-html5-canvas/
     val height = canvas.attr("height").toOption.map{ h => h.toInt}.getOrElse(0)
