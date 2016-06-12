@@ -122,6 +122,7 @@ class Viz(val board: Board)(implicit val config: Config) {
   }
 
   // TODO: if rotation is a performance issue, then rotate using pre-rotated sprites
+  // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
   def addBot(row: Int, col: Int): Unit = {
     val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
 
