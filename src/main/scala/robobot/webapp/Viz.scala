@@ -74,11 +74,15 @@ class Viz(val board: Board)(implicit val config: Config) {
       (config.viz.canvas.width -1) * dom.window.devicePixelRatio,
       (config.viz.canvas.height -1) * dom.window.devicePixelRatio)
 
-    rect.graphics.beginStroke(config.viz.border.stroke).drawRect(2, 2,
+    stage.addChild(rect)
+
+    val rect2 = new Shape()
+
+    rect2.graphics.beginStroke(config.viz.border.stroke).drawRect(2, 2,
       (config.viz.canvas.width -2) * dom.window.devicePixelRatio,
       (config.viz.canvas.height -2) * dom.window.devicePixelRatio)
 
-    stage.addChild(rect)
+    stage.addChild(rect2)
   }
 
   def addBot(): Unit = {
