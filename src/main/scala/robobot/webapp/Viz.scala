@@ -23,7 +23,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
 
   addGrid()
   addBorder()
-  addBot(1,2)
+  addBots()
 
   stage.update()
 
@@ -123,11 +123,14 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
 
   def addBots(): Unit = {
 
+    board.bots.foreach { bot =>
+      addBot(bot)
+    }
   }
 
   // TODO: if rotation is a performance issue, then rotate using pre-rotated sprites
   // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
-  def addBot(row: Int, col: Int): Unit = {
+  def addBot(bot: Bot): Unit = {
 
     // TODO: Conifg option
     val img = preload.getResult("blueBotImage").asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
@@ -154,20 +157,13 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
 
     container.regX = ratio(halfCell)
     container.regY = ratio(halfCell)
-    container.x = ratio(halfCell + config.viz.cellSize * col)
-    container.y = ratio(halfCell + config.viz.cellSize * row)
+    container.x = ratio(halfCell + config.viz.cellSize * bot.col)
+    container.y = ratio(halfCell + config.viz.cellSize * bot.row)
 
     stage.addChild(container);
 
-    bitmap.addEventListener("click", (event: Object) => {
-      container.rotation+=15
-      container.x = ratio(halfCell + config.viz.cellSize * col)
-      container.y = ratio(halfCell + config.viz.cellSize * row)
-      stage.update()
-      false
-    })
+    container.rotation = Direction.toAngle(bot.direction)
 
-    stage.update()
   }
 
 }
