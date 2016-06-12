@@ -65,8 +65,8 @@ class Viz(val board: Board)(implicit val config: Config) {
 
     // To prevent fuzziness of lines
     // http://stackoverflow.com/questions/6672870/easeljs-line-fuzziness
-    stage.regX = -0.5
-    stage.regY = -0.5
+    //stage.regX = -0.5
+    //stage.regY = -0.5
 
     return stage
   }
