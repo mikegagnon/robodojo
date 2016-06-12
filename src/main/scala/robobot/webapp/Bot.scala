@@ -50,7 +50,6 @@ class Bot(val board: Board) {
 
   var cycleNum = 0
 
-  // TODO: test
   def cycle() = {
 
     var bank = banks(bankNum)
