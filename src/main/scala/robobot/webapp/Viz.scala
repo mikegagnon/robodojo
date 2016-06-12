@@ -131,7 +131,6 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
   // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
   def addBot(bot: Bot): Unit = {
 
-    // TODO: Conifg option
     val img = preload.getResult(config.viz.preload.blueBotId)
       .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
 
