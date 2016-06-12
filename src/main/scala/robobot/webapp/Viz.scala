@@ -83,14 +83,14 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def addBot(): Unit = {
     val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
-      img.src = "./img/bluebot.png";
-      img.onload = { event: dom.raw.Event =>
-        println("loaded")
-        val tempBitMap = new Bitmap(img);
-        stage.addChild(tempBitMap);
-        tempBitMap.x = 0
-        tempBitMap.y = 0
-        stage.update()
+    img.src = "./img/bluebot.png";
+    img.onload = { event: dom.raw.Event =>
+      println("loaded")
+      val tempBitMap = new Bitmap(img);
+      stage.addChild(tempBitMap);
+      tempBitMap.x = 0
+      tempBitMap.y = 0
+      stage.update()
     }
   }
 
