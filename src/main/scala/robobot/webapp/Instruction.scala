@@ -4,15 +4,53 @@ sealed abstract class Instruction {
   val instructionSet: Int
   val cycles: Int
 
-  def execute(bot: Bot) : Option[Animation]
+  def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
+
 }
+
+// TODO: fix broken tests
 
 case class MoveInstruction(implicit val config: Config) extends Instruction {
   val instructionSet = 0
+
+  // TODO: change to requiredCycles
   val cycles = config.sim.moveCycles
 
+  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
+
+    if (cycleNum == cycles) {
+      return execute(bot)
+    } else if (cycleNum > cycles) {
+      throw new IllegalArgumentException("cycleNum > cycles")
+    } else {
+
+      // TODO: explain
+
+      val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+
+      val delta: Double = cycleNum.toDouble / cycles
+
+      val row = if (destRow < bot.row) {
+          bot.row - delta
+        } else if (destRow > bot.row) {
+          bot.row + delta
+        } else {
+          bot.row
+        }
+
+      val col = if (destCol < bot.col) {
+          bot.col - delta
+        } else if (destCol > bot.col) {
+          bot.col + delta
+        } else {
+          bot.col
+        }
+
+      return Some(MoveAnimation(row, col))
+    }
+
   // TODO: test
-  def execute(bot: Bot) = {
+  def execute(bot: Bot): Option[Animation] = {
 
     val start = RowCol(bot.row, bot.col)
 
@@ -21,7 +59,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     bot.board.matrix(row)(col) match {
       case None => {
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(start, RowCol(row, col)))
+        Some(MoveAnimation(row, col))
       }
       case Some(_) => None
     }
@@ -57,12 +95,13 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 }
 
 // TODO: take direction as a ParamValue?
-case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
+// TODO: reimplement
+abstract case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
     val cycles = config.sim.turnCycles
 
-    def execute(bot: Bot) = {
+    def execute(bot: Bot): Option[Animation] = {
 
       val start = bot.direction
 

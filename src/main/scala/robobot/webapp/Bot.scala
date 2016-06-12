@@ -50,13 +50,15 @@ class Bot(val board: Board) {
 
   var cycleNum = 0
 
-  def cycle() = {
+  def cycle(): Option[Animation] = {
 
     var bank = banks(bankNum)
 
     if (bank.instructions.length > 0) {
 
       val instruction = bank.instructions(instructionNum)
+
+      val animation: Option[Animation] = instruction.cycle(this, cycleNum)
 
       if (cycleNum == instruction.cycles) {
 
@@ -66,12 +68,13 @@ class Bot(val board: Board) {
         if (instructionNum == bank.instructions.length) {
           instructionNum = 0
         }
-
-        instruction.execute(this)
       } else {
         cycleNum += 1
       }
 
+      return animation
+    } else {
+      return None
     }
   }
 
