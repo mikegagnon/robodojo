@@ -15,7 +15,7 @@ import scala.math
 
 import com.scalawarrior.scalajs.createjs._
 
-class Viz(val board: Board)(implicit val config: Config) {
+class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config) {
 
   updateMainDiv()
   val canvas = addCanvas()
@@ -146,49 +146,46 @@ class Viz(val board: Board)(implicit val config: Config) {
   // TODO: if rotation is a performance issue, then rotate using pre-rotated sprites
   // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
   def addBot(row: Int, col: Int): Unit = {
-    val img =  dom.document.createElement("img").asInstanceOf[dom.raw.HTMLImageElement]
 
     // TODO: Conifg option
-    img.src = "./img/bluebot.png";
-    img.onload = { event: dom.raw.Event =>
+    val img = preload.getResult("blueBotImage").asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
 
-      val bitmap = new Bitmap(img);
+    val bitmap = new Bitmap(img);
 
-      // scale the bitmap
-      val width = bitmap.image.width
-      val height = bitmap.image.height
+    // scale the bitmap
+    val width = bitmap.image.width
+    val height = bitmap.image.height
 
-      if (width != height) {
-        throw new IllegalArgumentException("Bot image.width != image.height")
-      }
+    if (width != height) {
+      throw new IllegalArgumentException("Bot image.width != image.height")
+    }
 
-      val widthHeight = width
-      val cellPhysicalSize = ratio(config.viz.cellSize)
-      bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
-      bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
+    val widthHeight = width
+    val cellPhysicalSize = ratio(config.viz.cellSize)
+    bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
+    bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
 
-      val container = new Container()
-      container.addChild(bitmap)
+    val container = new Container()
+    container.addChild(bitmap)
 
-      val halfCell = config.viz.cellSize / 2
+    val halfCell = config.viz.cellSize / 2
 
-      container.regX = ratio(halfCell)
-      container.regY = ratio(halfCell)
+    container.regX = ratio(halfCell)
+    container.regY = ratio(halfCell)
+    container.x = ratio(halfCell + config.viz.cellSize * col)
+    container.y = ratio(halfCell + config.viz.cellSize * row)
+
+    stage.addChild(container);
+
+    bitmap.addEventListener("click", (event: Object) => {
+      container.rotation+=15
       container.x = ratio(halfCell + config.viz.cellSize * col)
       container.y = ratio(halfCell + config.viz.cellSize * row)
-
-      stage.addChild(container);
-
-      bitmap.addEventListener("click", (event: Object) => {
-        container.rotation+=15
-        container.x = ratio(halfCell + config.viz.cellSize * col)
-        container.y = ratio(halfCell + config.viz.cellSize * row)
-        stage.update()
-        false
-      })
-
       stage.update()
-    }
+      false
+    })
+
+    stage.update()
   }
 
 }

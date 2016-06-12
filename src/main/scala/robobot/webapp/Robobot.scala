@@ -1,6 +1,8 @@
 package robobot.webapp
 
-class Robobot(implicit val config: Config) {
+import com.scalawarrior.scalajs.createjs
+
+class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
   val bot1 = Bot(board, 0, 0)
@@ -18,7 +20,7 @@ class Robobot(implicit val config: Config) {
   bot3.direction = Direction.Down
   board.addBot(bot3)
 
-  val viz = new Viz(board)
+  val viz = new Viz(preload, board)
 
   val controller = new Controller(config, board, viz)
 }

@@ -26,13 +26,17 @@ object RobobotApp extends JSApp {
   @JSExport
   def launch() {
 
-    val queue = new createjs.LoadQueue()
+    val preload = new createjs.LoadQueue()
 
-    queue.on("complete", handleComplete _ , this)
+    //http://stackoverflow.com/questions/24827965/preloadjs-isnt-loading-images-bitmaps-correctly
+    preload.setUseXHR(false)
 
+    preload.on("complete", handleComplete _ , this)
+
+    // TODO: add error checking, etc.
     def handleComplete(obj: Object): Boolean = {
       configs.foreach { config =>
-        instances += (config.id -> new Robobot()(config))
+        instances += (config.id -> new Robobot(preload)(config))
       }
       return true
     }
@@ -44,7 +48,7 @@ object RobobotApp extends JSApp {
       )
     )
 
-    queue.loadManifest(manifest)
+    preload.loadManifest(manifest)
 
   }
 
