@@ -1,7 +1,7 @@
 package robobot.webapp
 
 import org.scalajs.jquery.jQuery
-
+import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 
 
@@ -36,9 +36,32 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
     createjs.Ticker.addEventListener("tick", viz.stage);
   }
 
+  var remainingCycles = 0.0
+
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
-  def tick(): Unit = {
-    println("Foo")
+  def tick(event: js.Dynamic): Unit = {
+
+    // TODO: put cycle calculator in separate function?
+
+    // Time elapsed sine list tick
+    val delta = event.delta.asInstanceOf[Double]
+
+    // The number of cycles to execute this tick
+    // TODO: explain remainingCycles
+    val cyclesDouble: Double = config.viz.cyclesPerSecond * delta + remainingCycles
+
+    // TODO: round?
+    val cycles = Math.floor(cyclesDouble).toInt
+
+    remainingCycles = cyclesDouble - cycles
+
+    if (remainingCycles >= 1.0) {
+      throw new IllegalStateException("remainingCycles >= 1.0")
+    }
+
+    1 to cycles foreach { _ =>
+      board.cycle()
+    }
 
   }
 
