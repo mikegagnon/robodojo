@@ -130,6 +130,20 @@ class Viz(val board: Board)(implicit val config: Config) {
     img.onload = { event: dom.raw.Event =>
 
       val bitmap = new Bitmap(img);
+
+      // scale the bitmap
+      val width = bitmap.image.width
+      val height = bitmap.image.height
+
+      if (width != height) {
+        throw new IllegalArgumentException("Bot image.width != image.height")
+      }
+
+      val widthHeight = width
+      val cellPhysicalSize = ratio(config.viz.cellSize)
+      bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
+      bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
+
       val container = new Container()
       container.addChild(bitmap)
 
