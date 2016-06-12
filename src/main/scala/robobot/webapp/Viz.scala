@@ -21,8 +21,12 @@ class Viz(val board: Board)(implicit val config: Config) {
   val canvas = addCanvas()
   val stage = addStage()
 
+  addGrid()
   addBorder()
   addBot()
+
+  stage.update()
+
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
@@ -67,11 +71,42 @@ class Viz(val board: Board)(implicit val config: Config) {
     return stage
   }
 
-  def addGrid(): Unit = {
+  // TODO: better name for this function?
+  def ratio(value: Int): Double = value * dom.window.devicePixelRatio
 
+  def drawLine(x1: Int, y1: Int, x2: Int, y2: Int, color: String): Unit = {
+    val line = new Shape()
+
+    line.graphics.setStrokeStyle(ratio(1))
+    line.graphics.beginStroke(color)
+    line.graphics.moveTo(x1, y1)
+    line.graphics.lineTo(x2, y2)
+    line.graphics.endStroke()
+
+    stage.addChild(line)
   }
 
-  def ratio(value: Int): Double = value * dom.window.devicePixelRatio
+  def addGrid(): Unit = {
+
+    // Draw the horizontal lines
+    for (row <- 1 until config.sim.numRows) {
+      drawLine(
+        0,
+        ratio(row * config.viz.cellSize).toInt,
+        ratio(config.sim.numCols * config.viz.cellSize).toInt,
+        ratio(row * config.viz.cellSize).toInt,
+        config.viz.grid.stroke)
+    }
+
+    for (col <- 1 until config.sim.numCols) {
+      drawLine(
+        ratio(col * config.viz.cellSize).toInt,
+        0,
+        ratio(col * config.viz.cellSize).toInt,
+        ratio(config.sim.numRows * config.viz.cellSize).toInt,
+        config.viz.grid.stroke)
+    }
+  }
 
   def addBorder(): Unit = {
 
@@ -95,6 +130,7 @@ class Viz(val board: Board)(implicit val config: Config) {
       stage.addChild(tempBitMap);
       tempBitMap.x = 0
       tempBitMap.y = 0
+
       stage.update()
     }
   }
