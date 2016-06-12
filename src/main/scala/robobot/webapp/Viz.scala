@@ -75,7 +75,7 @@ class Viz(val board: Board)(implicit val config: Config) {
 
   def addBorder(): Unit = {
 
-    for(i <- 1 to config.viz.border.thickness) {
+    for(i <- 1 to ratio(config.viz.border.thickness).toInt) {
       val rect = new Shape()
 
       rect.graphics.beginStroke(config.viz.border.stroke).drawRect(i, i,
