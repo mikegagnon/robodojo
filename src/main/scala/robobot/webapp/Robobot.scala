@@ -43,7 +43,7 @@ class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
     }
   }*/
 
-  val bot1 = Bot(board, 5, 5)
+  val bot1 = Bot(board, 1, 0)
   bot1.direction = Direction.Right
   val bank0 = new Bank()
   bank0.instructions :+= MoveInstruction()

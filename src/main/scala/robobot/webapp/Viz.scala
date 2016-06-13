@@ -41,8 +41,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // we can look ahead to see if a move will succeed or fail. If the move is destined to fail, we
   // do not animate a successful move operation.
   //
-  // animations(botId)(boarCycleNum) == animation for botId at cycleNum
-  val animations = HashMap[Long, HashMap[Int, Animation]]()
+  // animations(boarCycleNum) == A list of all animations at cycleNum point in time
+  val animations = HashMap[Int, ArrayBuffer[Animation]]()
   var boardCycleNum = 0
   var animationCycleNum = 0
 
@@ -194,17 +194,22 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   var remainingCycles = 0.0
 
+
+  // TODO: do something fancier to aggregate all the animations, rather than just taking the last
+  // one. Perhaps monoids?
   def cycle(): Unit = {
     val animationList = board.cycle()
 
+    animations(boardCycleNum) = ArrayBuffer[Animation]()
+
     // TODO: remove old animations on a rolling basis
     animationList.foreach { animation: Animation =>
-      animations(animation.bot.id)(boardCycleNum) = animation
+
+      animations(boardCycleNum) += animation
     }
 
     boardCycleNum += 1
     animationCycleNum += 1
-
   }
 
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
@@ -228,24 +233,37 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       throw new IllegalStateException("remainingCycles >= 1.0")
     }
 
-    var animations: List[Animation] = Nil
+    //var animations: List[Animation] = Nil
 
-    // TODO: do something fancier to aggregate all the animations, rather than just taking the last
-    // one. Perhaps monoids?
-    1 to cycles foreach { _ =>
-      animations = board.cycle()
-    }
+    1 to cycles foreach { _ => cycle() }
 
-    animations.foreach { animation =>
+    // TODO: delete
+    /*animations.foreach { animation =>
+      animation match {
+        case moveAnimation: MoveAnimation => animateMove(moveAnimation)
+        case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
+      }
+    }*/
+
+    animate()
+
+    stage.update()
+
+
+  }
+
+  def animate(): Unit = {
+    val currentAnimations: ArrayBuffer[Animation] = animations(animationCycleNum)
+
+    currentAnimations.foreach { animation =>
+
+      println(animation)
+
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
       }
     }
-
-    stage.update()
-
-    println(cycles)
 
   }
 
@@ -256,7 +274,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
-    val row = if (animation.row < bot.row) {
+    val row: Double = if (animation.row < bot.row) {
         bot.row - delta
       } else if (animation.row > bot.row) {
         bot.row + delta
@@ -264,7 +282,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         bot.row
       }
 
-    val col = if (animation.col < bot.col) {
+    val col: Double = if (animation.col < bot.col) {
         bot.col - delta
       } else if (animation.col > bot.col) {
         bot.col + delta
@@ -272,8 +290,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         bot.col
       }
 
-    bots(bot.id).x = retina((config.viz.cellSize / 2 + config.viz.cellSize * col))
-    bots(bot.id).y = retina((config.viz.cellSize / 2 + config.viz.cellSize * row))
+    bots(bot.id).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * col)
+    bots(bot.id).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * row)
     bots(bot.id).rotation = Direction.toAngle(bot.direction)
   }
 
