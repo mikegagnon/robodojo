@@ -42,8 +42,10 @@ class Board(implicit val config: Config) {
   }
 
   // TODO: test
-  def cycle(): Unit = {
-    bots.foreach{ (bot: Bot) => bot.cycle() }
+  def cycle(): List[Animation] = {
+
+    // TODO: is toList cast unncessary?
+    bots.toList.flatMap{ (bot: Bot) => bot.cycle() }
   }
 
 }

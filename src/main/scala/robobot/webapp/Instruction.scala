@@ -46,7 +46,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
           bot.col
         }
 
-      return Some(MoveAnimation(row, col))
+      return Some(MoveAnimation(bot.id, row, col))
     }
 
   // TODO: test
@@ -59,7 +59,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     bot.board.matrix(row)(col) match {
       case None => {
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(row, col))
+        Some(MoveAnimation(bot.id, row, col))
       }
       case Some(_) => None
     }

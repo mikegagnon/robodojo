@@ -59,10 +59,15 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
       throw new IllegalStateException("remainingCycles >= 1.0")
     }
 
+    var animations: List[Animation] = Nil
+
+    // TODO: do something fancier to aggregate all the animations, rather than just taking the lasst
+    // one. Perhaps monoids?
     1 to cycles foreach { _ =>
-      board.cycle()
+      animations = board.cycle()
     }
 
+    println(animations)
   }
 
 }
