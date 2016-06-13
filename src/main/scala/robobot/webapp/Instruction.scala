@@ -2,52 +2,26 @@ package robobot.webapp
 
 sealed abstract class Instruction {
   val instructionSet: Int
-  val cycles: Int
+  val requiredCycles: Int
 
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
 
 }
 
-// TODO: fix broken tests
-
 case class MoveInstruction(implicit val config: Config) extends Instruction {
   val instructionSet = 0
 
-  // TODO: change to requiredCycles
-  val cycles = config.sim.moveCycles
+  val requiredCycles = config.sim.moveCycles
 
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
 
-    if (cycleNum == cycles) {
+    if (cycleNum == requiredCycles) {
       return execute(bot)
-    } else if (cycleNum > cycles) {
-      throw new IllegalArgumentException("cycleNum > cycles")
+    } else if (cycleNum > requiredCycles) {
+      throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
-
-      // TODO: explain
-      // TODO: does this code belong in Viz or Animation?
-
       val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-
-      val delta: Double = cycleNum.toDouble / cycles
-
-      val row = if (destRow < bot.row) {
-          bot.row - delta
-        } else if (destRow > bot.row) {
-          bot.row + delta
-        } else {
-          bot.row
-        }
-
-      val col = if (destCol < bot.col) {
-          bot.col - delta
-        } else if (destCol > bot.col) {
-          bot.col + delta
-        } else {
-          bot.col
-        }
-
-      return Some(MoveAnimation(bot, row, col))
+      return Some(MoveAnimation(bot, destRow, destCol, cycleNum))
     }
 
   // TODO: test
@@ -60,9 +34,9 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     bot.board.matrix(row)(col) match {
       case None => {
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(bot, row, col))
+        Some(MoveAnimation(bot, row, col, requiredCycles))
       }
-      case Some(_) => Some(MoveAnimation(bot, bot.row, bot.col))
+      case Some(_) => Some(MoveAnimation(bot, bot.row, bot.col, requiredCycles))
     }
   }
 }
@@ -97,37 +71,38 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 
 // TODO: take direction as a ParamValue?
 // TODO: reimplement
+// TODO: rename direction param
 case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
-    val cycles = config.sim.turnCycles
+    val requiredCycles = config.sim.turnCycles
+    val turnDirection = direction match {
+        case 0 => Direction.Left
+        case _ => Direction.Right
+      }
 
     def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
-      if (cycleNum == cycles) {
+      if (cycleNum == requiredCycles) {
         return execute(bot)
-      } else if (cycleNum > cycles) {
-        throw new IllegalArgumentException("cycleNum > cycles")
+      } else if (cycleNum > requiredCycles) {
+        throw new IllegalArgumentException("cycleNum > requiredCycles")
       } else {
+        return Some(TurnAnimation(bot, bot.direction, turnDirection, cycleNum))
+      }
 
-        val angle: Double = direction match {
-          case 0 => Direction.toAngle(bot.direction) - 90.0 * cycleNum.toDouble / cycles
-          case _ => Direction.toAngle(bot.direction) + 90.0 * cycleNum.toDouble / cycles
-        }
 
-        return Some(TurnAnimation(bot, angle))
+    def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
+      direction match {
+        case 0 => Direction.rotateLeft(currentDir)
+        case _ => Direction.rotateRight(currentDir)
       }
 
     def execute(bot: Bot): Option[Animation] = {
 
-      val start = bot.direction
+      val oldDirection = bot.direction
 
-      bot.direction = direction match {
-        case 0 => Direction.rotateLeft(bot.direction)
-        case _ => Direction.rotateRight(bot.direction)
-      }
+      bot.direction = getNewDirection(bot.direction)
 
-      val end = bot.direction
-
-      Some(TurnAnimation(bot, Direction.toAngle(bot.direction)))
+      Some(TurnAnimation(bot, oldDirection, turnDirection, requiredCycles))
     }
 }

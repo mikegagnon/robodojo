@@ -60,7 +60,7 @@ class Bot(val board: Board) {
 
       val animation: Option[Animation] = instruction.cycle(this, cycleNum)
 
-      if (cycleNum == instruction.cycles) {
+      if (cycleNum == instruction.requiredCycles) {
 
         cycleNum = 0
         instructionNum += 1

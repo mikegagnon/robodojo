@@ -1,10 +1,18 @@
 package robobot.webapp
 
-// TODO: do these classes really contain the values Viz needs to use?
+// The Animation classes provide just information to Viz so that Viz can animate the instruction
+// execution.
 
-// TODO: s/sealed abstract class/sealed trait/g ?
 sealed trait Animation
 
-case class MoveAnimation(bot: Bot, row: Double, col: Double) extends Animation
+case class MoveAnimation(
+  bot: Bot,
+  row: Int,
+  col: Int,
+  cycleNum: Int) extends Animation
 
-case class TurnAnimation(bot: Bot, angle: Double) extends Animation
+case class TurnAnimation(
+  bot: Bot,
+  oldDirection: Direction.EnumVal,
+  leftOrRight: Direction.EnumVal,
+  cycleNum: Int) extends Animation

@@ -172,4 +172,101 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   }
 
+  var remainingCycles = 0.0
+
+  // Bummer: 20FPS burns between 30% and 40% CPU on my machine
+  def tick(event: js.Dynamic): Unit = {
+
+    // TODO: put cycle calculator in separate function?
+
+    // Time elapsed sine list tick
+    val delta = event.delta.asInstanceOf[Double]
+
+    // The number of cycles to execute this tick
+    // TODO: explain remainingCycles
+    val cyclesDouble: Double = config.viz.cyclesPerSecond * delta / 1000.0 + remainingCycles
+
+    // TODO: round?
+    val cycles = Math.floor(cyclesDouble).toInt
+
+    remainingCycles = cyclesDouble - cycles
+
+    if (remainingCycles >= 1.0) {
+      throw new IllegalStateException("remainingCycles >= 1.0")
+    }
+
+    var animations: List[Animation] = Nil
+
+    // TODO: do something fancier to aggregate all the animations, rather than just taking the last
+    // one. Perhaps monoids?
+    1 to cycles foreach { _ =>
+      animations = board.cycle()
+    }
+
+    animations.foreach { animation =>
+      animation match {
+        case moveAnimation: MoveAnimation => animateMove(moveAnimation)
+        case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
+      }
+    }
+
+    stage.update()
+
+    println(cycles)
+
+  }
+
+  // todo explain
+  def animateMove(animation: MoveAnimation): Unit = {
+
+    val bot = animation.bot
+
+    val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
+
+    val row = if (animation.row < bot.row) {
+        bot.row - delta
+      } else if (animation.row > bot.row) {
+        bot.row + delta
+      } else {
+        bot.row
+      }
+
+    val col = if (animation.col < bot.col) {
+        bot.col - delta
+      } else if (animation.col > bot.col) {
+        bot.col + delta
+      } else {
+        bot.col
+      }
+
+    bots(bot.id).x = retina((config.viz.cellSize / 2 + config.viz.cellSize * col))
+    bots(bot.id).y = retina((config.viz.cellSize / 2 + config.viz.cellSize * row))
+    bots(bot.id).rotation = Direction.toAngle(bot.direction)
+  }
+
+  // TODO: explain
+  def animateTurn(animation: TurnAnimation): Unit = {
+
+    val bot = animation.bot
+    val oldDirection = animation.oldDirection
+    val percentComplete = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
+
+    val angle: Double = animation.leftOrRight match {
+      case Direction.Left => Direction.toAngle(oldDirection) - 90.0 * percentComplete
+      case Direction.Right => Direction.toAngle(oldDirection) + 90.0 * percentComplete
+      case _ => throw new IllegalStateException("Bots can only turn Left or Right")
+    }
+
+    bots(bot.id).rotation = angle
+
+  }
+
 }
+
+
+
+
+
+
+
+      
