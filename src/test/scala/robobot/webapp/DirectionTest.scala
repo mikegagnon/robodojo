@@ -32,19 +32,19 @@ object DirectionTest extends TestSuite {
       "wrap around"-{
 
         "dir=Up"-{
-          Direction.dirRowCol(Direction.Up, 0, 0) ==> RowCol(config.numRows - 1, 0)
+          Direction.dirRowCol(Direction.Up, 0, 0) ==> RowCol(config.sim.numRows - 1, 0)
         }
 
         "dir=Down"-{
-          Direction.dirRowCol(Direction.Down, config.numRows - 1, 0) ==> RowCol(0, 0)
+          Direction.dirRowCol(Direction.Down, config.sim.numRows - 1, 0) ==> RowCol(0, 0)
         }
 
         "dir=Left"-{
-          Direction.dirRowCol(Direction.Left, 0, 0) ==> RowCol(0, config.numCols - 1)
+          Direction.dirRowCol(Direction.Left, 0, 0) ==> RowCol(0, config.sim.numCols - 1)
         }
 
         "dir=Right"-{
-          Direction.dirRowCol(Direction.Right, 0, config.numCols - 1) ==> RowCol(0, 0)
+          Direction.dirRowCol(Direction.Right, 0, config.sim.numCols - 1) ==> RowCol(0, 0)
         }
       }
 
@@ -60,7 +60,7 @@ object DirectionTest extends TestSuite {
 
           "below"-{
             intercept[IllegalArgumentException] {
-              Direction.dirRowCol(Direction.Up, config.numRows, 0)
+              Direction.dirRowCol(Direction.Up, config.sim.numRows, 0)
             }
           }
 
@@ -72,7 +72,7 @@ object DirectionTest extends TestSuite {
 
           "to the right"-{
             intercept[IllegalArgumentException] {
-              Direction.dirRowCol(Direction.Up, 0, config.numCols)
+              Direction.dirRowCol(Direction.Up, 0, config.sim.numCols)
             }
           }
         }

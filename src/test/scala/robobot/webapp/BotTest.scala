@@ -130,7 +130,7 @@ object BotTest extends TestSuite {
         bot.board.matrix(1)(0) ==> Some(bot)
         bot.cycle()
         bot.board.matrix(1)(0) ==> None
-        bot.board.matrix(1)(config.numCols - 1) ==> Some(bot)
+        bot.board.matrix(1)(config.sim.numCols - 1) ==> Some(bot)
       }
     }
   }
