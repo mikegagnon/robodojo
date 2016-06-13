@@ -70,13 +70,12 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 }
 
 // TODO: take direction as a ParamValue?
-// TODO: reimplement
 // TODO: rename direction param
-case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
+case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
     val requiredCycles = config.sim.turnCycles
-    val turnDirection = direction match {
+    val turnDirection = leftOrRight match {
         case 0 => Direction.Left
         case _ => Direction.Right
       }
@@ -92,7 +91,7 @@ case class TurnInstruction(direction: Int)(implicit val config: Config) extends 
 
 
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
-      direction match {
+      leftOrRight match {
         case 0 => Direction.rotateLeft(currentDir)
         case _ => Direction.rotateRight(currentDir)
       }
