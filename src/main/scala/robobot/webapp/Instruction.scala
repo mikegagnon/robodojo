@@ -5,7 +5,6 @@ sealed abstract class Instruction {
   val requiredCycles: Int
 
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
-
 }
 
 case class MoveInstruction(implicit val config: Config) extends Instruction {
@@ -70,7 +69,6 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 }
 
 // TODO: take direction as a ParamValue?
-// TODO: rename direction param
 case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
