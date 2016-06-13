@@ -62,7 +62,7 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
 
     var animations: List[Animation] = Nil
 
-    // TODO: do something fancier to aggregate all the animations, rather than just taking the lasst
+    // TODO: do something fancier to aggregate all the animations, rather than just taking the last
     // one. Perhaps monoids?
     1 to cycles foreach { _ =>
       animations = board.cycle()
