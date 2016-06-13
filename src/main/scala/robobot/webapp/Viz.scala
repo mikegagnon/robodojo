@@ -76,7 +76,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     return stage
   }
 
-  def retina(value: Int): Double = value * dom.window.devicePixelRatio
+  def retina(value: Double): Double = value * dom.window.devicePixelRatio
 
   def drawLine(x1: Int, y1: Int, x2: Int, y2: Int, color: String): Unit = {
     val line = new Shape()

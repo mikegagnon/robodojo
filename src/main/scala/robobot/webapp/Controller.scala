@@ -72,8 +72,8 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
     animations.foreach { animation =>
       animation match {
         case MoveAnimation(id, row, col) => {
-          viz.bots(id).x = viz.retina((config.viz.cellSize.toDouble / 2.0 + config.viz.cellSize.toDouble * col).toInt).toInt
-          viz.bots(id).y = viz.retina((config.viz.cellSize.toDouble / 2.0 + config.viz.cellSize.toDouble * row).toInt).toInt
+          viz.bots(id).x = viz.retina((config.viz.cellSize / 2 + config.viz.cellSize * col))
+          viz.bots(id).y = viz.retina((config.viz.cellSize / 2 + config.viz.cellSize * row))
         }
       }
     }
