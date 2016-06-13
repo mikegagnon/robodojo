@@ -18,7 +18,7 @@ object BoardTest extends TestSuite {
       }
 
       "successfully add Bot at numRows-1,numCols-1"-{
-        val bot = Bot(board, config.numRows - 1, config.numCols - 1)
+        val bot = Bot(board, config.sim.numRows - 1, config.sim.numCols - 1)
         board.addBot(bot)
       }
 
@@ -30,7 +30,7 @@ object BoardTest extends TestSuite {
       }
 
       "unsuccessfully add Bot at numRows, numCols"-{
-        val bot = Bot(board, config.numRows, config.numCols)
+        val bot = Bot(board, config.sim.numRows, config.sim.numCols)
         intercept[IllegalArgumentException] {
           board.addBot(bot)
         }
