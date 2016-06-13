@@ -42,11 +42,12 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // do not animate a successful move operation.
   //
   // animations(boarCycleNum) == A list of all animations at cycleNum point in time
+  // TODO: change ArrayBuffer into HashMap?
   val animations = HashMap[Int, ArrayBuffer[Animation]]()
   var boardCycleNum = 0
   var animationCycleNum = 0
 
-  1 to config.sim.moveCycles foreach { _ => cycle() }
+  1 to (config.sim.moveCycles + 1) foreach { _ => cycle() }
 
   animationCycleNum = 0
 
@@ -267,6 +268,33 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   // todo explain
   def animateMove(animation: MoveAnimation): Unit = {
+
+    // This is where we look into the future to see if the move is successful or not
+    val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
+
+    val futureAnimation = animations(endOfMoveCycleNum)
+      .flatMap { a =>
+        if (a.botId == animation.botId) {
+          Some(a)
+        } else {
+          None
+        }
+      }
+      .headOption
+
+    val success = if (futureAnimation.isEmpty) {
+      throw new IllegalStateException("Bad")
+    } else {
+      futureAnimation.get match {
+        case m: MoveAnimation => m.oldRow != m.newRow || m.oldCol != m.newCol
+        case _ => throw new IllegalStateException("Bad")
+      }
+
+    }
+
+    if (!success) {
+      return
+    }
 
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
