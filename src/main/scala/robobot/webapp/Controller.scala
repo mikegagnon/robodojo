@@ -71,9 +71,13 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
     // TODO: tersify?
     animations.foreach { animation =>
       animation match {
-        case MoveAnimation(id, row, col) => {
-          viz.bots(id).x = viz.retina((config.viz.cellSize / 2 + config.viz.cellSize * col))
-          viz.bots(id).y = viz.retina((config.viz.cellSize / 2 + config.viz.cellSize * row))
+        case MoveAnimation(bot, row, col) => {
+          viz.bots(bot.id).x = viz.retina((config.viz.cellSize / 2 + config.viz.cellSize * col))
+          viz.bots(bot.id).y = viz.retina((config.viz.cellSize / 2 + config.viz.cellSize * row))
+          viz.bots(bot.id).rotation = Direction.toAngle(bot.direction)
+        }
+        case TurnAnimation(bot, angle) => {
+          viz.bots(bot.id).rotation = angle
         }
       }
     }

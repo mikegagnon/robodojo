@@ -25,6 +25,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     } else {
 
       // TODO: explain
+      // TODO: does this code belong in Viz or Animation?
 
       val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
 
@@ -46,7 +47,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
           bot.col
         }
 
-      return Some(MoveAnimation(bot.id, row, col))
+      return Some(MoveAnimation(bot, row, col))
     }
 
   // TODO: test
@@ -59,9 +60,9 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     bot.board.matrix(row)(col) match {
       case None => {
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(bot.id, row, col))
+        Some(MoveAnimation(bot, row, col))
       }
-      case Some(_) => None
+      case Some(_) => Some(MoveAnimation(bot, bot.row, bot.col))
     }
   }
 }
@@ -96,10 +97,25 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 
 // TODO: take direction as a ParamValue?
 // TODO: reimplement
-abstract case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
+case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
     val cycles = config.sim.turnCycles
+
+    def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
+      if (cycleNum == cycles) {
+        return execute(bot)
+      } else if (cycleNum > cycles) {
+        throw new IllegalArgumentException("cycleNum > cycles")
+      } else {
+
+        val angle: Double = direction match {
+          case 0 => Direction.toAngle(bot.direction) - 90.0 * cycleNum.toDouble / cycles
+          case _ => Direction.toAngle(bot.direction) + 90.0 * cycleNum.toDouble / cycles
+        }
+
+        return Some(TurnAnimation(bot, angle))
+      }
 
     def execute(bot: Bot): Option[Animation] = {
 
@@ -112,6 +128,6 @@ abstract case class TurnInstruction(direction: Int)(implicit val config: Config)
 
       val end = bot.direction
 
-      Some(TurnAnimation(start, end))
+      Some(TurnAnimation(bot, Direction.toAngle(bot.direction)))
     }
 }
