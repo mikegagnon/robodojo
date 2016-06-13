@@ -12,6 +12,7 @@ import org.singlespaced.d3js.Selection
 import org.scalajs.dom
 
 import scala.math
+import scala.collection.mutable.HashMap
 
 // TODO: remove import all
 import com.scalawarrior.scalajs.createjs._
@@ -24,6 +25,9 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
 
   addGrid()
   addBorder()
+
+  val bots = HashMap[Long, Container]()
+
   addBots()
 
   stage.update()
@@ -151,6 +155,9 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
 
     val container = new Container()
+
+    bots += bot.id -> container
+
     container.addChild(bitmap)
 
     val halfCell = config.viz.cellSize / 2

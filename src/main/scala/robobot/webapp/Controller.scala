@@ -33,7 +33,8 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
     // calling viz.stage.handleEvent. So, we override handleEvent with our own method, which should
     // work just fine.
     viz.stage.handleEvent = tick _
-    createjs.Ticker.addEventListener("tick", viz.stage);
+    createjs.Ticker.addEventListener("tick", viz.stage)
+    createjs.Ticker.setFPS(config.viz.framesPerSecond)
   }
 
   var remainingCycles = 0.0
@@ -48,7 +49,7 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
 
     // The number of cycles to execute this tick
     // TODO: explain remainingCycles
-    val cyclesDouble: Double = config.viz.cyclesPerSecond * delta + remainingCycles
+    val cyclesDouble: Double = config.viz.cyclesPerSecond * delta / 1000.0 + remainingCycles
 
     // TODO: round?
     val cycles = Math.floor(cyclesDouble).toInt
@@ -67,7 +68,20 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
       animations = board.cycle()
     }
 
-    println(animations)
+    // TODO: tersify?
+    animations.foreach { animation =>
+      animation match {
+        case MoveAnimation(id, row, col) => {
+          viz.bots(id).x = viz.retina((config.viz.cellSize.toDouble / 2.0 + config.viz.cellSize.toDouble * col).toInt).toInt
+          viz.bots(id).y = viz.retina((config.viz.cellSize.toDouble / 2.0 + config.viz.cellSize.toDouble * row).toInt).toInt
+        }
+      }
+    }
+
+    viz.stage.update()
+
+    println(cycles)
+
   }
 
 }
