@@ -29,21 +29,26 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   addBots()
 
-  // animations(botId)(cycleNum) == animation for botId at cycleNum
-  // TODO: explain how it is used
-  val animations = HashMap[Long, HashMap[Int, Animation]]()
-
-  1 to config.sim.moveCycles foreach { _ => cycle() }
 
   // Bots maintain their own cycle counter, which counts the number of cycles relative to a single
-  // instruction. The bot cycle count resets to zero after an instruction is executed.
-  // The board has another cycle counter, which increments after every call to board.cycle()
-  // Here, animationCycleNum is the board cycle counter at which we currently animating
-  // Notice, just above we performed config.sim.moveCycles board cycles, yet animationCycleNum
+  // instruction. The bot cycle counter resets to zero after an instruction is executed.
+  // The board has another cycle counter, boardCycleNum, which increments after every call to
+  // cycle(). Yet another cycle counter is animationCycleNum, which is cycle counter at which we
+  // currently animating
+  //
+  // Notice, just below we execute config.sim.moveCycles cycles, yet animationCycleNum
   // == 0. This is because the animation lags behind the board. We do this so that (when animating)
   // we can look ahead to see if a move will succeed or fail. If the move is destined to fail, we
   // do not animate a successful move operation.
+  //
+  // animations(botId)(boarCycleNum) == animation for botId at cycleNum
+  val animations = HashMap[Long, HashMap[Int, Animation]]()
+  var boardCycleNum = 0
   var animationCycleNum = 0
+
+  1 to config.sim.moveCycles foreach { _ => cycle() }
+
+  animationCycleNum = 0
 
   stage.update()
 
@@ -194,8 +199,11 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     // TODO: remove old animations on a rolling basis
     animationList.foreach { animation: Animation =>
-      animations(animation.bot.id)(animation.cycleNum) = animation
+      animations(animation.bot.id)(boardCycleNum) = animation
     }
+
+    boardCycleNum += 1
+    animationCycleNum += 1
 
   }
 
