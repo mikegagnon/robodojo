@@ -20,22 +20,25 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
       val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-      return Some(MoveAnimation(bot, destRow, destCol, cycleNum))
+      return Some(MoveAnimation(bot.id, bot.row, bot.col, destRow, destCol, bot.direction,
+        cycleNum))
     }
 
   // TODO: test
   def execute(bot: Bot): Option[Animation] = {
 
-    val start = RowCol(bot.row, bot.col)
-
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+    val oldRow = bot.row
+    val oldCol = bot.col
 
     bot.board.matrix(row)(col) match {
       case None => {
+
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(bot, row, col, requiredCycles))
+        Some(MoveAnimation(bot.id, oldRow, oldCol, row, col, bot.direction, requiredCycles))
       }
-      case Some(_) => Some(MoveAnimation(bot, bot.row, bot.col, requiredCycles))
+      case Some(_) => Some(MoveAnimation(bot.id, oldRow, bot.row, oldCol, bot.col, bot.direction,
+        requiredCycles))
     }
   }
 }
@@ -84,7 +87,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
       } else if (cycleNum > requiredCycles) {
         throw new IllegalArgumentException("cycleNum > requiredCycles")
       } else {
-        return Some(TurnAnimation(bot, bot.direction, turnDirection, cycleNum))
+        return Some(TurnAnimation(bot.id, bot.direction, turnDirection, cycleNum))
       }
 
 
@@ -100,6 +103,6 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
 
       bot.direction = getNewDirection(bot.direction)
 
-      Some(TurnAnimation(bot, oldDirection, turnDirection, requiredCycles))
+      Some(TurnAnimation(bot.id, oldDirection, turnDirection, requiredCycles))
     }
 }

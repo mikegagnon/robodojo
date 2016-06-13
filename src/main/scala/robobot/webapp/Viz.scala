@@ -270,35 +270,33 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // todo explain
   def animateMove(animation: MoveAnimation): Unit = {
 
-    val bot = animation.bot
-
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
-    val row: Double = if (animation.row < bot.row) {
-        bot.row - delta
-      } else if (animation.row > bot.row) {
-        bot.row + delta
+    val row: Double = if (animation.newRow < animation.oldRow) {
+        animation.oldRow - delta
+      } else if (animation.newRow > animation.oldRow) {
+        animation.oldRow + delta
       } else {
-        bot.row
+        animation.oldRow
       }
 
-    val col: Double = if (animation.col < bot.col) {
-        bot.col - delta
-      } else if (animation.col > bot.col) {
-        bot.col + delta
+    val col: Double = if (animation.newCol < animation.oldCol) {
+        animation.oldCol - delta
+      } else if (animation.newCol > animation.oldCol) {
+        animation.oldCol + delta
       } else {
-        bot.col
+        animation.oldCol
       }
 
-    bots(bot.id).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * col)
-    bots(bot.id).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * row)
-    bots(bot.id).rotation = Direction.toAngle(bot.direction)
+    bots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * col)
+    bots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * row)
+    bots(animation.botId).rotation = Direction.toAngle(animation.direction)
   }
 
   // TODO: explain
   def animateTurn(animation: TurnAnimation): Unit = {
 
-    val bot = animation.bot
+    //val bot = animation.bot
     val oldDirection = animation.oldDirection
     val percentComplete = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
 
@@ -308,7 +306,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       case _ => throw new IllegalStateException("Bots can only turn Left or Right")
     }
 
-    bots(bot.id).rotation = angle
+    bots(animation.botId).rotation = angle
 
   }
 

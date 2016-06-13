@@ -4,18 +4,22 @@ package robobot.webapp
 // execution.
 
 sealed trait Animation {
-  val bot: Bot
+  val botId: Long
   val cycleNum: Int
 }
 
+// TODO: move cycleNum to below botId
 case class MoveAnimation(
-  bot: Bot,
-  row: Int,
-  col: Int,
+  botId: Long,
+  oldRow: Int,
+  oldCol: Int,
+  newRow: Int,
+  newCol: Int,
+  direction: Direction.EnumVal,
   cycleNum: Int) extends Animation
 
 case class TurnAnimation(
-  bot: Bot,
+  botId: Long,
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal,
   cycleNum: Int) extends Animation
