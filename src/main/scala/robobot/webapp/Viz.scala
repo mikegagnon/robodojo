@@ -14,10 +14,9 @@ import org.scalajs.dom
 import scala.math
 import scala.collection.mutable.HashMap
 
-// TODO: remove import all
-import com.scalawarrior.scalajs.createjs._
+import com.scalawarrior.scalajs.createjs
 
-class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config) {
+class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config: Config) {
 
   updateMainDiv()
   val canvas = addCanvas()
@@ -26,7 +25,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
   addGrid()
   addBorder()
 
-  val bots = HashMap[Long, Container]()
+  val bots = HashMap[Long, createjs.Container]()
 
   addBots()
 
@@ -65,8 +64,8 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     return canvas
   }
 
-  def addStage(): Stage = {
-    val stage = new Stage(config.viz.canvas.canvasId)
+  def addStage(): createjs.Stage = {
+    val stage = new createjs.Stage(config.viz.canvas.canvasId)
 
     // To prevent fuzziness of lines
     // http://stackoverflow.com/questions/6672870/easeljs-line-fuzziness
@@ -79,7 +78,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
   def retina(value: Double): Double = value * dom.window.devicePixelRatio
 
   def drawLine(x1: Int, y1: Int, x2: Int, y2: Int, color: String): Unit = {
-    val line = new Shape()
+    val line = new createjs.Shape()
 
     line.graphics.setStrokeStyle(retina(1))
     line.graphics.beginStroke(color)
@@ -115,7 +114,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
   def addBorder(): Unit = {
 
     for(i <- 1 to retina(config.viz.border.thickness).toInt) {
-      val rect = new Shape()
+      val rect = new createjs.Shape()
 
       rect.graphics.beginStroke(config.viz.border.stroke).drawRect(i, i,
         retina(config.viz.canvas.width - i), retina(config.viz.canvas.height - i))
@@ -139,7 +138,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     val img = preload.getResult(config.viz.preload.blueBotId)
       .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
 
-    val bitmap = new Bitmap(img);
+    val bitmap = new createjs.Bitmap(img);
 
     // scale the bitmap
     val width = bitmap.image.width
@@ -154,7 +153,7 @@ class Viz(val preload: LoadQueue, val board: Board)(implicit val config: Config)
     bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
     bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
 
-    val container = new Container()
+    val container = new createjs.Container()
 
     bots += bot.id -> container
 
