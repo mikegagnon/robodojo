@@ -7,7 +7,7 @@ import scala.util.Random
 class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
-  /*val density = 0.2
+  val density = 0.1
 
   0 until config.sim.numRows foreach { row =>
     0 until config.sim.numCols foreach { col =>
@@ -41,9 +41,9 @@ class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
           board.addBot(bot)
       }
     }
-  }*/
+  }
 
-  val bot1 = Bot(board, 1, 0)
+  /*val bot1 = Bot(board, 1, 0)
   bot1.direction = Direction.Right
   val bank0 = new Bank()
   bank0.instructions :+= MoveInstruction()
@@ -57,7 +57,7 @@ class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
 
   val bot3 = Bot(board, 2, 4)
   bot3.direction = Direction.Down
-  board.addBot(bot3)
+  board.addBot(bot3)*/
 
   val viz = new Viz(preload, board)
 

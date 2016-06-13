@@ -37,7 +37,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
         bot.board.moveBot(bot, row, col)
         Some(MoveAnimation(bot.id, oldRow, oldCol, row, col, bot.direction, requiredCycles))
       }
-      case Some(_) => Some(MoveAnimation(bot.id, oldRow, bot.row, oldCol, bot.col, bot.direction,
+      case Some(_) => Some(MoveAnimation(bot.id, oldRow, oldCol, oldRow, oldCol, bot.direction,
         requiredCycles))
     }
   }

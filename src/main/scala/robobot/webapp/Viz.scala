@@ -257,8 +257,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     currentAnimations.foreach { animation =>
 
-      println(animation)
-
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
