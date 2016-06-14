@@ -82,6 +82,12 @@ def addStepButton(): Unit = {
 
   // HACK: clickStep
   def clickStep(): Unit = {
+
+    if (!initialized) {
+      clickPlay()
+      createjs.Ticker.setPaused(true)
+    }
+
     if (createjs.Ticker.getPaused()) {
       viz.step = true
       createjs.Ticker.setPaused(false)

@@ -223,6 +223,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       return
     }
 
+    println("animationCycleNum == " + animationCycleNum)
+
     // TODO: put cycle calculator in separate function?
 
     // Time elapsed sine list tick
@@ -295,12 +297,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         if (a.botId == animation.botId) {
           Some(a)
         } else {
-          //throw new IllegalStateException("Bad")
           None
         }
       }
       .headOption
 
+
+    // TODO: change to futureAnimation.map. Improve error messages
     val success = if (futureAnimation.isEmpty) {
       throw new IllegalStateException("Bad")
     } else {
