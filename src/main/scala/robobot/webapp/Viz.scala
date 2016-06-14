@@ -399,103 +399,19 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         throw new IllegalStateException("TODO")
       }
 
-/*
-    def getRowCol() = {
-    // TODO: reorder so it's UDLR
-    val row: Double = // if the bot is moving down, to off the screen
-      if (animation.oldRow - animation.newRow > 1) {
-        println("Row torus")
-        if (animation.cycleNum == config.sim.moveCycles) {
-          twinRow = -1.0
-          twinCol = -1.0
-          animation.newRow
-        } else {
-          twinRow = animation.newRow - 1.0 + delta
-          twinCol = animation.newCol
-          animation.oldRow + delta
-        }
-      }
-      // if the bot is moving up, to off the screen
-      else if (animation.newRow - animation.oldRow > 1) {
-        if (animation.cycleNum == config.sim.moveCycles) {
-          twinRow = -1.0
-          twinCol = -1.0
-          animation.newRow
-        } else {
-          twinRow = animation.newRow + 1.0 - delta
-          twinCol = animation.newCol
-          animation.oldRow - delta
-        }
-      } else if (animation.newRow < animation.oldRow) {
-        animation.oldRow - delta
-      } else if (animation.newRow > animation.oldRow) {
-        animation.oldRow + delta
-      } else {
-        animation.oldRow
-      }
-    }
+    val cellSize = config.viz.cellSize
 
+    val botImage = bots(animation.botId)
 
+    botImage.x = retina(cellSize / 2 + cellSize * col)
+    botImage.y = retina(cellSize / 2 + cellSize * row)
+    botImage.rotation = Direction.toAngle(animation.direction)
 
+    val twinImage = twinBots(animation.botId)
 
-
-    val col: Double =
-
-      // if the bot is moving right, to off the screen
-      if (animation.oldCol - animation.newCol > 1) {
-
-        if (animation.cycleNum == config.sim.moveCycles) {
-          twinRow = -1.0
-          twinCol = -1.0
-          animation.newCol
-        } else {
-          twinRow = animation.newRow
-          twinCol = animation.newCol - 1.0 + delta
-          animation.oldCol + delta
-        }
-      }
-      // if the bot is moving left, to off the screen
-      else if (animation.newCol - animation.oldCol > 1) {
-        if (animation.cycleNum == config.sim.moveCycles) {
-          twinRow = -1.0
-          twinCol = -1.0
-          animation.newCol
-        } else {
-          twinRow = animation.newRow
-          twinCol = animation.newCol + 1.0 - delta
-          animation.oldCol - delta
-        }
-      }
-      else if (animation.newCol < animation.oldCol) {
-        animation.oldCol - delta
-      } else if (animation.newCol > animation.oldCol) {
-        animation.oldCol + delta
-      } else {
-        animation.oldCol
-      }
-
-
-    */
-
-    // TODO: use half val
-    bots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * col)
-    bots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * row)
-    bots(animation.botId).rotation = Direction.toAngle(animation.direction)
-
-    twinBots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinCol)
-    twinBots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinRow)
-    
-    //if (twinRow != -1.0 || twinCol != -1.0) {
-
-
-      //println(twinBots(animation.botId).x, twinBots(animation.botId).y)
-      twinBots(animation.botId).rotation = Direction.toAngle(animation.direction)
-
-      //println(twinBots(animation.botId).x, twinBots(animation.botId).y)
-    //}
-
-
-
+    twinImage.x = retina(cellSize / 2 + cellSize * twinCol)
+    twinImage.y = retina(cellSize / 2 + cellSize * twinRow)
+    twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
   // TODO: explain
