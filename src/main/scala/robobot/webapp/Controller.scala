@@ -11,12 +11,16 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
   addPlayButton()
   addPauseButton()
 
+  // HACK: clickStep
+  addStepButton()
+
   def addConsole(): Unit = {
     val consoleDiv = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
 
     jQuery("#" + config.id).append(consoleDiv)
   }
 
+  // TODO: factor out common html
   def addPlayButton(): Unit = {
     jQuery("#" + config.viz.consoleDivId).append(s"""
       <button onclick='robobot.webapp.RobobotApp().clickPlay("${config.id}")'>
@@ -31,6 +35,14 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
       </button>""")
   }
 
+// HACK: clickStep
+def addStepButton(): Unit = {
+    jQuery("#" + config.viz.consoleDivId).append(s"""
+      <button onclick='robobot.webapp.RobobotApp().clickStep("${config.id}")'>
+        <span class='glyphicon glyphicon-step-forward'></span>
+      </button>""")
+  }
+
   // TODO: get rid of this hack
   var initialized = false
 
@@ -40,9 +52,10 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
   def clickPlay(): Unit = {
     println("clickPlay inside " + config.id)
 
-    // TODO: this is a hack; get rid of it
+    // HACK: clickStep
     if (initialized) {
       createjs.Ticker.setPaused(false)
+      viz.step = false
     } else {
 
       initialized = true
@@ -65,6 +78,16 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
   def clickPause(): Unit = {
     println("clickPause inside " + config.id)
     createjs.Ticker.setPaused(true)
+  }
+
+  // HACK: clickStep
+  def clickStep(): Unit = {
+    if (createjs.Ticker.getPaused()) {
+      viz.step = true
+      createjs.Ticker.setPaused(false)
+    }
+
+
   }
 
 }

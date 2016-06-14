@@ -18,6 +18,9 @@ import com.scalawarrior.scalajs.createjs
 
 class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config: Config) {
 
+  // HACK: clickStep
+  var step = false
+
   updateMainDiv()
   val canvas = addCanvas()
   val stage = addStage()
@@ -230,7 +233,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val cyclesDouble: Double = config.viz.cyclesPerSecond * delta / 1000.0 + remainingCycles
 
     // TODO: round?
-    val cycles = Math.floor(cyclesDouble).toInt
+    // TODO: change to val
+    // HACK: clickStep
+    var cycles = Math.floor(cyclesDouble).toInt
 
     remainingCycles = cyclesDouble - cycles
 
@@ -238,7 +243,15 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       throw new IllegalStateException("remainingCycles >= 1.0")
     }
 
-    //var animations: List[Animation] = Nil
+    // HACK: clickStep
+    // TODO: set remaining cycles properly?
+    if (step) {
+      cycles = 1
+      createjs.Ticker.setPaused(true)
+      println("step")
+    }
+
+    var animations: List[Animation] = Nil
 
     1 to cycles foreach { _ => cycle() }
 
