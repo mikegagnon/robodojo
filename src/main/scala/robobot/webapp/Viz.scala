@@ -269,14 +269,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     1 to cycles foreach { _ => cycle() }
 
-    // TODO: delete
-    /*animations.foreach { animation =>
-      animation match {
-        case moveAnimation: MoveAnimation => animateMove(moveAnimation)
-        case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
-      }
-    }*/
-
     animate()
 
     stage.update()
