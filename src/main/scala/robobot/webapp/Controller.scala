@@ -10,8 +10,6 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
   addConsole()
   addPlayButton()
   addPauseButton()
-
-  // HACK: clickStep
   addStepButton()
 
   def addConsole(): Unit = {
@@ -35,20 +33,13 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
       </button>""")
   }
 
-// HACK: clickStep
-def addStepButton(): Unit = {
+  def addStepButton(): Unit = {
     jQuery("#" + config.viz.consoleDivId).append(s"""
       <button onclick='robobot.webapp.RobobotApp().clickStep("${config.id}")'>
         <span class='glyphicon glyphicon-step-forward'></span>
       </button>""")
   }
 
-  // TODO: get rid of this hack
-  var initialized = false
-
-  // TODO: handle multiple clicks
-  // TODO: handle resume from pause
-  // TODO: pause all other instances of robobot when click play is clicked here
   def clickPlay(): Unit = {
     viz.step = false
     createjs.Ticker.paused = false
@@ -58,20 +49,10 @@ def addStepButton(): Unit = {
     createjs.Ticker.paused = true
   }
 
-  // HACK: clickStep
-  def clickStep(): Unit = {
-
-    if (!initialized) {
-      clickPlay()
-      createjs.Ticker.paused = true
-    }
-
+  def clickStep(): Unit =
     if (createjs.Ticker.paused) {
       viz.step = true
       createjs.Ticker.paused = false
     }
-
-
-  }
 
 }
