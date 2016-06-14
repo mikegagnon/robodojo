@@ -697,8 +697,8 @@ object Ticker extends js.Object {
   def setFPS(value: Double): Unit = js.native
   def setInterval(interval: Double): Unit = js.native
   def setPaused(value: Boolean): Unit = js.native
-  def addEventListener(`type`: String, listener: Stage, useCapture: Boolean = ???): Stage = js.native
-  //def addEventListener(`type`: String, listener: js.Function1[Object, Boolean], useCapture: Boolean = ???): js.Function = js.native
+  //def addEventListener(`type`: String, listener: Stage, useCapture: Boolean = ???): Stage = js.native
+  def addEventListener(`type`: String, listener: js.Function1[js.Dynamic, Boolean], useCapture: Boolean = ???): js.Function = js.native
   //def addEventListener(`type`: String, listener: js.Any, useCapture: Boolean = ???): Object = js.native
   def dispatchEvent(eventObj: AnyRef, target: AnyRef = ???): Boolean = js.native
   def hasEventListener(`type`: String): Boolean = js.native

@@ -69,8 +69,8 @@ def addStepButton(): Unit = {
       // So, to get around this limitation, we pass the viz.stage object, which results in the ticker
       // calling viz.stage.handleEvent. So, we override handleEvent with our own method, which should
       // work just fine.
-      viz.stage.handleEvent = viz.tick _
-      createjs.Ticker.addEventListener("tick", viz.stage)
+      //viz.stage.handleEvent = viz.tick _
+      createjs.Ticker.addEventListener("tick", viz.tick _)
       createjs.Ticker.setFPS(config.viz.framesPerSecond)
     }
   }
