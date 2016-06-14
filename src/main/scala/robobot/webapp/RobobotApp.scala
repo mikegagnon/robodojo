@@ -20,12 +20,20 @@ object RobobotApp extends JSApp {
   def clickPlay(id: String) {
     val robobot = instances(id)
 
-    robobot.controller.clickPlay
+    robobot.controller.clickPlay()
+  }
+
+  @JSExport
+  def clickPause(id: String) {
+    val robobot = instances(id)
+
+    robobot.controller.clickPause()
   }
 
   @JSExport
   def launch() {
 
+    // TODO: factor our preload code intp separate function
     val preload = new createjs.LoadQueue()
 
     //http://stackoverflow.com/questions/24827965/preloadjs-isnt-loading-images-bitmaps-correctly

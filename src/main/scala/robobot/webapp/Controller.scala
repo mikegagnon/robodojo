@@ -9,6 +9,7 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
 
   addConsole()
   addPlayButton()
+  addPauseButton()
 
   def addConsole(): Unit = {
     val consoleDiv = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
@@ -23,18 +24,47 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
       </button>""")
   }
 
+  def addPauseButton(): Unit = {
+    jQuery("#" + config.viz.consoleDivId).append(s"""
+      <button onclick='robobot.webapp.RobobotApp().clickPause("${config.id}")'>
+        <span class='glyphicon glyphicon-pause'></span>
+      </button>""")
+  }
+
+  // TODO: get rid of this hack
+  var initialized = false
+
+  // TODO: handle multiple clicks
+  // TODO: handle resume from pause
+  // TODO: pause all other instances of robobot when click play is clicked here
   def clickPlay(): Unit = {
     println("clickPlay inside " + config.id)
 
-    // HACK: The proper thing to do here is add an event listener to Ticker by passing in a listener
-    // as a function. However, that API call in scalajs isn't available in the current version of
-    // scalajs-createjs. See: https://github.com/scalawarrior/scalajs-createjs/blob/2aeec181b8307f2687aff83c2311ed8589f140e3/src/main/scala/com/scalawarrior/scalajs/createjs/EaselJS.scala#L701
-    // So, to get around this limitation, we pass the viz.stage object, which results in the ticker
-    // calling viz.stage.handleEvent. So, we override handleEvent with our own method, which should
-    // work just fine.
-    viz.stage.handleEvent = viz.tick _
-    createjs.Ticker.addEventListener("tick", viz.stage)
-    createjs.Ticker.setFPS(config.viz.framesPerSecond)
+    // TODO: this is a hack; get rid of it
+    if (initialized) {
+      createjs.Ticker.setPaused(false)
+    } else {
+
+      initialized = true
+
+      createjs.Ticker.setPaused(false)
+
+      // TODO: put this code in RobobotApp, so that all Robobot instances share the same Ticker
+      // HACK: The proper thing to do here is add an event listener to Ticker by passing in a listener
+      // as a function. However, that API call in scalajs isn't available in the current version of
+      // scalajs-createjs. See: https://github.com/scalawarrior/scalajs-createjs/blob/2aeec181b8307f2687aff83c2311ed8589f140e3/src/main/scala/com/scalawarrior/scalajs/createjs/EaselJS.scala#L701
+      // So, to get around this limitation, we pass the viz.stage object, which results in the ticker
+      // calling viz.stage.handleEvent. So, we override handleEvent with our own method, which should
+      // work just fine.
+      viz.stage.handleEvent = viz.tick _
+      createjs.Ticker.addEventListener("tick", viz.stage)
+      createjs.Ticker.setFPS(config.viz.framesPerSecond)
+    }
+  }
+
+  def clickPause(): Unit = {
+    println("clickPause inside " + config.id)
+    createjs.Ticker.setPaused(true)
   }
 
 }
