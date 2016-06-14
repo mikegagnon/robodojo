@@ -322,6 +322,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       return
     }
 
+    // The amount the bot has moved towards its new cell (as a proportion)
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
     // TODO: change to val Option
