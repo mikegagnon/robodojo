@@ -6,43 +6,73 @@ import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 import scala.collection.mutable.ArrayBuffer
 
+// Deals with all robobot instances from a given html page
 object RobobotApp extends JSApp {
 
+  // TODO: what's up with this?
   var configs = new ArrayBuffer[Config]()
+  // TODO: rename to activeInstanceId
+  var activeInstance: Option[String] = None
   var instances = Map[String, Robobot]()
 
+  // Set to true once the Ticker has been initialized
+  var initTicker = false
+
   @JSExport
-  def newRobobot(configJS: js.Dictionary[Any]) = {
-    configs += new Config(configJS.toMap)
+  def newRobobot(configJS: js.Dictionary[Any]): Unit = {
+
+    val config = new Config(configJS.toMap)
+    configs += config
+
+    // The id of the first robobot instantiation goes to activeInstance
+    activeInstance = Some(activeInstance.getOrElse(config.id))
+
   }
 
+  // TODO
   @JSExport
   def clickPlay(id: String) {
+    activeInstance = Some(id)
     val robobot = instances(id)
-
     robobot.controller.clickPlay()
   }
 
   @JSExport
   def clickPause(id: String) {
+    activeInstance = Some(id)
     val robobot = instances(id)
-
     robobot.controller.clickPause()
   }
 
   // HACK: clickStep
   @JSExport
   def clickStep(id: String) {
+    activeInstance = Some(id)
     val robobot = instances(id)
-
     robobot.controller.clickStep()
+  }
+
+  def initializeTicker(): Unit =
+    if (!initTicker) {
+      // TODO: rm println
+      println("initialized ticker")
+      println(activeInstance.get)
+      println(instances.getOrElse("robo1", "foo"))
+      val config = instances(activeInstance.get).config
+      println(activeInstance.get)
+      createjs.Ticker.addEventListener("tick", tick _)
+      createjs.Ticker.setFPS(config.viz.framesPerSecond)
+      createjs.Ticker.paused = true
+    }
+
+  def tick(event: js.Dynamic): Boolean = {
+    val robobot = instances(activeInstance.get)
+    robobot.viz.tick(event)
+    return true
   }
 
   @JSExport
   def launch() {
-
-    // HACK: clickStep
-    createjs.Ticker.paused = true
 
     // TODO: factor our preload code intp separate function
     val preload = new createjs.LoadQueue()
@@ -57,6 +87,9 @@ object RobobotApp extends JSApp {
       configs.foreach { config =>
         instances += (config.id -> new Robobot(preload)(config))
       }
+
+      initializeTicker()
+
       return true
     }
 

@@ -61,17 +61,6 @@ def addStepButton(): Unit = {
       initialized = true
 
       createjs.Ticker.paused = false
-
-      // TODO: put this code in RobobotApp, so that all Robobot instances share the same Ticker
-      // HACK: The proper thing to do here is add an event listener to Ticker by passing in a listener
-      // as a function. However, that API call in scalajs isn't available in the current version of
-      // scalajs-createjs. See: https://github.com/scalawarrior/scalajs-createjs/blob/2aeec181b8307f2687aff83c2311ed8589f140e3/src/main/scala/com/scalawarrior/scalajs/createjs/EaselJS.scala#L701
-      // So, to get around this limitation, we pass the viz.stage object, which results in the ticker
-      // calling viz.stage.handleEvent. So, we override handleEvent with our own method, which should
-      // work just fine.
-      //viz.stage.handleEvent = viz.tick _
-      createjs.Ticker.addEventListener("tick", viz.tick _)
-      createjs.Ticker.setFPS(config.viz.framesPerSecond)
     }
   }
 
