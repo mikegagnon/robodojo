@@ -50,22 +50,11 @@ def addStepButton(): Unit = {
   // TODO: handle resume from pause
   // TODO: pause all other instances of robobot when click play is clicked here
   def clickPlay(): Unit = {
-    println("clickPlay inside " + config.id)
-
-    // HACK: clickStep
-    if (initialized) {
-      createjs.Ticker.paused = false
-      viz.step = false
-    } else {
-
-      initialized = true
-
-      createjs.Ticker.paused = false
-    }
+    viz.step = false
+    createjs.Ticker.paused = false
   }
 
   def clickPause(): Unit = {
-    println("clickPause inside " + config.id)
     createjs.Ticker.paused = true
   }
 
