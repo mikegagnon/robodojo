@@ -30,8 +30,19 @@ object RobobotApp extends JSApp {
     robobot.controller.clickPause()
   }
 
+  // HACK: clickStep
+  @JSExport
+  def clickStep(id: String) {
+    val robobot = instances(id)
+
+    robobot.controller.clickStep()
+  }
+
   @JSExport
   def launch() {
+
+    // HACK: clickStep
+    createjs.Ticker.setPaused(true)
 
     // TODO: factor our preload code intp separate function
     val preload = new createjs.LoadQueue()
