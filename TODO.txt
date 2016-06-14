@@ -7,7 +7,6 @@ Refactor:
 - Looking into the future
 - Viz: change to futureAnimation.map. Improve error messages
 - Change twinRow, twinCol to val
-- Commented out code in Viz.tick
 - twinRow/Col calculation
 - Replace config.viz.cellSize / 2 with half val
 - Get rid of printlns
