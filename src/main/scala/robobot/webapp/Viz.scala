@@ -322,10 +322,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def animateMove(animation: MoveAnimation): Unit = {
 
     // This is where we look into the future to see if the move is successful or not
-    // TODO: explain more
     val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
 
-    // TODO: explain
+    // futureAnimation == the animation for when this bot finishes executing its move instruction
     // BUG: head won't work when bots die
     val futureAnimation =
       animations(endOfMoveCycleNum)
@@ -354,51 +353,52 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val newRow = animation.newRow
     val newCol = animation.newCol
 
-    // TODO: reorder UDLR
     val (twinRow: Double, twinCol: Double) =
       // if the bot has finished its movement, then move the twin off screen
       if (animation.cycleNum == config.sim.moveCycles) {
         (-1.0, -1.0)
       }
+      // if the bot is moving up, towards off the screen
+      else if (newRow - oldRow > 1) {
+        (newRow + 1.0 - delta, newCol)
+      }
       // if the bot is moving down, towards off the screen
       else if (oldRow - newRow > 1) {
         (newRow - 1.0 + delta, newCol)
       }
-      // if the bot is moving up, towards off the screen
-      else if (newRow - oldRow > 1) {
-        (newRow + 1.0 - delta, newCol)
+      // if the bot is moving left, towards off the screen
+      else if (newCol - oldCol > 1) {
+        (newRow, newCol + 1.0 - delta)
       }
       // if the bot is moving right, towards off the screen
       else if (oldCol - newCol > 1) {
         (newRow, newCol - 1.0 + delta)
       }
-      // if the bot is moving up, towards off the screen
-      else if (newCol - oldCol > 1) {
-        (newRow, newCol + 1.0 - delta)
-      }
+      // if the bot isn't wrapping around the screen
       else  {
         (-1.0, -1.0)
       }
 
     val (row: Double, col: Double) =
+      // if the bot has finished its movement, then move the bot to its new home
       if (animation.cycleNum == config.sim.moveCycles) {
         (newRow, newCol)
-      }
-      // if the bot is moving down, towards off the screen
-      else if (oldRow - newRow > 1) {
-        (oldRow + delta, oldCol)
       }
       // if the bot is moving up, towards off the screen
       else if (newRow - oldRow > 1) {
         (oldRow - delta, oldCol)
       }
+      // if the bot is moving down, towards off the screen
+      else if (oldRow - newRow > 1) {
+        (oldRow + delta, oldCol)
+      }
+      // if the bot is moving left, towards off the screen
+      else if (newCol - oldCol > 1) {
+        (oldRow, oldCol - delta)
+      }
       // if the bot is moving right, towards off the screen
       else if (oldCol - newCol > 1) {
         (oldRow, oldCol + delta)
-      }
-      // if the bot is moving up, towards off the screen
-      else if (newCol - oldCol > 1) {
-        (oldRow, oldCol - delta)
       }
       // the bot is moving up
       else if (newRow < oldRow) {
@@ -416,7 +416,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       else if (newCol > oldCol) {
         (oldRow, oldCol + delta)
       } else {
-        throw new IllegalStateException("TODO")
+        throw new IllegalStateException("This code shouldn't be reachable")
       }
 
     val cellSize = config.viz.cellSize
