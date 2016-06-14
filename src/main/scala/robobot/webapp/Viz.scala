@@ -21,6 +21,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // HACK: clickStep
   var step = false
 
+  // TODO: document
+  var remainingCycles = 0.0
+
   updateMainDiv()
   val canvas = addCanvas()
   val stage = addStage()
@@ -208,9 +211,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   }
 
-  var remainingCycles = 0.0
-
-
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
   // one. Perhaps monoids?
   def cycle(): Unit = {
@@ -228,16 +228,18 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     animationCycleNum += 1
   }
 
-  // Bummer: 20FPS burns between 30% and 40% CPU on my machine
-  def tick(event: js.Dynamic): Unit = {
+  def tickStep(): Int = {
+    
+    remainingCycles = 0.0
 
-    if (createjs.Ticker.paused) {
-      return true
-    }
+    val cycles = 1
+    
+    createjs.Ticker.paused = true
+    
+    return cycles
+  }
 
-    println("animationCycleNum == " + animationCycleNum)
-
-    // TODO: put cycle calculator in separate function?
+  def tickMultiStep(event: js.Dynamic): Int = {
 
     // Time elapsed sine list tick
     val delta = event.delta.asInstanceOf[Double]
@@ -246,10 +248,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     // TODO: explain remainingCycles
     val cyclesDouble: Double = config.viz.cyclesPerSecond * delta / 1000.0 + remainingCycles
 
-    // TODO: round?
-    // TODO: change to val
-    // HACK: clickStep
-    var cycles = Math.floor(cyclesDouble).toInt
+    val cycles = Math.floor(cyclesDouble).toInt
 
     remainingCycles = cyclesDouble - cycles
 
@@ -257,13 +256,22 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       throw new IllegalStateException("remainingCycles >= 1.0")
     }
 
-    // HACK: clickStep
-    // TODO: set remaining cycles properly?
-    if (step) {
-      cycles = 1
-      createjs.Ticker.paused = true
-      println("step")
+    return cycles
+  }
+
+  // Bummer: 20FPS burns between 30% and 40% CPU on my machine
+  def tick(event: js.Dynamic): Unit = {
+    
+    if (createjs.Ticker.paused) {
+      return
     }
+
+    val cycles = 
+      if (step) {
+        tickStep()
+      } else {
+        tickMultiStep(event)
+      }
 
     var animations: List[Animation] = Nil
 

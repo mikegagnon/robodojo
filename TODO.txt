@@ -11,3 +11,4 @@ Refactor:
 - Replace config.viz.cellSize / 2 with half val
 - Get rid of printlns
 - Explain animateMove and animateTurn
+- Test on Windows
