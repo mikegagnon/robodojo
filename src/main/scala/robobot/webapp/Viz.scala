@@ -320,7 +320,23 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
-    val row: Double = if (animation.newRow < animation.oldRow) {
+    // TODO: fix
+    val row: Double = // if the bot is moving down, to off the screen
+      if (animation.oldRow - animation.newRow > 1) {
+        if (animation.cycleNum == config.sim.moveCycles) {
+          animation.newRow
+        } else {
+         animation.oldRow + delta
+        }
+      }
+      // if the bot is moving up, to off the screen
+      else if (animation.newRow - animation.oldRow > 1) {
+        if (animation.cycleNum == config.sim.moveCycles) {
+          animation.newRow
+        } else {
+         animation.oldRow - delta
+        }
+      } else if (animation.newRow < animation.oldRow) {
         animation.oldRow - delta
       } else if (animation.newRow > animation.oldRow) {
         animation.oldRow + delta
@@ -328,7 +344,25 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         animation.oldRow
       }
 
-    val col: Double = if (animation.newCol < animation.oldCol) {
+    val col: Double =
+
+      // if the bot is moving right, to off the screen
+      if (animation.oldCol - animation.newCol > 1) {
+        if (animation.cycleNum == config.sim.moveCycles) {
+          animation.newCol
+        } else {
+         animation.oldCol + delta
+        }
+      }
+      // if the bot is moving left, to off the screen
+      else if (animation.newCol - animation.oldCol > 1) {
+        if (animation.cycleNum == config.sim.moveCycles) {
+          animation.newCol
+        } else {
+         animation.oldCol - delta
+        }
+      }
+      else if (animation.newCol < animation.oldCol) {
         animation.oldCol - delta
       } else if (animation.newCol > animation.oldCol) {
         animation.oldCol + delta

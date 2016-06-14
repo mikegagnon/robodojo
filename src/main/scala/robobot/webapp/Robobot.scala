@@ -7,7 +7,7 @@ import scala.util.Random
 class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
-  val density = 0.8
+  val density = 0.3
 
   val rand = new Random(0)
 
