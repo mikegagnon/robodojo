@@ -1,5 +1,4 @@
 Refactor:
-- Step
 - Torus wrapping
 - Where to put boardCycleNum and animationCycleNum
 - viz.addBot
