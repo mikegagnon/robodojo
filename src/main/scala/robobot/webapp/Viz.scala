@@ -39,7 +39,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   // Bots maintain their own cycle counter, which counts the number of cycles relative to a single
   // instruction. The bot cycle counter resets to zero after an instruction is executed.
-  // The board has another cycle counter, boardCycleNum, which increments after every call to
+  // The board has another cycle counter, board.cycleNum, which increments after every call to
   // cycle(). Yet another cycle counter is animationCycleNum, which is cycle counter at which we
   // currently animating
   //
@@ -51,7 +51,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // animations(boarCycleNum) == A list of all animations at cycleNum point in time
   // TODO: change ArrayBuffer into HashMap?
   val animations = HashMap[Int, ArrayBuffer[Animation]]()
-  var boardCycleNum = 0
+
   var animationCycleNum = 0
 
   1 to (config.sim.moveCycles + 1) foreach { _ => cycle() }
@@ -216,15 +216,14 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def cycle(): Unit = {
     val animationList = board.cycle()
 
-    animations(boardCycleNum) = ArrayBuffer[Animation]()
+    animations(board.cycleNum) = ArrayBuffer[Animation]()
 
     // TODO: remove old animations on a rolling basis
     animationList.foreach { animation: Animation =>
 
-      animations(boardCycleNum) += animation
+      animations(board.cycleNum) += animation
     }
 
-    boardCycleNum += 1
     animationCycleNum += 1
   }
 

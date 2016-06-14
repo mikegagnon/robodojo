@@ -8,6 +8,8 @@ class Board(implicit val config: Config) {
 
   val bots = new HashSet[Bot]()
 
+  var cycleNum = 0
+
   def addBot(bot: Bot) = {
 
     if (bots.contains(bot)) {
@@ -44,6 +46,7 @@ class Board(implicit val config: Config) {
   // TODO: test
   def cycle(): List[Animation] = {
     // TODO: is toList cast unncessary?
+    cycleNum += 1
     bots.toList.flatMap{ (bot: Bot) => bot.cycle() }
   }
 

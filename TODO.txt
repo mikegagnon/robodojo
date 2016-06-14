@@ -1,6 +1,4 @@
 Refactor:
-- Torus wrapping
-- Where to put boardCycleNum and animationCycleNum
 - viz.addBot
 - Aggregate animations; perhaps a monoid
 - Looking into the future
