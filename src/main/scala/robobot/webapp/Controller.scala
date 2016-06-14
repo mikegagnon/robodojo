@@ -54,13 +54,13 @@ def addStepButton(): Unit = {
 
     // HACK: clickStep
     if (initialized) {
-      createjs.Ticker.setPaused(false)
+      createjs.Ticker.paused = false
       viz.step = false
     } else {
 
       initialized = true
 
-      createjs.Ticker.setPaused(false)
+      createjs.Ticker.paused = false
 
       // TODO: put this code in RobobotApp, so that all Robobot instances share the same Ticker
       // HACK: The proper thing to do here is add an event listener to Ticker by passing in a listener
@@ -77,7 +77,7 @@ def addStepButton(): Unit = {
 
   def clickPause(): Unit = {
     println("clickPause inside " + config.id)
-    createjs.Ticker.setPaused(true)
+    createjs.Ticker.paused = true
   }
 
   // HACK: clickStep
@@ -85,12 +85,12 @@ def addStepButton(): Unit = {
 
     if (!initialized) {
       clickPlay()
-      createjs.Ticker.setPaused(true)
+      createjs.Ticker.paused = true
     }
 
-    if (createjs.Ticker.getPaused()) {
+    if (createjs.Ticker.paused) {
       viz.step = true
-      createjs.Ticker.setPaused(false)
+      createjs.Ticker.paused = false
     }
 
 

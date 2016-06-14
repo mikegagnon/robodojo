@@ -42,7 +42,7 @@ object RobobotApp extends JSApp {
   def launch() {
 
     // HACK: clickStep
-    createjs.Ticker.setPaused(true)
+    createjs.Ticker.paused = true
 
     // TODO: factor our preload code intp separate function
     val preload = new createjs.LoadQueue()

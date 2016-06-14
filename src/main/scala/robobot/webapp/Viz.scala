@@ -261,7 +261,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     // TODO: set remaining cycles properly?
     if (step) {
       cycles = 1
-      createjs.Ticker.setPaused(true)
+      createjs.Ticker.paused = true
       println("step")
     }
 
