@@ -44,7 +44,6 @@ object RobobotApp extends JSApp {
     robobot.controller.clickPause()
   }
 
-  // HACK: clickStep
   @JSExport
   def clickStep(id: String) {
     activeInstance = Some(id)

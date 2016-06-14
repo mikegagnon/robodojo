@@ -18,7 +18,7 @@ import com.scalawarrior.scalajs.createjs
 
 class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config: Config) {
 
-  // HACK: clickStep
+  // TODO: document
   var step = false
 
   // TODO: document
