@@ -295,7 +295,30 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   }
 
-  // todo explain
+  // animateMove is a bit complex. There are three aspects that are worth documenting:
+  //    (1) Animating the typical case
+  //    (2) Peeking into the future (or the past, depending on your perspective)
+  //    (3) Drawing the movement when the bot goes off screen, and wraps around torus style
+  //
+  // (1) Animating the typical case. First, we peek into the future (see (2)), to determine whether
+  //     or not the move will succed (i.e. the bot will move from one cell to another cell). Recall
+  //     from MoveInstruction, bots can only move into another cell if the new cell is empty at the
+  //     time when the move instruction exectures its last cycle. If the move fails, then the bot
+  //     is drawn at its current location. If the move succeeds, then we calculate delta, which
+  //     measures how far along the move instruction has progressed. Then we calculate (row, col)
+  //     as a double based on the delta. For example if the bot is moving from (0, 0) to (0, 1)
+  //     and the move instruction is half-way done executing, then (row, col) == (0, 0.5). Then we
+  //     draw the bot at (row, col). A similar approach is used in animateTurn.
+  // (2) Peeking into the future. We do not want to animate a bot move if the move fails.
+  //     Unfortunately, we cannot know whether or not the move will succeed or fail until
+  //     config.sim.moveCycles cycles have been executed. So, the way we get around is is by
+  //     running the animation several cycles behind the board simulator. This way, the animation
+  //     can peek into the future, to see if the move will fail or succeed.
+  // (3) Drawing the movement when the bot goes off screen, and wraps around torus style. How do
+  //     we do it? We use "twin images." A twin image is a duplicate image of a bot. The twin image
+  //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
+  //     primary image of the bot move off screen. Then, we have the twin image move on screen.
+  //     Once the movement is complete, we move the image off screen again.
   def animateMove(animation: MoveAnimation): Unit = {
 
     // This is where we look into the future to see if the move is successful or not
@@ -323,11 +346,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     }
 
     // The amount the bot has moved towards its new cell (as a proportion)
+    // TODO: change to percentComplete (also in documentation)
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
-
-    // TODO: change to val Option
-    //var twinRow = -1.0
-    //var twinCol = -1.0
 
     val oldRow = animation.oldRow
     val oldCol = animation.oldCol
@@ -414,7 +434,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
-  // TODO: explain
+  // See the documentation for animateMove, section (1).
   def animateTurn(animation: TurnAnimation): Unit = {
 
     //val bot = animation.bot
