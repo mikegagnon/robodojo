@@ -229,7 +229,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   }
 
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
-  def tick(event: js.Dynamic): Boolean = {
+  def tick(event: js.Dynamic): Unit = {
 
     if (createjs.Ticker.paused) {
       return true
@@ -280,8 +280,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     animate()
 
     stage.update()
-
-    return true
   }
 
   def animate(): Unit = {
