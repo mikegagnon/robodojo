@@ -177,6 +177,10 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
   def tick(event: js.Dynamic): Unit = {
 
+    if (event.selectDynamic("paused").asInstanceOf[Boolean]) {
+      return
+    }
+
     // TODO: put cycle calculator in separate function?
 
     // Time elapsed sine list tick
