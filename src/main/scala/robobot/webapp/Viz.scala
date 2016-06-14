@@ -329,6 +329,78 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     var twinRow = -1.0
     var twinCol = -1.0
 
+    val oldRow = animation.oldRow
+    val oldCol = animation.oldCol
+    val newRow = animation.newRow
+    val newCol = animation.newCol
+
+    // TODO: reorder UDLR
+    val (twinRow: Double, twinCol: Double) =
+      // if the bot has finished its movement, then move the twin off screen
+      if (animation.cycleNum == config.sim.moveCycles) {
+        (-1.0, -1.0)
+      }
+      // if the bot is moving down, towards off the screen
+      else if (oldRow - newRow > 1) {
+        (newRow - 1.0 + delta, newCol)
+      }
+      // if the bot is moving up, towards off the screen
+      else if (newRow - oldRow > 1) {
+        (newRow + 1.0 - delta, newCol)
+      }
+      // if the bot is moving right, towards off the screen
+      else if (oldCol - newCol > 1) {
+        (newRow, newCol - 1.0 + delta)
+      }
+      // if the bot is moving up, towards off the screen
+      else if (newCol - oldCol > 1) {
+        (newRow, newCol + 1.0 - delta)
+      }
+      else  {
+        (-1.0, -1.0)
+      }
+
+    val (row: Double, col: Double) =
+      if (animation.cycleNum == config.sim.moveCycles) {
+        (newRow, newCol)
+      }
+      // if the bot is moving down, towards off the screen
+      else if (oldRow - newRow > 1) {
+        (oldRow + delta, oldCol)
+      }
+      // if the bot is moving up, towards off the screen
+      else if (newRow - oldRow > 1) {
+        (oldRow - delta, oldCol)
+      }
+      // if the bot is moving right, towards off the screen
+      else if (oldCol - newCol > 1) {
+        (oldRow, oldCol + delta)
+      }
+      // if the bot is moving up, towards off the screen
+      else if (newCol - oldCol > 1) {
+        (oldRow, oldCol - delta)
+      }
+      // the bot is moving up
+      else if (newRow < oldRow) {
+        (oldRow - delta, oldCol)
+      }
+      // the bot is moving down
+      else if (newRow > oldRow) {
+        (oldRow + delta, oldCol)
+      }
+      // the bot is moving left
+      else if (newCol < oldCol) {
+        (oldRow, oldCol - delta)
+      }
+      // the bot is moving right
+      else if (newCol > oldCol) {
+        (oldRow, oldCol + delta)
+      } else {
+        throw new IllegalStateException("TODO")
+      }
+
+/*
+    def getRowCol() = {
     // TODO: reorder so it's UDLR
     val row: Double = // if the bot is moving down, to off the screen
       if (animation.oldRow - animation.newRow > 1) {
@@ -361,6 +433,11 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       } else {
         animation.oldRow
       }
+    }
+
+
+
+
 
     val col: Double =
 
@@ -396,6 +473,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       } else {
         animation.oldCol
       }
+
+
+    */
 
     // TODO: use half val
     bots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * col)
