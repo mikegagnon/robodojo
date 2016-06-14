@@ -50,9 +50,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // we can look ahead to see if a move will succeed or fail. If the move is destined to fail, we
   // do not animate a successful move operation. See documentation for animateMove, section (2).
   //
-  // animations(board.cycleNum) == A list of all animations at cycleNum point in time
-  // TODO: change ArrayBuffer into HashMap?
-  val animations = HashMap[Int, ArrayBuffer[Animation]]()
+  // animations(board.cycleNum)(botId) == the animation for bot (with id == botId) at board.cycleNum
+  // point in time.
+  val animations = HashMap[Int, HashMap[Long, Animation]]()
 
   var animationCycleNum = 0
 
@@ -216,12 +216,12 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def cycle(): Unit = {
     val animationList = board.cycle()
 
-    animations(board.cycleNum) = ArrayBuffer[Animation]()
+    animations(board.cycleNum) = HashMap[Long, Animation]()
 
     // TODO: remove old animations on a rolling basis
     animationList.foreach { animation: Animation =>
 
-      animations(board.cycleNum) += animation
+      animations(board.cycleNum)(animation.botId) = animation
     }
 
     animationCycleNum += 1
@@ -280,9 +280,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   }
 
   def animate(): Unit = {
-    val currentAnimations: ArrayBuffer[Animation] = animations(animationCycleNum)
+    val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
-    currentAnimations.foreach { animation =>
+    currentAnimations.values.foreach { animation =>
 
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
@@ -322,13 +322,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its move instruction
-    // BUG: head won't work when bots die
-    val futureAnimation =
-      animations(endOfMoveCycleNum)
-        .filter { animation2 =>
-          animation2.botId == animation.botId
-        }
-        .head
+    val futureAnimation = animations(endOfMoveCycleNum)(animation.botId)
 
     // success == true iff the bot successfully moves into a new cell
     val success = futureAnimation match {
