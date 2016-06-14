@@ -207,8 +207,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     twinContainer.y = retina(halfCell + config.viz.cellSize * -1)
     twinBots += bot.id -> twinContainer
     stage.addChild(twinContainer)
-
-
   }
 
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
