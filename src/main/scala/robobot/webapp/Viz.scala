@@ -299,31 +299,25 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def animateMove(animation: MoveAnimation): Unit = {
 
     // This is where we look into the future to see if the move is successful or not
+    // TODO: explain more
     val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
 
-    // TODO: clean this up
-    val futureAnimation = animations(endOfMoveCycleNum)
-      .flatMap { a =>
-        if (a.botId == animation.botId) {
-          Some(a)
-        } else {
-          None
+    // TODO: explain
+    // BUG: head won't work when bots die
+    val futureAnimation =
+      animations(endOfMoveCycleNum)
+        .filter { animation2 =>
+          animation2.botId == animation.botId
         }
-      }
-      .headOption
+        .head
 
-
-    // TODO: change to futureAnimation.map. Improve error messages
-    val success = if (futureAnimation.isEmpty) {
-      throw new IllegalStateException("Bad")
-    } else {
-      futureAnimation.get match {
-        case m: MoveAnimation => m.oldRow != m.newRow || m.oldCol != m.newCol
-        case _ => throw new IllegalStateException("Bad")
-      }
-
+    // success == true iff the bot successfully moves into a new cell
+    val success = futureAnimation match {
+      case m: MoveAnimation => m.oldRow != m.newRow || m.oldCol != m.newCol
+      case _ => throw new IllegalStateException("Bad")
     }
 
+    // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
     if (!success) {
       return
     }
