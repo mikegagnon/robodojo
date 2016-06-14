@@ -32,6 +32,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   addBorder()
 
   val bots = HashMap[Long, createjs.Container]()
+
+  // See documentation for animateMove, section (3)
   val twinBots = HashMap[Long, createjs.Container]()
 
   addBots()
@@ -40,15 +42,15 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // Bots maintain their own cycle counter, which counts the number of cycles relative to a single
   // instruction. The bot cycle counter resets to zero after an instruction is executed.
   // The board has another cycle counter, board.cycleNum, which increments after every call to
-  // cycle(). Yet another cycle counter is animationCycleNum, which is cycle counter at which we
-  // currently animating
+  // cycle(). Yet another cycle counter is animationCycleNum, which is the cycle counter at which we
+  // currently animating.
   //
   // Notice, just below we execute config.sim.moveCycles cycles, yet animationCycleNum
   // == 0. This is because the animation lags behind the board. We do this so that (when animating)
   // we can look ahead to see if a move will succeed or fail. If the move is destined to fail, we
-  // do not animate a successful move operation.
+  // do not animate a successful move operation. See documentation for animateMove, section (2).
   //
-  // animations(boarCycleNum) == A list of all animations at cycleNum point in time
+  // animations(board.cycleNum) == A list of all animations at cycleNum point in time
   // TODO: change ArrayBuffer into HashMap?
   val animations = HashMap[Int, ArrayBuffer[Animation]]()
 
@@ -269,8 +271,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       } else {
         tickMultiStep(event)
       }
-
-    var animations: List[Animation] = Nil
 
     1 to cycles foreach { _ => cycle() }
 
