@@ -13,31 +13,29 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
   addStepButton()
 
   def addConsole(): Unit = {
-    val consoleDiv = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
-
-    jQuery("#" + config.id).append(consoleDiv)
+    val html = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
+    jQuery("#" + config.id).append(html)
   }
 
-  // TODO: factor out common html
+  def buttonHtml(functionName: String, glyph: String): String = 
+    s"""
+      <button onclick='robobot.webapp.RobobotApp().${functionName}("${config.id}")'>
+        <span class='glyphicon glyphicon-${glyph}'></span>
+      </button>"""
+
   def addPlayButton(): Unit = {
-    jQuery("#" + config.viz.consoleDivId).append(s"""
-      <button onclick='robobot.webapp.RobobotApp().clickPlay("${config.id}")'>
-        <span class='glyphicon glyphicon-play'></span>
-      </button>""")
+    val html = buttonHtml("clickPlay", "play")
+    jQuery("#" + config.viz.consoleDivId).append(html)
   }
 
   def addPauseButton(): Unit = {
-    jQuery("#" + config.viz.consoleDivId).append(s"""
-      <button onclick='robobot.webapp.RobobotApp().clickPause("${config.id}")'>
-        <span class='glyphicon glyphicon-pause'></span>
-      </button>""")
+    val html = buttonHtml("clickPause", "pause")
+    jQuery("#" + config.viz.consoleDivId).append(html)
   }
 
   def addStepButton(): Unit = {
-    jQuery("#" + config.viz.consoleDivId).append(s"""
-      <button onclick='robobot.webapp.RobobotApp().clickStep("${config.id}")'>
-        <span class='glyphicon glyphicon-step-forward'></span>
-      </button>""")
+    val html = buttonHtml("clickStep", "step-forward")
+    jQuery("#" + config.viz.consoleDivId).append(html)
   }
 
   def clickPlay(): Unit = {

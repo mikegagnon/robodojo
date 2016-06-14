@@ -12,3 +12,4 @@ Refactor:
 - Get rid of printlns
 - Explain animateMove and animateTurn
 - Test on Windows
+- All pause buttons lead to pause
