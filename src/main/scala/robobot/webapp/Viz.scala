@@ -29,6 +29,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   addBorder()
 
   val bots = HashMap[Long, createjs.Container]()
+  val twinBots = HashMap[Long, createjs.Container]()
 
   addBots()
 
@@ -159,40 +160,51 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
   def addBot(bot: Bot): Unit = {
 
-    val img = preload.getResult(config.viz.preload.blueBotId)
-      .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
-
-    val bitmap = new createjs.Bitmap(img);
-
-    // scale the bitmap
-    val width = bitmap.image.width
-    val height = bitmap.image.height
-
-    if (width != height) {
-      throw new IllegalArgumentException("Bot image.width != image.height")
-    }
-
-    val widthHeight = width
-    val cellPhysicalSize = retina(config.viz.cellSize)
-    bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
-    bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
-
-    val container = new createjs.Container()
-
-    bots += bot.id -> container
-
-    container.addChild(bitmap)
-
     val halfCell = config.viz.cellSize / 2
 
-    container.regX = retina(halfCell)
-    container.regY = retina(halfCell)
-    container.x = retina(halfCell + config.viz.cellSize * bot.col)
-    container.y = retina(halfCell + config.viz.cellSize * bot.row)
+    def newBotContainer(bot: Bot): createjs.Container = {
+      val img = preload.getResult(config.viz.preload.blueBotId)
+        .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
 
-    stage.addChild(container);
+      val bitmap = new createjs.Bitmap(img);
 
-    container.rotation = Direction.toAngle(bot.direction)
+      // scale the bitmap
+      val width = bitmap.image.width
+      val height = bitmap.image.height
+
+      if (width != height) {
+        throw new IllegalArgumentException("Bot image.width != image.height")
+      }
+
+      val widthHeight = width
+      val cellPhysicalSize = retina(config.viz.cellSize)
+      bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
+      bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
+
+      val container = new createjs.Container()
+
+      container.addChild(bitmap)
+
+      container.regX = retina(halfCell)
+      container.regY = retina(halfCell)
+      container.x = retina(halfCell + config.viz.cellSize * bot.col)
+      container.y = retina(halfCell + config.viz.cellSize * bot.row)
+
+      container.rotation = Direction.toAngle(bot.direction)
+
+      return container
+    }
+
+    val container = newBotContainer(bot)
+    bots += bot.id -> container
+    stage.addChild(container)
+
+    val twinContainer = newBotContainer(bot)
+    twinContainer.x = retina(halfCell + config.viz.cellSize * -1)
+    twinContainer.y = retina(halfCell + config.viz.cellSize * -1)
+    twinBots += bot.id -> twinContainer
+    stage.addChild(twinContainer)
+
 
   }
 
@@ -320,21 +332,34 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
-    // TODO: fix
+    // TODO: change to val Option
+    var twinRow = -1.0
+    var twinCol = -1.0
+
+    // TODO: reorder so it's UDLR
     val row: Double = // if the bot is moving down, to off the screen
       if (animation.oldRow - animation.newRow > 1) {
+        println("Row torus")
         if (animation.cycleNum == config.sim.moveCycles) {
+          twinRow = -1.0
+          twinCol = -1.0
           animation.newRow
         } else {
-         animation.oldRow + delta
+          twinRow = animation.newRow - 1.0 + delta
+          twinCol = animation.newCol
+          animation.oldRow + delta
         }
       }
       // if the bot is moving up, to off the screen
       else if (animation.newRow - animation.oldRow > 1) {
         if (animation.cycleNum == config.sim.moveCycles) {
+          twinRow = -1.0
+          twinCol = -1.0
           animation.newRow
         } else {
-         animation.oldRow - delta
+          twinRow = animation.newRow + 1.0 - delta
+          twinCol = animation.newCol
+          animation.oldRow - delta
         }
       } else if (animation.newRow < animation.oldRow) {
         animation.oldRow - delta
@@ -348,18 +373,27 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
       // if the bot is moving right, to off the screen
       if (animation.oldCol - animation.newCol > 1) {
+
         if (animation.cycleNum == config.sim.moveCycles) {
+          twinRow = -1.0
+          twinCol = -1.0
           animation.newCol
         } else {
-         animation.oldCol + delta
+          twinRow = animation.newRow
+          twinCol = animation.newCol - 1.0 + delta
+          animation.oldCol + delta
         }
       }
       // if the bot is moving left, to off the screen
       else if (animation.newCol - animation.oldCol > 1) {
         if (animation.cycleNum == config.sim.moveCycles) {
+          twinRow = -1.0
+          twinCol = -1.0
           animation.newCol
         } else {
-         animation.oldCol - delta
+          twinRow = animation.newRow
+          twinCol = animation.newCol + 1.0 - delta
+          animation.oldCol - delta
         }
       }
       else if (animation.newCol < animation.oldCol) {
@@ -370,9 +404,25 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         animation.oldCol
       }
 
+    // TODO: use half val
     bots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * col)
     bots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * row)
     bots(animation.botId).rotation = Direction.toAngle(animation.direction)
+
+
+    //if (twinRow != -1.0 || twinCol != -1.0) {
+      println(twinRow, twinCol)
+      twinBots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinCol)
+      twinBots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinRow)
+
+      //println(twinBots(animation.botId).x, twinBots(animation.botId).y)
+      twinBots(animation.botId).rotation = Direction.toAngle(animation.direction)
+
+      //println(twinBots(animation.botId).x, twinBots(animation.botId).y)
+    //}
+
+
+
   }
 
   // TODO: explain

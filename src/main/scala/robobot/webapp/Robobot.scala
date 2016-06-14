@@ -7,7 +7,7 @@ import scala.util.Random
 class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
-  val density = 0.3
+  val density = 0.5
 
   val rand = new Random(0)
 
@@ -46,10 +46,10 @@ class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
   }
 
   /*val bot1 = Bot(board, 1, 0)
-  bot1.direction = Direction.Right
+  bot1.direction = Direction.Up
   val bank0 = new Bank()
   bank0.instructions :+= MoveInstruction()
-  bank0.instructions :+= TurnInstruction(0)
+  //bank0.instructions :+= TurnInstruction(0)
   bot1.banks += (0 -> bank0)
   board.addBot(bot1)
 
