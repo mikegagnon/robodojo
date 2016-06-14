@@ -326,8 +326,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
     // TODO: change to val Option
-    var twinRow = -1.0
-    var twinCol = -1.0
+    //var twinRow = -1.0
+    //var twinCol = -1.0
 
     val oldRow = animation.oldRow
     val oldCol = animation.oldCol
@@ -482,11 +482,11 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     bots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * row)
     bots(animation.botId).rotation = Direction.toAngle(animation.direction)
 
-
+    twinBots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinCol)
+    twinBots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinRow)
+    
     //if (twinRow != -1.0 || twinCol != -1.0) {
-      println(twinRow, twinCol)
-      twinBots(animation.botId).x = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinCol)
-      twinBots(animation.botId).y = retina(config.viz.cellSize / 2 + config.viz.cellSize * twinRow)
+
 
       //println(twinBots(animation.botId).x, twinBots(animation.botId).y)
       twinBots(animation.botId).rotation = Direction.toAngle(animation.direction)
