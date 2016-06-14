@@ -272,11 +272,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     // This is where we look into the future to see if the move is successful or not
     val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
 
+    // TODO: clean this up
     val futureAnimation = animations(endOfMoveCycleNum)
       .flatMap { a =>
         if (a.botId == animation.botId) {
           Some(a)
         } else {
+          //throw new IllegalStateException("Bad")
           None
         }
       }
