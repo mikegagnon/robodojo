@@ -74,8 +74,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     jQuery("#" + config.id).attr("class", "robo")
   }
 
-  // TODO: change all Unit methods to use this syntax
-  // TODO: change all methods to have return type
   def addCanvas(): JQuery = {
 
     val canvasHtml = s"""<canvas id="${config.viz.canvas.canvasId}"
@@ -421,7 +419,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     val botImage = botImages(animation.botId)
 
-
     botImage.x = retina(halfCell + cellSize * col)
     botImage.y = retina(halfCell + cellSize * row)
     botImage.rotation = Direction.toAngle(animation.direction)
@@ -451,11 +448,3 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   }
 
 }
-
-
-
-
-
-
-
-      

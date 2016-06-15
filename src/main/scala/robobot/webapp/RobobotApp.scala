@@ -52,21 +52,21 @@ object RobobotApp extends JSApp {
   }
 
   @JSExport
-  def clickPlay(id: String) {
+  def clickPlay(id: String): Unit = {
     activeInstanceId = Some(id)
     val robobot = instances(id)
     robobot.controller.clickPlay()
   }
 
   @JSExport
-  def clickPause(id: String) {
+  def clickPause(id: String): Unit = {
     activeInstanceId = Some(id)
     val robobot = instances(id)
     robobot.controller.clickPause()
   }
 
   @JSExport
-  def clickStep(id: String) {
+  def clickStep(id: String): Unit = {
     activeInstanceId = Some(id)
     val robobot = instances(id)
     robobot.controller.clickStep()
@@ -89,7 +89,7 @@ object RobobotApp extends JSApp {
   // launch() uses createjs's preloading system to load all our images, then block once the loading
   // is complete.
   @JSExport
-  def launch() {
+  def launch(): Unit = {
 
     val preload = new createjs.LoadQueue()
 

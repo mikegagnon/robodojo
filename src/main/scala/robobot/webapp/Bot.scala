@@ -11,7 +11,7 @@ object Bot {
   }
 
   // TODO: add direction to params?
-  def apply(board: Board, row: Int, col: Int) = {
+  def apply(board: Board, row: Int, col: Int): Bot = {
     val bot = new Bot(board)
     bot.row = row
     bot.col = col
