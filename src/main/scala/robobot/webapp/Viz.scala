@@ -163,7 +163,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
   def addBot(bot: Bot): Unit = {
 
-    val halfCell = config.viz.cellSize / 2
+    val halfCell = config.viz.cellSize / 2.0
 
     def newBotContainer(bot: Bot): createjs.Container = {
       val img = preload.getResult(config.viz.preload.blueBotId)
@@ -409,17 +409,19 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       }
 
     val cellSize = config.viz.cellSize
+    val halfCell = cellSize / 2.0
 
     val botImage = bots(animation.botId)
 
-    botImage.x = retina(cellSize / 2 + cellSize * col)
-    botImage.y = retina(cellSize / 2 + cellSize * row)
+
+    botImage.x = retina(halfCell + cellSize * col)
+    botImage.y = retina(halfCell + cellSize * row)
     botImage.rotation = Direction.toAngle(animation.direction)
 
     val twinImage = twinBots(animation.botId)
 
-    twinImage.x = retina(cellSize / 2 + cellSize * twinCol)
-    twinImage.y = retina(cellSize / 2 + cellSize * twinRow)
+    twinImage.x = retina(halfCell + cellSize * twinCol)
+    twinImage.y = retina(halfCell + cellSize * twinRow)
     twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
