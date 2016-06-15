@@ -4,7 +4,7 @@ object Bot {
 
   var nextId: Long = 0
 
-  def getNextId = {
+  def getNextId: Long = {
     val id = nextId
     nextId += 1
     id
@@ -23,16 +23,6 @@ object Bot {
 class Bot(val board: Board) {
 
   val id = Bot.getNextId
-
-  // TODO: test
-  override def equals(that: Any) = {
-    that match {
-      case thatBot: Bot => id == thatBot.id
-      case _ => false
-    }
-  }
-
-  override def hashCode:Int = id.toInt
 
   override def toString: String = "Bot" + id
 
