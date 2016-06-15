@@ -58,6 +58,27 @@ object Compiler {
       throw new IllegalStateException("This code shouldn't be reachable")
     }
 
+  def compileTurn(tl: TokenLine)(implicit config: Config): CompileTokenLineResult =
+    if (tl.tokens.length == 2) {
+      val leftOrRight: Option[Int] = try {
+        Some(tl.tokens(1).toInt)
+      } catch {
+        case _ : NumberFormatException => None
+      }
+
+      val errorMessage =
+        if (leftOrRight.isEmpty) {
+          val message = "The turn instruction takes one parameter, which is an integer"
+          Some((message, tl.lineNumber))
+        } else {
+          None
+        }
+
+      null
+    } else {
+      null
+    }
+
   // TODO: test
   def compile(text: String)(implicit config: Config): Map[Int, Bank] = {
 
@@ -80,6 +101,7 @@ object Compiler {
       val result: CompileTokenLineResult = tl.tokens(0) match {
         case "bank" => compileBank(tl)
         case "move" => compileMove(tl)
+        case "turn" => compileTurn(tl)
         case _ => unrecognizedInstruction(tl)
       }
     }
