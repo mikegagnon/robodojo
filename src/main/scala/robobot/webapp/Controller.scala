@@ -51,6 +51,8 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
     if (createjs.Ticker.paused) {
       viz.step = true
       createjs.Ticker.paused = false
+    } else {
+      clickPause()
     }
 
 }
