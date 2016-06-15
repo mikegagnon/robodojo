@@ -92,23 +92,14 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     canvas.attr("width", math.round(width * dom.window.devicePixelRatio))
     canvas.attr("height", math.round(height * dom.window.devicePixelRatio))
 
-    // force the canvas back to the original size using css
+    // Force the canvas back to the original size using css
     canvas.css("width", width+"px")
     canvas.css("height", height+"px")
 
     return canvas
   }
 
-  def addStage(): createjs.Stage = {
-    val stage = new createjs.Stage(config.viz.canvas.canvasId)
-
-    // To prevent fuzziness of lines
-    // http://stackoverflow.com/questions/6672870/easeljs-line-fuzziness
-    //stage.regX = -0.5
-    //stage.regY = -0.5
-
-    return stage
-  }
+  def addStage(): createjs.Stage = new createjs.Stage(config.viz.canvas.canvasId)
 
   def retina(value: Double): Double = value * dom.window.devicePixelRatio
 
@@ -165,53 +156,60 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     }
   }
 
-  // TODO: if rotation is a performance issue, then rotate using pre-rotated sprites
-  // TODO: upscale the image of the bot, so it still looks good for cellSize > 32
-  def addBot(bot: Bot): Unit = {
+  def newBotContainer(bot: Bot): createjs.Container = {
+    val img = preload.getResult(config.viz.preload.blueBotId)
+      .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
+
+    val bitmap = new createjs.Bitmap(img);
+
+    val width = bitmap.image.width
+    val height = bitmap.image.height
+
+    if (width != height) {
+      throw new IllegalArgumentException("Bot image.width != image.height")
+    }
+
+    // scale the bitmap
+    val widthHeight = width
+    val cellPhysicalSize = retina(config.viz.cellSize)
+    bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
+    bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
+
+    val container = new createjs.Container()
+
+    container.addChild(bitmap)
 
     val halfCell = config.viz.cellSize / 2.0
 
-    def newBotContainer(bot: Bot): createjs.Container = {
-      val img = preload.getResult(config.viz.preload.blueBotId)
-        .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
+    // Set the "registration point" for the image to the center of image. This way, we can rotate
+    // around the center. As a consequnce of having a centered registration point, when we move
+    // bot images, we must move the (x,y) to the center of the cell, instead of the (0,0) of the
+    // cell
+    container.regX = retina(halfCell)
+    container.regY = retina(halfCell)
 
-      val bitmap = new createjs.Bitmap(img);
+    container.x = retina(halfCell + config.viz.cellSize * bot.col)
+    container.y = retina(halfCell + config.viz.cellSize * bot.row)
 
-      // scale the bitmap
-      val width = bitmap.image.width
-      val height = bitmap.image.height
+    container.rotation = Direction.toAngle(bot.direction)
 
-      if (width != height) {
-        throw new IllegalArgumentException("Bot image.width != image.height")
-      }
+    return container
+  }
 
-      val widthHeight = width
-      val cellPhysicalSize = retina(config.viz.cellSize)
-      bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
-      bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
-
-      val container = new createjs.Container()
-
-      container.addChild(bitmap)
-
-      container.regX = retina(halfCell)
-      container.regY = retina(halfCell)
-      container.x = retina(halfCell + config.viz.cellSize * bot.col)
-      container.y = retina(halfCell + config.viz.cellSize * bot.row)
-
-      container.rotation = Direction.toAngle(bot.direction)
-
-      return container
-    }
-
+  def addBot(bot: Bot): Unit = {
     val container = newBotContainer(bot)
-    botImages += bot.id -> container
+    botImages += (bot.id -> container)
     stage.addChild(container)
 
+    val halfCell = config.viz.cellSize / 2.0
+
     val twinContainer = newBotContainer(bot)
-    twinContainer.x = retina(halfCell + config.viz.cellSize * -1)
-    twinContainer.y = retina(halfCell + config.viz.cellSize * -1)
-    twinBotImages += bot.id -> twinContainer
+
+    // Move the twin image off screen to (row = -1, col = -1)
+    twinContainer.x = retina(halfCell - config.viz.cellSize)
+    twinContainer.y = retina(halfCell - config.viz.cellSize)
+
+    twinBotImages += (bot.id -> twinContainer)
     stage.addChild(twinContainer)
   }
 
