@@ -124,6 +124,29 @@ object CompilerTest extends TestSuite {
 
           assert(result.sameElements(expectedResult))
       }
+
+      "Drop empty lines"-{
+        val text = """
+
+        1
+
+        2
+
+        3
+
+
+        """
+
+        val result = Compiler.tokenize(text)
+        val expectedResult =
+          Array(
+            TokenLine(Array("1"), 2),
+            TokenLine(Array("2"), 4),
+            TokenLine(Array("3"), 6))
+        println(result.mkString("\n"))
+        println(expectedResult.mkString("\n"))
+        assert(result.sameElements(expectedResult))
+      }
     }
   }
 }
