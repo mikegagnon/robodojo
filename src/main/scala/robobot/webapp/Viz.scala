@@ -305,12 +305,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   // (1) Animating the typical case. First, we peek into the future (see (2)), to determine whether
   //     or not the move will succed (i.e. the bot will move from one cell to another cell). Recall
   //     from MoveInstruction, bots can only move into another cell if the new cell is empty at the
-  //     time when the move instruction exectures its last cycle. If the move fails, then the bot
-  //     is drawn at its current location. If the move succeeds, then we calculate delta, which
-  //     measures how far along the move instruction has progressed. Then we calculate (row, col)
-  //     as a double based on the delta. For example if the bot is moving from (0, 0) to (0, 1)
-  //     and the move instruction is half-way done executing, then (row, col) == (0, 0.5). Then we
-  //     draw the bot at (row, col). A similar approach is used in animateTurn.
+  //     time when the move instruction executes its last cycle. If the move fails, then the bot
+  //     is drawn at its current location. If the move succeeds, then we calculate
+  //     proportionCompleted, which measures how far along the move instruction has progressed. Then
+  //     we calculate (row, col) as a double based on proportionCompleted. For example if the bot is
+  //     moving from (0, 0) to (0, 1) and the move instruction is half-way done executing, then
+  //     (row, col) == (0, 0.5). Then we draw the bot at (row, col). A similar approach is used in
+  //     animateTurn.
   // (2) Peeking into the future. We do not want to animate a bot move if the move fails.
   //     Unfortunately, we cannot know whether or not the move will succeed or fail until
   //     config.sim.moveCycles cycles have been executed. So, the way we get around is is by
