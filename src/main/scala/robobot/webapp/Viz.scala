@@ -327,7 +327,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its move instruction
-    // TODO: .get
     val futureAnimation = animations(endOfMoveCycleNum)(animation.botId)
 
     // success == true iff the bot successfully moves into a new cell
