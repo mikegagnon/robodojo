@@ -18,23 +18,28 @@ import com.scalawarrior.scalajs.createjs
 
 class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config: Config) {
 
-  // TODO: document
+  // Here's how the step functionality works. When the user clicks step, the controller sets step =
+  // true, then unpauses the Ticker. Then Viz executes exactly one cycle, and pauses the Ticker.
   var step = false
 
-  // TODO: document
+  // Every tick (except when step == true), Viz calculates how many cycles to execute, as a Double.
+  // Viz executes floor(numCycles + remainingCycles) cycles and sets remainingCycles =
+  // numCycles - floor(numCycles). This way, the number of cycles executed in one second ~=
+  // config.viz.cyclesPerSecond.
   var remainingCycles = 0.0
 
   updateMainDiv()
+
   val canvas = addCanvas()
   val stage = addStage()
 
   addGrid()
   addBorder()
 
-  val bots = HashMap[Long, createjs.Container]()
+  val botImages = HashMap[Long, createjs.Container]()
 
   // See documentation for animateMove, section (3)
-  val twinBots = HashMap[Long, createjs.Container]()
+  val twinBotImages = HashMap[Long, createjs.Container]()
 
   addBots()
   
@@ -199,13 +204,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     }
 
     val container = newBotContainer(bot)
-    bots += bot.id -> container
+    botImages += bot.id -> container
     stage.addChild(container)
 
     val twinContainer = newBotContainer(bot)
     twinContainer.x = retina(halfCell + config.viz.cellSize * -1)
     twinContainer.y = retina(halfCell + config.viz.cellSize * -1)
-    twinBots += bot.id -> twinContainer
+    twinBotImages += bot.id -> twinContainer
     stage.addChild(twinContainer)
   }
 
@@ -411,14 +416,14 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val cellSize = config.viz.cellSize
     val halfCell = cellSize / 2.0
 
-    val botImage = bots(animation.botId)
+    val botImage = botImages(animation.botId)
 
 
     botImage.x = retina(halfCell + cellSize * col)
     botImage.y = retina(halfCell + cellSize * row)
     botImage.rotation = Direction.toAngle(animation.direction)
 
-    val twinImage = twinBots(animation.botId)
+    val twinImage = twinBotImages(animation.botId)
 
     twinImage.x = retina(halfCell + cellSize * twinCol)
     twinImage.y = retina(halfCell + cellSize * twinRow)
@@ -438,7 +443,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       case _ => throw new IllegalStateException("Bots can only turn Left or Right")
     }
 
-    bots(animation.botId).rotation = angle
+    botImages(animation.botId).rotation = angle
 
   }
 
