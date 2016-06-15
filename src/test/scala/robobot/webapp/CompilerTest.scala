@@ -60,33 +60,55 @@ object CompilerTest extends TestSuite {
 
     "tokenize"-{
 
-      "split empty text into zero lines" - {
-        val text = ""
-        val result = Compiler.tokenize(text)
-        val expectedResult = Array[TokenLine]()
-        assert(result.sameElements(expectedResult))
-      }
+      "split" - {
 
-      "split text into one line" - {
-        val text = "1"
-        val result = Compiler.tokenize(text)
-        val expectedResult = Array(TokenLine(Array("1"), 0))
-        assert(result.sameElements(expectedResult))
-      }
+        "zero lines" - {
+          val text = ""
+          val result = Compiler.tokenize(text)
+          val expectedResult = Array[TokenLine]()
+          assert(result.sameElements(expectedResult))
+        }
 
-      "split three lines" - {
-        val text =
+        "one line" - {
+          val text = "1"
+          val result = Compiler.tokenize(text)
+          val expectedResult = Array(TokenLine(Array("1"), 0))
+          assert(result.sameElements(expectedResult))
+        }
+
+        "three lines" - {
+          val text =
 """1
 2
 3"""
-        val result = Compiler.tokenize(text)
-        val expectedResult =
-          Array(
-            TokenLine(Array("1"), 0),
-            TokenLine(Array("2"), 1),
-            TokenLine(Array("3"), 2))
+          val result = Compiler.tokenize(text)
+          val expectedResult =
+            Array(
+              TokenLine(Array("1"), 0),
+              TokenLine(Array("2"), 1),
+              TokenLine(Array("3"), 2))
 
-        assert(result.sameElements(expectedResult))
+          assert(result.sameElements(expectedResult))
+        }
+      }
+
+      "remove comments"-{
+        "commented out text"-{
+          val text = "a b c ; x y z"
+          val expectedResult =
+            Array(TokenLine(Array("a", "b", "c"), 0))
+        }
+        "trailing semicolon"-{
+          val text = "a b c;"
+          val expectedResult =
+            Array(TokenLine(Array("a", "b", "c"), 0))
+        }
+        "line containing only semicolon"-{
+          val text = " ; "
+          val expectedResult =
+            Array(TokenLine(Array(), 0))
+        }
+
       }
     }
   }
