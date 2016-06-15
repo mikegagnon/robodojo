@@ -10,11 +10,20 @@ object CompilerTest extends TestSuite {
     "tokenize"-{
 
       val text = """
-      a   b    c d ; foo
-      x     y   x
+
+      a   b    c d ; foo    
+
+
+      x     y   x   ;
+
+
       """
 
-      println(Compiler.tokenize(text))
+      Compiler.tokenize(text)
+        .foreach { line: Array[String] =>
+          println(line.mkString(","))
+        }
+
     }
   }
 }

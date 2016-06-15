@@ -6,11 +6,12 @@ object Compiler {
     text
       .split("\n")
       // Remove comments
-      .map { line =>
-        line.replaceAll(""";.*""", "")
-      }
-      .map { line =>
-        line.split("""\s+""")
+      .map { line: String => line.replaceAll(";.*", "") }
+      // Separate into tokens
+      .map { line: String => line.split("""\s+""") }
+      // Drop empty tokens
+      .map { line: Array[String] =>
+        line.filter { _ != "" }
       }
 
   }
