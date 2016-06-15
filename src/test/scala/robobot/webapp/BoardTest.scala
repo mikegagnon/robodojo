@@ -22,27 +22,13 @@ object BoardTest extends TestSuite {
         board.addBot(bot)
       }
 
-      "unsuccessfully add Bot at -1,-1"-{
-        val bot = Bot(board, -1, -1)
-        intercept[IllegalArgumentException] {
-          board.addBot(bot)
-        }
-      }
-
-      "unsuccessfully add Bot at numRows, numCols"-{
-        val bot = Bot(board, config.sim.numRows, config.sim.numCols)
-        intercept[IllegalArgumentException] {
-          board.addBot(bot)
-        }
-      }
-
       "unsuccessfully add Bot because bot is already in matrix"-{
         val board = new Board()
-        val bot = Bot(board, 0, 0)
-        board.addBot(bot)
-        bot.row = 1
+        val bot1 = Bot(board, 0, 0)
+        board.addBot(bot1)
+        val bot2 = Bot(board, 0, 0)
         intercept[IllegalArgumentException] {
-          board.addBot(bot)
+          board.addBot(bot2)
         }
       }
     }
