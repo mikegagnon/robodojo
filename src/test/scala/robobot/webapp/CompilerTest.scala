@@ -6,6 +6,7 @@ object CompilerTest extends TestSuite {
 
   import Compiler._
 
+  // TODO: abort Enriched class
   implicit class EnrichedTokenLine(tl: TokenLine) {
     
     def prettyString(): String = {
@@ -13,7 +14,6 @@ object CompilerTest extends TestSuite {
       s"TokenLine([${tokens}], ${tl.lineNumber})"
     }
 
-    // TODO: test
     def deepEquals(that: Any) =
       that match {
         case thatTl: TokenLine => {
@@ -32,6 +32,56 @@ object CompilerTest extends TestSuite {
 
 
   val tests = this {
+
+    "deepEquals"-{
+      "simple case"-{
+        "equals"-{
+          val a = TokenLine(Array(), 0)
+          val b = TokenLine(Array(), 0)
+          assert(a.deepEquals(b))
+        }
+
+        "unequal lineNumbers"-{
+          val a = TokenLine(Array(), 0)
+          val b = TokenLine(Array(), 1)
+          assert(!a.deepEquals(b))
+        }
+
+        "unequal token array"-{
+          val a = TokenLine(Array(), 0)
+          val b = TokenLine(Array("a"), 0)
+          assert(!a.deepEquals(b))
+        }
+      }
+
+      "one token"-{
+        "equals"-{
+          val a = TokenLine(Array("a"), 1)
+          val b = TokenLine(Array("a"), 1)
+          assert(a.deepEquals(b))
+        }
+
+        "unequal token array"-{
+          val a = TokenLine(Array("b"), 0)
+          val b = TokenLine(Array("a"), 0)
+          assert(!a.deepEquals(b))
+        }
+      }
+
+      "two tokens"-{
+        "equals"-{
+          val a = TokenLine(Array("a", "b"), 2)
+          val b = TokenLine(Array("a", "b"), 2)
+          assert(a.deepEquals(b))
+        }
+        "not equals"-{
+          val a = TokenLine(Array("a", "b"), 2)
+          val b = TokenLine(Array("a", "c"), 2)
+          assert(!a.deepEquals(b))
+        }
+      }
+
+    }
 
     "tokenize"-{
 
