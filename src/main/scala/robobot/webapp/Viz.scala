@@ -286,8 +286,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def animate(): Unit = {
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
-    println(currentAnimations.size)
-
     currentAnimations.values.foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
