@@ -1,7 +1,5 @@
 Refactor:
 - Aggregate animations; perhaps a monoid
-- Replace config.viz.cellSize / 2 with half val
 - Get rid of printlns
-- Explain animateMove and animateTurn
 - Test on Windows
 - All pause buttons lead to pause
