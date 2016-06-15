@@ -53,12 +53,7 @@ object RobobotApp extends JSApp {
 
   def initializeTicker(): Unit =
     if (!initTicker) {
-      // TODO: rm println
-      println("initialized ticker")
-      println(activeInstance.get)
-      println(instances.getOrElse("robo1", "foo"))
       val config = instances(activeInstance.get).config
-      println(activeInstance.get)
       createjs.Ticker.addEventListener("tick", tick _)
       createjs.Ticker.setFPS(config.viz.framesPerSecond)
       createjs.Ticker.paused = true
