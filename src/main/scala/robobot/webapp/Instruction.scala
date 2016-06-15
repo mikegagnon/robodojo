@@ -9,11 +9,8 @@ sealed abstract class Instruction {
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
 }
 
-case class MoveInstruction(implicit val config: Config) extends Instruction {
-
-  val instructionSet = 0
-
-  val requiredCycles = config.sim.moveCycles
+// TODO: move appropriate functions into objects
+object MoveInstruction {
 
   // Assuming the bot is ar (row, col), pointing in direction dir, then where would it try to move
   // if it executed a move instruction?
@@ -45,6 +42,13 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       rc
     }
   }
+}
+
+case class MoveInstruction(implicit val config: Config) extends Instruction {
+
+  val instructionSet = 0
+
+  val requiredCycles = config.sim.moveCycles
 
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
     if (cycleNum == requiredCycles) {
@@ -52,7 +56,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     } else if (cycleNum > requiredCycles) {
       throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
-      val RowCol(destRow, destCol) = dirRowCol(bot.direction, bot.row, bot.col)
+      val RowCol(destRow, destCol) = MoveInstruction.dirRowCol(bot.direction, bot.row, bot.col)
       return Some(MoveAnimation(bot.id, cycleNum, bot.row, bot.col, destRow, destCol,
         bot.direction))
     }
@@ -60,7 +64,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   // TODO: test
   def execute(bot: Bot): Option[Animation] = {
 
-    val RowCol(row, col) = dirRowCol(bot.direction, bot.row, bot.col)
+    val RowCol(row, col) = MoveInstruction.dirRowCol(bot.direction, bot.row, bot.col)
     val oldRow = bot.row
     val oldCol = bot.col
 
