@@ -41,10 +41,28 @@ object Compiler {
         tokens.nonEmpty
       }
 
+  def unrecognizedInstruction(tl: TokenLine) =
+    CompileTokenLineResult(None,
+        Some((s"Unrecognized instruction name: ${tl.tokens(0)}", tl.lineNumber)))
+
+  def compileMove(tl: TokenLine)(implicit config: Config): CompileTokenLineResult =
+
+    // TODO: reorder so length == 1 goes first. All should follow this style
+    if (tl.tokens.length > 1) {
+      // TODO: all compile instruction functions should follow this style
+      val errorMessage = "The move instruction does not take any parameters"
+      return CompileTokenLineResult(None, Some(errorMessage, tl.lineNumber))
+    } else if (tl.tokens.length == 1) {
+      return CompileTokenLineResult(Some(MoveInstruction()), None)
+    } else {
+      throw new IllegalStateException("This code shouldn't be reachable")
+    }
+
   // TODO: test
-  def compile(text: String): Map[Int, Bank] = {
+  def compile(text: String)(implicit config: Config): Map[Int, Bank] = {
 
     val lines: Array[TokenLine] = tokenize(text)
+    var banks = Map[Int, Bank](0 -> new Bank) 
     var bankNumber = 0
 
     def compileBank(tl: TokenLine): CompileTokenLineResult =
@@ -52,24 +70,21 @@ object Compiler {
         return CompileTokenLineResult(None,
           Some(("bank directive takes only one optional parameter", tl.lineNumber)))
       } else {
-          bankNumber += 1
-          return CompileTokenLineResult(None, None)
+        bankNumber += 1
+        banks += (bankNumber -> new Bank)
+        return CompileTokenLineResult(None, None)
       }
-
-    def unrecognizedInstruction(tl: TokenLine) =
-      CompileTokenLineResult(None,
-          Some((s"Unrecognized instruction name: ${tl.tokens(0)}", tl.lineNumber)))
 
     // TODO: very friendly error messages
     lines.foreach { case (tl: TokenLine) =>
-
       val result: CompileTokenLineResult = tl.tokens(0) match {
         case "bank" => compileBank(tl)
+        case "move" => compileMove(tl)
         case _ => unrecognizedInstruction(tl)
       }
     }
 
-    null
+    return banks
   }
 
 }
