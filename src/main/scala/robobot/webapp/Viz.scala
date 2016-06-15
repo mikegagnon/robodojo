@@ -18,6 +18,8 @@ import com.scalawarrior.scalajs.createjs
 
 class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config: Config) {
 
+  /** Begin initialization ************************************************************************/
+
   // Here's how the step functionality works. When the user clicks step, the controller sets step =
   // true, then unpauses the Ticker. Then Viz executes exactly one cycle, and pauses the Ticker.
   var step = false
@@ -44,6 +46,14 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   addBotImages()
   
+  // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
+  // point in time.
+  val animations = HashMap[Int, HashMap[Long, Animation]]()
+
+  // Fast forward the board, so we can begin animating. See the documentation for animateMove,
+  // section (2) for an explanation.
+  1 to config.sim.moveCycles foreach { _ => cycle() }
+
   // There are three cycle counters:
   //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
   //       single instruction. The bot cycle counter resets to zero after an instruction is
@@ -56,16 +66,9 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   //       animateMove, section (2) for an explanation.
   var animationCycleNum = 0
 
-  // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
-  // point in time.
-  val animations = HashMap[Int, HashMap[Long, Animation]]()
-
-  // Fast forward the board, so we can begin animating
-  1 to config.sim.moveCycles foreach { _ => cycle() }
-
-  animationCycleNum = 0
-
   stage.update()
+
+  /** End initialization **************************************************************************/
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
@@ -73,7 +76,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   // TODO: change all Unit methods to use this syntax
   // TODO: change all methods to have return type
-  // TODO: return type
   def addCanvas(): JQuery = {
 
     val canvasHtml = s"""<canvas id="${config.viz.canvas.canvasId}"
