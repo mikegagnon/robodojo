@@ -1,6 +1,8 @@
 package robobot.webapp
 
 sealed abstract class Instruction {
+
+  // TODO: document instruction set
   val instructionSet: Int
   val requiredCycles: Int
 
@@ -45,7 +47,6 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   }
 
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
-
     if (cycleNum == requiredCycles) {
       return execute(bot)
     } else if (cycleNum > requiredCycles) {
@@ -121,7 +122,6 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
       } else {
         return Some(TurnAnimation(bot.id, cycleNum, bot.direction, turnDirection))
       }
-
 
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
