@@ -15,7 +15,4 @@ libraryDependencies += "org.singlespaced" %%% "scalajs-d3" % "0.3.3"
 libraryDependencies += "com.lihaoyi" %%% "utest" % "0.4.3" % "test"
 testFrameworks += new TestFramework("utest.runner.Framework")
 
-resolvers += "amateras-repo" at "http://amateras.sourceforge.jp/mvn/"
-libraryDependencies += "com.scalawarrior" %%% "scalajs-createjs" % "0.0.2"
-
 scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation", "-feature")

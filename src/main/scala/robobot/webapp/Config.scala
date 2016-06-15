@@ -27,6 +27,8 @@ class Config(params: Map[String, Any]) {
     def consoleDivId = id + "-console"
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
+    val framesPerSecond = params.getOrElse("viz.framesPerSecond", 30).asInstanceOf[Int]
+    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 30).asInstanceOf[Int]
 
     object canvas {
       val canvasId = id + "-canvas"
@@ -37,6 +39,11 @@ class Config(params: Map[String, Any]) {
     object border {
       val stroke = params.getOrElse("viz.border.stroke", "#444").asInstanceOf[String]
       val thickness = params.getOrElse("viz.border.thickness", 2).asInstanceOf[Int]
+    }
+
+    object preload {
+      val blueBotId = "blueBotId"
+      val blueBotPath = "./img/bluebot.png"
     }
 
     // grid lines

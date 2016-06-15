@@ -1,24 +1,16 @@
 package robobot.webapp
 
-import scala.collection.mutable.HashSet
+import scala.collection.mutable.ArrayBuffer
 
 class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
-  val bots = new HashSet[Bot]()
+  val bots = new ArrayBuffer[Bot]()
 
-  def addBot(bot: Bot) = {
+  var cycleNum = 0
 
-    if (bots.contains(bot)) {
-      throw new IllegalArgumentException("Board already contains botd")
-    }
-
-    if (bot.row < 0 || bot.row >= config.sim.numRows ||
-        bot.col < 0 || bot.col >= config.sim.numCols) {
-      throw new IllegalArgumentException("Cannot add bot; it is out of bounds")
-    }
-
+  def addBot(bot: Bot): Unit =
     matrix(bot.row)(bot.col) match {
       case None => {
         matrix(bot.row)(bot.col) = Some(bot)
@@ -26,9 +18,8 @@ class Board(implicit val config: Config) {
       }
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
-  }
 
-  def moveBot(bot: Bot, row: Int, col: Int) {
+  def moveBot(bot: Bot, row: Int, col: Int): Unit =
     matrix(row)(col) match {
       case None => {
         matrix(row)(col) = Some(bot)
@@ -39,11 +30,10 @@ class Board(implicit val config: Config) {
       case Some(_) => throw new IllegalArgumentException("Cannot move bot: matrix(r)(c) is " +
         "already occupied")
     }
-  }
 
-  // TODO: test
-  def cycle {
-    bots.foreach{ (bot: Bot) => bot.cycle() }
+  def cycle(): ArrayBuffer[Animation] = {
+    cycleNum += 1
+    bots.flatMap{ (bot: Bot) => bot.cycle() }
   }
 
 }

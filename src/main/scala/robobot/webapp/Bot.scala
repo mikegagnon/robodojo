@@ -4,14 +4,14 @@ object Bot {
 
   var nextId: Long = 0
 
-  def getNextId = {
+  def getNextId: Long = {
     val id = nextId
     nextId += 1
     id
   }
 
   // TODO: add direction to params?
-  def apply(board: Board, row: Int, col: Int) = {
+  def apply(board: Board, row: Int, col: Int): Bot = {
     val bot = new Bot(board)
     bot.row = row
     bot.col = col
@@ -23,16 +23,6 @@ object Bot {
 class Bot(val board: Board) {
 
   val id = Bot.getNextId
-
-  // TODO: test
-  override def equals(that: Any) = {
-    that match {
-      case thatBot: Bot => id == thatBot.id
-      case _ => false
-    }
-  }
-
-  override def hashCode:Int = id.toInt
 
   override def toString: String = "Bot" + id
 
@@ -50,8 +40,7 @@ class Bot(val board: Board) {
 
   var cycleNum = 0
 
-  // TODO: test
-  def cycle() = {
+  def cycle(): Option[Animation] = {
 
     var bank = banks(bankNum)
 
@@ -59,7 +48,9 @@ class Bot(val board: Board) {
 
       val instruction = bank.instructions(instructionNum)
 
-      if (cycleNum == instruction.cycles) {
+      val animation: Option[Animation] = instruction.cycle(this, cycleNum)
+
+      if (cycleNum == instruction.requiredCycles) {
 
         cycleNum = 0
         instructionNum += 1
@@ -67,12 +58,13 @@ class Bot(val board: Board) {
         if (instructionNum == bank.instructions.length) {
           instructionNum = 0
         }
-
-        instruction.execute(this)
       } else {
         cycleNum += 1
       }
 
+      return animation
+    } else {
+      return None
     }
   }
 

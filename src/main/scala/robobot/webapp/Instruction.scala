@@ -1,29 +1,77 @@
 package robobot.webapp
 
 sealed abstract class Instruction {
-  val instructionSet: Int
-  val cycles: Int
 
-  def execute(bot: Bot) : Option[Animation]
+  // TODO: document instruction set
+  val instructionSet: Int
+  val requiredCycles: Int
+
+  def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
 }
 
 case class MoveInstruction(implicit val config: Config) extends Instruction {
+
   val instructionSet = 0
-  val cycles = config.sim.moveCycles
+
+  val requiredCycles = config.sim.moveCycles
+
+  // Assuming the bot is ar (row, col), pointing in direction dir, then where would it try to move
+  // if it executed a move instruction?
+  def dirRowCol(direction: Direction.EnumVal, row: Int, col: Int)(implicit config: Config): RowCol
+      = {
+
+    if (row < 0 || row >= config.sim.numRows || col < 0 || col >= config.sim.numCols) {
+      throw new IllegalArgumentException("row, col is out of bounds")
+    }
+
+    val rc = direction match {
+      case Direction.Up => RowCol(row - 1, col)
+      case Direction.Down => RowCol(row + 1, col)
+      case Direction.Left => RowCol(row, col - 1)
+      case Direction.Right => RowCol(row, col + 1)
+      case Direction.NoDir =>
+        throw new IllegalArgumentException("Cannot compute dirRowCol for NoDir")
+    }
+
+    if (rc.row == -1) {
+      RowCol(config.sim.numRows - 1, rc.col)
+    } else if (rc.row == config.sim.numRows) {
+      RowCol(0, rc.col)
+    } else if (rc.col == -1)  {
+      RowCol(rc.row, config.sim.numCols - 1)
+    } else if (rc.col == config.sim.numCols) {
+      RowCol(rc.row, 0)
+    } else {
+      rc
+    }
+  }
+
+  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
+    if (cycleNum == requiredCycles) {
+      return execute(bot)
+    } else if (cycleNum > requiredCycles) {
+      throw new IllegalArgumentException("cycleNum > requiredCycles")
+    } else {
+      val RowCol(destRow, destCol) = dirRowCol(bot.direction, bot.row, bot.col)
+      return Some(MoveAnimation(bot.id, cycleNum, bot.row, bot.col, destRow, destCol,
+        bot.direction))
+    }
 
   // TODO: test
-  def execute(bot: Bot) = {
+  def execute(bot: Bot): Option[Animation] = {
 
-    val start = RowCol(bot.row, bot.col)
-
-    val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+    val RowCol(row, col) = dirRowCol(bot.direction, bot.row, bot.col)
+    val oldRow = bot.row
+    val oldCol = bot.col
 
     bot.board.matrix(row)(col) match {
       case None => {
+
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(start, RowCol(row, col)))
+        Some(MoveAnimation(bot.id, requiredCycles, oldRow, oldCol, row, col, bot.direction))
       }
-      case Some(_) => None
+      case Some(_) => Some(MoveAnimation(bot.id, requiredCycles, oldRow, oldCol, oldRow, oldCol,
+        bot.direction))
     }
   }
 }
@@ -57,22 +105,36 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 }
 
 // TODO: take direction as a ParamValue?
-case class TurnInstruction(direction: Int)(implicit val config: Config) extends Instruction {
+case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extends Instruction {
 
     val instructionSet = 0
-    val cycles = config.sim.turnCycles
-
-    def execute(bot: Bot) = {
-
-      val start = bot.direction
-
-      bot.direction = direction match {
-        case 0 => Direction.rotateLeft(bot.direction)
-        case _ => Direction.rotateRight(bot.direction)
+    val requiredCycles = config.sim.turnCycles
+    val turnDirection = leftOrRight match {
+        case 0 => Direction.Left
+        case _ => Direction.Right
       }
 
-      val end = bot.direction
+    def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
+      if (cycleNum == requiredCycles) {
+        return execute(bot)
+      } else if (cycleNum > requiredCycles) {
+        throw new IllegalArgumentException("cycleNum > requiredCycles")
+      } else {
+        return Some(TurnAnimation(bot.id, cycleNum, bot.direction, turnDirection))
+      }
 
-      Some(TurnAnimation(start, end))
+    def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
+      leftOrRight match {
+        case 0 => Direction.rotateLeft(currentDir)
+        case _ => Direction.rotateRight(currentDir)
+      }
+
+    def execute(bot: Bot): Option[Animation] = {
+
+      val oldDirection = bot.direction
+
+      bot.direction = getNewDirection(bot.direction)
+
+      Some(TurnAnimation(bot.id, requiredCycles, oldDirection, turnDirection))
     }
 }
