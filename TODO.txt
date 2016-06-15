@@ -1,4 +1,3 @@
 Refactor:
 - Aggregate animations; perhaps a monoid
-- Get rid of printlns
 - Test on Windows
