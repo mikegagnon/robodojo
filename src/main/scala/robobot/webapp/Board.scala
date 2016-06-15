@@ -12,11 +12,6 @@ class Board(implicit val config: Config) {
 
   def addBot(bot: Bot) = {
 
-    if (bot.row < 0 || bot.row >= config.sim.numRows ||
-        bot.col < 0 || bot.col >= config.sim.numCols) {
-      throw new IllegalArgumentException("Cannot add bot; it is out of bounds")
-    }
-
     matrix(bot.row)(bot.col) match {
       case None => {
         matrix(bot.row)(bot.col) = Some(bot)
