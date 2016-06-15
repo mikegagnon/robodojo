@@ -1,20 +1,16 @@
 package robobot.webapp
 
-import scala.collection.mutable.HashSet
+import scala.collection.mutable.ArrayBuffer
 
 class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
-  val bots = new HashSet[Bot]()
+  val bots = new ArrayBuffer[Bot]()
 
   var cycleNum = 0
 
   def addBot(bot: Bot) = {
-
-    if (bots.contains(bot)) {
-      throw new IllegalArgumentException("Board already contains botd")
-    }
 
     if (bot.row < 0 || bot.row >= config.sim.numRows ||
         bot.col < 0 || bot.col >= config.sim.numCols) {
@@ -44,10 +40,9 @@ class Board(implicit val config: Config) {
   }
 
   // TODO: test
-  def cycle(): List[Animation] = {
-    // TODO: is toList cast unncessary?
+  def cycle(): ArrayBuffer[Animation] = {
     cycleNum += 1
-    bots.toList.flatMap{ (bot: Bot) => bot.cycle() }
+    bots.flatMap{ (bot: Bot) => bot.cycle() }
   }
 
 }
