@@ -242,16 +242,16 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     return cycles
   }
 
+  // See documentation for remainingCycles
   def tickMultiStep(event: js.Dynamic): Int = {
 
-    // Time elapsed sine list tick
+    // Time elapsed since list tick
     val delta = event.delta.asInstanceOf[Double]
 
     // The number of cycles to execute this tick
-    // TODO: explain remainingCycles
     val cyclesDouble: Double = config.viz.cyclesPerSecond * delta / 1000.0 + remainingCycles
 
-    val cycles = Math.floor(cyclesDouble).toInt
+    val cycles: Int = Math.floor(cyclesDouble).toInt
 
     remainingCycles = cyclesDouble - cycles
 
@@ -287,7 +287,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
     currentAnimations.values.foreach { animation =>
-
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
@@ -340,8 +339,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     }
 
     // The amount the bot has moved towards its new cell (as a proportion)
-    // TODO: change to percentComplete (also in documentation)
-    val delta: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
+    // TODO: change to proportionCompleted (also in documentation)
+    val proportionCompleted: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
 
     val oldRow = animation.oldRow
     val oldCol = animation.oldCol
@@ -355,19 +354,19 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       }
       // if the bot is moving up, towards off the screen
       else if (newRow - oldRow > 1) {
-        (newRow + 1.0 - delta, newCol)
+        (newRow + 1.0 - proportionCompleted, newCol)
       }
       // if the bot is moving down, towards off the screen
       else if (oldRow - newRow > 1) {
-        (newRow - 1.0 + delta, newCol)
+        (newRow - 1.0 + proportionCompleted, newCol)
       }
       // if the bot is moving left, towards off the screen
       else if (newCol - oldCol > 1) {
-        (newRow, newCol + 1.0 - delta)
+        (newRow, newCol + 1.0 - proportionCompleted)
       }
       // if the bot is moving right, towards off the screen
       else if (oldCol - newCol > 1) {
-        (newRow, newCol - 1.0 + delta)
+        (newRow, newCol - 1.0 + proportionCompleted)
       }
       // if the bot isn't wrapping around the screen
       else  {
@@ -381,35 +380,35 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       }
       // if the bot is moving up, towards off the screen
       else if (newRow - oldRow > 1) {
-        (oldRow - delta, oldCol)
+        (oldRow - proportionCompleted, oldCol)
       }
       // if the bot is moving down, towards off the screen
       else if (oldRow - newRow > 1) {
-        (oldRow + delta, oldCol)
+        (oldRow + proportionCompleted, oldCol)
       }
       // if the bot is moving left, towards off the screen
       else if (newCol - oldCol > 1) {
-        (oldRow, oldCol - delta)
+        (oldRow, oldCol - proportionCompleted)
       }
       // if the bot is moving right, towards off the screen
       else if (oldCol - newCol > 1) {
-        (oldRow, oldCol + delta)
+        (oldRow, oldCol + proportionCompleted)
       }
       // the bot is moving up
       else if (newRow < oldRow) {
-        (oldRow - delta, oldCol)
+        (oldRow - proportionCompleted, oldCol)
       }
       // the bot is moving down
       else if (newRow > oldRow) {
-        (oldRow + delta, oldCol)
+        (oldRow + proportionCompleted, oldCol)
       }
       // the bot is moving left
       else if (newCol < oldCol) {
-        (oldRow, oldCol - delta)
+        (oldRow, oldCol - proportionCompleted)
       }
       // the bot is moving right
       else if (newCol > oldCol) {
-        (oldRow, oldCol + delta)
+        (oldRow, oldCol + proportionCompleted)
       } else {
         throw new IllegalStateException("This code shouldn't be reachable")
       }
@@ -430,16 +429,16 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
-  // See the documentation for animateMove, section (1).
   def animateTurn(animation: TurnAnimation): Unit = {
 
-    //val bot = animation.bot
     val oldDirection = animation.oldDirection
-    val percentComplete = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
+
+    // See the documentation for animateMove, section (1).
+    val proportionCompleted = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
 
     val angle: Double = animation.leftOrRight match {
-      case Direction.Left => Direction.toAngle(oldDirection) - 90.0 * percentComplete
-      case Direction.Right => Direction.toAngle(oldDirection) + 90.0 * percentComplete
+      case Direction.Left => Direction.toAngle(oldDirection) - 90.0 * proportionCompleted
+      case Direction.Right => Direction.toAngle(oldDirection) + 90.0 * proportionCompleted
       case _ => throw new IllegalStateException("Bots can only turn Left or Right")
     }
 
