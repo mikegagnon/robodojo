@@ -10,8 +10,7 @@ class Board(implicit val config: Config) {
 
   var cycleNum = 0
 
-  def addBot(bot: Bot) = {
-
+  def addBot(bot: Bot): Unit =
     matrix(bot.row)(bot.col) match {
       case None => {
         matrix(bot.row)(bot.col) = Some(bot)
@@ -19,9 +18,8 @@ class Board(implicit val config: Config) {
       }
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
-  }
 
-  def moveBot(bot: Bot, row: Int, col: Int) {
+  def moveBot(bot: Bot, row: Int, col: Int): Unit =
     matrix(row)(col) match {
       case None => {
         matrix(row)(col) = Some(bot)
@@ -32,9 +30,7 @@ class Board(implicit val config: Config) {
       case Some(_) => throw new IllegalArgumentException("Cannot move bot: matrix(r)(c) is " +
         "already occupied")
     }
-  }
 
-  // TODO: test
   def cycle(): ArrayBuffer[Animation] = {
     cycleNum += 1
     bots.flatMap{ (bot: Bot) => bot.cycle() }
