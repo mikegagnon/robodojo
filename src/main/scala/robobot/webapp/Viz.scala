@@ -224,9 +224,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     // TODO: test
     animations -= board.cycleNum - config.sim.moveCycles - 1
 
-    // TODO: remove old animations on a rolling basis
     animationList.foreach { animation: Animation =>
-
       animations(board.cycleNum)(animation.botId) = animation
     }
 
