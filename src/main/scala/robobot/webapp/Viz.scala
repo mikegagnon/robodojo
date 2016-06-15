@@ -220,6 +220,10 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     animations(board.cycleNum) = HashMap[Long, Animation]()
 
+    // Remove obsolete animations to avoid memory leak
+    // TODO: test
+    animations -= board.cycleNum - config.sim.moveCycles - 1
+
     // TODO: remove old animations on a rolling basis
     animationList.foreach { animation: Animation =>
 
