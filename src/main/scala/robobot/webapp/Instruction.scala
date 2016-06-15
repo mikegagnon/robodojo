@@ -120,7 +120,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
       } else if (cycleNum > requiredCycles) {
         throw new IllegalArgumentException("cycleNum > requiredCycles")
       } else {
-        return Some(TurnAnimation(bot.id, cycleNum, bot.direction, bot.row, bot.col, turnDirection))
+        return Some(TurnAnimation(bot.id, cycleNum, bot.direction, turnDirection))
       }
 
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
@@ -135,6 +135,6 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
 
       bot.direction = getNewDirection(bot.direction)
 
-      Some(TurnAnimation(bot.id, requiredCycles, oldDirection, bot.row, bot.col, turnDirection))
+      Some(TurnAnimation(bot.id, requiredCycles, oldDirection, turnDirection))
     }
 }

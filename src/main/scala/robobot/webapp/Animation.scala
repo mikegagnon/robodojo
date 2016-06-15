@@ -17,12 +17,8 @@ case class MoveAnimation(
   newCol: Int,
   direction: Direction.EnumVal) extends Animation
 
-// TODO: comment
-// You might think that TurnAnimation doe
 case class TurnAnimation(
   botId: Long,
   cycleNum: Int,
   oldDirection: Direction.EnumVal,
-  row: Int,
-  col: Int,
   leftOrRight: Direction.EnumVal) extends Animation

@@ -463,15 +463,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     }
 
     val botImage = botImages(animation.botId)
-
-    val cellSize = config.viz.cellSize
-    val halfCell = cellSize / 2.0
-
-    botImage.x = retina(halfCell + cellSize * animation.col)
-    botImage.y = retina(halfCell + cellSize * animation.row)
-
     botImage.rotation = angle
-
   }
 
 }
