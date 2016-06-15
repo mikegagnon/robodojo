@@ -11,15 +11,15 @@ sealed trait Animation {
 // TODO: move cycleNum to below botId
 case class MoveAnimation(
   botId: Long,
+  cycleNum: Int,
   oldRow: Int,
   oldCol: Int,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal,
-  cycleNum: Int) extends Animation
+  direction: Direction.EnumVal) extends Animation
 
 case class TurnAnimation(
   botId: Long,
+  cycleNum: Int,
   oldDirection: Direction.EnumVal,
-  leftOrRight: Direction.EnumVal,
-  cycleNum: Int) extends Animation
+  leftOrRight: Direction.EnumVal) extends Animation
