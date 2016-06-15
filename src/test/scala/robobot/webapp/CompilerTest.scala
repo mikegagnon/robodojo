@@ -108,7 +108,21 @@ object CompilerTest extends TestSuite {
           val expectedResult =
             Array(TokenLine(Array(), 0))
         }
+      }
 
+      "Remove empty tokens"-{
+          val text = """1
+          2
+          3
+          """
+          val result = Compiler.tokenize(text)
+          val expectedResult =
+            Array(
+              TokenLine(Array("1"), 0),
+              TokenLine(Array("2"), 1),
+              TokenLine(Array("3"), 2))
+
+          assert(result.sameElements(expectedResult))
       }
     }
   }
