@@ -9,10 +9,9 @@ import scala.collection.mutable.ArrayBuffer
 // Deals with all robobot instances from a given html page
 object RobobotApp extends JSApp {
 
-  // TODO: what's up with this?
   var configs = new ArrayBuffer[Config]()
-  // TODO: rename to activeInstanceId
-  var activeInstance: Option[String] = None
+  
+  var activeInstanceId: Option[String] = None
   var instances = Map[String, Robobot]()
 
   // Set to true once the Ticker has been initialized
@@ -24,43 +23,43 @@ object RobobotApp extends JSApp {
     val config = new Config(configJS.toMap)
     configs += config
 
-    // The id of the first robobot instantiation goes to activeInstance
-    activeInstance = Some(activeInstance.getOrElse(config.id))
+    // The id of the first robobot instantiation goes to activeInstanceId
+    activeInstanceId = Some(activeInstanceId.getOrElse(config.id))
 
   }
 
   // TODO
   @JSExport
   def clickPlay(id: String) {
-    activeInstance = Some(id)
+    activeInstanceId = Some(id)
     val robobot = instances(id)
     robobot.controller.clickPlay()
   }
 
   @JSExport
   def clickPause(id: String) {
-    activeInstance = Some(id)
+    activeInstanceId = Some(id)
     val robobot = instances(id)
     robobot.controller.clickPause()
   }
 
   @JSExport
   def clickStep(id: String) {
-    activeInstance = Some(id)
+    activeInstanceId = Some(id)
     val robobot = instances(id)
     robobot.controller.clickStep()
   }
 
   def initializeTicker(): Unit =
     if (!initTicker) {
-      val config = instances(activeInstance.get).config
+      val config = instances(activeInstanceId.get).config
       createjs.Ticker.addEventListener("tick", tick _)
       createjs.Ticker.setFPS(config.viz.framesPerSecond)
       createjs.Ticker.paused = true
     }
 
   def tick(event: js.Dynamic): Boolean = {
-    val robobot = instances(activeInstance.get)
+    val robobot = instances(activeInstanceId.get)
     robobot.viz.tick(event)
     return true
   }
