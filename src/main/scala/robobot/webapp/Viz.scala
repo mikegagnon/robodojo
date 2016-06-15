@@ -336,24 +336,21 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       case _ => throw new IllegalStateException("Bad")
     }
 
+    val cellSize = config.viz.cellSize
+    val halfCell = cellSize / 2.0
+
+    val botImage = botImages(animation.botId)
+    val twinImage = twinBotImages(animation.botId)
+
     // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
-    // TODO: cleanup
     if (!success) {
-
-      val cellSize = config.viz.cellSize
-      val halfCell = cellSize / 2.0
-
-      val botImage = botImages(animation.botId)
 
       botImage.x = retina(halfCell + cellSize * animation.oldCol)
       botImage.y = retina(halfCell + cellSize * animation.oldRow)
       botImage.rotation = Direction.toAngle(animation.direction)
 
-      val twinImage = twinBotImages(animation.botId)
-
       twinImage.x = retina(halfCell - cellSize)
       twinImage.y = retina(halfCell - cellSize)
-
 
       return
     }
@@ -433,20 +430,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         throw new IllegalStateException("This code shouldn't be reachable")
       }
 
-    val cellSize = config.viz.cellSize
-    val halfCell = cellSize / 2.0
-
-    val botImage = botImages(animation.botId)
 
     botImage.x = retina(halfCell + cellSize * col)
     botImage.y = retina(halfCell + cellSize * row)
     botImage.rotation = Direction.toAngle(animation.direction)
 
-    val twinImage = twinBotImages(animation.botId)
-
     twinImage.x = retina(halfCell + cellSize * twinCol)
     twinImage.y = retina(halfCell + cellSize * twinRow)
-    twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
   def animateTurn(animation: TurnAnimation): Unit = {
