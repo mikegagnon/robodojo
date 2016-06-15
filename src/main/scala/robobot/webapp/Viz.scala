@@ -327,6 +327,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its move instruction
+    // TODO: .get
     val futureAnimation = animations(endOfMoveCycleNum)(animation.botId)
 
     // success == true iff the bot successfully moves into a new cell
@@ -336,7 +337,24 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     }
 
     // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
+    // TODO: cleanup
     if (!success) {
+
+      val cellSize = config.viz.cellSize
+      val halfCell = cellSize / 2.0
+
+      val botImage = botImages(animation.botId)
+
+      botImage.x = retina(halfCell + cellSize * animation.oldCol)
+      botImage.y = retina(halfCell + cellSize * animation.oldRow)
+      botImage.rotation = Direction.toAngle(animation.direction)
+
+      val twinImage = twinBotImages(animation.botId)
+
+      twinImage.x = retina(halfCell - cellSize)
+      twinImage.y = retina(halfCell - cellSize)
+
+
       return
     }
 
