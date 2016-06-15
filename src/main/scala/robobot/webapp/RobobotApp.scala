@@ -6,16 +6,40 @@ import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 import scala.collection.mutable.ArrayBuffer
 
-// Deals with all robobot instances from a given html page
+// RobobotApp deals with all robobot instances for a given html page. Here is a demo of how you
+// can instantiate multiple Robobot instances:
+//
+//    <div id="robo1"></div>
+//
+//    <div id="robo2"></div>
+//
+//    <script type="text/javascript">
+//      var app = robobot.webapp.RobobotApp()
+//
+//     app.newRobobot({
+//        "id": "robo1",
+//        "sim.numRows": 10,
+//        "sim.numCols": 10,
+//        "viz.cellSize": 32
+//      })
+//
+//      app.newRobobot({
+//        "id": "robo2",
+//        "viz.cellSize": 16
+//      })
+//
+//      app.launch()
+//
+//    </script>
+//
 object RobobotApp extends JSApp {
 
   var configs = new ArrayBuffer[Config]()
   
   var activeInstanceId: Option[String] = None
-  var instances = Map[String, Robobot]()
 
-  // Set to true once the Ticker has been initialized
-  var initTicker = false
+  // instances(instanceId) == instance of Robobot
+  var instances = Map[String, Robobot]()
 
   @JSExport
   def newRobobot(configJS: js.Dictionary[Any]): Unit = {
@@ -25,10 +49,8 @@ object RobobotApp extends JSApp {
 
     // The id of the first robobot instantiation goes to activeInstanceId
     activeInstanceId = Some(activeInstanceId.getOrElse(config.id))
-
   }
 
-  // TODO
   @JSExport
   def clickPlay(id: String) {
     activeInstanceId = Some(id)
@@ -50,24 +72,25 @@ object RobobotApp extends JSApp {
     robobot.controller.clickStep()
   }
 
-  def initializeTicker(): Unit =
-    if (!initTicker) {
-      val config = instances(activeInstanceId.get).config
-      createjs.Ticker.addEventListener("tick", tick _)
-      createjs.Ticker.setFPS(config.viz.framesPerSecond)
-      createjs.Ticker.paused = true
-    }
+  def initializeTicker(): Unit = {
+    val config = instances(activeInstanceId.get).config
+    createjs.Ticker.addEventListener("tick", tick _)
+    createjs.Ticker.setFPS(config.viz.framesPerSecond)
+    createjs.Ticker.paused = true
+  }
 
+  // TODO: check for paused
   def tick(event: js.Dynamic): Boolean = {
     val robobot = instances(activeInstanceId.get)
     robobot.viz.tick(event)
     return true
   }
 
+  // launch() uses createjs's preloading system to load all our images, then block once the loading
+  // is complete.
   @JSExport
   def launch() {
 
-    // TODO: factor our preload code intp separate function
     val preload = new createjs.LoadQueue()
 
     //http://stackoverflow.com/questions/24827965/preloadjs-isnt-loading-images-bitmaps-correctly
