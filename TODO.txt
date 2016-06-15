@@ -1,6 +1,5 @@
 Refactor:
 - Aggregate animations; perhaps a monoid
-- Looking into the future
 - Viz: change to futureAnimation.map. Improve error messages
 - Change twinRow, twinCol to val
 - twinRow/Col calculation

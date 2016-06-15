@@ -37,31 +37,29 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   val twinBots = HashMap[Long, createjs.Container]()
 
   addBots()
+  
+  // There are three cycle counters:
+  //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
+  //       single instruction. The bot cycle counter resets to zero after an instruction is
+  //       executed.
+  //   (2) The board has another cycle counter, board.cycleNum, which increments after every call to
+  //       cycle().
+  //   (3) Yet another cycle counter is animationCycleNum, which is the cycle counter equal to the
+  //       board.cycleNum we are currently animating. animationCycleNum != board.cycleNum
+  //       because the animation lags behind the board simulation. See the documentation for
+  //       animateMove, section (2) for an explanation.
+  var animationCycleNum = 0
 
-
-  // Bots maintain their own cycle counter, which counts the number of cycles relative to a single
-  // instruction. The bot cycle counter resets to zero after an instruction is executed.
-  // The board has another cycle counter, board.cycleNum, which increments after every call to
-  // cycle(). Yet another cycle counter is animationCycleNum, which is the cycle counter at which we
-  // currently animating.
-  //
-  // Notice, just below we execute config.sim.moveCycles cycles, yet animationCycleNum
-  // == 0. This is because the animation lags behind the board. We do this so that (when animating)
-  // we can look ahead to see if a move will succeed or fail. If the move is destined to fail, we
-  // do not animate a successful move operation. See documentation for animateMove, section (2).
-  //
-  // animations(board.cycleNum)(botId) == the animation for bot (with id == botId) at board.cycleNum
+  // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
   // point in time.
   val animations = HashMap[Int, HashMap[Long, Animation]]()
 
-  var animationCycleNum = 0
-
-  1 to (config.sim.moveCycles + 1) foreach { _ => cycle() }
+  // Fast forward the board, so we can begin animating
+  1 to config.sim.moveCycles foreach { _ => cycle() }
 
   animationCycleNum = 0
 
   stage.update()
-
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
