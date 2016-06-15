@@ -286,6 +286,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def animate(): Unit = {
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
+    println(currentAnimations.size)
+
     currentAnimations.values.foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
@@ -442,7 +444,15 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
       case _ => throw new IllegalStateException("Bots can only turn Left or Right")
     }
 
-    botImages(animation.botId).rotation = angle
+    val botImage = botImages(animation.botId)
+
+    val cellSize = config.viz.cellSize
+    val halfCell = cellSize / 2.0
+
+    botImage.x = retina(halfCell + cellSize * animation.col)
+    botImage.y = retina(halfCell + cellSize * animation.row)
+
+    botImage.rotation = angle
 
   }
 
