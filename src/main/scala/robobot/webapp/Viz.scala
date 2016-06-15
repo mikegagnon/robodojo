@@ -36,12 +36,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   addGrid()
   addBorder()
 
+  // botImages(botId) == the image on the stage for that bot
   val botImages = HashMap[Long, createjs.Container]()
 
   // See documentation for animateMove, section (3)
   val twinBotImages = HashMap[Long, createjs.Container]()
 
-  addBots()
+  addBotImages()
   
   // There are three cycle counters:
   //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
@@ -158,7 +159,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   }
 
-  def addBots(): Unit = {
+  def addBotImages(): Unit = {
     board.bots.foreach { bot =>
       addBot(bot)
     }
