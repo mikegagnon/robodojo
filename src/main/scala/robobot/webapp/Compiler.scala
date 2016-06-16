@@ -28,6 +28,7 @@ case class CompileLineResult(
 object Compiler {
 
   // TODO: filter out name, author, and country
+  // TODO: deal with commas. How about replace all commas with " , "
   def tokenize(text: String): Array[TokenLine] =
     text
       .split("\n")
