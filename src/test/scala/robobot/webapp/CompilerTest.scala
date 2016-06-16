@@ -162,13 +162,13 @@ object CompilerTest extends TestSuite {
         val compiledResult = Compiler.compile(text)
 
         result match {
-          case Left(errorCode) =>
+          case Left(expectedErrorCode) =>
             compiledResult match {
               case Right(_) => assert(false)
               case Left(errorMessages) => {
                 errorMessages.length ==> 1
                 errorMessages.head match {
-                  case ErrorMessage(errorCode, 1, _) => assert(true)
+                  case ErrorMessage(errorCode, 1, _) => expectedErrorCode ==> errorCode
                   case _ => assert(false)
                 }
               }
@@ -205,10 +205,28 @@ object CompilerTest extends TestSuite {
           testInstruction("turn left", Left(ErrorCode.WrongParamType))
         }
         "fail turn 1 foo"-{
-          testInstruction("turn left", Left(ErrorCode.TooManyParams))
+          testInstruction("turn 1 foo", Left(ErrorCode.TooManyParams))
         }
       }
       "bank"-{
+
+        // TODO: refactor this with testInstruction?
+        def testBankFail(program: String, expectedErrorCode: ErrorCode.EnumVal): Unit = {
+          Compiler.compile(program) match {
+            case Left(errorMessages) => {
+              errorMessages.length ==> 1
+              errorMessages.head match {
+                case ErrorMessage(errorCode, 0, _) => expectedErrorCode ==> errorCode
+                case _ => assert(false)
+              }
+            }
+            case _ => assert(false)
+          }
+        }
+
+        "fail"-{
+          testBankFail("bank foo bar", ErrorCode.TooManyParams)
+        }
         "success 1"-{
           val text = "bank Main\nmove"
           val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(MoveInstruction()))))
