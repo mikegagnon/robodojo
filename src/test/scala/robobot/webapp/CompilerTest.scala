@@ -225,7 +225,6 @@ object CompilerTest extends TestSuite {
         }
       }
 
-      // TODO: refactor this with testInstruction?
       def testBankFail(program: String, expectedErrorCode: ErrorCode.EnumVal): Unit = {
         Compiler.compile(program) match {
           case Left(errorMessages) => {

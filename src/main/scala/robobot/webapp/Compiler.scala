@@ -139,7 +139,6 @@ object Compiler {
 
     lines.foreach { case (tl: TokenLine) =>
       val result: CompileLineResult = tl.tokens(0) match {
-        // TODO: ensure bankNumber < maxBanks
         case "bank" => {
           if (bankNumber == config.sim.maxBanks - 1) {
               val errorMessage = ErrorMessage(ErrorCode.MaxBanksExceeded, tl.lineNumber,
