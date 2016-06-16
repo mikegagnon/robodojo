@@ -183,6 +183,26 @@ object CompilerTest extends TestSuite {
         }
       }
 
+      // TODO: refactor this with testInstruction?
+      def testBankFail(program: String, expectedErrorCode: ErrorCode.EnumVal): Unit = {
+        Compiler.compile(program) match {
+          case Left(errorMessages) => {
+            errorMessages.length ==> 1
+            errorMessages.head match {
+              case ErrorMessage(errorCode, 0, _) => expectedErrorCode ==> errorCode
+              case _ => assert(false)
+            }
+          }
+          case _ => assert(false)
+        }
+      }
+
+      def testProgram(program: String, expectedProgram: Program): Unit =
+        Compiler.compile(program) match {
+          case Left(_) => assert(false)
+          case Right(program) => (program ==> expectedProgram)
+        }
+
       "move"-{
         "success"-{
           testInstruction("move", Right(MoveInstruction()))
@@ -209,40 +229,19 @@ object CompilerTest extends TestSuite {
         }
       }
       "bank"-{
-
-        // TODO: refactor this with testInstruction?
-        def testBankFail(program: String, expectedErrorCode: ErrorCode.EnumVal): Unit = {
-          Compiler.compile(program) match {
-            case Left(errorMessages) => {
-              errorMessages.length ==> 1
-              errorMessages.head match {
-                case ErrorMessage(errorCode, 0, _) => expectedErrorCode ==> errorCode
-                case _ => assert(false)
-              }
-            }
-            case _ => assert(false)
-          }
-        }
-
         "fail"-{
           testBankFail("bank foo bar", ErrorCode.TooManyParams)
         }
         "success 1"-{
           val text = "bank Main\nmove"
           val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(MoveInstruction()))))
-          Compiler.compile(text) match {
-            case Left(_) => assert(false)
-            case Right(program) => (program ==> expectedProgram)
-          }
+          testProgram(text, expectedProgram)
         }
         "success 2"-{
           val text = "bank Main\nmove\nmove"
           val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(MoveInstruction(),
                                                                  MoveInstruction()))))
-          Compiler.compile(text) match {
-            case Left(_) => assert(false)
-            case Right(program) => (program ==> expectedProgram)
-          }
+          testProgram(text, expectedProgram)
         }
       }
     }
