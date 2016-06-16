@@ -137,7 +137,8 @@ object Compiler {
       result.errorMessage match {
         case Some(errorMessage) => {
           error = true
-          banks = Map[Int, Bank]() 
+          banks = Map[Int, Bank]()
+          errors += errorMessage
         }
         case None => ()
       }

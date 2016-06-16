@@ -154,7 +154,7 @@ object CompilerTest extends TestSuite {
     "compile"-{
       implicit val config = new Config
       "move"-{
-        "success" -{
+        "success"-{
           val text = "move"
           val expectedProgram =
             Program(
@@ -169,7 +169,19 @@ object CompilerTest extends TestSuite {
             }
           }
         }
-
+        "fail"-{
+          val text = "move foo"
+          Compiler.compile(text) match {
+            case Right(_) => assert(false)
+            case Left(errorMessages) => {
+              errorMessages.length ==> 1
+              errorMessages.head match {
+                case ErrorMessage(ErrorCode.TooManyParams, 0, _) => assert(true)
+                case _ => assert(false)
+              }
+            }
+          }
+        }
       }
     }
   }
