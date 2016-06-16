@@ -6,7 +6,7 @@ object Config {
 
 // TODO: change defs to vals?
 // TODO: remove all SVG config vals
-class Config(params: Map[String, Any]) {
+class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
 

@@ -2,9 +2,9 @@ package robobot.webapp
 
 import scala.collection.mutable.ArrayBuffer
 
-class Bank {
 
-  // TODO: ensure instructions.length < max bank size
-  var instructions = ArrayBuffer[Instruction]()
+// TODO: ensure instructions.length < max bank size
+case class Bank(var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction]())
 
-}
+// TODO: replace instances of banks with Program
+case class Program(val banks: Map[Int, Bank])

@@ -1,5 +1,7 @@
 package robobot.webapp
 
+import scala.collection.mutable.ArrayBuffer
+
 case class TokenLine(tokens: Array[String], lineNumber: Int) {
   override def equals(that: Any): Boolean =
     that match {
@@ -111,13 +113,13 @@ object Compiler {
     }
 
   // TODO: test
-  def compile(text: String)(implicit config: Config): Map[Int, Bank] = {
+  def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)
     var banks = Map[Int, Bank](0 -> new Bank) 
     var bankNumber = 0
     var error = false
-    var errors = 
+    var errors = ArrayBuffer[ErrorMessage]()
 
     // TODO: very friendly error messages
     lines.foreach { case (tl: TokenLine) =>
@@ -135,13 +137,24 @@ object Compiler {
       result.errorMessage match {
         case Some(errorMessage) => {
           error = true
+          banks = Map[Int, Bank]() 
         }
         case None => ()
       }
 
+      if (!error) {
+        result.instruction.foreach { instruction: Instruction =>
+          banks(bankNumber).instructions += instruction
+        }
+      }
+
     }
 
-    return banks
+    if (error) {
+      Left(errors)
+    } else {
+      Right(Program(banks))
+    }
   }
 
 }

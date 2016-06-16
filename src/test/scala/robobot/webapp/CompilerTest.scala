@@ -2,6 +2,8 @@ package robobot.webapp
 
 import utest._
 
+import scala.collection.mutable.ArrayBuffer
+
 object CompilerTest extends TestSuite {
 
   import Compiler._
@@ -146,6 +148,28 @@ object CompilerTest extends TestSuite {
         println(result.mkString("\n"))
         println(expectedResult.mkString("\n"))
         assert(result.sameElements(expectedResult))
+      }
+    }
+
+    "compile"-{
+      implicit val config = new Config
+      "move"-{
+        "success" -{
+          val text = "move"
+          val expectedProgram =
+            Program(
+              Map(0-> Bank(
+                ArrayBuffer[Instruction](MoveInstruction())
+              ))
+            )
+          Compiler.compile(text) match {
+            case Left(_) => assert(false)
+            case Right(program) => {
+              program ==> expectedProgram
+            }
+          }
+        }
+
       }
     }
   }
