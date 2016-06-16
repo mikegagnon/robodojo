@@ -8,6 +8,8 @@ case class TokenLine(tokens: Array[String], lineNumber: Int) {
       case tl: TokenLine => tokens.sameElements(tl.tokens) && lineNumber == tl.lineNumber
       case _ => false
     }
+  
+  override def hashCode: Int = tokens.hashCode * lineNumber.hashCode
 
   override def toString(): String = s"TokenLine([${tokens.mkString(",")}], ${lineNumber})"
 }
