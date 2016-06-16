@@ -21,6 +21,8 @@ object ErrorCode {
   case object UndeclaredBank extends EnumVal
 }
 
+// IDEA: underline the offensive text in the program text
+// IDEA: hyperlink error messages
 case class ErrorMessage(errorCode: ErrorCode.EnumVal, lineNumber: Int, message: String)
 
 case class CompileLineResult(
@@ -60,11 +62,14 @@ object Compiler {
     CompileLineResult(None, Some(errorMessage))
   }
 
-  // TODO: Decide if tl.tokens.length must equal 2
   def compileBank(tl: TokenLine): CompileLineResult =
     if (tl.tokens.length > 2) {
-      val message = "The <tt>bank</tt> directive takes at most one parameter"
+      val message = "Too many parameters: the <tt>bank</tt> directive takes exactly one parameter."
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
+      CompileLineResult(None, Some(errorMessage))
+    } else if (tl.tokens.length < 2) {
+      val message = "Too few parameters: the <tt>bank</tt> directive takes exactly one parameter."
+      val errorMessage = ErrorMessage(ErrorCode.MissingParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else {
       CompileLineResult(None, None)
@@ -130,6 +135,7 @@ object Compiler {
         // TODO: ensure bankNumber < maxBanks
         case "bank" => {
           bankNumber += 1
+          // TODO: predeclare all banks to empty banks?
           banks += (bankNumber -> new Bank)
           compileBank(tl)
         }

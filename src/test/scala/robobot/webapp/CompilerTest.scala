@@ -229,18 +229,45 @@ object CompilerTest extends TestSuite {
         }
       }
       "bank"-{
-        "fail"-{
+        "fail: too many params"-{
           testBankFail("bank foo bar", ErrorCode.TooManyParams)
         }
-        "success 1"-{
+        "fail: too few params"-{
+          testBankFail("bank", ErrorCode.MissingParams)
+        }
+        "fail: undeclared bank"-{
+          testBankFail("move", ErrorCode.UndeclaredBank)
+        }
+        "success 1 instruction"-{
           val text = "bank Main\nmove"
-          val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(MoveInstruction()))))
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction()))))
           testProgram(text, expectedProgram)
         }
-        "success 2"-{
+        "success 2 instructions"-{
           val text = "bank Main\nmove\nmove"
-          val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(MoveInstruction(),
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction(),
                                                                  MoveInstruction()))))
+          testProgram(text, expectedProgram)
+        }
+        "success 2 banks"-{
+          val text = "bank Main\nmove\nbank foo"
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction())),
+                                            1 -> Bank(ArrayBuffer())))
+          testProgram(text, expectedProgram)
+        }
+        "success 3 banks"-{
+          val text = "bank Main\nmove\nbank foo \nbank foo"
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction())),
+                                            1 -> Bank(ArrayBuffer()),
+                                            2 -> Bank(ArrayBuffer())))
+          testProgram(text, expectedProgram)
+        }
+        "success 3 non-empty banks"-{
+          val text = "bank Main\nmove\nbank foo\nmove\nmove\nbank foo\nmove"
+          val move = MoveInstruction()
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(move)),
+                                            1 -> Bank(ArrayBuffer(move, move)),
+                                            2 -> Bank(ArrayBuffer(move))))
           testProgram(text, expectedProgram)
         }
       }
