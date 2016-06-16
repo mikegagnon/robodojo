@@ -97,19 +97,19 @@ object CompilerTest extends TestSuite {
       }
 
       "slice"-{
-        "Exactly maxLineLength characters"-{
-          val config = new Config(Map("compiler.maxLineLength" -> 5))
-          val text = "12345"
+
+        def testSlice(maxLineLength: Int, text: String, expectedSliced: String): Unit = {
+          val config = new Config(Map("compiler.maxLineLength" -> maxLineLength))
           val result = Compiler.tokenize(text)(config)
-          val expectedResult = Array(TokenLine(Array(text), 0))
+          val expectedResult = Array(TokenLine(Array(expectedSliced), 0))
           assert(result.sameElements(expectedResult))
         }
+
+        "Exactly maxLineLength characters"-{
+          testSlice(5, "12345", "12345")
+        }
         "One character too many"-{
-          val config = new Config(Map("compiler.maxLineLength" -> 4))
-          val text = "12345"
-          val result = Compiler.tokenize(text)(config)
-          val expectedResult = Array(TokenLine(Array("1234"), 0))
-          assert(result.sameElements(expectedResult))
+          testSlice(4, "12345", "1234")
         }
       }
 
