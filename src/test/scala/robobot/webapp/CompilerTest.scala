@@ -208,6 +208,14 @@ object CompilerTest extends TestSuite {
           testInstruction("turn left", Left(ErrorCode.TooManyParams))
         }
       }
+      "bank"-{
+        val text = "bank Main\nmove"
+        val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(MoveInstruction()))))
+        Compiler.compile(text) match {
+          case Left(_) => assert(false)
+          case Right(program) => (program ==> expectedProgram)
+        }
+      }
     }
   }
 }

@@ -60,6 +60,7 @@ object Compiler {
     CompileLineResult(None, Some(errorMessage))
   }
 
+  // TODO: Decide if tl.tokens.length must equal 2
   def compileBank(tl: TokenLine): CompileLineResult =
     if (tl.tokens.length > 2) {
       val message = "The <tt>bank</tt> directive takes at most one parameter"
