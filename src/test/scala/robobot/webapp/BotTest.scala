@@ -40,7 +40,7 @@ object BotTest extends TestSuite {
         board.addBot(bot)
         val bank0 = new Bank()
         bank0.instructions = instr
-        bot.banks += (0 -> bank0)
+        bot.program.banks += (0 -> bank0)
         bot
       }
 

@@ -40,7 +40,7 @@ class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
             bank0.instructions :+= MoveInstruction()
           if (rand.nextDouble < 0.5)
             bank0.instructions :+= TurnInstruction(1)
-          bot.banks += (0 -> bank0)
+          bot.program.banks += (0 -> bank0)
           board.addBot(bot)
       }
     }

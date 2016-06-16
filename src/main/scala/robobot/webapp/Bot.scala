@@ -10,12 +10,19 @@ object Bot {
     id
   }
 
-  // TODO: add direction to params?
-  def apply(board: Board, row: Int, col: Int): Bot = {
+  def apply(board: Board,
+            row: Int,
+            col: Int,
+            direction: Direction.EnumVal = Direction.NoDir,
+            program: Program = Program(Map[Int, Bank]())): Bot = {
+
+    // TODO: setter functions
     val bot = new Bot(board)
     bot.row = row
     bot.col = col
-    bot
+    bot.direction = direction
+    bot.program = program
+    return bot
   }
 
 }
@@ -32,7 +39,7 @@ class Bot(val board: Board) {
 
   var direction: Direction.EnumVal = Direction.NoDir
 
-  var banks = Map[Int, Bank](0 -> new Bank())
+  var program = Program(Map[Int, Bank]())
 
   var bankNum = 0
 
@@ -42,7 +49,7 @@ class Bot(val board: Board) {
 
   def cycle(): Option[Animation] = {
 
-    var bank = banks(bankNum)
+    var bank = program.banks(bankNum)
 
     if (bank.instructions.length > 0) {
 
