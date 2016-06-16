@@ -159,7 +159,7 @@ object CompilerTest extends TestSuite {
           val expectedProgram =
             Program(
               Map(0-> Bank(
-                ArrayBuffer[Instruction](MoveInstruction())
+                ArrayBuffer(MoveInstruction())
               ))
             )
           Compiler.compile(text) match {
@@ -183,6 +183,22 @@ object CompilerTest extends TestSuite {
           }
         }
       }
+      "turn"-{
+        "success"-{
+          val text = "turn 1"
+          val expectedProgram =
+            Program(
+              Map(0-> Bank(
+                ArrayBuffer(TurnInstruction(1))
+              ))
+            )
+          Compiler.compile(text) match {
+            case Left(_) => assert(false)
+            case Right(program) =>
+            program ==> expectedProgram
+          }
+        }
+      }      
     }
   }
 }
