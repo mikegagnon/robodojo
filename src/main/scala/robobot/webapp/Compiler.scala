@@ -36,7 +36,6 @@ case class CompileLineResult(
   instruction: Option[Instruction],
   errorMessage: Option[ErrorMessage])
 
-
 object Compiler {
 
   // TODO: deal with commas. How about replace all commas with " , "
@@ -89,7 +88,6 @@ object Compiler {
     }
 
   def compileMove(tl: TokenLine)(implicit config: Config): CompileLineResult =
-
     if (tl.tokens.length > 1) {
       val message = "Too many parameters: the <tt>move</tt> instruction does not take any " +
         "parameters"
@@ -103,7 +101,6 @@ object Compiler {
     }
 
   def compileTurn(tl: TokenLine)(implicit config: Config): CompileLineResult =
-
     if (tl.tokens.length < 2) {
       val message = "Missing parameter: the <tt>turn</tt> instruction requires an integer parameter"
       val errorCode = ErrorCode.MissingParams
@@ -133,7 +130,6 @@ object Compiler {
           CompileLineResult(None, Some(errorMessage))
         }
       }
-
     }
 
   def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
