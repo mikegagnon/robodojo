@@ -117,18 +117,20 @@ object CompilerTest extends TestSuite {
       "remove comments"-{
         "commented out text"-{
           val text = "a b c ; x y z"
-          val expectedResult =
-            Array(TokenLine(Array("a", "b", "c"), 0))
+          val expectedResult = Array(TokenLine(Array("a", "b", "c"), 0))
+          val result = Compiler.tokenize(text)
+          assert(result.sameElements(expectedResult))
         }
         "trailing semicolon"-{
           val text = "a b c;"
-          val expectedResult =
-            Array(TokenLine(Array("a", "b", "c"), 0))
+          val expectedResult = Array(TokenLine(Array("a", "b", "c"), 0))
+          val result = Compiler.tokenize(text)
+          assert(result.sameElements(expectedResult))
         }
         "line containing only semicolon"-{
           val text = " ; "
-          val expectedResult =
-            Array(TokenLine(Array(), 0))
+          val result = Compiler.tokenize(text)
+          result.length ==> 0
         }
       }
 
