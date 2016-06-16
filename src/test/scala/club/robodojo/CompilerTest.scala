@@ -1,4 +1,4 @@
-package robobot.webapp
+package club.robodojo
 
 import utest._
 

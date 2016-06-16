@@ -1,4 +1,4 @@
-package robobot.webapp
+package club.robodojo
 
 // TODO: cleanup imports
 import scala.language.postfixOps

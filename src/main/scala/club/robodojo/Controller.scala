@@ -1,4 +1,4 @@
-package robobot.webapp
+package club.robodojo
 
 import org.scalajs.jquery.jQuery
 import scala.scalajs.js
@@ -19,7 +19,7 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
 
   def buttonHtml(functionName: String, glyph: String): String = 
     s"""
-      <button onclick='robobot.webapp.RobobotApp().${functionName}("${config.id}")'>
+      <button onclick='club.robodojo.App().${functionName}("${config.id}")'>
         <span class='glyphicon glyphicon-${glyph}'></span>
       </button>"""
 

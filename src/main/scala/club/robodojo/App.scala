@@ -1,4 +1,4 @@
-package robobot.webapp
+package club.robodojo
 
 import scala.scalajs.js.JSApp
 import scala.scalajs.js.annotation.JSExport
@@ -6,15 +6,16 @@ import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 import scala.collection.mutable.ArrayBuffer
 
-// RobobotApp deals with all robobot instances for a given html page. Here is a demo of how you
-// can instantiate multiple Robobot instances:
+// TODO: update this
+// App deals with all Robodojo instances for a given html page. Here is a demo of how you
+// can instantiate multiple Robodojo instances:
 //
 //    <div id="robo1"></div>
 //
 //    <div id="robo2"></div>
 //
 //    <script type="text/javascript">
-//      var app = robobot.webapp.RobobotApp()
+//      var app = club.robodojo.App()
 //
 //     app.newRobobot({
 //        "id": "robo1",
@@ -32,44 +33,44 @@ import scala.collection.mutable.ArrayBuffer
 //
 //    </script>
 //
-object RobobotApp extends JSApp {
+object App extends JSApp {
 
   var configs = new ArrayBuffer[Config]()
   
   var activeInstanceId: Option[String] = None
 
-  // instances(instanceId) == instance of Robobot
-  var instances = Map[String, Robobot]()
+  // instances(instanceId) == instance of Robodojo
+  var instances = Map[String, Robodojo]()
 
   @JSExport
-  def newRobobot(configJS: js.Dictionary[Any]): Unit = {
+  def newRobodojo(configJS: js.Dictionary[Any]): Unit = {
 
     val config = new Config(configJS.toMap)
     configs += config
 
-    // The id of the first robobot instantiation goes to activeInstanceId
+    // The id of the first Robodojo instantiation goes to activeInstanceId
     activeInstanceId = Some(activeInstanceId.getOrElse(config.id))
   }
 
   @JSExport
   def clickPlay(id: String): Unit = {
     activeInstanceId = Some(id)
-    val robobot = instances(id)
-    robobot.controller.clickPlay()
+    val robodojo = instances(id)
+    robodojo.controller.clickPlay()
   }
 
   @JSExport
   def clickPause(id: String): Unit = {
     activeInstanceId = Some(id)
-    val robobot = instances(id)
-    robobot.controller.clickPause()
+    val robodojo = instances(id)
+    robodojo.controller.clickPause()
   }
 
   @JSExport
   def clickStep(id: String): Unit = {
     activeInstanceId = Some(id)
-    val robobot = instances(id)
-    robobot.controller.clickStep()
+    val robodojo = instances(id)
+    robodojo.controller.clickStep()
   }
 
   def initializeTicker(): Unit = {
@@ -81,8 +82,8 @@ object RobobotApp extends JSApp {
 
   // TODO: check for paused
   def tick(event: js.Dynamic): Boolean = {
-    val robobot = instances(activeInstanceId.get)
-    robobot.viz.tick(event)
+    val rd = instances(activeInstanceId.get)
+    rd.viz.tick(event)
     return true
   }
 
@@ -101,7 +102,7 @@ object RobobotApp extends JSApp {
     // TODO: add error checking, etc.
     def handleComplete(obj: Object): Boolean = {
       configs.foreach { config =>
-        instances += (config.id -> new Robobot(preload)(config))
+        instances += (config.id -> new Robodojo(preload)(config))
       }
 
       initializeTicker()

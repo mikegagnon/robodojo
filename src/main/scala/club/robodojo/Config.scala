@@ -1,4 +1,4 @@
-package robobot.webapp
+package club.robodojo
 
 object Config {
   val default = new Config(Map[String,Any]())
@@ -8,7 +8,7 @@ object Config {
 // TODO: remove all SVG config vals
 class Config(params: Map[String, Any] = Map[String, Any]()) {
 
-  val id: String = params.getOrElse("id", "robobot").asInstanceOf[String]
+  val id: String = params.getOrElse("id", "robodojo").asInstanceOf[String]
 
   // simulation constants
   object sim {

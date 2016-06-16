@@ -1,10 +1,10 @@
-package robobot.webapp
+package club.robodojo
 
 import com.scalawarrior.scalajs.createjs
 
 import scala.util.Random
 
-class Robobot(preload: createjs.LoadQueue)(implicit val config: Config) {
+class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
 

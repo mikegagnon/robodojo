@@ -1,6 +1,6 @@
 enablePlugins(ScalaJSPlugin)
 
-name := "Robobot"
+name := "Robodojo"
 
 scalaVersion := "2.11.8"
 

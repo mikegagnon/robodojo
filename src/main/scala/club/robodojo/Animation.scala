@@ -1,4 +1,4 @@
-package robobot.webapp
+package club.robodojo
 
 // The Animation classes provide just information to Viz so that Viz can animate the instruction
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
