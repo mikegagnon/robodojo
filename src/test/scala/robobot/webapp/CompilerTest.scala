@@ -10,6 +10,8 @@ object CompilerTest extends TestSuite {
 
   val tests = this {
 
+    implicit val config = new Config
+
     "TokenLine.equals"-{
       "simple case"-{
         "equals"-{
@@ -62,23 +64,23 @@ object CompilerTest extends TestSuite {
 
     "tokenize"-{
 
-      "split" - {
+      "split"-{
 
-        "zero lines" - {
+        "zero lines"-{
           val text = ""
           val result = Compiler.tokenize(text)
           val expectedResult = Array[TokenLine]()
           assert(result.sameElements(expectedResult))
         }
 
-        "one line" - {
+        "one line"-{
           val text = "1"
           val result = Compiler.tokenize(text)
           val expectedResult = Array(TokenLine(Array("1"), 0))
           assert(result.sameElements(expectedResult))
         }
 
-        "three lines" - {
+        "three lines"-{
           val text =
 """1
 2
@@ -94,6 +96,24 @@ object CompilerTest extends TestSuite {
         }
       }
 
+      "slice"-{
+        "Exactly maxLineLength characters"-{
+          val config = new Config(Map("compiler.maxLineLength" -> 5))
+          val text = "12345"
+          val result = Compiler.tokenize(text)(config)
+          val expectedResult = Array(TokenLine(Array(text), 0))
+          assert(result.sameElements(expectedResult))
+        }
+        "One character too many"-{
+          val config = new Config(Map("compiler.maxLineLength" -> 4))
+          val text = "12345"
+          val result = Compiler.tokenize(text)(config)
+          val expectedResult = Array(TokenLine(Array("1234"), 0))
+          assert(result.sameElements(expectedResult))
+        }
+      }
+
+      // TODO: add assertions to this test
       "remove comments"-{
         "commented out text"-{
           val text = "a b c ; x y z"
@@ -152,7 +172,6 @@ object CompilerTest extends TestSuite {
     }
 
     "compile"-{
-      implicit val config = new Config
 
       def testInstruction(
           instruction: String,

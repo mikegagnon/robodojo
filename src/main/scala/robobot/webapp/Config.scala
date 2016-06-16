@@ -24,6 +24,10 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
   }
 
+  object compiler {
+    val maxLineLength = params.getOrElse("compiler.maxLineLength", 1000).asInstanceOf[Int]
+  }
+
   object viz {
 
     def consoleDivId = id + "-console"

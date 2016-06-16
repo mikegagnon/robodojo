@@ -22,8 +22,8 @@ object ErrorCode {
   case object MaxBanksExceeded extends EnumVal
 }
 
-// IDEA: underline the offensive text in the program text
-// IDEA: hyperlink error messages
+// TODO: underline the offensive text in the program text?
+// TODO: hyperlink error messages?
 case class ErrorMessage(errorCode: ErrorCode.EnumVal, lineNumber: Int, message: String)
 
 case class CompileLineResult(
@@ -35,10 +35,13 @@ object Compiler {
 
   // TODO: filter out name, author, and country
   // TODO: deal with commas. How about replace all commas with " , "
-  // TODO: cap a max line size
-  def tokenize(text: String): Array[TokenLine] =
+  def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
     text
       .split("\n")
+      // Slice the string so only the first config.compiler.maxLineLength characters are kept
+      .map { line: String =>
+        line.slice(0, config.compiler.maxLineLength)
+      }
       // Remove comments
       .map { line: String => line.replaceAll(";.*", "") }
       // Separate into tokens
