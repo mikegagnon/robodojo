@@ -127,15 +127,11 @@ object Compiler {
 
     }
 
-  // TODO: test
   def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)
     var banks = Map[Int, Bank]()
     var bankNumber = -1
-
-    // TODO: get ride of error and just check for nonempty errors
-    var error = false
     var errors = ArrayBuffer[ErrorMessage]()
 
     // TODO: very friendly error messages
@@ -162,20 +158,17 @@ object Compiler {
 
       result.errorMessage match {
         case Some(errorMessage) => {
-          error = true
           banks = Map[Int, Bank]()
           errors += errorMessage
         }
         case None => ()
       }
 
-      if (!error) {
+      if (errors.isEmpty) {
         result.instruction.foreach { instruction: Instruction =>
           if (bankNumber >= 0) {
             banks(bankNumber).instructions += instruction
           } else {
-            // TODO: test
-            error = true
             errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineNumber, "Undeclared " +
               "bank: you must place a <tt>bank</tt> directive before you place any instructions")
           }
@@ -184,7 +177,7 @@ object Compiler {
 
     }
 
-    if (error) {
+    if (errors.nonEmpty) {
       Left(errors)
     } else {
       Right(Program(banks))
