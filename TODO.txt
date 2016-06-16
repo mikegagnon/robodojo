@@ -3,3 +3,4 @@ Refactor:
 - Test on Windows
 - Tests
 - Create object declarations; put functions in objects appropriately
+- Rename to Robodojo
