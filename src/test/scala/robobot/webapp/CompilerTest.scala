@@ -197,10 +197,23 @@ object CompilerTest extends TestSuite {
         }
       }
 
-      def testProgram(program: String, expectedProgram: Program): Unit =
+      def testProgram(program: String, expectedProgram: Program)(implicit config: Config): Unit =
         Compiler.compile(program) match {
           case Left(_) => assert(false)
           case Right(program) => (program ==> expectedProgram)
+        }
+
+      def testProgramFail(program: String, expectedErrorCode: ErrorCode.EnumVal)
+          (implicit config: Config): Unit =
+        Compiler.compile(program) match {
+          case Left(errorMessages) => {
+            errorMessages.length ==> 1
+            errorMessages.head match {
+              case ErrorMessage(errorCode, _, _) => expectedErrorCode ==> errorCode
+              case _ => assert(false)
+            }
+          }
+          case Right(_) => assert(false)
         }
 
       "move"-{
@@ -229,6 +242,7 @@ object CompilerTest extends TestSuite {
         }
       }
       "bank"-{
+
         "fail: too many params"-{
           testBankFail("bank foo bar", ErrorCode.TooManyParams)
         }
@@ -237,6 +251,24 @@ object CompilerTest extends TestSuite {
         }
         "fail: undeclared bank"-{
           testBankFail("move", ErrorCode.UndeclaredBank)
+        }
+        "fail: too many banks"-{
+          val config = new Config(Map("sim.maxBanks" -> 5))
+          // One over the limit
+          val text = "bank 1\nbank 2\nbank 3\nbank 4\nbank 5\nbank 6"
+          testProgramFail(text, ErrorCode.MaxBanksExceeded)(config)
+        }
+        "success: num Banks == max Banks"-{
+           val config = new Config(Map("sim.maxBanks" -> 5))
+
+          // Exactly at the limit
+          val text = "bank 1\nbank 2\nbank 3\nbank 4\nbank 5"
+          val expectedProgram = Program(Map(0 -> Bank(),
+                                            1 -> Bank(),
+                                            2 -> Bank(),
+                                            3 -> Bank(),
+                                            4 -> Bank()))
+          testProgram(text , expectedProgram)(config)
         }
         "success 1 instruction"-{
           val text = "bank Main\nmove"

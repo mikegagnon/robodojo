@@ -19,6 +19,7 @@ object ErrorCode {
   case object MissingParams extends EnumVal
   case object WrongParamType extends EnumVal
   case object UndeclaredBank extends EnumVal
+  case object MaxBanksExceeded extends EnumVal
 }
 
 // IDEA: underline the offensive text in the program text
@@ -126,6 +127,8 @@ object Compiler {
     val lines: Array[TokenLine] = tokenize(text)
     var banks = Map[Int, Bank]()
     var bankNumber = -1
+
+    // TODO: get ride of error and just check for nonempty errors
     var error = false
     var errors = ArrayBuffer[ErrorMessage]()
 
@@ -134,10 +137,17 @@ object Compiler {
       val result: CompileLineResult = tl.tokens(0) match {
         // TODO: ensure bankNumber < maxBanks
         case "bank" => {
-          bankNumber += 1
-          // TODO: predeclare all banks to empty banks?
-          banks += (bankNumber -> new Bank)
-          compileBank(tl)
+          if (bankNumber == config.sim.maxBanks - 1) {
+              val errorMessage = ErrorMessage(ErrorCode.MaxBanksExceeded, tl.lineNumber,
+                s"Too many banks: you may only have ${config.sim.maxBanks} banks.")
+              CompileLineResult(None, Some(errorMessage))
+          } else {
+            bankNumber += 1
+            // TODO: predeclare all banks to empty banks?
+            banks += (bankNumber -> new Bank)
+            compileBank(tl)
+          }
+
         }
         case "move" => compileMove(tl)
         case "turn" => compileTurn(tl)

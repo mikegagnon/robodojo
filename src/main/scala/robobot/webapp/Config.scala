@@ -20,6 +20,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     // instruction constants
     val moveCycles = params.getOrElse("sim.moveCycles", 18).asInstanceOf[Int]
     val turnCycles = params.getOrElse("sim.turnCycles", 5).asInstanceOf[Int]
+
+    val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
   }
 
   object viz {
