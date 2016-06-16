@@ -71,11 +71,11 @@ object Compiler {
 
   def compileBank(tl: TokenLine): CompileLineResult =
     if (tl.tokens.length > 2) {
-      val message = "Too many parameters: the <tt>bank</tt> directive takes exactly one parameter."
+      val message = "Too many parameters: the <tt>bank</tt> directive requires exactly one parameter"
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length < 2) {
-      val message = "Too few parameters: the <tt>bank</tt> directive takes exactly one parameter."
+      val message = "Missing parameter: the <tt>bank</tt> directive requires exactly one parameter"
       val errorMessage = ErrorMessage(ErrorCode.MissingParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else {
@@ -85,7 +85,8 @@ object Compiler {
   def compileMove(tl: TokenLine)(implicit config: Config): CompileLineResult =
 
     if (tl.tokens.length > 1) {
-      val message = "The move instruction does not take any parameters"
+      val message = "Too many parameters: the <tt>move</tt> instruction does not take any " +
+        "parameters"
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length == 1) {
@@ -110,15 +111,17 @@ object Compiler {
       CompileLineResult(None, Some(errorMessage))   
     } else {
 
+      val param = tl.tokens(1)
+
       // TODO: take non-literal params?
       try {
-        val leftOrRight = tl.tokens(1).toInt
+        val leftOrRight = param.toInt
         val instruction = TurnInstruction(leftOrRight)
         CompileLineResult(Some(instruction), None)
       } catch {
         case _ : NumberFormatException => {
           val message = "Wrong parameter type: the <tt>turn</tt> instruction requires an integer " +
-            "parameter"
+            s"parameter. <tt>${param}</tt> is not an integer"
           val errorCode = ErrorCode.WrongParamType
           val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
           CompileLineResult(None, Some(errorMessage))
@@ -134,22 +137,20 @@ object Compiler {
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
 
-    // TODO: very friendly error messages
     lines.foreach { case (tl: TokenLine) =>
       val result: CompileLineResult = tl.tokens(0) match {
         // TODO: ensure bankNumber < maxBanks
         case "bank" => {
           if (bankNumber == config.sim.maxBanks - 1) {
               val errorMessage = ErrorMessage(ErrorCode.MaxBanksExceeded, tl.lineNumber,
-                s"Too many banks: you may only have ${config.sim.maxBanks} banks.")
+                s"Too many banks: programs may only have ${config.sim.maxBanks} banks.")
               CompileLineResult(None, Some(errorMessage))
           } else {
-            bankNumber += 1
             // TODO: predeclare all banks to empty banks?
+            bankNumber += 1
             banks += (bankNumber -> new Bank)
             compileBank(tl)
           }
-
         }
         case "move" => compileMove(tl)
         case "turn" => compileTurn(tl)
