@@ -10,7 +10,7 @@ case class TokenLine(tokens: Array[String], lineNumber: Int) {
     }
   
   override def hashCode: Int = {
-    val x = 13
+    var x = 13
     tokens.foreach { str: String => x *= str.hashCode }
     return x * lineNumber.hashCode
   }
