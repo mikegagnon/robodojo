@@ -18,6 +18,7 @@ object ErrorCode {
   case object TooManyParams extends EnumVal
   case object MissingParams extends EnumVal
   case object WrongParamType extends EnumVal
+  case object UndeclaredBank extends EnumVal
 }
 
 case class ErrorMessage(errorCode: ErrorCode.EnumVal, lineNumber: Int, message: String)
@@ -31,6 +32,7 @@ object Compiler {
 
   // TODO: filter out name, author, and country
   // TODO: deal with commas. How about replace all commas with " , "
+  // TODO: cap a max line size
   def tokenize(text: String): Array[TokenLine] =
     text
       .split("\n")
@@ -116,14 +118,15 @@ object Compiler {
   def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)
-    var banks = Map[Int, Bank](0 -> new Bank) 
-    var bankNumber = 0
+    var banks = Map[Int, Bank]()
+    var bankNumber = -1
     var error = false
     var errors = ArrayBuffer[ErrorMessage]()
 
     // TODO: very friendly error messages
     lines.foreach { case (tl: TokenLine) =>
       val result: CompileLineResult = tl.tokens(0) match {
+        // TODO: ensure bankNumber < maxBanks
         case "bank" => {
           bankNumber += 1
           banks += (bankNumber -> new Bank)
@@ -145,7 +148,14 @@ object Compiler {
 
       if (!error) {
         result.instruction.foreach { instruction: Instruction =>
-          banks(bankNumber).instructions += instruction
+          if (bankNumber >= 0) {
+            banks(bankNumber).instructions += instruction
+          } else {
+            // TODO: test
+            error = true
+            errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineNumber, "Undeclared " +
+              "bank: you must place a <tt>bank</tt> directive before you place any instructions")
+          }
         }
       }
 

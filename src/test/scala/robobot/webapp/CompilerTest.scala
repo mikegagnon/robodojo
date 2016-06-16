@@ -158,7 +158,8 @@ object CompilerTest extends TestSuite {
           instruction: String,
           result: Either[ErrorCode.EnumVal, Instruction]) : Unit = {
 
-        val compiledResult = Compiler.compile(instruction)
+        val text = "bank Main\n" + instruction
+        val compiledResult = Compiler.compile(text)
 
         result match {
           case Left(errorCode) =>
@@ -167,7 +168,7 @@ object CompilerTest extends TestSuite {
               case Left(errorMessages) => {
                 errorMessages.length ==> 1
                 errorMessages.head match {
-                  case ErrorMessage(errorCode, 0, _) => assert(true)
+                  case ErrorMessage(errorCode, 1, _) => assert(true)
                   case _ => assert(false)
                 }
               }
@@ -187,35 +188,26 @@ object CompilerTest extends TestSuite {
           testInstruction("move", Right(MoveInstruction()))
         }
         "fail"-{
-          val text = "move foo"
-          Compiler.compile(text) match {
-            case Right(_) => assert(false)
-            case Left(errorMessages) => {
-              errorMessages.length ==> 1
-              errorMessages.head match {
-                case ErrorMessage(ErrorCode.TooManyParams, 0, _) => assert(true)
-                case _ => assert(false)
-              }
-            }
-          }
+          testInstruction("move foo", Left(ErrorCode.TooManyParams))
         }
       }
       "turn"-{
-        "success"-{
-          val text = "turn 1"
-          val expectedProgram =
-            Program(
-              Map(0-> Bank(
-                ArrayBuffer(TurnInstruction(1))
-              ))
-            )
-          Compiler.compile(text) match {
-            case Left(_) => assert(false)
-            case Right(program) =>
-            program ==> expectedProgram
-          }
+        "success 1"-{
+          testInstruction("turn 1", Right(TurnInstruction(1)))
         }
-      }      
+        "success 2"-{
+          testInstruction("turn 2", Right(TurnInstruction(2)))
+        }
+        "success -1"-{
+          testInstruction("turn -1", Right(TurnInstruction(-1)))
+        }
+        "fail turn left"-{
+          testInstruction("turn left", Left(ErrorCode.WrongParamType))
+        }
+        "fail turn 1 foo"-{
+          testInstruction("turn left", Left(ErrorCode.TooManyParams))
+        }
+      }
     }
   }
 }
