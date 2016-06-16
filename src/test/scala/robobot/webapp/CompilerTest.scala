@@ -153,21 +153,38 @@ object CompilerTest extends TestSuite {
 
     "compile"-{
       implicit val config = new Config
-      "move"-{
-        "success"-{
-          val text = "move"
-          val expectedProgram =
-            Program(
-              Map(0-> Bank(
-                ArrayBuffer(MoveInstruction())
-              ))
-            )
-          Compiler.compile(text) match {
+      def testInstruction(text: String, instr: Instruction,
+          errorCode: Option[ErrorCode.EnumVal] = None) : Unit = {
+        val expectedProgram =
+          Program(
+            Map(0-> Bank(
+              ArrayBuffer(instr)
+            ))
+          )
+
+        errorCode match {
+          case None => Compiler.compile(text) match {
             case Left(_) => assert(false)
             case Right(program) => {
               program ==> expectedProgram
             }
           }
+          case Some(code) => Compiler.compile(text) match {
+            case Right(_) => assert(false)
+            case Left(errorMessages) => {
+              errorMessages.length ==> 1
+              errorMessages.head match {
+                case ErrorMessage(code, 0, _) => assert(true)
+                case _ => assert(false)
+              }
+            }
+          }
+        }
+      }
+
+      "move"-{
+        "success"-{
+          testInstruction("move", MoveInstruction())
         }
         "fail"-{
           val text = "move foo"
