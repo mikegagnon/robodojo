@@ -113,7 +113,6 @@ object CompilerTest extends TestSuite {
         }
       }
 
-      // TODO: add assertions to this test
       "remove comments"-{
         "commented out text"-{
           val text = "a b c ; x y z"
