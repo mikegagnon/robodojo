@@ -153,30 +153,30 @@ object CompilerTest extends TestSuite {
 
     "compile"-{
       implicit val config = new Config
-      def testInstruction(text: String, instr: Instruction,
-          errorCode: Option[ErrorCode.EnumVal] = None) : Unit = {
-        val expectedProgram =
-          Program(
-            Map(0-> Bank(
-              ArrayBuffer(instr)
-            ))
-          )
 
-        errorCode match {
-          case None => Compiler.compile(text) match {
-            case Left(_) => assert(false)
-            case Right(program) => {
-              program ==> expectedProgram
-            }
-          }
-          case Some(code) => Compiler.compile(text) match {
-            case Right(_) => assert(false)
-            case Left(errorMessages) => {
-              errorMessages.length ==> 1
-              errorMessages.head match {
-                case ErrorMessage(code, 0, _) => assert(true)
-                case _ => assert(false)
+      def testInstruction(
+          instruction: String,
+          result: Either[ErrorCode.EnumVal, Instruction]) : Unit = {
+
+        val compiledResult = Compiler.compile(instruction)
+
+        result match {
+          case Left(errorCode) =>
+            compiledResult match {
+              case Right(_) => assert(false)
+              case Left(errorMessages) => {
+                errorMessages.length ==> 1
+                errorMessages.head match {
+                  case ErrorMessage(errorCode, 0, _) => assert(true)
+                  case _ => assert(false)
+                }
               }
+            }
+          case Right(compiledInstruction) => {
+            val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(compiledInstruction))))
+            compiledResult match {
+              case Left(_) => assert(false)
+              case Right(program) => (program ==> expectedProgram)
             }
           }
         }
@@ -184,7 +184,7 @@ object CompilerTest extends TestSuite {
 
       "move"-{
         "success"-{
-          testInstruction("move", MoveInstruction())
+          testInstruction("move", Right(MoveInstruction()))
         }
         "fail"-{
           val text = "move foo"
