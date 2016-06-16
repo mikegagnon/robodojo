@@ -166,9 +166,31 @@ object CompilerTest extends TestSuite {
             TokenLine(Array("1"), 2),
             TokenLine(Array("2"), 4),
             TokenLine(Array("3"), 6))
-        println(result.mkString("\n"))
-        println(expectedResult.mkString("\n"))
         assert(result.sameElements(expectedResult))
+      }
+
+      "Filter out Name, Author, Country"-{
+        val text = """
+          1
+          Name Foo Bar
+          Name
+          2
+          Author Mufaso Max
+          3
+          Country The Moon
+          Country
+          4
+          """
+
+        val result = Compiler.tokenize(text)
+        val expectedResult =
+          Array(
+            TokenLine(Array("1"), 1),
+            TokenLine(Array("2"), 4),
+            TokenLine(Array("3"), 6),
+            TokenLine(Array("4"), 9))
+
+          assert(result.sameElements(expectedResult))
       }
     }
 

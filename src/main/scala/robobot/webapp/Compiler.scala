@@ -33,7 +33,6 @@ case class CompileLineResult(
 
 object Compiler {
 
-  // TODO: filter out name, author, and country
   // TODO: deal with commas. How about replace all commas with " , "
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
     text
@@ -56,8 +55,12 @@ object Compiler {
         TokenLine(tokens, lineNumber)
       }
       // Drop empty lines
-      .filter { case TokenLine(tokens, lineNumber) =>
+      .filter { case TokenLine(tokens, _) =>
         tokens.nonEmpty
+      }
+      .filter { case TokenLine(tokens, _) =>
+        val head = tokens.head
+        !(head == "Name" || head == "Author" || head == "Country")
       }
 
   def unrecognizedInstruction(tl: TokenLine) = {

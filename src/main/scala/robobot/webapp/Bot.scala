@@ -16,7 +16,6 @@ object Bot {
             direction: Direction.EnumVal = Direction.NoDir,
             program: Program = Program(Map[Int, Bank]())): Bot = {
 
-    // TODO: setter functions
     val bot = new Bot(board)
     bot.row = row
     bot.col = col
