@@ -55,7 +55,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 30).asInstanceOf[Int]
-    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 250).asInstanceOf[Int]
+    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 30).asInstanceOf[Int]
 
     object canvas {
       val canvasId = id + "-canvas"

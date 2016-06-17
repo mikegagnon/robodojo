@@ -104,7 +104,12 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     return canvas
   }
 
-  def addStage(): createjs.Stage = new createjs.Stage(config.viz.canvas.canvasId)
+  def addStage(): createjs.Stage = {
+    val stage = new createjs.Stage(config.viz.canvas.canvasId)
+    stage.regX = -0.5
+    stage.regY = -0.5
+    return stage
+  }
 
   def retina(value: Double): Double = value * dom.window.devicePixelRatio
 
