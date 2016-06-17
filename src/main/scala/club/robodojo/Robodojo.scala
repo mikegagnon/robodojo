@@ -65,5 +65,5 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
 
   val viz = new Viz(preload, board)
 
-  val controller = new Controller(config, board, viz)
+  val controller = new Controller(board, viz)
 }

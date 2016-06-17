@@ -7,13 +7,14 @@ import org.scalajs.dom.raw.HTMLTextAreaElement
 import org.scalajs.jquery.jQuery
 
 import scala.collection.immutable.HashMap
+import scala.collection.mutable.ArrayBuffer
 
 // TODO: does Editor really need viz?
-class Editor(controller: Controller) {
+class Editor(controller: Controller)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
 
-  val config = controller.config
+  //val config = controller.config
 
   var files = HashMap(
       0 -> config.editor.defaultPrograms(0),
@@ -73,7 +74,12 @@ class Editor(controller: Controller) {
   }
 
   def addCompileButton(): Unit = {
-    val html = """<button type="button" class="btn btn-secondary">Compile</button>"""
+    val html = s"""
+      <button type="button"
+              class="btn btn-secondary"
+              onclick='club.robodojo.App().clickCompile("${config.id}")'>
+        Compile
+      </button>"""
     jQuery("#" + config.editor.consoleDivId)
       .append(html)
   }
@@ -123,5 +129,41 @@ class Editor(controller: Controller) {
     // Open the new file
     currentFile = playerNum
     cmEditor.getDoc().setValue(files(currentFile))
+  }
+
+  def clickCompile(): Unit = {
+
+    val file: String = cmEditor.getDoc().getValue()
+
+    Compiler.compile(file) match {
+      case Left(errors) => displayErrors(errors)
+      case Right(program) => displaySuccess()
+    }
+  }
+
+  def displaySuccess(): Unit = {
+    val html = s"<p><b style='color: green'>Your program successfully compiled.</b></p>"
+
+    jQuery("#" + config.editor.compilerOutputId)
+      .html(html)
+  }
+
+  def displayErrors(errors: ArrayBuffer[ErrorMessage]): Unit = {
+
+    val header = if (errors.length == 1) {
+        s"<p><b style='color: red'>There is 1 error in your program.</b></p>"
+      } else {
+        s"<p><b style='color: red'>There are ${errors.length} errors in your program.</b></p>"
+      }
+
+    val html = header +
+        errors.map { error: ErrorMessage =>
+          s"<p><b>Line ${error.lineNumber + 1}</b>: ${error.message}</p>"
+        }
+        .mkString("\n")
+
+    jQuery("#" + config.editor.compilerOutputId)
+      .html(html)
+
   }
 }

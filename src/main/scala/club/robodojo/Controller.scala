@@ -5,7 +5,7 @@ import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 
 
-class Controller(val config: Config, val board: Board, val viz: Viz) {
+class Controller(val board: Board, val viz: Viz)(implicit val config: Config) {
 
   addConsole()
   addPlayButton()
