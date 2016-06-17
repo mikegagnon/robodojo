@@ -34,10 +34,10 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   object editor {
     val divId = id + "-editor-div"
     val textAreaId = divId + "-textArea"
-    val consoleDivId = divId + "-console"
+    val consoleDivId = divId + "-console-div"
     val codemirrorDivId = divId + "-codemirror-div"
     val compilerOutputId = divId + "-compiler-output"
-    val selectBotButtonId = consoleDivId + "-selectBotButton"
+    val selectBotButtonId = consoleDivId + "-select-bot-button"
 
     val defaultPrograms = Map(
       0 -> "bank Main\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
