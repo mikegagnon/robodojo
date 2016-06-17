@@ -12,3 +12,8 @@
 .editor-console {
     padding-bottom: 5px
 }
+
+.select-bot-dropdown {
+    float: left;
+    margin-right: 5px
+}
