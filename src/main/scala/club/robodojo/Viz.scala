@@ -37,7 +37,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   addBackground()
   addGrid()
-  addBorder()
 
   // botImages(botId) == the image on the stage for that bot
   val botImages = HashMap[Long, createjs.Container]()
@@ -81,6 +80,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     val canvasHtml = s"""
       <div id="${config.viz.boardWrapperDivId}" style="margin-bottom: 10px; background-color: #ccc; border-radius: 8px; padding: 10px;">
         <canvas id="${config.viz.canvas.canvasId}"
+                class="dark-border"
                 width="${config.viz.canvas.width}"
                 height="${config.viz.canvas.height}"
                 style="clear: left">
@@ -155,19 +155,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
         retina(config.sim.numRows * config.viz.cellSize).toInt,
         config.viz.grid.stroke)
     }
-  }
-
-  def addBorder(): Unit = {
-
-    for(i <- 1 to retina(config.viz.border.thickness).toInt) {
-      val rect = new createjs.Shape()
-
-      rect.graphics.beginStroke(config.viz.border.stroke).drawRect(i, i,
-        retina(config.viz.canvas.width - i), retina(config.viz.canvas.height - i))
-
-      stage.addChild(rect)
-    }
-
   }
 
   def addBotImages(): Unit = {

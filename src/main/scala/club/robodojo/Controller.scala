@@ -22,8 +22,7 @@ class Controller(val board: Board, val viz: Viz)(implicit val config: Config) {
 
   def buttonHtml(functionName: String, glyph: String): String = 
     s"""
-      <button class="btn btn-default" onclick='club.robodojo.App().${functionName}("${config.id}")'
-              style="border-color: #444">
+      <button class="btn btn-default dark-border" onclick='club.robodojo.App().${functionName}("${config.id}")'>
         <span class='glyphicon glyphicon-${glyph}'></span>
       </button>"""
 

@@ -163,7 +163,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
     val html = header +
         errors.map { error: ErrorMessage =>
-          s"""<p><span class="line-error">Line ${error.lineNumber + 1}</span>: ${error.message}</p>"""
+          s"""<p><span class="a">Line ${error.lineNumber + 1}</span>: ${error.message}</p>"""
         }
         .mkString("\n")
 

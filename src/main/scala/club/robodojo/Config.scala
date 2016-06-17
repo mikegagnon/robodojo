@@ -63,13 +63,6 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       def height = cellSize * sim.numRows
     }
 
-    object border {
-      val stroke = params.getOrElse("viz.border.stroke", "#444").asInstanceOf[String]
-
-      // TODO: delete?
-      val thickness = params.getOrElse("viz.border.thickness", 1).asInstanceOf[Int]
-    }
-
     object preload {
       val blueBotId = "blueBotId"
       val blueBotPath = "./img/bluebot.png"
