@@ -17,12 +17,13 @@ class Controller(val board: Board, val viz: Viz)(implicit val config: Config) {
 
   def addConsole(): Unit = {
     val html = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
-    jQuery("#" + config.id).append(html)
+    jQuery("#" + config.viz.boardWrapperDivId).append(html)
   }
 
   def buttonHtml(functionName: String, glyph: String): String = 
     s"""
-      <button onclick='club.robodojo.App().${functionName}("${config.id}")'>
+      <button class="btn btn-default" onclick='club.robodojo.App().${functionName}("${config.id}")'
+              style="border-color: #444">
         <span class='glyphicon glyphicon-${glyph}'></span>
       </button>"""
 

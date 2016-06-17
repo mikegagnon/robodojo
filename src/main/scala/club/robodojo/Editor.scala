@@ -38,7 +38,9 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
   def addPrimaryDiv(): Unit = {
     jQuery("#" + config.id)
-      .append(s"<div id='${config.editor.divId}'></div>")    
+      .append(s"""<div
+                    style="background-color: #ccc; border-radius: 8px; padding: 10px;"
+                    id='${config.editor.divId}'></div>""")
   }
 
   def addConsole(): Unit = {
@@ -50,7 +52,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
       //.css("border-top", "1px solid #444")
       // TODO: Same as game margin
       .css("margin-top", "5px")
-      .css("padding-top", "5px")
+      //.css("padding-top", "5px")
       .css("padding-bottom", "5px")
 
     addSelectBotDropdown()
@@ -61,7 +63,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
     val html = s"""
       <div class="dropdown" style="float: left; margin-right: 5px">
-        <button id="${config.editor.selectBotButtonId}" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        <button style="border-color: #444" id="${config.editor.selectBotButtonId}" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
         Select bot to edit
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
@@ -80,6 +82,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
     val html = s"""
       <button type="button"
               class="btn btn-default"
+              style="border-color: #444"
               onclick='club.robodojo.App().clickCompile("${config.id}")'>
         Compile
       </button>"""
@@ -90,13 +93,13 @@ class Editor(controller: Controller)(implicit val config: Config) {
   def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
-      <div style="border: 1px solid #444">
+      <div style="border: 1px solid #444;  background: #fff;">
         <div id='${config.editor.codemirrorDivId}'
              style="border-right: 1px solid #ddd; width: 50%; float: left">
           <textarea id='${config.editor.textAreaId}'></textarea>
         </div>
         <div id='${config.editor.compilerOutputId}'
-             style="padding: 5px; width: 50%; float: left">
+             style="padding: 5px; width: 50%; float: left;">
             foo
         </div>
         <div style='clear: both;'></div>

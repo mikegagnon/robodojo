@@ -78,7 +78,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   def addCanvas(): JQuery = {
 
     val canvasHtml = s"""
-      <div id="${config.viz.boardWrapperDivId}" style="background-color: #bbb; border-radius: 8px; padding: 10px;">
+      <div id="${config.viz.boardWrapperDivId}" style="margin-bottom: 10px; background-color: #ccc; border-radius: 8px; padding: 10px;">
         <canvas id="${config.viz.canvas.canvasId}"
                 width="${config.viz.canvas.width}"
                 height="${config.viz.canvas.height}"

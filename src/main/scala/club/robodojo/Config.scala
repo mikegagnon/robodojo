@@ -65,7 +65,9 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     object border {
       val stroke = params.getOrElse("viz.border.stroke", "#444").asInstanceOf[String]
-      val thickness = params.getOrElse("viz.border.thickness", 2).asInstanceOf[Int]
+
+      // TODO: delete?
+      val thickness = params.getOrElse("viz.border.thickness", 1).asInstanceOf[Int]
     }
 
     object preload {
