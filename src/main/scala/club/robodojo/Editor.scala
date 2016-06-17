@@ -76,7 +76,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
   def addCompileButton(): Unit = {
     val html = s"""
       <button type="button"
-              class="btn btn-secondary"
+              class="btn btn-default"
               onclick='club.robodojo.App().clickCompile("${config.id}")'>
         Compile
       </button>"""
