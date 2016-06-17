@@ -22,21 +22,24 @@ class Editor(controller: Controller) {
 
   var currentFile = 0
 
-  addConsole()
-  addSelectBotDropdown()
-
   jQuery("#" + config.id)
     .append(s"<div id='${config.editor.divId}'></div>")
 
+  addConsole()
+  addSelectBotDropdown()
+
   jQuery("#" + config.editor.divId)
-    .append(s"<textarea id='${config.editor.editorId}'></textarea>")
+    .append(s"<div id='${config.editor.codemirrorDivId}'></div>")
+
+  jQuery("#" + config.editor.codemirrorDivId)
+    .append(s"<textarea id='${config.editor.textAreaId}'></textarea>")
 
   val file = files(currentFile)
   val mode = "clike"
   val params: EditorConfiguration = EditorConfig.mode(mode)
     .lineNumbers(true)
 
-  val editor = dom.document.getElementById(config.editor.editorId) match {
+  val editor = dom.document.getElementById(config.editor.textAreaId) match {
     case el:HTMLTextAreaElement =>
       val m = CodeMirror.fromTextArea(el,params)
       m.getDoc().setValue(file)
@@ -46,18 +49,19 @@ class Editor(controller: Controller) {
 
   // TODO: configify
   // TODO: add class instead of manual cssing
-  jQuery("#" + config.editor.editorId + "-div")
+  jQuery("#" + config.editor.textAreaId + "-div")
     .css("border-top", "1px solid #444")
     .css("border-bottom", "1px solid #444")
     // TODO: Same as game margin
 
   def addConsole(): Unit = {
     val html = s"<div id='${config.editor.consoleDivId}'></div>"
-    jQuery("#" + config.id).append(html)
+    jQuery("#" + config.editor.divId).append(html)
 
     // TODO: add class instead of manual cssing
     jQuery("#" + config.editor.consoleDivId)
       .css("border-top", "1px solid #444")
+      .css("border-bottom", "1px solid #444")
       // TODO: Same as game margin
       .css("margin-top", "5px")
       .css("padding-top", "5px")

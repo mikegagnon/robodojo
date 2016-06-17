@@ -32,14 +32,16 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   // TODO: better name than editorId
   object editor {
-    val editorId = id + "-editor"
-    val consoleDivId = editorId + "-console"
+    val divId = id + "-editor-div"
+    val textAreaId = divId + "-textArea"
+    val consoleDivId = divId + "-console"
+    val codemirrorDivId = divId + "-codemirror-div"
+
     val defaultPrograms = Map(
       0 -> "bank Main\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
       1 -> "bank Main\nmove",
       2 -> "",
       3 -> "")
-    val divId = editorId + "-div"
   }
 
   object viz {
