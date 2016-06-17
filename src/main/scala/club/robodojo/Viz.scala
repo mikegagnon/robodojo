@@ -35,6 +35,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   val canvas = addCanvas()
   val stage = addStage()
 
+  addBackground()
   addGrid()
   addBorder()
 
@@ -76,9 +77,13 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   def addCanvas(): JQuery = {
 
-    val canvasHtml = s"""<canvas id="${config.viz.canvas.canvasId}"
-          width="${config.viz.canvas.width}"
-          height="${config.viz.canvas.height}">"""
+    val canvasHtml = s"""
+      <div id="${config.viz.boardWrapperDivId}" style="background-color: #bbb; border-radius: 8px; padding: 10px;">
+        <canvas id="${config.viz.canvas.canvasId}"
+                width="${config.viz.canvas.width}"
+                height="${config.viz.canvas.height}"
+                style="clear: left">
+      </div>"""
 
     jQuery("#" + config.id).html(canvasHtml)
 
@@ -113,6 +118,15 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     line.graphics.endStroke()
 
     stage.addChild(line)
+  }
+
+  def addBackground(): Unit = {
+    val rect = new createjs.Shape()
+
+    rect.graphics.beginFill("#fff").drawRect(0, 0, retina(config.viz.canvas.width),
+      retina(config.viz.canvas.height))
+
+    stage.addChild(rect)
   }
 
   def addGrid(): Unit = {

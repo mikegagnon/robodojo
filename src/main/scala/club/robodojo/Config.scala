@@ -48,6 +48,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   object viz {
 
+    val boardWrapperDivId = id + "-board-wrapper"
+
     // TODO: shouldn't this (and more) go into object controller, outside of viz
     def consoleDivId = id + "-console"
 
