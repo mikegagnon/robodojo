@@ -59,7 +59,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
     val html = s"""
       <div class="dropdown select-bot-dropdown">
         <button id="${config.editor.selectBotButtonId}"
-                class="btn btn-default dropdown-toggle button-border"
+                class="btn btn-default dropdown-toggle dark-border"
                 type="button"
                 data-toggle="dropdown">
         Select bot to edit
@@ -79,8 +79,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
   def addCompileButton(): Unit = {
     val html = s"""
       <button type="button"
-              class="btn btn-default"
-              style="border-color: #444"
+              class="btn btn-default dark-border"
               onclick='club.robodojo.App().clickCompile("${config.id}")'>
         Compile
       </button>"""
@@ -91,13 +90,12 @@ class Editor(controller: Controller)(implicit val config: Config) {
   def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
-      <div style="border: 1px solid #444;  background: #fff;">
+      <div class="dark-border light-background">
         <div id='${config.editor.codemirrorDivId}'
-             style="border-right: 1px solid #ddd; width: 50%; float: left">
+             class="code-mirror-div">
           <textarea id='${config.editor.textAreaId}'></textarea>
         </div>
-        <div id='${config.editor.compilerOutputId}'
-             style="padding: 5px; width: 50%; float: left;">
+        <div id='${config.editor.compilerOutputId}' class="compiler-output">
         </div>
         <div style='clear: both;'></div>
       </div>
@@ -150,23 +148,22 @@ class Editor(controller: Controller)(implicit val config: Config) {
   }
 
   def displaySuccess(): Unit = {
-    val html = s"<p><b style='color: green'>Your program successfully compiled.</b></p>"
+    val html = s"""<p class="display-success">Your program successfully compiled.</p>"""
 
-    jQuery("#" + config.editor.compilerOutputId)
-      .html(html)
+    jQuery("#" + config.editor.compilerOutputId).html(html)
   }
 
   def displayErrors(errors: ArrayBuffer[ErrorMessage]): Unit = {
 
     val header = if (errors.length == 1) {
-        s"<p><b style='color: red'>There is 1 error in your program.</b></p>"
+        s"""<p class="display-failure">There is 1 error in your program.</p>"""
       } else {
-        s"<p><b style='color: red'>There are ${errors.length} errors in your program.</b></p>"
+        s"""<p class="display-failure">There are ${errors.length} errors in your program.</p>"""
       }
 
     val html = header +
         errors.map { error: ErrorMessage =>
-          s"<p><b>Line ${error.lineNumber + 1}</b>: ${error.message}</p>"
+          s"""<p><span class="line-error">Line ${error.lineNumber + 1}</span>: ${error.message}</p>"""
         }
         .mkString("\n")
 

@@ -18,6 +18,36 @@
     margin-right: 5px
 }
 
-.button-border {
-    border-color: #444 
+.dark-border {
+    border: 1px solid #444;
+}
+
+.light-background {
+    background: #fff
+}
+
+.code-mirror-div {
+    border-right: 1px solid #ddd;
+    width: 50%;
+    float: left
+}
+
+.compiler-output {
+    padding: 5px;
+    width: 50%;
+    float: left;
+}
+
+.display-success {
+    color: green;
+    font-weight: bold;
+}
+
+.display-failure {
+    color: red;
+    font-weight: bold;
+}
+
+.line-error {
+    font-weight: bold;
 }
