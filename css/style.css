@@ -3,8 +3,12 @@
     margin: 10px;
 }
 
-.editor-div {
+.editor {
     background-color: #ccc;
     border-radius: 8px;
     padding: 10px
+}
+
+.editor-console {
+    padding-bottom: 5px
 }

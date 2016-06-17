@@ -38,20 +38,17 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
   def addPrimaryDiv(): Unit = {
     val html = s"""<div
-                    class = "editor-div"
+                    class = "editor"
                     id = '${config.editor.divId}'></div>"""
     jQuery("#" + config.id)
       .append(html)
   }
 
   def addConsole(): Unit = {
-    val html = s"<div id='${config.editor.consoleDivId}'></div>"
+    val html = s"""<div
+                    class = "editor-console"
+                    id = '${config.editor.consoleDivId}'></div>"""
     jQuery("#" + config.editor.divId).append(html)
-
-    // TODO: add class instead of manual cssing
-    jQuery("#" + config.editor.consoleDivId)
-      // TODO: Same as game margin
-      .css("padding-bottom", "5px")
 
     addSelectBotDropdown()
     addCompileButton()
