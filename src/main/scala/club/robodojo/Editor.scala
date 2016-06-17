@@ -9,18 +9,21 @@ import org.scalajs.jquery.jQuery
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: does Editor really need viz?
 class Editor(controller: Controller)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
 
-  //val config = controller.config
+  val playerToColor = Map(
+    0 -> "Blue",
+    1 -> "Red",
+    2 -> "Green",
+    3 -> "Yellow")
 
   var files = HashMap(
-      0 -> config.editor.defaultPrograms(0),
-      1 -> config.editor.defaultPrograms(1),
-      2 -> config.editor.defaultPrograms(2),
-      3 -> config.editor.defaultPrograms(3))
+    0 -> config.editor.defaultPrograms(0),
+    1 -> config.editor.defaultPrograms(1),
+    2 -> config.editor.defaultPrograms(2),
+    3 -> config.editor.defaultPrograms(3))
 
   var currentFile = 0
   val file = files(currentFile)
@@ -58,7 +61,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
     val html = s"""
       <div class="dropdown" style="float: left; margin-right: 5px">
-        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        <button id="${config.editor.selectBotButtonId}" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
         Select bot to edit
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
@@ -122,6 +125,11 @@ class Editor(controller: Controller)(implicit val config: Config) {
     if (playerNum < 0 || playerNum >= config.sim.maxPlayers) {
       throw new IllegalArgumentException("playerNum is invalid")
     }
+
+    val newText = playerToColor(playerNum) + " bot <span class='caret'></span>"
+
+    jQuery("#" + config.editor.selectBotButtonId)
+      .html(newText)
 
     // Save the file
     files += currentFile -> cmEditor.getDoc().getValue()

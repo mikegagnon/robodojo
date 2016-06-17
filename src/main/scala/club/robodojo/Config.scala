@@ -30,13 +30,14 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val maxLineLength = params.getOrElse("compiler.maxLineLength", 1000).asInstanceOf[Int]
   }
 
-  // TODO: better name than editorId
+  // TODO: get rid of useless ids
   object editor {
     val divId = id + "-editor-div"
     val textAreaId = divId + "-textArea"
     val consoleDivId = divId + "-console"
     val codemirrorDivId = divId + "-codemirror-div"
     val compilerOutputId = divId + "-compiler-output"
+    val selectBotButtonId = consoleDivId + "-selectBotButton"
 
     val defaultPrograms = Map(
       0 -> "bank Main\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
