@@ -25,8 +25,8 @@ class Editor(controller: Controller)(implicit val config: Config) {
     2 -> config.editor.defaultPrograms(2),
     3 -> config.editor.defaultPrograms(3))
 
-  var currentFile = 0
-  val file = files(currentFile)
+  var currentFileNum = 0
+  val file = files(currentFileNum)
 
   addPrimaryDiv()
 
@@ -130,11 +130,11 @@ class Editor(controller: Controller)(implicit val config: Config) {
       .html(newText)
 
     // Save the file
-    files += currentFile -> cmEditor.getDoc().getValue()
+    files += currentFileNum -> cmEditor.getDoc().getValue()
 
     // Open the new file
-    currentFile = playerNum
-    cmEditor.getDoc().setValue(files(currentFile))
+    currentFileNum = playerNum
+    cmEditor.getDoc().setValue(files(currentFileNum))
   }
 
   def clickCompile(): Unit = {
@@ -163,7 +163,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
     val html = header +
         errors.map { error: ErrorMessage =>
-          s"""<p><span class="a">Line ${error.lineNumber + 1}</span>: ${error.message}</p>"""
+          s"""<p><span class="as">Line ${error.lineNumber + 1}</span>: ${error.message}</p>"""
         }
         .mkString("\n")
 
