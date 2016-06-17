@@ -454,6 +454,7 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
     twinImage.x = retina(halfCell + cellSize * twinCol)
     twinImage.y = retina(halfCell + cellSize * twinRow)
+    twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
   def animateTurn(animation: TurnAnimation): Unit = {
