@@ -50,13 +50,13 @@ class Editor(controller: Controller) {
       .css("padding-bottom", "5px")
 
     addSelectBotDropdown()
-
+    addCompileButton()
   }
 
   def addSelectBotDropdown(): Unit = {
 
     val html = s"""
-      <div class="dropdown">
+      <div class="dropdown" style="float: left; margin-right: 5px">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
         Select bot to edit
         <span class="caret"></span></button>
@@ -70,6 +70,12 @@ class Editor(controller: Controller) {
 
       jQuery("#" + config.editor.consoleDivId)
         .append(html)
+  }
+
+  def addCompileButton(): Unit = {
+    val html = """<button type="button" class="btn btn-secondary">Compile</button>"""
+    jQuery("#" + config.editor.consoleDivId)
+      .append(html)
   }
 
   def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
