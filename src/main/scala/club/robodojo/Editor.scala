@@ -25,11 +25,10 @@ class Editor(controller: Controller) {
   addConsole()
   addSelectBotDropdown()
 
-  // TODO: configify div.id
   jQuery("#" + config.id)
-    .append(s"<div id='${config.editor.editorId}-div'></div>")
+    .append(s"<div id='${config.editor.divId}'></div>")
 
-  jQuery("#" + config.editor.editorId + "-div")
+  jQuery("#" + config.editor.divId)
     .append(s"<textarea id='${config.editor.editorId}'></textarea>")
 
   val file = files(currentFile)
@@ -53,7 +52,7 @@ class Editor(controller: Controller) {
     // TODO: Same as game margin
 
   def addConsole(): Unit = {
-    val html = jQuery(s"<div id='${config.editor.consoleDivId}'></div>")
+    val html = s"<div id='${config.editor.consoleDivId}'></div>"
     jQuery("#" + config.id).append(html)
 
     // TODO: add class instead of manual cssing

@@ -39,6 +39,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       1 -> "bank Main\nmove",
       2 -> "",
       3 -> "")
+    val divId = editorId + "-div"
   }
 
   object viz {
