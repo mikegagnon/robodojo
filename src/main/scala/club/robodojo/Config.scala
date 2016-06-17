@@ -55,6 +55,13 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     object preload {
       val blueBotId = "blueBotId"
       val blueBotPath = "./img/bluebot.png"
+      val redBotId = "redBotId"
+      val redBotPath = "./img/redbot.png"
+      val greenBotId = "greenBotId"
+      val greenBotPath = "./img/greenbot.png"
+      val yellowBotId = "yellowBotId"
+      val yellowBotPath = "./img/yellowbot.png"
+
     }
 
     // grid lines
