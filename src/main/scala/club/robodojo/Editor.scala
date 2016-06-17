@@ -75,13 +75,13 @@ class Editor(controller: Controller) {
   def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
-      <div>
+      <div style="border: 1px solid #444">
         <div id='${config.editor.codemirrorDivId}'
-             style="border: 1px solid #444; width: 50%; float: left">
+             style="border-right: 1px solid #ddd; width: 50%; float: left">
           <textarea id='${config.editor.textAreaId}'></textarea>
         </div>
         <div id='${config.editor.compilerOutputId}'
-             style="border: 1px solid #444; width: 50%; float: left">
+             style="padding: 5px; width: 50%; float: left">
             foo
         </div>
         <div style='clear: both;'></div>
