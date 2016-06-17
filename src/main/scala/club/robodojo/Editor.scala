@@ -11,7 +11,8 @@ import scala.collection.immutable.HashMap
 // TODO: does Editor really need viz?
 class Editor(controller: Controller) {
 
-  // TODO: functionify
+  /** Begin initialization ************************************************************************/
+
   val config = controller.config
 
   var files = HashMap(
@@ -21,38 +22,20 @@ class Editor(controller: Controller) {
       3 -> config.editor.defaultPrograms(3))
 
   var currentFile = 0
+  val file = files(currentFile)
 
-  jQuery("#" + config.id)
-    .append(s"<div id='${config.editor.divId}'></div>")
+  addPrimaryDiv()
 
   addConsole()
-  addSelectBotDropdown()
+  
+  val cmEditor = addCodeMirrorEditor()
+ 
+  /** End initialization **************************************************************************/
 
-  jQuery("#" + config.editor.divId)
-    .append(s"<div id='${config.editor.codemirrorDivId}'></div>")
-
-  jQuery("#" + config.editor.codemirrorDivId)
-    .append(s"<textarea id='${config.editor.textAreaId}'></textarea>")
-
-  val file = files(currentFile)
-  val mode = "clike"
-  val params: EditorConfiguration = EditorConfig.mode(mode)
-    .lineNumbers(true)
-
-  val editor = dom.document.getElementById(config.editor.textAreaId) match {
-    case el:HTMLTextAreaElement =>
-      val m = CodeMirror.fromTextArea(el,params)
-      m.getDoc().setValue(file)
-      m
-    case _=> throw new IllegalStateException("TODO")
+  def addPrimaryDiv(): Unit = {
+    jQuery("#" + config.id)
+      .append(s"<div id='${config.editor.divId}'></div>")    
   }
-
-  // TODO: configify
-  // TODO: add class instead of manual cssing
-  jQuery("#" + config.editor.textAreaId + "-div")
-    .css("border-top", "1px solid #444")
-    .css("border-bottom", "1px solid #444")
-    // TODO: Same as game margin
 
   def addConsole(): Unit = {
     val html = s"<div id='${config.editor.consoleDivId}'></div>"
@@ -66,6 +49,9 @@ class Editor(controller: Controller) {
       .css("margin-top", "5px")
       .css("padding-top", "5px")
       .css("padding-bottom", "5px")
+
+    addSelectBotDropdown()
+
   }
 
   def addSelectBotDropdown(): Unit = {
@@ -87,16 +73,38 @@ class Editor(controller: Controller) {
         .append(html)
   }
 
+  def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
+    jQuery("#" + config.editor.divId)
+      .append(s"<div id='${config.editor.codemirrorDivId}'></div>")
+
+    jQuery("#" + config.editor.codemirrorDivId)
+      .append(s"<textarea id='${config.editor.textAreaId}'></textarea>")
+
+    val mode = "clike"
+    val params: EditorConfiguration = EditorConfig.mode(mode)
+      .lineNumbers(true)
+
+    val cmEditor =dom.document.getElementById(config.editor.textAreaId) match {
+      case el:HTMLTextAreaElement =>
+        val m = CodeMirror.fromTextArea(el,params)
+        m.getDoc().setValue(file)
+        m
+      case _=> throw new IllegalStateException("TODO")
+    }
+
+    return cmEditor
+  }
+
   def clickSelectBotDropdown(playerNum: Int): Unit = {
     if (playerNum < 0 || playerNum >= config.sim.maxPlayers) {
       throw new IllegalArgumentException("playerNum is invalid")
     }
 
     // Save the file
-    files += currentFile -> editor.getDoc().getValue()
+    files += currentFile -> cmEditor.getDoc().getValue()
 
     // Open the new file
     currentFile = playerNum
-    editor.getDoc().setValue(files(currentFile))
+    cmEditor.getDoc().setValue(files(currentFile))
   }
 }
