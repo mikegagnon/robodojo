@@ -22,6 +22,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val turnCycles = params.getOrElse("sim.turnCycles", 5).asInstanceOf[Int]
 
     val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
+
+    val maxPlayers = params.getOrElse("sim.maxPlayers", 4).asInstanceOf[Int]
   }
 
   object compiler {
@@ -32,6 +34,11 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   object editor {
     val editorId = id + "-editor"
     val consoleDivId = editorId + "-console"
+    val defaultPrograms = Map(
+      0 -> "bank Main\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
+      1 -> "bank Main\nmove",
+      2 -> "",
+      3 -> "")
   }
 
   object viz {

@@ -63,7 +63,7 @@ class Editor(controller: Controller) {
         Select bot to edit
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a href="#">Blue bot</a></li>
+          <li><a href="javascript:alert('hello')">Blue bot</a></li>
           <li><a href="#">Red bot</a></li>
           <li><a href="#">Green bot</a></li>
           <li><a href="#">Yellow bot</a></li>
@@ -72,5 +72,11 @@ class Editor(controller: Controller) {
 
       jQuery("#" + config.editor.consoleDivId)
         .append(html)
+  }
+
+  def clickSelectBotDropdown(playerNum: Int): Unit = {
+    if (playerNum < 0 || playerNum >= config.sim.maxPlayers) {
+      throw new IllegalArgumentException("playerNum is invalid")
+    }
   }
 }

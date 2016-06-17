@@ -73,6 +73,13 @@ object App extends JSApp {
     robodojo.controller.clickStep()
   }
 
+  @JSExport
+  def clickSelectBotDropdown(playerNum: Int, id: String): Unit = {
+    activeInstanceId = Some(id)
+    val robodojo = instances(id)
+    robodojo.controller.editor.clickSelectBotDropdown(playerNum)
+  }
+
   def initializeTicker(): Unit = {
     val config = instances(activeInstanceId.get).config
     createjs.Ticker.addEventListener("tick", tick _)
