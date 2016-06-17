@@ -44,7 +44,6 @@ class Editor(controller: Controller) {
     // TODO: add class instead of manual cssing
     jQuery("#" + config.editor.consoleDivId)
       .css("border-top", "1px solid #444")
-      .css("border-bottom", "1px solid #444")
       // TODO: Same as game margin
       .css("margin-top", "5px")
       .css("padding-top", "5px")
@@ -74,11 +73,34 @@ class Editor(controller: Controller) {
   }
 
   def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
+
+    // TODO: extract jQuery into one big html string
     jQuery("#" + config.editor.divId)
       .append(s"<div id='${config.editor.codemirrorDivId}'></div>")
 
     jQuery("#" + config.editor.codemirrorDivId)
+      .css("border", "1px solid #444")
+      .css("width", "50%")
+      .css("float", "left")
+
+    jQuery("#" + config.editor.codemirrorDivId)
       .append(s"<textarea id='${config.editor.textAreaId}'></textarea>")
+
+    // TODO put in another function
+    jQuery("#" + config.editor.divId)
+      .append(s"<div id='${config.editor.compilerOutputId}'></div>")
+
+    jQuery("#" + config.editor.compilerOutputId)
+      .css("border-top", "1px solid #444")
+      .css("border-right", "1px solid #444")
+      .css("border-bottom", "1px solid #444")
+      .css("height", jQuery("#" + config.editor.codemirrorDivId).css("height")) 
+
+    jQuery("#" + config.editor.divId)
+      .append("<div style='clear: both;'></div>")
+      
+    jQuery("#" + config.editor.compilerOutputId)
+      .text("foo")
 
     val mode = "clike"
     val params: EditorConfiguration = EditorConfig.mode(mode)

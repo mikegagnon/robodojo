@@ -36,6 +36,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val textAreaId = divId + "-textArea"
     val consoleDivId = divId + "-console"
     val codemirrorDivId = divId + "-codemirror-div"
+    val compilerOutputId = divId + "-compiler-output"
 
     val defaultPrograms = Map(
       0 -> "bank Main\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
