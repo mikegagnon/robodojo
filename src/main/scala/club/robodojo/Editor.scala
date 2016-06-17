@@ -58,7 +58,10 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
     val html = s"""
       <div class="dropdown select-bot-dropdown">
-        <button style="border-color: #444" id="${config.editor.selectBotButtonId}" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+        <button id="${config.editor.selectBotButtonId}"
+                class="btn btn-default dropdown-toggle button-border"
+                type="button"
+                data-toggle="dropdown">
         Select bot to edit
         <span class="caret"></span></button>
         <ul class="dropdown-menu">

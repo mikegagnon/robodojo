@@ -17,3 +17,7 @@
     float: left;
     margin-right: 5px
 }
+
+.button-border {
+    border-color: #444 
+}
