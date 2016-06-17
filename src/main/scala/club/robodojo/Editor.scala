@@ -74,33 +74,22 @@ class Editor(controller: Controller) {
 
   def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
 
-    // TODO: extract jQuery into one big html string
-    jQuery("#" + config.editor.divId)
-      .append(s"<div id='${config.editor.codemirrorDivId}'></div>")
-
-    jQuery("#" + config.editor.codemirrorDivId)
-      .css("border", "1px solid #444")
-      .css("width", "50%")
-      .css("float", "left")
-
-    jQuery("#" + config.editor.codemirrorDivId)
-      .append(s"<textarea id='${config.editor.textAreaId}'></textarea>")
-
-    // TODO put in another function
-    jQuery("#" + config.editor.divId)
-      .append(s"<div id='${config.editor.compilerOutputId}'></div>")
-
-    jQuery("#" + config.editor.compilerOutputId)
-      .css("border-top", "1px solid #444")
-      .css("border-right", "1px solid #444")
-      .css("border-bottom", "1px solid #444")
-      .css("height", jQuery("#" + config.editor.codemirrorDivId).css("height")) 
+    val html = s"""
+      <div>
+        <div id='${config.editor.codemirrorDivId}'
+             style="border: 1px solid #444; width: 50%; float: left">
+          <textarea id='${config.editor.textAreaId}'></textarea>
+        </div>
+        <div id='${config.editor.compilerOutputId}'
+             style="border: 1px solid #444; width: 50%; float: left">
+            foo
+        </div>
+        <div style='clear: both;'></div>
+      </div>
+      """
 
     jQuery("#" + config.editor.divId)
-      .append("<div style='clear: both;'></div>")
-      
-    jQuery("#" + config.editor.compilerOutputId)
-      .text("foo")
+      .append(html)
 
     val mode = "clike"
     val params: EditorConfiguration = EditorConfig.mode(mode)
