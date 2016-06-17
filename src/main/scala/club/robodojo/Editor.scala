@@ -6,11 +6,21 @@ import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLTextAreaElement
 import org.scalajs.jquery.jQuery
 
+import scala.collection.immutable.HashMap
+
 // TODO: does Editor really need viz?
 class Editor(controller: Controller) {
 
   // TODO: functionify
   val config = controller.config
+
+  var files = HashMap(
+      0 -> config.editor.defaultPrograms(0),
+      1 -> config.editor.defaultPrograms(1),
+      2 -> config.editor.defaultPrograms(2),
+      3 -> config.editor.defaultPrograms(3))
+
+  var currentFile = 0
 
   addConsole()
   addSelectBotDropdown()
@@ -22,7 +32,7 @@ class Editor(controller: Controller) {
   jQuery("#" + config.editor.editorId + "-div")
     .append(s"<textarea id='${config.editor.editorId}'></textarea>")
 
-  val code = "hello Scala!"
+  val file = files(currentFile)
   val mode = "clike"
   val params: EditorConfiguration = EditorConfig.mode(mode)
     .lineNumbers(true)
@@ -30,7 +40,7 @@ class Editor(controller: Controller) {
   val editor = dom.document.getElementById(config.editor.editorId) match {
     case el:HTMLTextAreaElement =>
       val m = CodeMirror.fromTextArea(el,params)
-      m.getDoc().setValue(code)
+      m.getDoc().setValue(file)
       m
     case _=> throw new IllegalStateException("TODO")
   }
@@ -57,16 +67,16 @@ class Editor(controller: Controller) {
 
   def addSelectBotDropdown(): Unit = {
 
-    val html = """
+    val html = s"""
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
         Select bot to edit
         <span class="caret"></span></button>
         <ul class="dropdown-menu">
-          <li><a href="javascript:alert('hello')">Blue bot</a></li>
-          <li><a href="#">Red bot</a></li>
-          <li><a href="#">Green bot</a></li>
-          <li><a href="#">Yellow bot</a></li>
+          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(0, '${config.id}')">Blue bot</a></li>
+          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(1, '${config.id}')">Red bot</a></li>
+          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(2, '${config.id}')">Green bot</a></li>
+          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(3, '${config.id}')">Yellow bot</a></li>
         </ul>
       </div>"""
 
@@ -78,5 +88,12 @@ class Editor(controller: Controller) {
     if (playerNum < 0 || playerNum >= config.sim.maxPlayers) {
       throw new IllegalArgumentException("playerNum is invalid")
     }
+
+    // Save the file
+    files += currentFile -> editor.getDoc().getValue()
+
+    // Open the new file
+    currentFile = playerNum
+    editor.getDoc().setValue(files(currentFile))
   }
 }
