@@ -31,10 +31,12 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   // TODO: better name than editorId
   object editor {
     val editorId = id + "-editor"
+    val consoleDivId = editorId + "-console"
   }
 
   object viz {
 
+    // TODO: shouldn't this (and more) go into object controller, outside of viz
     def consoleDivId = id + "-console"
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]

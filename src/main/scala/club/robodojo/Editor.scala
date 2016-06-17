@@ -9,7 +9,11 @@ import org.scalajs.jquery.jQuery
 // TODO: does Editor really need viz?
 class Editor(controller: Controller) {
 
+  // TODO: functionify
   val config = controller.config
+
+  addConsole()
+  addSelectBotDropdown()
 
   // TODO: configify div.id
   jQuery("#" + config.id)
@@ -32,9 +36,41 @@ class Editor(controller: Controller) {
   }
 
   // TODO: configify
+  // TODO: add class instead of manual cssing
   jQuery("#" + config.editor.editorId + "-div")
     .css("border-top", "1px solid #444")
     .css("border-bottom", "1px solid #444")
     // TODO: Same as game margin
-    .css("margin-top", "5px")
+
+  def addConsole(): Unit = {
+    val html = jQuery(s"<div id='${config.editor.consoleDivId}'></div>")
+    jQuery("#" + config.id).append(html)
+
+    // TODO: add class instead of manual cssing
+    jQuery("#" + config.editor.consoleDivId)
+      .css("border-top", "1px solid #444")
+      // TODO: Same as game margin
+      .css("margin-top", "5px")
+      .css("padding-top", "5px")
+      .css("padding-bottom", "5px")
+  }
+
+  def addSelectBotDropdown(): Unit = {
+
+    val html = """
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Select bot to edit
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Blue bot</a></li>
+          <li><a href="#">Red bot</a></li>
+          <li><a href="#">Green bot</a></li>
+          <li><a href="#">Yellow bot</a></li>
+        </ul>
+      </div>"""
+
+      jQuery("#" + config.editor.consoleDivId)
+        .append(html)
+  }
 }
