@@ -43,7 +43,7 @@ class Editor(controller: Controller) {
 
     // TODO: add class instead of manual cssing
     jQuery("#" + config.editor.consoleDivId)
-      .css("border-top", "1px solid #444")
+      //.css("border-top", "1px solid #444")
       // TODO: Same as game margin
       .css("margin-top", "5px")
       .css("padding-top", "5px")
