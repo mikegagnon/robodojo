@@ -2,3 +2,9 @@
 .robo {
     margin: 10px;
 }
+
+.editor-div {
+    background-color: #ccc;
+    border-radius: 8px;
+    padding: 10px
+}
