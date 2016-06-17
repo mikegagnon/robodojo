@@ -28,6 +28,11 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val maxLineLength = params.getOrElse("compiler.maxLineLength", 1000).asInstanceOf[Int]
   }
 
+  // TODO: better name than editorId
+  object editor {
+    val editorId = id + "-editor"
+  }
+
   object viz {
 
     def consoleDivId = id + "-console"

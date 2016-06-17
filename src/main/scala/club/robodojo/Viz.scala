@@ -68,8 +68,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
 
   stage.update()
 
-  val editor = new Editor(this)
-
   /** End initialization **************************************************************************/
 
   def updateMainDiv(): Unit = {

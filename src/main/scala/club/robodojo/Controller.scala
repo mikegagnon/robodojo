@@ -12,6 +12,9 @@ class Controller(val config: Config, val board: Board, val viz: Viz) {
   addPauseButton()
   addStepButton()
 
+  val editor = new Editor(this)
+
+
   def addConsole(): Unit = {
     val html = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
     jQuery("#" + config.id).append(html)
