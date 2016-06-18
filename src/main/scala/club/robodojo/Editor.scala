@@ -34,14 +34,6 @@ class Editor(controller: Controller)(implicit val config: Config) {
  
   /** End initialization **************************************************************************/
 
-  def addPrimaryDiv(): Unit = {
-    val html = s"""<div
-                    class = "editor"
-                    id = '${config.editor.divId}'></div>"""
-    jQuery("#" + config.id)
-      .append(html)
-  }
-
   def addConsole(): Unit = {
 
     val html = s"""
