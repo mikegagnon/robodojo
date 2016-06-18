@@ -79,18 +79,15 @@ class Editor(controller: Controller)(implicit val config: Config) {
     jQuery("#" + config.id).append(html)
 
     val mode = "clike"
-    val params: EditorConfiguration = EditorConfig.mode(mode)
-      .lineNumbers(true)
+    val params: EditorConfiguration = EditorConfig.mode(mode).lineNumbers(true)
 
-    val cmEditor =dom.document.getElementById(config.editor.textAreaId) match {
+    dom.document.getElementById(config.editor.textAreaId) match {
       case el:HTMLTextAreaElement =>
-        val m = CodeMirror.fromTextArea(el,params)
-        m.getDoc().setValue(file)
-        m
+        val cmEditor = CodeMirror.fromTextArea(el,params)
+        cmEditor.getDoc().setValue(file)
+        cmEditor
       case _=> throw new IllegalStateException("TODO")
     }
-
-    return cmEditor
   }
 
   def clickSelectBotDropdown(playerNum: Int): Unit = {
