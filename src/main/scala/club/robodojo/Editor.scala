@@ -95,10 +95,10 @@ class Editor(controller: Controller)(implicit val config: Config) {
       throw new IllegalArgumentException("playerNum is invalid")
     }
 
-    val newText = playerToColor(playerNum) + " bot <span class='caret'></span>"
+    val newDropDownText = playerToColor(playerNum) + " bot <span class='caret'></span>"
 
     jQuery("#" + config.editor.selectBotButtonId)
-      .html(newText)
+      .html(newDropDownText)
 
     // Save the file
     files += currentFileNum -> cmEditor.getDoc().getValue()
