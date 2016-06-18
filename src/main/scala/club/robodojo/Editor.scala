@@ -46,7 +46,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
                       class="btn btn-default dropdown-toggle dark-border"
                       type="button"
                       data-toggle="dropdown">
-              Select bot to edit
+              ${playerToColor(0)} bot
               <span class="caret"></span></button>
               <ul class="dropdown-menu">
                 <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(0, '${config.id}')">Blue bot</a></li>
