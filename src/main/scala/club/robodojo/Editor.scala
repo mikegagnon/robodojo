@@ -9,6 +9,7 @@ import org.scalajs.jquery.jQuery
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ArrayBuffer
 
+// TODO: use the initEditor pattern elsewhere
 class Editor(controller: Controller)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
@@ -27,14 +28,13 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
   var currentFileNum = 0
   val file = files(currentFileNum)
-
-  addConsole()
   
-  val cmEditor = addCodeMirrorEditor()
+  val cmEditor: org.denigma.codemirror.Editor  = initEditor()
  
   /** End initialization **************************************************************************/
 
-  def addConsole(): Unit = {
+  // TODO: do we neally need all these ID's?
+  def initEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
       <div class = "editor" id = '${config.editor.divId}'>
@@ -64,29 +64,19 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
           </div> <!-- end editor-console -->
 
+          <div class="dark-border light-background">
+            <div id='${config.editor.codemirrorDivId}' class="code-mirror-div">
+              <textarea id='${config.editor.textAreaId}'></textarea>
+            </div>
+            <div id='${config.editor.compilerOutputId}' class="compiler-output">
+            </div>
+            <div style='clear: both;'></div>
+          </div> <!-- end codemirror -->
+
       </div> <!-- end editor -->
       """
 
-    jQuery("#" + config.id)
-      .append(html)
-  }
-
-  def addCodeMirrorEditor(): org.denigma.codemirror.Editor = {
-
-    val html = s"""
-      <div class="dark-border light-background">
-        <div id='${config.editor.codemirrorDivId}'
-             class="code-mirror-div">
-          <textarea id='${config.editor.textAreaId}'></textarea>
-        </div>
-        <div id='${config.editor.compilerOutputId}' class="compiler-output">
-        </div>
-        <div style='clear: both;'></div>
-      </div>
-      """
-
-    jQuery("#" + config.editor.divId)
-      .append(html)
+    jQuery("#" + config.id).append(html)
 
     val mode = "clike"
     val params: EditorConfiguration = EditorConfig.mode(mode)
