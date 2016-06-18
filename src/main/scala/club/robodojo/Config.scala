@@ -35,7 +35,6 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val divId = id + "-editor-div"
     val textAreaId = divId + "-textArea"
     val consoleDivId = divId + "-console-div"
-    val codemirrorDivId = divId + "-codemirror-div"
     val compilerOutputId = divId + "-compiler-output"
     val selectBotButtonId = consoleDivId + "-select-bot-button"
 

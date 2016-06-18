@@ -37,9 +37,9 @@ class Editor(controller: Controller)(implicit val config: Config) {
   def initEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
-      <div class = "editor" id = '${config.editor.divId}'>
+      <div class = "editor">
 
-          <div class = "editor-console" id = '${config.editor.consoleDivId}'>
+          <div class = "editor-console">
 
             <div class="dropdown select-bot-dropdown">
               <button id="${config.editor.selectBotButtonId}"
@@ -65,7 +65,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
           </div> <!-- end editor-console -->
 
           <div class="dark-border light-background">
-            <div id='${config.editor.codemirrorDivId}' class="code-mirror-div">
+            <div class="code-mirror-div">
               <textarea id='${config.editor.textAreaId}'></textarea>
             </div>
             <div id='${config.editor.compilerOutputId}' class="compiler-output">
