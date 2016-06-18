@@ -106,6 +106,9 @@ class Editor(controller: Controller)(implicit val config: Config) {
     // Open the new file
     currentFileNum = playerNum
     cmEditor.getDoc().setValue(files(currentFileNum))
+
+    jQuery("#" + config.editor.compilerOutputId).html("")
+
   }
 
   def clickCompile(): Unit = {
