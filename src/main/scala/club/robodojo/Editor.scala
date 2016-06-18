@@ -28,8 +28,6 @@ class Editor(controller: Controller)(implicit val config: Config) {
   var currentFileNum = 0
   val file = files(currentFileNum)
 
-  addPrimaryDiv()
-
   addConsole()
   
   val cmEditor = addCodeMirrorEditor()
@@ -45,45 +43,39 @@ class Editor(controller: Controller)(implicit val config: Config) {
   }
 
   def addConsole(): Unit = {
-    val html = s"""<div
-                    class = "editor-console"
-                    id = '${config.editor.consoleDivId}'></div>"""
-    jQuery("#" + config.editor.divId).append(html)
-
-    addSelectBotDropdown()
-    addCompileButton()
-  }
-
-  def addSelectBotDropdown(): Unit = {
 
     val html = s"""
-      <div class="dropdown select-bot-dropdown">
-        <button id="${config.editor.selectBotButtonId}"
-                class="btn btn-default dropdown-toggle dark-border"
-                type="button"
-                data-toggle="dropdown">
-        Select bot to edit
-        <span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(0, '${config.id}')">Blue bot</a></li>
-          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(1, '${config.id}')">Red bot</a></li>
-          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(2, '${config.id}')">Green bot</a></li>
-          <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(3, '${config.id}')">Yellow bot</a></li>
-        </ul>
-      </div>"""
+      <div class = "editor" id = '${config.editor.divId}'>
 
-      jQuery("#" + config.editor.consoleDivId)
-        .append(html)
-  }
+          <div class = "editor-console" id = '${config.editor.consoleDivId}'>
 
-  def addCompileButton(): Unit = {
-    val html = s"""
-      <button type="button"
-              class="btn btn-default dark-border"
-              onclick='club.robodojo.App().clickCompile("${config.id}")'>
-        Compile
-      </button>"""
-    jQuery("#" + config.editor.consoleDivId)
+            <div class="dropdown select-bot-dropdown">
+              <button id="${config.editor.selectBotButtonId}"
+                      class="btn btn-default dropdown-toggle dark-border"
+                      type="button"
+                      data-toggle="dropdown">
+              Select bot to edit
+              <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(0, '${config.id}')">Blue bot</a></li>
+                <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(1, '${config.id}')">Red bot</a></li>
+                <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(2, '${config.id}')">Green bot</a></li>
+                <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(3, '${config.id}')">Yellow bot</a></li>
+              </ul>
+            </div> <!-- end select-bot-dropdown-->
+
+            <button type="button"
+                    class="btn btn-default dark-border"
+                    onclick='club.robodojo.App().clickCompile("${config.id}")'>
+              Compile
+            </button>
+
+          </div> <!-- end editor-console -->
+
+      </div> <!-- end editor -->
+      """
+
+    jQuery("#" + config.id)
       .append(html)
   }
 
