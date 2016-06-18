@@ -29,7 +29,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
   var currentFileNum = 0
   val file = files(currentFileNum)
   
-  val cmEditor: org.denigma.codemirror.Editor  = initEditor()
+  val cmEditor: org.denigma.codemirror.Editor = initEditor()
  
   /** End initialization **************************************************************************/
 
