@@ -290,6 +290,8 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   }
 
   def animate(): Unit = {
+    // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
+    // animations will not have an entry for animationCycleNum, which causes an exception.
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
     currentAnimations.values.foreach { animation =>
