@@ -30,7 +30,6 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val maxLineLength = params.getOrElse("compiler.maxLineLength", 1000).asInstanceOf[Int]
   }
 
-  // TODO: get rid of useless ids
   object editor {
     val divId = id + "-editor-div"
     val textAreaId = divId + "-textArea"

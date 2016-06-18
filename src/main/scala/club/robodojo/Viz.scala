@@ -74,7 +74,6 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
     jQuery("#" + config.id).attr("class", "robo")
   }
 
-  // TODO: add border to canvas instead of inside canvas
   def addCanvas(): JQuery = {
 
     val canvasHtml = s"""

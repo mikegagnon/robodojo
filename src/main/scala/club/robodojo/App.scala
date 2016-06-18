@@ -124,7 +124,7 @@ object App extends JSApp {
       return true
     }
 
-    val manifest = js.Array(      
+    val manifest = js.Array(
       js.Dynamic.literal(
         id = configs(0).viz.preload.blueBotId,
         src = configs(0).viz.preload.blueBotPath

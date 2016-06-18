@@ -28,12 +28,11 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
   var currentFileNum = 0
   val file = files(currentFileNum)
-  
+
   val cmEditor: org.denigma.codemirror.Editor = initEditor()
- 
+
   /** End initialization **************************************************************************/
 
-  // TODO: do we neally need all these ID's?
   def initEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
@@ -86,7 +85,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
         val cmEditor = CodeMirror.fromTextArea(el,params)
         cmEditor.getDoc().setValue(file)
         cmEditor
-      case _=> throw new IllegalStateException("TODO")
+      case _=> throw new IllegalStateException("Could not find textarea for editor")
     }
   }
 
