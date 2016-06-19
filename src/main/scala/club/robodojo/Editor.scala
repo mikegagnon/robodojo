@@ -131,7 +131,8 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   def addBot(board: Board, playerNum: Int): Unit = {
     val row = Random.nextInt(config.sim.numRows)
     val col = Random.nextInt(config.sim.numCols)
-    val bot = Bot(board, row, col)
+    // TODO: add direction and program
+    val bot = Bot(board, PlayerColor.numToColor(playerNum), row, col)
     val dirNum = Random.nextInt(4)
     bot.direction = dirNum match {
       case 0 => Direction.Up

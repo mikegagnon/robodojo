@@ -14,7 +14,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   0 until config.sim.numRows foreach { row =>
     0 until config.sim.numCols foreach { col =>
       if (rand.nextDouble < density) {
-          val bot = Bot(board, row, col)
+          val bot = Bot(board, PlayerColor.Blue, row, col)
           bot.direction = Direction.Right
           if (rand.nextDouble < 0.25)
             bot.direction = Direction.Left
