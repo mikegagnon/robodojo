@@ -12,7 +12,7 @@ class Controller(val board: Board, val viz: Viz)(implicit val config: Config) {
   addPauseButton()
   addStepButton()
 
-  val editor = new Editor(this)
+  val editor = new Editor(this, viz)
 
 
   def addConsole(): Unit = {

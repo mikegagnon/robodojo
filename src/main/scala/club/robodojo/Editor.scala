@@ -9,8 +9,11 @@ import org.scalajs.jquery.jQuery
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: use the initEditor pattern elsewhere
-class Editor(controller: Controller)(implicit val config: Config) {
+import com.scalawarrior.scalajs.createjs
+
+
+// TODO: Is controller really needed?
+class Editor(val controller: Controller, val viz: Viz)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
 
@@ -33,6 +36,7 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
   /** End initialization **************************************************************************/
 
+  // TODO: use the initEditor pattern elsewhere
   def initEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
@@ -110,6 +114,11 @@ class Editor(controller: Controller)(implicit val config: Config) {
 
   }
 
+  def clickCompileSetupBoard(): Unit = {
+    println("foo")
+    viz.onPausedTick = None
+  }
+
   def clickCompile(): Unit = {
 
     val file: String = cmEditor.getDoc().getValue()
@@ -118,6 +127,11 @@ class Editor(controller: Controller)(implicit val config: Config) {
       case Left(errors) => displayErrors(errors)
       case Right(program) => displaySuccess()
     }
+
+    // TODO: document
+    viz.onPausedTick = Some(clickCompileSetupBoard)
+
+    createjs.Ticker.paused = true
   }
 
   def displaySuccess(): Unit = {

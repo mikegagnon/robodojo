@@ -8,7 +8,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
 
-/*  val density = 0.5
+  val density = 0.5
 
   val rand = new Random(0)
 
@@ -44,7 +44,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
           board.addBot(bot)
       }
     }
-  }*/
+  }
 
   /*
   val bot1 = Bot(board, 1, 0)
