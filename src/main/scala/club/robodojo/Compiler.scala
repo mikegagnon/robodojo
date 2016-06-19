@@ -180,7 +180,6 @@ object Compiler {
 
     }
 
-    // TODO: test
     if (errors.nonEmpty) {
       Left(errors)
     } else if (banks.isEmpty) {
