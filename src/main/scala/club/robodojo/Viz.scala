@@ -16,7 +16,7 @@ import scala.collection.mutable.{ArrayBuffer, HashMap}
 
 import com.scalawarrior.scalajs.createjs
 
-class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config: Config) {
+class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
 
@@ -72,6 +72,37 @@ class Viz(val preload: createjs.LoadQueue, val board: Board)(implicit val config
   stage.update()
 
   /** End initialization **************************************************************************/
+
+  def newBoard(newBoard: Board): Unit = {
+    board = newBoard
+    step = false
+    onPausedTick = None
+    remainingCycles = 0.0
+
+    botImages.keys.foreach { id =>
+      botImages -= id
+    }
+
+    twinBotImages.keys.foreach { id =>
+      twinBotImages -= id
+    }
+
+    animations.keys.foreach { cycleNum =>
+      animations -= cycleNum
+    }
+
+    stage.removeAllChildren()
+
+    // TODO: factor out common code?
+    addBackground()
+    addGrid()
+    addBotImages()
+    stage.update()
+
+    1 to config.sim.moveCycles foreach { _ => cycle() }
+
+    animationCycleNum = 0
+  }
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")

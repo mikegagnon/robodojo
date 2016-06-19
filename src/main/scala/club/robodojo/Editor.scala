@@ -11,6 +11,9 @@ import scala.collection.mutable.ArrayBuffer
 
 import com.scalawarrior.scalajs.createjs
 
+// TODO: rm this import
+import scala.util.Random
+
 
 // TODO: Is controller really needed?
 class Editor(val controller: Controller, val viz: Viz)(implicit val config: Config) {
@@ -114,9 +117,58 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   }
 
+  // TODO: rm x
+  var x = 1
+
   def clickCompileSetupBoard(): Unit = {
     println("foo")
     viz.onPausedTick = None
+
+    // TODO: rm this; used just for testing
+    val newBoard = new Board()
+
+    val density = 0.5
+
+    val rand = new Random(x)
+
+    x += 1
+
+    0 until config.sim.numRows foreach { row =>
+      0 until config.sim.numCols foreach { col =>
+        if (rand.nextDouble < density) {
+            val bot = Bot(newBoard, row, col)
+            bot.direction = Direction.Right
+            if (rand.nextDouble < 0.25)
+              bot.direction = Direction.Left
+            if (rand.nextDouble < 0.25)
+              bot.direction = Direction.Up
+            if (rand.nextDouble < 0.25)
+              bot.direction = Direction.Down
+
+            val bank0 = new Bank()
+
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= MoveInstruction()
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= MoveInstruction()
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= TurnInstruction(0)
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= MoveInstruction()
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= MoveInstruction()
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= MoveInstruction()
+            if (rand.nextDouble < 0.5)
+              bank0.instructions :+= TurnInstruction(1)
+            bot.program.banks += (0 -> bank0)
+            newBoard.addBot(bot)
+        }
+      }
+    }
+
+    viz.newBoard(newBoard)
+    controller.board = newBoard
   }
 
   def clickCompile(): Unit = {

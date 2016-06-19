@@ -4,8 +4,8 @@ import org.scalajs.jquery.jQuery
 import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 
-
-class Controller(val board: Board, val viz: Viz)(implicit val config: Config) {
+// TODO: is board really needed?
+class Controller(var board: Board, val viz: Viz)(implicit val config: Config) {
 
   addConsole()
   addPlayButton()

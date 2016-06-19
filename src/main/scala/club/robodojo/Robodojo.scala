@@ -7,7 +7,6 @@ import scala.util.Random
 class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
-
   val density = 0.5
 
   val rand = new Random(0)
