@@ -334,9 +334,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     currentAnimations.values.foreach { animation =>
       animation match {
+        // TODO: break up MoveAnimation into succeed and fail?
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
-        case birthAnimation: BirthAnimation => animateBirth(birthAnimation)
+        case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
+        case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
+        case birthAnimation: BirthAnimationFail => animateBirthFail(birthAnimation)
       }
     }
 
@@ -502,9 +505,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImage.rotation = angle
   }
 
-  // TODO
-  def animateBirth(animation: BirthAnimation): Unit = {
+  def animateBirthProgress(animation: BirthAnimationProgress): Unit = {}
+  def animateBirthFail(animation: BirthAnimationFail): Unit = {}
 
+
+  // TODO
+  def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
+    println("FOO")
+    addBot(animation.newBot)
   }
 
 }

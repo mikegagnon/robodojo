@@ -4,6 +4,8 @@ package club.robodojo
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
 
 sealed trait Animation {
+
+  // TODO: not all animations require these
   val botId: Long
   val cycleNum: Int
 }
@@ -23,7 +25,8 @@ case class TurnAnimation(
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal) extends Animation
 
-sealed trait BirthAnimation
+// TODO: is this necessary?
+sealed trait BirthAnimation extends Animation
 
 case class BirthAnimationProgress(
   botId: Long,
@@ -32,8 +35,10 @@ case class BirthAnimationProgress(
   oldCol: Int,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal) extends Animation with BirthAnimation
+  direction: Direction.EnumVal) extends BirthAnimation
 
 case class BirthAnimationFail(
   botId: Long,
-  cycleNum: Int) extends Animation with BirthAnimation
+  cycleNum: Int) extends BirthAnimation
+
+case class BirthAnimationSucceed(botId: Long, cycleNum: Int, newBot: Bot) extends BirthAnimation

@@ -33,6 +33,7 @@ class Board(implicit val config: Config) {
         "already occupied")
     }
 
+  // TODO: cycle bots sorted by id
   def cycle(): ArrayBuffer[Animation] = {
     cycleNum += 1
     bots.flatMap{ (bot: Bot) => bot.cycle() }
