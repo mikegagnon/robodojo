@@ -170,6 +170,8 @@ case class CreateInstruction(
     } else if (cycleNum > requiredCycles) {
       throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
+              println("FOO")
+
       val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
       return Some(BirthAnimationProgress(bot.id, cycleNum, bot.row, bot.col, destRow, destCol,
         bot.direction))
@@ -182,11 +184,17 @@ case class CreateInstruction(
     val oldRow = bot.row
     val oldCol = bot.col
 
+    println("FOO")
+
+
     bot.board.matrix(row)(col) match {
       case None => {
 
+        println("FOO")
+
         val emptyProgram = Program.emptyProgram(numBanks)
 
+        // TODO: create and set mobile flag
         val newBot = Bot(
           bot.board,
           bot.playerColor,
