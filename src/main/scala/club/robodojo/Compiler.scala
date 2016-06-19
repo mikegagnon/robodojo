@@ -75,7 +75,7 @@ object Compiler {
       }
 
   def unrecognizedInstruction(tl: TokenLine) = {
-    val message = s"Unrecognized instruction name: ${tl.tokens(0)}"
+    val message = s"Unrecognized instruction: <tt>${tl.tokens(0)}</tt>."
     val errorMessage = ErrorMessage(ErrorCode.UnrecognizedInstruction, tl.lineNumber, message)
     CompileLineResult(None, Some(errorMessage))
   }
@@ -83,11 +83,11 @@ object Compiler {
   // TESTED
   def compileBank(tl: TokenLine): CompileLineResult =
     if (tl.tokens.length > 2) {
-      val message = "Too many parameters: the <tt>bank</tt> directive requires exactly one parameter"
+      val message = "Too many parameters: the <tt>bank</tt> directive requires exactly one parameter."
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length < 2) {
-      val message = "Missing parameter: the <tt>bank</tt> directive requires exactly one parameter"
+      val message = "Missing parameter: the <tt>bank</tt> directive requires exactly one parameter."
       val errorMessage = ErrorMessage(ErrorCode.MissingParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else {
@@ -98,7 +98,7 @@ object Compiler {
   def compileMove(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length > 1) {
       val message = "Too many parameters: the <tt>move</tt> instruction does not take any " +
-        "parameters"
+        "parameters."
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length == 1) {
@@ -111,13 +111,13 @@ object Compiler {
   // TESTED
   def compileTurn(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length < 2) {
-      val message = "Missing parameter: the <tt>turn</tt> instruction requires an integer parameter"
+      val message = "Missing parameter: the <tt>turn</tt> instruction requires an integer paramete."
       val errorCode = ErrorCode.MissingParams
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length > 2) {
       val message = "Too many parameters: the <tt>turn</tt> instruction requires exactly one " +
-        "integer parameter"
+        "integer parameter."
       val errorCode = ErrorCode.TooManyParams
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))   
@@ -133,7 +133,7 @@ object Compiler {
       } catch {
         case _ : NumberFormatException => {
           val message = "Wrong parameter type: the <tt>turn</tt> instruction requires an integer " +
-            s"parameter. <tt>${param}</tt> is not an integer"
+            s"parameter. <tt>${param}</tt> is not an integer."
           val errorCode = ErrorCode.WrongParamType
           val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
           CompileLineResult(None, Some(errorMessage))
@@ -182,7 +182,7 @@ object Compiler {
             banks(bankNumber).instructions += instruction
           } else {
             errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineNumber, "Undeclared " +
-              "bank: you must place a <tt>bank</tt> directive before you place any instructions")
+              "bank: you must place a <tt>bank</tt> directive before you place any instructions.")
           }
         }
       }
