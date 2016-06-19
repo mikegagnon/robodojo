@@ -56,6 +56,8 @@ object Compiler {
       }
       // Remove comments
       .map { line: String => line.replaceAll(";.*", "") }
+      // Replace "," with " , "
+      .map { line: String => line.replaceAll(",", " , ")}
       // Separate into tokens
       .map { line: String => line.split("""\s+""") }
       // Drop empty tokens
