@@ -112,6 +112,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       throw new IllegalArgumentException("playerNum is invalid")
     }
 
+    // TODO: move playerToColor to Bot.PlayerColor?
     val newDropDownText = playerToColor(playerNum) + " bot <span class='caret'></span>"
 
     jQuery("#" + config.editor.selectBotButtonId)
@@ -142,8 +143,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-    println(programs(playerNum))
-
     programs(playerNum) match {
       case Left(_) => throw new IllegalStateException("This code shouldn't be reachable")
       case Right(program) => bot.program = program
@@ -157,11 +156,12 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // TODO: cleanup
   def clickCompile(): Unit = {
 
-    val file: String = cmEditor.getDoc().getValue()
+    files += currentFileNum -> cmEditor.getDoc().getValue()
 
     // Compile each file
     0 until 4 foreach { playerNum =>
-      programs += playerNum ->Compiler.compile(files(playerNum))
+      programs += playerNum -> Compiler.compile(files(playerNum))
+      println(playerNum, programs(playerNum))
     }
 
     // TODO: factor out common code?
