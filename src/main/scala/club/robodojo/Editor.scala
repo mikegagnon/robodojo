@@ -141,6 +141,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // TODO: cleanup
   def clickCompile(): Unit = {
 
+    // Save the current program-string
     files += currentPlayerColor -> cmEditor.getDoc().getValue()
 
     // Compile each file
@@ -149,19 +150,21 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       println(playerNum, programs(playerNum))
     }
 
-    // TODO: factor out common code?
+    // TODO: move this up
+    val newBoard = new Board()
+
+    // Display result of compilation. If the compilation succeeded
     programs(currentPlayerColor) match {
       case Left(errors) => displayErrors(errors)
       case Right(_) => displaySuccess()
     }
 
-    // TODO: move this up
-    val newBoard = new Board()
+    // For playerColor's whose program succeeded in compilation: add a bot to the board
+    PlayerColor.colors.foreach { playerColor =>
+      programs(playerColor) match {
+        case Left(_) => ()
+        case Right(_) => addBot(newBoard, playerColor)
 
-    PlayerColor.colors.foreach { playerNum =>
-      programs(playerNum) match {
-        case Left(_) => println("foo")
-        case Right(_) => addBot(newBoard, playerNum)
       }
     }
 
