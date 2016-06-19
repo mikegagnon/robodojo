@@ -98,7 +98,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // playerColor is the color that has been selected from the dropdown
   def clickSelectBotDropdown(playerColor: PlayerColor.EnumVal): Unit = {
 
-    // TODO: move playerToColor to Bot.PlayerColor?
     val newDropDownText = PlayerColor.toColorString(playerColor) + " bot <span class='caret'></span>"
 
     jQuery("#" + config.editor.selectBotButtonId)
@@ -165,8 +164,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
 
     viz.newBoard(newBoard)
-    controller.board = newBoard
-
     createjs.Ticker.paused = true
   }
 

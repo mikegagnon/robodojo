@@ -89,10 +89,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     stage.removeAllChildren()
 
-    // TODO: factor out common code?
     addBackground()
     addGrid()
     addBotImages()
+    
     stage.update()
 
     1 to config.sim.moveCycles foreach { _ => cycle() }

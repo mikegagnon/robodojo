@@ -4,8 +4,7 @@ import org.scalajs.jquery.jQuery
 import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 
-// TODO: is board really needed?
-class Controller(var board: Board, val viz: Viz)(implicit val config: Config) {
+class Controller(val viz: Viz)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
 
