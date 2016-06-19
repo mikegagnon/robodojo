@@ -14,8 +14,6 @@ import com.scalawarrior.scalajs.createjs
 // TODO: develop sane random number access
 import scala.util.Random
 
-
-// TODO: Is controller really needed?
 class Editor(val controller: Controller, val viz: Viz)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
@@ -26,8 +24,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     PlayerColor.Green -> config.editor.defaultPrograms(2),
     PlayerColor.Yellow -> config.editor.defaultPrograms(3))
 
-  // TODO: should this really be a member variable?
-  // programs(playerNum) == the result of compiling playerNums program
+  // programs(playerColor) == the result of compiling playerColor's program
   var programs: HashMap[PlayerColor.EnumVal, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
     PlayerColor.Blue -> Left(ArrayBuffer()),
     PlayerColor.Red -> Left(ArrayBuffer()),
