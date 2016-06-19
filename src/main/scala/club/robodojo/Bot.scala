@@ -50,22 +50,13 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
   // TESTED
   def cycle(): Option[Animation] = {
 
-    println(1)
-
-    println(program.banks(bankNum))
-
     var bank = program.banks(bankNum)
 
-    println(2)
-
     if (bank.instructions.length > 0) {
-    println(3)
 
       val instruction = bank.instructions(instructionNum)
-    println(4)
 
       val animation: Option[Animation] = instruction.cycle(this, cycleNum)
-    println(5)
 
       if (cycleNum == instruction.requiredCycles) {
 

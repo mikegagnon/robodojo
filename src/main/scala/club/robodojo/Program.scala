@@ -10,7 +10,7 @@ object Program {
   // TODO: make sure the program has as at least one empty bank
   def emptyProgram(numBanks: Int): Program = {
     var banks = Map[Int, Bank]()
-    1 to numBanks foreach { bankNum =>
+    0 until numBanks foreach { bankNum =>
       banks += bankNum -> Bank(ArrayBuffer[Instruction]())
     }
 
