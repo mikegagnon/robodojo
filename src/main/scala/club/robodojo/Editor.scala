@@ -96,6 +96,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
   }
 
+  // playerColor is the color that has been selected from the dropdown
   def clickSelectBotDropdown(playerColor: PlayerColor.EnumVal): Unit = {
 
     // TODO: move playerToColor to Bot.PlayerColor?
@@ -118,10 +119,8 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
     val row = Random.nextInt(config.sim.numRows)
     val col = Random.nextInt(config.sim.numCols)
-    // TODO: add direction and program
-    val bot = Bot(board, playerColor, row, col)
     val dirNum = Random.nextInt(4)
-    bot.direction = dirNum match {
+    val direction = dirNum match {
       case 0 => Direction.Up
       case 1 => Direction.Down
       case 2 => Direction.Left
@@ -129,10 +128,13 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-    programs(playerColor) match {
+    val program = programs(playerColor) match {
       case Left(_) => throw new IllegalStateException("This code shouldn't be reachable")
-      case Right(program) => bot.program = program
+      case Right(program) => program
     }
+
+    val bot = Bot(board, playerColor, row, col, direction, program)
+
     board.addBot(bot)
   }
 
