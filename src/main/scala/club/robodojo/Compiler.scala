@@ -26,6 +26,7 @@ object ErrorCode {
   case object WrongParamType extends EnumVal
   case object UndeclaredBank extends EnumVal
   case object MaxBanksExceeded extends EnumVal
+  case object EmptyBanks extends EnumVal
 }
 
 // TODO: underline the offensive text in the program text?
@@ -179,8 +180,11 @@ object Compiler {
 
     }
 
+    // TODO: test
     if (errors.nonEmpty) {
       Left(errors)
+    } else if (banks.isEmpty) {
+      Left(ArrayBuffer(ErrorMessage(ErrorCode.EmptyBanks, 0, "Your program is empty.")))
     } else {
       Right(Program(banks))
     }

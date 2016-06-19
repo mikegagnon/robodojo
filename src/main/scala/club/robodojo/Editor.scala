@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuffer
 
 import com.scalawarrior.scalajs.createjs
 
-// TODO: rm this import
+// TODO: develop sane random number access
 import scala.util.Random
 
 
@@ -32,7 +32,18 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     2 -> config.editor.defaultPrograms(2),
     3 -> config.editor.defaultPrograms(3))
 
+  // TODO: should this really be a member variable?
+  // programs(playerNum) == the result of compiling playerNums program
+  var programs: HashMap[Int, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
+    0 -> Left(ArrayBuffer()),
+    1 -> Left(ArrayBuffer()),
+    2 -> Left(ArrayBuffer()),
+    3 -> Left(ArrayBuffer()))
+
+  // TODO: better name?
   var currentFileNum = 0
+
+  // TODO: is this really needed?
   val file = files(currentFileNum)
 
   val cmEditor: org.denigma.codemirror.Editor = initEditor()
@@ -117,22 +128,59 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   }
 
+  def addBot(board: Board, playerNum: Int): Unit = {
+    val row = Random.nextInt(config.sim.numRows)
+    val col = Random.nextInt(config.sim.numCols)
+    val bot = Bot(board, row, col)
+    val dirNum = Random.nextInt(4)
+    bot.direction = dirNum match {
+      case 0 => Direction.Up
+      case 1 => Direction.Down
+      case 2 => Direction.Left
+      case 3 => Direction.Right
+      case _ => throw new IllegalStateException("This code shouldn't be reachable")
+    }
+
+    println(programs(playerNum))
+
+    programs(playerNum) match {
+      case Left(_) => throw new IllegalStateException("This code shouldn't be reachable")
+      case Right(program) => bot.program = program
+    }
+    board.addBot(bot)
+  }
+
   // TODO: rm x
   var x = 1
 
+  // TODO: cleanup
   def clickCompile(): Unit = {
 
     val file: String = cmEditor.getDoc().getValue()
 
-    Compiler.compile(file) match {
+    // Compile each file
+    0 until 4 foreach { playerNum =>
+      programs += playerNum ->Compiler.compile(files(playerNum))
+    }
+
+    // TODO: factor out common code?
+    programs(currentFileNum) match {
       case Left(errors) => displayErrors(errors)
-      case Right(program) => displaySuccess()
+      case Right(_) => displaySuccess()
+    }
+
+    // TODO: move this up
+    val newBoard = new Board()
+
+    0 until 4 foreach { playerNum =>
+      programs(playerNum) match {
+        case Left(_) => println("foo")
+        case Right(_) => addBot(newBoard, playerNum)
+      }
     }
 
     // TODO: rm this; used just for testing
-    val newBoard = new Board()
-
-    val density = 0.5
+    /*val density = 0.5
 
     val rand = new Random(x)
 
@@ -170,7 +218,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
             newBoard.addBot(bot)
         }
       }
-    }
+    }*/
 
     viz.newBoard(newBoard)
     controller.board = newBoard
