@@ -140,8 +140,6 @@ object CompilerTest extends TestSuite {
         val text = "1,2,3"
         val expectedResult = Array(TokenLine(Array("1", ",", "2", ",", "3"), 0))
         val result = Compiler.tokenize(text)
-        println(expectedResult(0))
-        println(result(0))
         assert(result.sameElements(expectedResult))
       }
 
