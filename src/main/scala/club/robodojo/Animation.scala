@@ -23,11 +23,17 @@ case class TurnAnimation(
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal) extends Animation
 
-case class BirthAnimation(
+sealed trait BirthAnimation
+
+case class BirthAnimationProgress(
   botId: Long,
   cycleNum: Int,
   oldRow: Int,
   oldCol: Int,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal) extends Animation
+  direction: Direction.EnumVal) extends Animation with BirthAnimation
+
+case class BirthAnimationFail(
+  botId: Long,
+  cycleNum: Int) extends Animation with BirthAnimation
