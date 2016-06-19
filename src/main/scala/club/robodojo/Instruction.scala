@@ -12,6 +12,7 @@ sealed abstract class Instruction {
 // TODO: move appropriate functions into objects
 object MoveInstruction {
 
+  // TESTED
   // Assuming the bot is ar (row, col), pointing in direction dir, then where would it try to move
   // if it executed a move instruction?
   def dirRowCol(direction: Direction.EnumVal, row: Int, col: Int)(implicit config: Config): RowCol
@@ -61,7 +62,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
         bot.direction))
     }
 
-  // TODO: test
+  // TESTED
   def execute(bot: Bot): Option[Animation] = {
 
     val RowCol(row, col) = MoveInstruction.dirRowCol(bot.direction, bot.row, bot.col)
@@ -118,6 +119,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
         case _ => Direction.Right
       }
 
+    // TODO: factor out cycle and moveInstruction.cycle?
     def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
       if (cycleNum == requiredCycles) {
         return execute(bot)
@@ -127,6 +129,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
         return Some(TurnAnimation(bot.id, cycleNum, bot.direction, turnDirection))
       }
 
+    // Executre
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
         case 0 => Direction.rotateLeft(currentDir)

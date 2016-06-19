@@ -85,23 +85,25 @@ object InstructionTest extends TestSuite {
     }
 
 
-    "Variable with Int == 0"-{
-      Variable(Left(0))
-    }
-
-    "Variable with Int == sim.maxNumVariables - 1"-{
-      Variable(Left(config.sim.maxNumVariables - 1))
-    }
-
-    "Variable with Int == -1"-{
-      intercept[IllegalArgumentException] {
-        Variable(Left(-1))
+    "Variable"-{
+      "Variable with Int == 0"-{
+        Variable(Left(0))
       }
-    }
 
-    "Variable with Int == sim.maxNumVariables"-{
-      intercept[IllegalArgumentException] {
-        Variable(Left(config.sim.maxNumVariables))
+      "Variable with Int == sim.maxNumVariables - 1"-{
+        Variable(Left(config.sim.maxNumVariables - 1))
+      }
+
+      "Variable with Int == -1"-{
+        intercept[IllegalArgumentException] {
+          Variable(Left(-1))
+        }
+      }
+
+      "Variable with Int == sim.maxNumVariables"-{
+        intercept[IllegalArgumentException] {
+          Variable(Left(config.sim.maxNumVariables))
+        }
       }
     }
 

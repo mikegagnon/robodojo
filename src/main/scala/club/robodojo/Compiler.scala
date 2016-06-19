@@ -3,12 +3,15 @@ package club.robodojo
 import scala.collection.mutable.ArrayBuffer
 
 case class TokenLine(tokens: Array[String], lineNumber: Int) {
+
+  // TESTED
   override def equals(that: Any): Boolean =
     that match {
       case tl: TokenLine => tokens.sameElements(tl.tokens) && lineNumber == tl.lineNumber
       case _ => false
     }
   
+  // TODO: TEST
   override def hashCode: Int = {
     var x = 13
     tokens.foreach { str: String => x *= str.hashCode }
@@ -39,6 +42,7 @@ case class CompileLineResult(
 
 object Compiler {
 
+  // TESTED
   // TODO: deal with commas. How about replace all commas with " , "
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
     text
@@ -75,6 +79,7 @@ object Compiler {
     CompileLineResult(None, Some(errorMessage))
   }
 
+  // TESTED
   def compileBank(tl: TokenLine): CompileLineResult =
     if (tl.tokens.length > 2) {
       val message = "Too many parameters: the <tt>bank</tt> directive requires exactly one parameter"
@@ -88,6 +93,7 @@ object Compiler {
       CompileLineResult(None, None)
     }
 
+  // TESTED
   def compileMove(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length > 1) {
       val message = "Too many parameters: the <tt>move</tt> instruction does not take any " +
@@ -101,6 +107,7 @@ object Compiler {
       throw new IllegalStateException("This code shouldn't be reachable")
     }
 
+  // TESTED
   def compileTurn(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length < 2) {
       val message = "Missing parameter: the <tt>turn</tt> instruction requires an integer parameter"
@@ -133,6 +140,7 @@ object Compiler {
       }
     }
 
+  // TESTED
   def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)

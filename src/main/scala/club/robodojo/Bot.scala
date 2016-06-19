@@ -47,6 +47,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
   var cycleNum = 0
 
+  // TESTED
   def cycle(): Option[Animation] = {
 
     var bank = program.banks(bankNum)
