@@ -149,7 +149,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     // Compile each file
     PlayerColor.colors.foreach { playerColor =>
       programs += playerColor -> Compiler.compile(files(playerColor))
-      println(playerColor, programs(playerColor))
     }
 
     val newBoard = new Board()
