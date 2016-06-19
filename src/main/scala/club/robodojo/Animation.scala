@@ -22,3 +22,12 @@ case class TurnAnimation(
   cycleNum: Int,
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal) extends Animation
+
+case class BirthAnimation(
+  botId: Long,
+  cycleNum: Int,
+  oldRow: Int,
+  oldCol: Int,
+  newRow: Int,
+  newCol: Int,
+  direction: Direction.EnumVal) extends Animation

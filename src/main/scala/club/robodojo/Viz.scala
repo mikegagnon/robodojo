@@ -336,6 +336,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       animation match {
         case moveAnimation: MoveAnimation => animateMove(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
+        case birthAnimation: BirthAnimation => animateBirth(birthAnimation)
       }
     }
 
@@ -499,6 +500,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val botImage = botImages(animation.botId)
     botImage.rotation = angle
+  }
+
+  // TODO
+  def animateBirth(animation: BirthAnimation): Unit = {
+
   }
 
 }

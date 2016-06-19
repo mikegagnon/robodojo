@@ -58,6 +58,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val requiredCycles = config.sim.moveCycles
 
+  // TODO: factor out common code?
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
     if (cycleNum == requiredCycles) {
       return execute(bot)
@@ -159,7 +160,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
 case class CreateInstruction(
     childInstructionSet: InstructionSet.EnumVal,
     numBanks: Int,
-    mobile: Boolean)(implicit val config: Config) {
+    mobile: Boolean)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
 
@@ -196,5 +197,22 @@ case class CreateInstruction(
 
     Math.min(calculatedCost, maxCreateDur)
   }
+
+  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
+    if (cycleNum == requiredCycles) {
+      return execute(bot)
+    } else if (cycleNum > requiredCycles) {
+      throw new IllegalArgumentException("cycleNum > requiredCycles")
+    } else {
+      val RowCol(destRow, destCol) = MoveInstruction.dirRowCol(bot.direction, bot.row, bot.col)
+      return Some(BirthAnimation(bot.id, cycleNum, bot.row, bot.col, destRow, destCol,
+        bot.direction))
+    }
+
+  // TODO
+  def execute(bot: Bot): Option[Animation] = {
+    null
+  }
+
 
 }
