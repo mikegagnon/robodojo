@@ -17,7 +17,7 @@ object BotTest extends TestSuite {
           instr: ArrayBuffer[Instruction] = ArrayBuffer[Instruction]()) = {
 
         val board = new Board()
-        val bot = Bot(board, row, col)
+        val bot = Bot(board, PlayerColor.Blue, row, col)
         bot.direction = dir
         board.addBot(bot)
         val bank0 = new Bank()

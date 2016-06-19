@@ -110,7 +110,7 @@ object InstructionTest extends TestSuite {
     "MoveInstruction.execute"-{
       "successfully"-{
         val board = new Board()
-        val bot = Bot(board, 0, 0)
+        val bot = Bot(board, PlayerColor.Blue, 0, 0)
         bot.direction = Direction.Right
 
         val moveInstruction = MoveInstruction()
@@ -126,8 +126,8 @@ object InstructionTest extends TestSuite {
       "unsuccessfully"-{
         val board = new Board()
 
-        val bot1 = Bot(board, 0, 0)
-        val bot2 = Bot(board, 0, 1)
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1)
 
         board.addBot(bot1)
         board.addBot(bot2)
@@ -148,7 +148,7 @@ object InstructionTest extends TestSuite {
     "TurnInstruction.execute"-{
 
       val board = new Board()
-      val bot = Bot(board, 0, 0)
+      val bot = Bot(board, PlayerColor.Blue, 0, 0)
 
       "turn left"-{
 

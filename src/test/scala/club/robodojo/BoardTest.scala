@@ -13,20 +13,20 @@ object BoardTest extends TestSuite {
       val board = new Board()
 
       "successfully add Bot at 0,0"-{
-        val bot = Bot(board, 0, 0)
+        val bot = Bot(board, PlayerColor.Blue, 0, 0)
         board.addBot(bot)
       }
 
       "successfully add Bot at numRows-1,numCols-1"-{
-        val bot = Bot(board, config.sim.numRows - 1, config.sim.numCols - 1)
+        val bot = Bot(board, PlayerColor.Blue, config.sim.numRows - 1, config.sim.numCols - 1)
         board.addBot(bot)
       }
 
       "unsuccessfully add Bot because bot is already in matrix"-{
         val board = new Board()
-        val bot1 = Bot(board, 0, 0)
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0)
         board.addBot(bot1)
-        val bot2 = Bot(board, 0, 0)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 0)
         intercept[IllegalArgumentException] {
           board.addBot(bot2)
         }
@@ -36,7 +36,7 @@ object BoardTest extends TestSuite {
     "moveBot"-{
       "successfully"-{
         val board = new Board()
-        val bot = Bot(board, 1, 1)
+        val bot = Bot(board, PlayerColor.Blue, 1, 1)
         board.addBot(bot)
         board.matrix(1)(1) ==> Some(bot)
         board.moveBot(bot, 0, 1)
@@ -47,8 +47,8 @@ object BoardTest extends TestSuite {
       }
       "unsuccessfully"-{
         val board = new Board()
-        val bot1 = Bot(board, 1, 1)
-        val bot2 = Bot(board, 0, 1)
+        val bot1 = Bot(board, PlayerColor.Blue, 1, 1)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1)
         board.addBot(bot1)
         board.addBot(bot2)
         board.matrix(1)(1) ==> Some(bot1)
