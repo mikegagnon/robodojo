@@ -138,9 +138,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     board.addBot(bot)
   }
 
-  // TODO: rm x
-  var x = 1
-
   // TODO: cleanup
   def clickCompile(): Unit = {
 
@@ -167,47 +164,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
         case Right(_) => addBot(newBoard, playerNum)
       }
     }
-
-    // TODO: rm this; used just for testing
-    /*val density = 0.5
-
-    val rand = new Random(x)
-
-    x += 1
-
-    0 until config.sim.numRows foreach { row =>
-      0 until config.sim.numCols foreach { col =>
-        if (rand.nextDouble < density) {
-            val bot = Bot(newBoard, row, col)
-            bot.direction = Direction.Right
-            if (rand.nextDouble < 0.25)
-              bot.direction = Direction.Left
-            if (rand.nextDouble < 0.25)
-              bot.direction = Direction.Up
-            if (rand.nextDouble < 0.25)
-              bot.direction = Direction.Down
-
-            val bank0 = new Bank()
-
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= MoveInstruction()
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= MoveInstruction()
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= TurnInstruction(0)
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= MoveInstruction()
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= MoveInstruction()
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= MoveInstruction()
-            if (rand.nextDouble < 0.5)
-              bank0.instructions :+= TurnInstruction(1)
-            bot.program.banks += (0 -> bank0)
-            newBoard.addBot(bot)
-        }
-      }
-    }*/
 
     viz.newBoard(newBoard)
     controller.board = newBoard
