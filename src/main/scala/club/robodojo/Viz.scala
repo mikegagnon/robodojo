@@ -92,7 +92,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     addBackground()
     addGrid()
     addBotImages()
-    
+
     stage.update()
 
     1 to config.sim.moveCycles foreach { _ => cycle() }
@@ -194,15 +194,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def newBotContainer(bot: Bot): createjs.Container = {
 
-    // TODO: better var name
-    val botColorId = bot.playerColor match {
+    val botColor = bot.playerColor match {
       case PlayerColor.Blue => config.viz.preload.blueBotId
       case PlayerColor.Red => config.viz.preload.redBotId
       case PlayerColor.Green => config.viz.preload.greenBotId
       case PlayerColor.Yellow => config.viz.preload.yellowBotId
     }
 
-    val img = preload.getResult(botColorId)
+    val img = preload.getResult(botColor)
       .asInstanceOf[org.scalajs.dom.raw.HTMLImageElement]
 
     val bitmap = new createjs.Bitmap(img);
