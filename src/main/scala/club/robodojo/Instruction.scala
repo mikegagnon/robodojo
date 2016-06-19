@@ -185,7 +185,18 @@ case class CreateInstruction(
     bot.board.matrix(row)(col) match {
       case None => {
 
-        bot.board.moveBot(bot, row, col)
+        val emptyProgram = Program.emptyProgram(numBanks)
+
+        val newBot = Bot(
+          bot.board,
+          bot.playerColor,
+          row,
+          col,
+          bot.direction,
+          emptyProgram)
+
+        bot.board.addBot(newBot)
+
         Some(BirthAnimationProgress(bot.id, requiredCycles, oldRow, oldCol, row, col,
           bot.direction))
       }
