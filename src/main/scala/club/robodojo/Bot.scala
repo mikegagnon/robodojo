@@ -1,6 +1,5 @@
 package club.robodojo
 
-// TODO: replace playerNum with playerColor
 object PlayerColor {
   sealed trait EnumVal
   case object Blue extends EnumVal
@@ -56,7 +55,6 @@ object Bot {
 
 }
 
-// TODO: change playerColor to color?
 class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
   val id = Bot.getNextId
