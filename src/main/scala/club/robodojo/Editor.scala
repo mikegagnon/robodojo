@@ -20,31 +20,25 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   /** Begin initialization ************************************************************************/
 
-  val playerToColor = Map(
-    0 -> "Blue",
-    1 -> "Red",
-    2 -> "Green",
-    3 -> "Yellow")
-
-  var files = HashMap(
-    0 -> config.editor.defaultPrograms(0),
-    1 -> config.editor.defaultPrograms(1),
-    2 -> config.editor.defaultPrograms(2),
-    3 -> config.editor.defaultPrograms(3))
+  var files: HashMap[PlayerColor.EnumVal, String] = HashMap(
+    PlayerColor.Blue -> config.editor.defaultPrograms(0),
+    PlayerColor.Red -> config.editor.defaultPrograms(1),
+    PlayerColor.Green -> config.editor.defaultPrograms(2),
+    PlayerColor.Yellow -> config.editor.defaultPrograms(3))
 
   // TODO: should this really be a member variable?
   // programs(playerNum) == the result of compiling playerNums program
-  var programs: HashMap[Int, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
-    0 -> Left(ArrayBuffer()),
-    1 -> Left(ArrayBuffer()),
-    2 -> Left(ArrayBuffer()),
-    3 -> Left(ArrayBuffer()))
+  var programs: HashMap[PlayerColor.EnumVal, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
+    PlayerColor.Blue -> Left(ArrayBuffer()),
+    PlayerColor.Red -> Left(ArrayBuffer()),
+    PlayerColor.Green -> Left(ArrayBuffer()),
+    PlayerColor.Yellow -> Left(ArrayBuffer()))
 
   // TODO: better name?
-  var currentFileNum = 0
+  var currentPlayerColor: PlayerColor.EnumVal = PlayerColor.Blue
 
   // TODO: is this really needed?
-  val file = files(currentFileNum)
+  val file = files(currentPlayerColor)
 
   val cmEditor: org.denigma.codemirror.Editor = initEditor()
 
@@ -63,7 +57,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
                       class="btn btn-default dropdown-toggle dark-border"
                       type="button"
                       data-toggle="dropdown">
-              ${playerToColor(0)} bot
+              ${PlayerColor.toColorString(PlayerColor.Blue)} bot
               <span class="caret"></span></button>
               <ul class="dropdown-menu">
                 <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(0, '${config.id}')">Blue bot</a></li>
@@ -107,33 +101,30 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
   }
 
-  def clickSelectBotDropdown(playerNum: Int): Unit = {
-    if (playerNum < 0 || playerNum >= config.sim.maxPlayers) {
-      throw new IllegalArgumentException("playerNum is invalid")
-    }
+  def clickSelectBotDropdown(playerColor: PlayerColor.EnumVal): Unit = {
 
     // TODO: move playerToColor to Bot.PlayerColor?
-    val newDropDownText = playerToColor(playerNum) + " bot <span class='caret'></span>"
+    val newDropDownText = PlayerColor.toColorString(playerColor) + " bot <span class='caret'></span>"
 
     jQuery("#" + config.editor.selectBotButtonId)
       .html(newDropDownText)
 
     // Save the file
-    files += currentFileNum -> cmEditor.getDoc().getValue()
+    files += currentPlayerColor -> cmEditor.getDoc().getValue()
 
     // Open the new file
-    currentFileNum = playerNum
-    cmEditor.getDoc().setValue(files(currentFileNum))
+    currentPlayerColor = playerColor
+    cmEditor.getDoc().setValue(files(currentPlayerColor))
 
     jQuery("#" + config.editor.compilerOutputId).html("")
 
   }
 
-  def addBot(board: Board, playerNum: Int): Unit = {
+  def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
     val row = Random.nextInt(config.sim.numRows)
     val col = Random.nextInt(config.sim.numCols)
     // TODO: add direction and program
-    val bot = Bot(board, PlayerColor.numToColor(playerNum), row, col)
+    val bot = Bot(board, playerColor, row, col)
     val dirNum = Random.nextInt(4)
     bot.direction = dirNum match {
       case 0 => Direction.Up
@@ -143,7 +134,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-    programs(playerNum) match {
+    programs(playerColor) match {
       case Left(_) => throw new IllegalStateException("This code shouldn't be reachable")
       case Right(program) => bot.program = program
     }
@@ -156,16 +147,16 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // TODO: cleanup
   def clickCompile(): Unit = {
 
-    files += currentFileNum -> cmEditor.getDoc().getValue()
+    files += currentPlayerColor -> cmEditor.getDoc().getValue()
 
     // Compile each file
-    0 until 4 foreach { playerNum =>
+    PlayerColor.colors.foreach { playerNum =>
       programs += playerNum -> Compiler.compile(files(playerNum))
       println(playerNum, programs(playerNum))
     }
 
     // TODO: factor out common code?
-    programs(currentFileNum) match {
+    programs(currentPlayerColor) match {
       case Left(errors) => displayErrors(errors)
       case Right(_) => displaySuccess()
     }
@@ -173,7 +164,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     // TODO: move this up
     val newBoard = new Board()
 
-    0 until 4 foreach { playerNum =>
+    PlayerColor.colors.foreach { playerNum =>
       programs(playerNum) match {
         case Left(_) => println("foo")
         case Right(_) => addBot(newBoard, playerNum)

@@ -8,6 +8,8 @@ object PlayerColor {
   case object Green extends EnumVal
   case object Yellow extends EnumVal
 
+  val colors = List(Blue, Red, Green, Yellow)
+
   // TODO: do we really need this?
   def numToColor(playerNum: Int): EnumVal =
     playerNum match {
@@ -16,6 +18,14 @@ object PlayerColor {
       case 2 => Green
       case 3 => Yellow
       case _ => throw new IllegalArgumentException("Bad playerNum: " + playerNum)
+    }
+
+  def toColorString(playerColor: PlayerColor.EnumVal) =
+    playerColor match {
+      case Blue => "Blue"
+      case Red => "Red"
+      case Green => "Green"
+      case Yellow => "Yellow"
     }
 }
 

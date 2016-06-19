@@ -77,7 +77,8 @@ object App extends JSApp {
   def clickSelectBotDropdown(playerNum: Int, id: String): Unit = {
     activeInstanceId = Some(id)
     val robodojo = instances(id)
-    robodojo.controller.editor.clickSelectBotDropdown(playerNum)
+    val playerColor: PlayerColor.EnumVal = PlayerColor.numToColor(playerNum)
+    robodojo.controller.editor.clickSelectBotDropdown(playerColor)
   }
 
   @JSExport
