@@ -138,7 +138,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     board.addBot(bot)
   }
 
-  // TODO: cleanup
   def clickCompile(): Unit = {
 
     // Save the current program-string
@@ -150,7 +149,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       println(playerNum, programs(playerNum))
     }
 
-    // TODO: move this up
     val newBoard = new Board()
 
     // Display result of compilation. If the compilation succeeded
@@ -164,7 +162,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       programs(playerColor) match {
         case Left(_) => ()
         case Right(_) => addBot(newBoard, playerColor)
-
       }
     }
 
