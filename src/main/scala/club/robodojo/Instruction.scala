@@ -1,9 +1,16 @@
 package club.robodojo
 
+
+object InstructionSet {
+  sealed trait EnumVal
+  case object Basic extends EnumVal
+  case object Extended extends EnumVal
+}
+
 sealed abstract class Instruction {
 
   // TODO: document instruction set
-  val instructionSet: Int
+  val instructionSet: InstructionSet.EnumVal
   val requiredCycles: Int
 
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
@@ -47,7 +54,7 @@ object MoveInstruction {
 
 case class MoveInstruction(implicit val config: Config) extends Instruction {
 
-  val instructionSet = 0
+  val instructionSet = InstructionSet.Basic
 
   val requiredCycles = config.sim.moveCycles
 
@@ -110,9 +117,10 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 }
 
 // TODO: take direction as a ParamValue?
+// TODO: take leftOrRight as a Direction.EnumVal
 case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extends Instruction {
 
-    val instructionSet = 0
+    val instructionSet = InstructionSet.Basic
     val requiredCycles = config.sim.turnCycles
     val turnDirection = leftOrRight match {
         case 0 => Direction.Left
@@ -145,3 +153,4 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
       Some(TurnAnimation(bot.id, requiredCycles, oldDirection, turnDirection))
     }
 }
+
