@@ -10,6 +10,7 @@ class Board(implicit val config: Config) {
 
   var cycleNum = 0
 
+  // Tested
   def addBot(bot: Bot): Unit =
     matrix(bot.row)(bot.col) match {
       case None => {
@@ -19,6 +20,7 @@ class Board(implicit val config: Config) {
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
 
+  // Tested
   def moveBot(bot: Bot, row: Int, col: Int): Unit =
     matrix(row)(col) match {
       case None => {

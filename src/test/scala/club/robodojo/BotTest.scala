@@ -10,24 +10,6 @@ object BotTest extends TestSuite {
 
   val tests = this {
 
-    "Bot.equals and Bot.hashCode"-{
-
-      val board = new Board()
-
-      "same bot"-{
-        val a = new Bot(board)
-        a ==> a
-        a.hashCode ==> a.hashCode
-      }
-
-      "different bot"-{
-        val a = new Bot(board)
-        val b = new Bot(board)
-        assert(a != b)
-        assert(a.hashCode != b.hashCode)
-      }
-    }
-
     // TODO: factor out common code
     "cycle"-{
 
