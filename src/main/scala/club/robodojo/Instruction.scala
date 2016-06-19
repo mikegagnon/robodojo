@@ -154,3 +154,47 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
     }
 }
 
+// TODO: take params as ParamValue objects?
+// TODO: test
+case class CreateInstruction(
+    childInstructionSet: InstructionSet.EnumVal,
+    numBanks: Int,
+    mobile: Boolean)(implicit val config: Config) {
+
+  val instructionSet = InstructionSet.Basic
+
+  // TODO: will need to change to def if take ParamValue objects as params
+  val requiredCycles = {
+
+    val durCreate1 = config.sim.durCreate1
+    val durCreate2 = config.sim.durCreate2
+    val durCreate3 = config.sim.durCreate3
+    val durCreate3a = config.sim.durCreate3a
+    val durCreate4 = config.sim.durCreate4
+    val durCreate5 = config.sim.durCreate5
+    val maxCreateDur = config.sim.maxCreateDur
+
+    val primary = durCreate1 + durCreate2 * numBanks
+    val mobilityCost = if (mobile) durCreate3 else 1 
+    val secondaryMobilityCost = if (mobile) durCreate3a else 0
+
+    val instructionSetCostBasic = childInstructionSet match {
+      case InstructionSet.Basic => durCreate4
+      case InstructionSet.Extended => 0
+    }
+
+    val instructionSetCostExtended = childInstructionSet match {
+      case InstructionSet.Basic => 0
+      case InstructionSet.Extended => durCreate5
+    }
+
+    val calculatedCost =
+      primary * mobilityCost +
+      secondaryMobilityCost +
+      instructionSetCostBasic +
+      instructionSetCostExtended
+
+    Math.min(calculatedCost, maxCreateDur)
+  }
+
+}

@@ -18,8 +18,19 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val numCols: Int = params.getOrElse("sim.numCols", 6).asInstanceOf[Int]
 
     // instruction constants
+    // TODO: change to dur
+    // TODO: put these in child object?
     val moveCycles = params.getOrElse("sim.moveCycles", 18).asInstanceOf[Int]
     val turnCycles = params.getOrElse("sim.turnCycles", 5).asInstanceOf[Int]
+
+    // For the create instruction
+    val durCreate1 = params.getOrElse("sim.durCreate1", 5).asInstanceOf[Int]
+    val durCreate2 = params.getOrElse("sim.durCreate2", 1).asInstanceOf[Int]
+    val durCreate3 = params.getOrElse("sim.durCreate3", 1).asInstanceOf[Int]
+    val durCreate3a = params.getOrElse("sim.durCreate3a", 5).asInstanceOf[Int]
+    val durCreate4 = params.getOrElse("sim.durCreate4", 0).asInstanceOf[Int]
+    val durCreate5 = params.getOrElse("sim.durCreate5", 5).asInstanceOf[Int]
+    val maxCreateDur = params.getOrElse("sim.maxCreateDur", 50).asInstanceOf[Int]
 
     val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
 
