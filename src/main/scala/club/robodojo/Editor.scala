@@ -18,6 +18,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   /** Begin initialization ************************************************************************/
 
+  // files(playerColor) == the string representation of playerColor's program
   var files: HashMap[PlayerColor.EnumVal, String] = HashMap(
     PlayerColor.Blue -> config.editor.defaultPrograms(0),
     PlayerColor.Red -> config.editor.defaultPrograms(1),
@@ -31,11 +32,9 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     PlayerColor.Green -> Left(ArrayBuffer()),
     PlayerColor.Yellow -> Left(ArrayBuffer()))
 
-  // TODO: better name?
+  // Only one program-string can be viewed at a time. currentPlayerColor is the color of the 
+  // program currently being viewed
   var currentPlayerColor: PlayerColor.EnumVal = PlayerColor.Blue
-
-  // TODO: is this really needed?
-  val file = files(currentPlayerColor)
 
   val cmEditor: org.denigma.codemirror.Editor = initEditor()
 
@@ -92,7 +91,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     dom.document.getElementById(config.editor.textAreaId) match {
       case el:HTMLTextAreaElement =>
         val cmEditor = CodeMirror.fromTextArea(el,params)
-        cmEditor.getDoc().setValue(file)
+        cmEditor.getDoc().setValue(files(currentPlayerColor))
         cmEditor
       case _=> throw new IllegalStateException("Could not find textarea for editor")
     }
