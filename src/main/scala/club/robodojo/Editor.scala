@@ -36,11 +36,11 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // program currently being viewed.
   var currentPlayerColor: PlayerColor.EnumVal = PlayerColor.Blue
 
-  val cmEditor: org.denigma.codemirror.Editor = initEditor()
+  val cmEditor: org.denigma.codemirror.Editor = initCmEditor()
 
   /** End initialization **************************************************************************/
 
-  def initEditor(): org.denigma.codemirror.Editor = {
+  def initCmEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
       <div class = "editor">
