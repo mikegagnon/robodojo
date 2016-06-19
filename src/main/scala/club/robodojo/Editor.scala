@@ -40,7 +40,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   /** End initialization **************************************************************************/
 
-  // TODO: use the initEditor pattern elsewhere
   def initEditor(): org.denigma.codemirror.Editor = {
 
     val html = s"""
