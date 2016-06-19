@@ -7,18 +7,13 @@ import com.scalawarrior.scalajs.createjs
 // TODO: is board really needed?
 class Controller(var board: Board, val viz: Viz)(implicit val config: Config) {
 
-  addConsole()
-  addPlayButton()
-  addPauseButton()
-  addStepButton()
+  /** Begin initialization ************************************************************************/
+
+  addHtml()
 
   val editor = new Editor(this, viz)
 
-
-  def addConsole(): Unit = {
-    val html = jQuery(s"<div id='${config.viz.consoleDivId}'></div>")
-    jQuery("#" + config.viz.boardWrapperDivId).append(html)
-  }
+  /** End initialization **************************************************************************/
 
   def buttonHtml(functionName: String, glyph: String): String = 
     s"""
@@ -26,19 +21,15 @@ class Controller(var board: Board, val viz: Viz)(implicit val config: Config) {
         <span class='glyphicon glyphicon-${glyph}'></span>
       </button>"""
 
-  def addPlayButton(): Unit = {
-    val html = buttonHtml("clickPlay", "play")
-    jQuery("#" + config.viz.consoleDivId).append(html)
-  }
-
-  def addPauseButton(): Unit = {
-    val html = buttonHtml("clickPause", "pause")
-    jQuery("#" + config.viz.consoleDivId).append(html)
-  }
-
-  def addStepButton(): Unit = {
-    val html = buttonHtml("clickStep", "step-forward")
-    jQuery("#" + config.viz.consoleDivId).append(html)
+  def addHtml(): Unit = {
+    val html = s"""
+      <div id='${config.viz.consoleDivId}'>
+        ${buttonHtml("clickPlay", "play")}
+        ${buttonHtml("clickPause", "pause")}
+        ${buttonHtml("clickStep", "step-forward")}
+      </div>
+      """
+    jQuery("#" + config.viz.boardWrapperDivId).append(html)
   }
 
   def clickPlay(): Unit = {
@@ -50,6 +41,8 @@ class Controller(var board: Board, val viz: Viz)(implicit val config: Config) {
     createjs.Ticker.paused = true
   }
 
+  // TODO: BUG: if you click step (as the first click), it doesn't step. It only steps on the second
+  // click
   def clickStep(): Unit =
     if (createjs.Ticker.paused) {
       viz.step = true
