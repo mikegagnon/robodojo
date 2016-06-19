@@ -129,6 +129,10 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
 
     // TODO: document
+    if (viz.onPausedTick.nonEmpty) {
+      throw new IllegalStateException("Cannot overwrite viz.onPausedTick")
+    }
+
     viz.onPausedTick = Some(clickCompileSetupBoard)
 
     createjs.Ticker.paused = true
