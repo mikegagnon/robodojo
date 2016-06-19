@@ -34,4 +34,36 @@ object Direction {
     Left -> Up
   )
 
+  // TESTED
+  // Assuming the bot is ar (row, col), pointing in direction dir, then where would it try to move
+  // if it executed a move instruction?
+  def dirRowCol(direction: Direction.EnumVal, row: Int, col: Int)(implicit config: Config): RowCol
+      = {
+
+    if (row < 0 || row >= config.sim.numRows || col < 0 || col >= config.sim.numCols) {
+      throw new IllegalArgumentException("row, col is out of bounds")
+    }
+
+    val rc = direction match {
+      case Direction.Up => RowCol(row - 1, col)
+      case Direction.Down => RowCol(row + 1, col)
+      case Direction.Left => RowCol(row, col - 1)
+      case Direction.Right => RowCol(row, col + 1)
+      case Direction.NoDir =>
+        throw new IllegalArgumentException("Cannot compute dirRowCol for NoDir")
+    }
+
+    if (rc.row == -1) {
+      RowCol(config.sim.numRows - 1, rc.col)
+    } else if (rc.row == config.sim.numRows) {
+      RowCol(0, rc.col)
+    } else if (rc.col == -1)  {
+      RowCol(rc.row, config.sim.numCols - 1)
+    } else if (rc.col == config.sim.numCols) {
+      RowCol(rc.row, 0)
+    } else {
+      rc
+    }
+  }
+
 }
