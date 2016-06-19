@@ -24,9 +24,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // true, then unpauses the Ticker. Then Viz executes exactly one cycle, and pauses the Ticker.
   var step = false
 
-  // TODO: document
-  var onPausedTick: Option[Function0[Unit]] = None
-
   // Every tick (except when step == true), Viz calculates how many cycles to execute, as a Double.
   // Viz executes floor(numCycles + remainingCycles) cycles and sets remainingCycles =
   // numCycles - floor(numCycles). This way, the number of cycles executed in one second ~=
@@ -76,7 +73,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def newBoard(newBoard: Board): Unit = {
     board = newBoard
     step = false
-    onPausedTick = None
     remainingCycles = 0.0
 
     botImages.keys.foreach { id =>
@@ -306,7 +302,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def tick(event: js.Dynamic): Unit = {
     
     if (createjs.Ticker.paused) {
-      onPausedTick.foreach{ fn => fn() }
+      return
     } else {
       val cycles =
         if (step) {

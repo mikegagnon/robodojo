@@ -120,9 +120,14 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // TODO: rm x
   var x = 1
 
-  def clickCompileSetupBoard(): Unit = {
-    println("foo")
-    viz.onPausedTick = None
+  def clickCompile(): Unit = {
+
+    val file: String = cmEditor.getDoc().getValue()
+
+    Compiler.compile(file) match {
+      case Left(errors) => displayErrors(errors)
+      case Right(program) => displaySuccess()
+    }
 
     // TODO: rm this; used just for testing
     val newBoard = new Board()
@@ -169,23 +174,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
     viz.newBoard(newBoard)
     controller.board = newBoard
-  }
-
-  def clickCompile(): Unit = {
-
-    val file: String = cmEditor.getDoc().getValue()
-
-    Compiler.compile(file) match {
-      case Left(errors) => displayErrors(errors)
-      case Right(program) => displaySuccess()
-    }
-
-    // TODO: document
-    if (viz.onPausedTick.nonEmpty) {
-      throw new IllegalStateException("Cannot overwrite viz.onPausedTick")
-    }
-
-    viz.onPausedTick = Some(clickCompileSetupBoard)
 
     createjs.Ticker.paused = true
   }
