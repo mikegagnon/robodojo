@@ -11,7 +11,6 @@ import scala.collection.mutable.ArrayBuffer
 
 import com.scalawarrior.scalajs.createjs
 
-// TODO: develop sane random number access
 import scala.util.Random
 
 class Editor(val controller: Controller, val viz: Viz)(implicit val config: Config) {
