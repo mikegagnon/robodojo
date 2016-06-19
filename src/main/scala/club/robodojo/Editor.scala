@@ -31,7 +31,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     PlayerColor.Green -> Left(ArrayBuffer()),
     PlayerColor.Yellow -> Left(ArrayBuffer()))
 
-  // Only one program-string can be viewed at a time. currentPlayerColor is the color of the 
+  // Only one program-string can be viewed at a time. currentPlayerColor is the color of the
   // program currently being viewed.
   var currentPlayerColor: PlayerColor.EnumVal = PlayerColor.Blue
 

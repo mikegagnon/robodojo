@@ -35,7 +35,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   val canvas = addCanvas()
   val stage = addStage()
 
-  // TODO: change add* to
   addBackground()
   addGrid()
 
