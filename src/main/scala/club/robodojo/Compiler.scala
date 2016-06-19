@@ -11,11 +11,12 @@ case class TokenLine(tokens: Array[String], lineNumber: Int) {
       case _ => false
     }
   
-  // TODO: TEST
+  // TESTED
   override def hashCode: Int = {
     var x = 13
-    tokens.foreach { str: String => x *= str.hashCode }
-    return x * lineNumber.hashCode
+    tokens.foreach { str: String => x *= (str.hashCode + 13)}
+
+    return x * (lineNumber.hashCode + 13)
   }
 
   override def toString(): String = s"TokenLine([${tokens.mkString(",")}], ${lineNumber})"

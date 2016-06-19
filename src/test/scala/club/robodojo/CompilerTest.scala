@@ -18,18 +18,21 @@ object CompilerTest extends TestSuite {
           val a = TokenLine(Array(), 0)
           val b = TokenLine(Array(), 0)
           a ==> b
+          a.hashCode ==> b.hashCode
         }
 
         "unequal lineNumbers"-{
           val a = TokenLine(Array(), 0)
           val b = TokenLine(Array(), 1)
           assert(a != b)
+          assert(a.hashCode != b.hashCode)
         }
 
         "unequal token array"-{
           val a = TokenLine(Array(), 0)
           val b = TokenLine(Array("a"), 0)
           assert(a != b)
+          assert(a.hashCode != b.hashCode)
         }
       }
 
