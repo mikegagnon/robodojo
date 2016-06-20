@@ -123,10 +123,15 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
 // TODO: take params as ParamValue objects?
 // TODO: test
 // TODO: crash on numBanks < 1 or > 50
+// TODO: Prevent FAT hack
 case class CreateInstruction(
     childInstructionSet: InstructionSet.EnumVal,
     numBanks: Int,
     mobile: Boolean)(implicit val config: Config) extends Instruction {
+
+  if (numBanks < 1) {
+    throw new IllegalArgumentException("numBanks < 1 == " + numBanks)
+  }
 
   val instructionSet = InstructionSet.Basic
 
