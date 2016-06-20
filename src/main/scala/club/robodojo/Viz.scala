@@ -541,15 +541,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def animateBotImageProgress(
       animation: AnimationProgress,
-      primaryImage: HashMap[Long, createjs.Container]): Unit = {
+      primaryImages: HashMap[Long, createjs.Container]): Unit = {
 
-  }
-
-  // TODO: factor out code common to animateMove
-  // TODO: document
-  def animateBirthProgress(animation: BirthAnimationProgress): Unit = {
-
-   // This is where we look into the future to see if the move is successful or not
+    // This is where we look into the future to see if the move is successful or not
     val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its create instruction
@@ -557,7 +551,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // success == true iff the new bot successfully moves into its birth cell
     val success = futureAnimation match {
-      case m: BirthAnimationSucceed => true
+      case m: AnimationProgressSucceed => true
       case _ => false
     }
 
@@ -567,13 +561,13 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // TODO: do we really need botImage?
     val twinImage = twinBotImages(animation.botId)
-    val birthImage = birthBotImages(animation.botId)
+    val primaryImage = primaryImages(animation.botId)
 
     // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
     if (!success) {
-      birthImage.x = retina(halfCell - cellSize)
-      birthImage.y = retina(halfCell - cellSize)
-      birthImage.rotation = Direction.toAngle(animation.direction)
+      primaryImage.x = retina(halfCell - cellSize)
+      primaryImage.y = retina(halfCell - cellSize)
+      primaryImage.rotation = Direction.toAngle(animation.direction)
 
       twinImage.x = retina(halfCell - cellSize)
       twinImage.y = retina(halfCell - cellSize)
@@ -618,7 +612,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         (-1.0, -1.0)
       }
 
-    val (birthRow: Double, birthCol: Double) =
+    val (primaryRow: Double, primaryCol: Double) =
       // if the bot has finished its movement, then move the bot to its new home
       if (animation.cycleNum == animation.requiredCycles) {
         (newRow, newCol)
@@ -663,12 +657,16 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     twinImage.y = retina(halfCell + cellSize * twinRow)
     twinImage.rotation = Direction.toAngle(animation.direction)
 
-    birthImage.x = retina(halfCell + cellSize * birthCol)
-    birthImage.y = retina(halfCell + cellSize * birthRow)
-    birthImage.rotation = Direction.toAngle(animation.direction)
-
+    primaryImage.x = retina(halfCell + cellSize * primaryCol)
+    primaryImage.y = retina(halfCell + cellSize * primaryRow)
+    primaryImage.rotation = Direction.toAngle(animation.direction)
 
   }
+
+  // TODO: factor out code common to animateMove
+  // TODO: document
+  def animateBirthProgress(animation: BirthAnimationProgress): Unit =
+    animateBotImageProgress(animation, birthBotImages)
 
   // TODO: cleanup
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
