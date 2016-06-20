@@ -360,6 +360,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       animation match {
         // TODO: break up MoveAnimation into succeed and fail?
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
+        case moveAnimation: MoveAnimationSucceed => animateMoveSucceed(moveAnimation)
+        case moveAnimation: MoveAnimationFail => animateMoveFail(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
@@ -397,15 +399,15 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def animateMoveProgress(animation: MoveAnimationProgress): Unit = {
 
     // This is where we look into the future to see if the move is successful or not
-    val endOfMoveCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
+    val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its move instruction
-    val futureAnimation = animations(endOfMoveCycleNum)(animation.botId)
+    val futureAnimation = animations(endCycleNum)(animation.botId)
 
     // success == true iff the bot successfully moves into a new cell
     val success = futureAnimation match {
-      case m: MoveAnimationProgress => m.oldRow != m.newRow || m.oldCol != m.newCol
-      case _ => throw new IllegalStateException("Bad")
+      case m: MoveAnimationSucceed => true
+      case _ => false
     }
 
     val cellSize = config.viz.cellSize
@@ -512,6 +514,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     twinImage.rotation = Direction.toAngle(animation.direction)
   }
 
+  def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
+
+  }
+
+  def animateMoveFail(animation: MoveAnimationFail): Unit = {
+
+  }
+
   def animateTurn(animation: TurnAnimation): Unit = {
 
     val oldDirection = animation.oldDirection
@@ -538,10 +548,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def animateBirthProgress(animation: BirthAnimationProgress): Unit = {
 
    // This is where we look into the future to see if the move is successful or not
-    val endOfCreateCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
+    val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its create instruction
-    val futureAnimation = animations(endOfCreateCycleNum)(animation.botId)
+    val futureAnimation = animations(endCycleNum)(animation.botId)
 
     // success == true iff the new bot successfully moves into its birth cell
     val success = futureAnimation match {

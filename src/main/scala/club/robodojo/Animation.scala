@@ -7,6 +7,7 @@ sealed trait Animation {
   val botId: Long
 }
 
+// TODO: rename?
 sealed trait AnimationProgress extends Animation {
   val botId: Long
   val cycleNum: Int
@@ -18,6 +19,8 @@ sealed trait AnimationProgress extends Animation {
   val direction: Direction.EnumVal
 }
 
+sealed trait MoveAnimation extends Animation
+
 // TODO: document
 case class MoveAnimationProgress(
   botId: Long,
@@ -27,18 +30,19 @@ case class MoveAnimationProgress(
   oldCol: Int,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal) extends AnimationProgress
+  direction: Direction.EnumVal) extends AnimationProgress with MoveAnimation
 
-// TODO: rm
-/*
+// TODO: rm cycleNum?
+case class MoveAnimationFail(
+  botId: Long,
+  cycleNum: Int) extends BirthAnimation
+
+// TODO: are these fields really necessary
 case class MoveAnimationSucceed(
   botId: Long,
-  newBotId: Long,
-  playerColor: PlayerColor.EnumVal,
   row: Int,
   col: Int,
-  direction: Direction.EnumVal) extends BirthAnimation
-*/
+  direction: Direction.EnumVal) extends MoveAnimation
 
 case class TurnAnimation(
   botId: Long,
@@ -63,6 +67,7 @@ case class BirthAnimationFail(
   botId: Long,
   cycleNum: Int) extends BirthAnimation
 
+// TODO: are all these fields necessary?
 case class BirthAnimationSucceed(
   botId: Long,
   newBotId: Long,

@@ -47,10 +47,12 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       case None => {
 
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimationProgress(bot.id, requiredCycles, requiredCycles, oldRow, oldCol, row, col, bot.direction))
+        Some(MoveAnimationSucceed(bot.id, row, col, bot.direction))
       }
-      case Some(_) => Some(MoveAnimationProgress(bot.id, requiredCycles, requiredCycles, oldRow, oldCol, oldRow, oldCol,
-        bot.direction))
+      case Some(_) => {
+        println("Foo")
+        Some(MoveAnimationFail(bot.id, requiredCycles))
+      }
     }
   }
 }
