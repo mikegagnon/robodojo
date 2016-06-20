@@ -551,7 +551,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val halfCell = cellSize / 2.0
 
     // TODO: do we really need botImage?
-    val botImage = botImages(animation.botId)
+    val twinImage = twinBotImages(animation.botId)
     val birthImage = birthBotImages(animation.botId)
 
     // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
@@ -571,10 +571,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val newRow = animation.newRow
     val newCol = animation.newCol
 
-    // TODO: proper torus wrap
-    /*val (twinRow: Double, twinCol: Double) =
+    val (twinRow: Double, twinCol: Double) =
       // if the bot has finished its movement, then move the twin off screen
-      if (animation.cycleNum == config.sim.moveCycles) {
+      if (animation.cycleNum == animation.requiredCycles) {
+        // TODO: this shouldn't happen, right?
         (-1.0, -1.0)
       }
       // if the bot is moving up, towards off the screen
@@ -596,11 +596,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       // if the bot isn't wrapping around the screen
       else  {
         (-1.0, -1.0)
-      }*/
+      }
 
     val (birthRow: Double, birthCol: Double) =
       // if the bot has finished its movement, then move the bot to its new home
-      if (animation.cycleNum == config.sim.moveCycles) {
+      if (animation.cycleNum == animation.requiredCycles) {
         (newRow, newCol)
       }
       // if the bot is moving up, towards off the screen
@@ -639,9 +639,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       }
 
 
-    /*botImage.x = retina(halfCell + cellSize * col)
-    botImage.y = retina(halfCell + cellSize * row)
-    botImage.rotation = Direction.toAngle(animation.direction)*/
+    twinImage.x = retina(halfCell + cellSize * twinCol)
+    twinImage.y = retina(halfCell + cellSize * twinRow)
+    twinImage.rotation = Direction.toAngle(animation.direction)
 
     birthImage.x = retina(halfCell + cellSize * birthCol)
     birthImage.y = retina(halfCell + cellSize * birthRow)
@@ -655,9 +655,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
 
-  // TODO
+  // TODO: cleanup
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
-    println("FOO")
     addBot(animation.newBotId,
       animation.playerColor,
       animation.row,
@@ -669,6 +668,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val halfCell = cellSize / 2.0
     birthImage.x = retina(halfCell - cellSize)
     birthImage.y = retina(halfCell - cellSize)
+
+    val twinImage = twinBotImages(animation.botId)
+    twinImage.x = retina(halfCell - cellSize)
+    twinImage.y = retina(halfCell - cellSize)
   }
 
 }
