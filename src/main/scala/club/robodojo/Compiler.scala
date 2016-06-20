@@ -203,7 +203,6 @@ object Compiler {
         return CompileLineResult(None, Some(errorMessage))
       }
 
-      // TODO: only accept 0 or 1
       val instructionSet = if (instructionSetToken == 0) {
           InstructionSet.Basic
         } else if (instructionSetToken == 1) {
@@ -212,11 +211,8 @@ object Compiler {
           throw new IllegalStateException("This code shouldn't be reachable")
         }
 
-      // TODO range check
-      val numBanks = tl.tokens(3).toInt
-
-      // TODO: only accept 0 or 1
-      val mobile = tl.tokens(1) == 1
+      val numBanks = numBanksToken
+      val mobile = mobileToken == 1
 
       val instruction = CreateInstruction(instructionSet, numBanks, mobile)
 

@@ -419,6 +419,9 @@ object CompilerTest extends TestSuite {
             testProgramFail(text, ErrorCode.BadMobileParam)(config)
           }
         }
+        "succeed"-{
+          testInstruction("create 0, 1, 1", Right(CreateInstruction(InstructionSet.Basic, 1, true)))
+        }
       }
     }
   }
