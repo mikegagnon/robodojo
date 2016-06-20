@@ -117,7 +117,6 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 }
 
 // TODO: take params as ParamValue objects?
-// TODO: test
 // TODO: crash on numBanks < 1 or > 50
 // TODO: Prevent FAT hack
 case class CreateInstruction(
