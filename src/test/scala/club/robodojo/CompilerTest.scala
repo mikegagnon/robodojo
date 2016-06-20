@@ -282,6 +282,8 @@ object CompilerTest extends TestSuite {
           testInstruction("move foo", Left(ErrorCode.TooManyParams))
         }
       }
+
+      // TODO: put success and fail under different scopes
       "turn"-{
         "success 1"-{
           testInstruction("turn 1", Right(TurnInstruction(1)))
@@ -299,6 +301,7 @@ object CompilerTest extends TestSuite {
           testInstruction("turn 1 foo", Left(ErrorCode.TooManyParams))
         }
       }
+      // TODO: put success and fail under different scopes
       "bank"-{
 
         "fail: too many params"-{
@@ -361,7 +364,14 @@ object CompilerTest extends TestSuite {
           testProgram(text, expectedProgram)
         }
       }
-      //"create"
+      "create"-{
+        "fail"-{
+          "too many tokens"-{
+            val text = "create 1, 1, 1 X"
+            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+          }
+        }
+      }
     }
   }
 }
