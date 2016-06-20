@@ -10,23 +10,30 @@ object Bot {
     id
   }
 
+  // TODO: replace with setter functions?
   def apply(board: Board,
             playerColor: PlayerColor.EnumVal,
             row: Int,
             col: Int,
             direction: Direction.EnumVal = Direction.NoDir,
-            program: Program = Program(Map[Int, Bank]())): Bot = {
+            program: Program = Program(Map[Int, Bank]()),
+            instructionSet: InstructionSet.EnumVal = InstructionSet.Basic,
+            mobile: Boolean = false): Bot = {
 
     val bot = new Bot(board, playerColor)
     bot.row = row
     bot.col = col
     bot.direction = direction
     bot.program = program
+    bot.instructionSet = instructionSet
+    bot.mobile = mobile
     return bot
   }
 
 }
 
+// TODO: bots can only execute instructions from their instruction set
+// TODO: bots can only move if they are mobile
 class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
   val id = Bot.getNextId
@@ -40,6 +47,10 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
   var direction: Direction.EnumVal = Direction.NoDir
 
   var program = Program(Map[Int, Bank]())
+
+  var instructionSet: InstructionSet.EnumVal = InstructionSet.Basic
+
+  var mobile = false
 
   var bankNum = 0
 

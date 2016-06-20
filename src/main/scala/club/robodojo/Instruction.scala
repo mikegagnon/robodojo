@@ -122,6 +122,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
 
 // TODO: take params as ParamValue objects?
 // TODO: test
+// TODO: crash on numBanks < 1 or > 50
 case class CreateInstruction(
     childInstructionSet: InstructionSet.EnumVal,
     numBanks: Int,
@@ -200,7 +201,9 @@ case class CreateInstruction(
           row,
           col,
           bot.direction,
-          emptyProgram)
+          emptyProgram,
+          childInstructionSet,
+          mobile)
 
         bot.board.addBot(newBot)
 

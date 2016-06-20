@@ -192,5 +192,48 @@ object InstructionTest extends TestSuite {
 
       }
     }
+
+    "CreateInstruction.execute"-{
+
+      def testCase(
+          board: Board,
+          color: PlayerColor.EnumVal,
+          instructionSet: InstructionSet.EnumVal,
+          numBanks: Int,
+          mobile: Boolean): Option[Bot] = {
+        val bot = Bot(board, color, 0, 0, Direction.Right)
+        val instruction = CreateInstruction(instructionSet, numBanks, mobile)
+        instruction.execute(bot)
+        return board.matrix(0)(1)
+      }
+
+      "successfully"-{
+        "blue, basic, 5, false"-{
+          val board = new Board()
+          val newBot = testCase(board,PlayerColor.Blue, InstructionSet.Basic, 5, false).get
+          newBot.playerColor ==> PlayerColor.Blue
+          newBot.instructionSet ==> InstructionSet.Basic
+          newBot.program.banks.size ==> 5
+          newBot.mobile ==> false
+        }
+        "red, extended, 3, true"-{
+          val board = new Board()
+          val newBot = testCase(board, PlayerColor.Red, InstructionSet.Extended, 3, true).get
+          newBot.playerColor ==> PlayerColor.Red
+          newBot.instructionSet ==> InstructionSet.Extended
+          newBot.program.banks.size ==> 3
+          newBot.mobile ==> true
+        }
+      }
+
+      "unsuccessfully"-{
+        val board = new Board()
+        val bot = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+        board.addBot(bot)
+        val newBot = testCase(board,PlayerColor.Red, InstructionSet.Basic, 5, false).get
+        newBot.playerColor ==> PlayerColor.Blue
+      }
+
+    }
   }
 }
