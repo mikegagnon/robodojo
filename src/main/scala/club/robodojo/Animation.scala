@@ -1,5 +1,7 @@
 package club.robodojo
 
+// TODO: cleanup and document
+
 // The Animation classes provide just information to Viz so that Viz can animate the instruction
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
 
@@ -19,9 +21,12 @@ sealed trait AnimationProgress extends Animation {
   val direction: Direction.EnumVal
 }
 
-
-// TODO: BOOKMARK
-sealed trait AnimationProgressSucceed extends Animation
+sealed trait AnimationProgressSucceed extends Animation {
+  val botId: Long
+  val row: Int
+  val col: Int
+  val direction: Direction.EnumVal
+}
 
 sealed trait MoveAnimation extends Animation
 
@@ -46,7 +51,7 @@ case class MoveAnimationSucceed(
   botId: Long,
   row: Int,
   col: Int,
-  direction: Direction.EnumVal) extends MoveAnimation
+  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed
 
 case class TurnAnimation(
   botId: Long,
@@ -78,4 +83,4 @@ case class BirthAnimationSucceed(
   playerColor: PlayerColor.EnumVal,
   row: Int,
   col: Int,
-  direction: Direction.EnumVal) extends BirthAnimation
+  direction: Direction.EnumVal) extends BirthAnimation with AnimationProgressSucceed

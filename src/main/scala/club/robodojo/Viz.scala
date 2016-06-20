@@ -539,7 +539,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImage.rotation = angle
   }
 
-  def animateBotImageMove(animation: MoveAnimationProgress): Unit = {
+  def animateBotImageProgress(
+      animation: AnimationProgress,
+      primaryImage: HashMap[Long, createjs.Container]): Unit = {
 
   }
 
