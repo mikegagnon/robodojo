@@ -159,6 +159,7 @@ object Compiler {
 
   // TODO: friendlier error messages
   // TODO: make compliant with Robocom standard
+  // TESTED
   def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length != 6 ||
         tl.tokens(2) != "," ||

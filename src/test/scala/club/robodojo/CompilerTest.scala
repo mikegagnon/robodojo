@@ -420,7 +420,22 @@ object CompilerTest extends TestSuite {
           }
         }
         "succeed"-{
-          testInstruction("create 0, 1, 1", Right(CreateInstruction(InstructionSet.Basic, 1, true)))
+          "instructionSet == 0"-{
+            testInstruction("create 0, 1, 1",
+              Right(CreateInstruction(InstructionSet.Basic, 1, true)))
+          }
+          "instructionSet == 1"-{
+            testInstruction("create 1, 1, 1",
+              Right(CreateInstruction(InstructionSet.Extended, 1, true)))
+          }
+          "numBanks == max"-{
+            testInstruction(s"create 1, ${config.sim.maxBanks} , 1",
+              Right(CreateInstruction(InstructionSet.Extended, config.sim.maxBanks, true)))
+          }
+          "mobile = false"-{
+            testInstruction("create 1, 1, 0",
+              Right(CreateInstruction(InstructionSet.Extended, 1, false)))
+          }
         }
       }
     }
