@@ -359,7 +359,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     currentAnimations.values.foreach { animation =>
       animation match {
         // TODO: break up MoveAnimation into succeed and fail?
-        case moveAnimation: MoveAnimation => animateMove(moveAnimation)
+        case moveAnimation: MoveAnimationProgress => animateMove(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
@@ -394,17 +394,17 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
   //     primary image of the bot move off screen. Then, we have the twin image move on screen.
   //     Once the movement is complete, we move the image off screen again.
-  def animateMove(animation: MoveAnimation): Unit = {
+  def animateMove(animation: MoveAnimationProgress): Unit = {
 
     // This is where we look into the future to see if the move is successful or not
-    val endOfMoveCycleNum = animationCycleNum + config.sim.moveCycles - animation.cycleNum
+    val endOfMoveCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
 
     // futureAnimation == the animation for when this bot finishes executing its move instruction
     val futureAnimation = animations(endOfMoveCycleNum)(animation.botId)
 
     // success == true iff the bot successfully moves into a new cell
     val success = futureAnimation match {
-      case m: MoveAnimation => m.oldRow != m.newRow || m.oldCol != m.newCol
+      case m: MoveAnimationProgress => m.oldRow != m.newRow || m.oldCol != m.newCol
       case _ => throw new IllegalStateException("Bad")
     }
 
@@ -429,7 +429,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // The amount the bot has moved towards its new cell (as a proportion)
     // TODO: change to proportionCompleted (also in documentation)
-    val proportionCompleted: Double = animation.cycleNum.toDouble / config.sim.moveCycles.toDouble
+    val proportionCompleted: Double = animation.cycleNum.toDouble / animation.requiredCycles.toDouble
 
     val oldRow = animation.oldRow
     val oldCol = animation.oldCol
@@ -527,6 +527,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val botImage = botImages(animation.botId)
     botImage.rotation = angle
+  }
+
+  def animateBotImageMove(animation: MoveAnimationProgress): Unit = {
+    
   }
 
   // TODO: factor out code common to animateMove

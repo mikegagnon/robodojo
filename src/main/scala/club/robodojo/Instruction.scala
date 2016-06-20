@@ -32,7 +32,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
       val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-      return Some(MoveAnimation(bot.id, cycleNum, bot.row, bot.col, destRow, destCol,
+      return Some(MoveAnimationProgress(bot.id, cycleNum, requiredCycles, bot.row, bot.col, destRow, destCol,
         bot.direction))
     }
 
@@ -47,9 +47,9 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       case None => {
 
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimation(bot.id, requiredCycles, oldRow, oldCol, row, col, bot.direction))
+        Some(MoveAnimationProgress(bot.id, requiredCycles, requiredCycles, oldRow, oldCol, row, col, bot.direction))
       }
-      case Some(_) => Some(MoveAnimation(bot.id, requiredCycles, oldRow, oldCol, oldRow, oldCol,
+      case Some(_) => Some(MoveAnimationProgress(bot.id, requiredCycles, requiredCycles, oldRow, oldCol, oldRow, oldCol,
         bot.direction))
     }
   }

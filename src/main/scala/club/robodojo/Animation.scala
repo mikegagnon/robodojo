@@ -7,15 +7,36 @@ sealed trait Animation {
   val botId: Long
 }
 
-case class MoveAnimation(
+sealed trait BotImageMoveAnimation extends Animation {
+  val botId: Long
+  val cycleNum: Int
+  val requiredCycles: Int
+  val oldRow: Int
+  val oldCol: Int
+  val newRow: Int
+  val newCol: Int
+  val direction: Direction.EnumVal
+}
+
+// TODO: document
+case class MoveAnimationProgress(
   botId: Long,
   cycleNum: Int,
+  requiredCycles: Int,
   oldRow: Int,
   oldCol: Int,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal) extends Animation
+  direction: Direction.EnumVal) extends BotImageMoveAnimation
 
+/*case class MoveAnimationSucceed(
+  botId: Long,
+  newBotId: Long,
+  playerColor: PlayerColor.EnumVal,
+  row: Int,
+  col: Int,
+  direction: Direction.EnumVal) extends BirthAnimation
+*/
 case class TurnAnimation(
   botId: Long,
   cycleNum: Int,
@@ -32,7 +53,7 @@ case class BirthAnimationProgress(
   oldCol: Int,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal) extends BirthAnimation
+  direction: Direction.EnumVal) extends BirthAnimation with BotImageMoveAnimation
 
 case class BirthAnimationFail(
   botId: Long,
