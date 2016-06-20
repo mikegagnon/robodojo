@@ -159,7 +159,6 @@ object Compiler {
       case _ : NumberFormatException => false
     }
 
-  // TODO: friendlier error messages
   // TODO: make compliant with Robocom standard
   // TESTED
   def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult =
