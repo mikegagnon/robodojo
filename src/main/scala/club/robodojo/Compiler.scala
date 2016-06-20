@@ -146,49 +146,49 @@ object Compiler {
       }
     }
 
-    def isInt(value: String): Boolean =
-      try {
-        value.toInt
-        true
-      } catch {
-        case _ : NumberFormatException => false
-      }
-
-    // TODO: friendlier error messages
-    // TODO: make compliant with Robocom standard
-    def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult = {
-      if (tl.tokens.length != 6 ||
-          tl.tokens(2) != "," ||
-          tl.tokens(4) != "," ||
-          !isInt(tl.tokens(1)) ||
-          !isInt(tl.tokens(3)) ||
-          !isInt(tl.tokens(5))) {
-        val message = "Malformed create instruction: the <tt>create</tt> instruction must be of " +
-        "the form: <tt>create a, b, c</tt>, where <tt>a</tt>, <tt>b<tt>, and <tt>c</tt> are " +
-        "integers."
-        val errorCode = ErrorCode.MalformedCreate
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-        CompileLineResult(None, Some(errorMessage))
-      } else {
-
-        // TODO: only accept 0 or 1
-        val instructionSet = if (tl.tokens(1) == 0) {
-            InstructionSet.Basic
-          } else {
-            InstructionSet.Extended
-          }
-
-        // TODO range check
-        val numBanks = tl.tokens(3).toInt
-
-        // TODO: only accept 0 or 1
-        val mobile = tl.tokens(1) == 1
-
-        val instruction = CreateInstruction(instructionSet, numBanks, mobile)
-
-        CompileLineResult(Some(instruction), None)
-      }
+  def isInt(value: String): Boolean =
+    try {
+      value.toInt
+      true
+    } catch {
+      case _ : NumberFormatException => false
     }
+
+  // TODO: friendlier error messages
+  // TODO: make compliant with Robocom standard
+  def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult = {
+    if (tl.tokens.length != 6 ||
+        tl.tokens(2) != "," ||
+        tl.tokens(4) != "," ||
+        !isInt(tl.tokens(1)) ||
+        !isInt(tl.tokens(3)) ||
+        !isInt(tl.tokens(5))) {
+      val message = "Malformed create instruction: the <tt>create</tt> instruction must be of " +
+      "the form: <tt>create a, b, c</tt>, where <tt>a</tt>, <tt>b<tt>, and <tt>c</tt> are " +
+      "integers."
+      val errorCode = ErrorCode.MalformedCreate
+      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+      CompileLineResult(None, Some(errorMessage))
+    } else {
+
+      // TODO: only accept 0 or 1
+      val instructionSet = if (tl.tokens(1) == 0) {
+          InstructionSet.Basic
+        } else {
+          InstructionSet.Extended
+        }
+
+      // TODO range check
+      val numBanks = tl.tokens(3).toInt
+
+      // TODO: only accept 0 or 1
+      val mobile = tl.tokens(1) == 1
+
+      val instruction = CreateInstruction(instructionSet, numBanks, mobile)
+
+      CompileLineResult(Some(instruction), None)
+    }
+  }
 
   // TESTED
   def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
