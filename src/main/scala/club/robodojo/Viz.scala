@@ -44,6 +44,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // See documentation for animateMove, section (3)
   val twinBotImages = HashMap[Long, createjs.Container]()
 
+  // See documentation for animateBirthProgress, section (3)
+  val birthBotImages = HashMap[Long, createjs.Container]()
+
   addBotImages()
   
   // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
@@ -81,6 +84,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     twinBotImages.keys.foreach { id =>
       twinBotImages -= id
+    }
+
+    birthBotImages.keys.foreach { id =>
+      birthBotImages -= id
     }
 
     animations.keys.foreach { cycleNum =>
@@ -257,13 +264,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val halfCell = config.viz.cellSize / 2.0
 
     val twinContainer = newBotContainer(botId, playerColor, row, col, direction)
+    val birthContainer = newBotContainer(botId, playerColor, row, col, direction)
 
     // Move the twin image off screen to (row = -1, col = -1)
     twinContainer.x = retina(halfCell - config.viz.cellSize)
     twinContainer.y = retina(halfCell - config.viz.cellSize)
-
     twinBotImages += (botId -> twinContainer)
     stage.addChild(twinContainer)
+
+    // Move birth image off screen
+    birthContainer.x = retina(halfCell - config.viz.cellSize)
+    birthContainer.y = retina(halfCell - config.viz.cellSize)
+    birthBotImages += (botId -> birthContainer)
+    stage.addChild(birthContainer)
+
+
   }
 
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
@@ -516,6 +531,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   // TODO: factor out code common to animateMove
+  // TODO: document
   def animateBirthProgress(animation: BirthAnimationProgress): Unit = {
 
    // This is where we look into the future to see if the move is successful or not
@@ -536,12 +552,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // TODO: do we really need botImage?
     val botImage = botImages(animation.botId)
-    val twinImage = twinBotImages(animation.botId)
+    val birthImage = birthBotImages(animation.botId)
 
     // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
     if (!success) {
-      twinImage.x = retina(halfCell - cellSize)
-      twinImage.y = retina(halfCell - cellSize)
+      birthImage.x = retina(halfCell - cellSize)
+      birthImage.y = retina(halfCell - cellSize)
       return
     }
 
@@ -582,7 +598,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         (-1.0, -1.0)
       }*/
 
-    val (twinRow: Double, twinCol: Double) =
+    val (birthRow: Double, birthCol: Double) =
       // if the bot has finished its movement, then move the bot to its new home
       if (animation.cycleNum == config.sim.moveCycles) {
         (newRow, newCol)
@@ -627,9 +643,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImage.y = retina(halfCell + cellSize * row)
     botImage.rotation = Direction.toAngle(animation.direction)*/
 
-    twinImage.x = retina(halfCell + cellSize * twinCol)
-    twinImage.y = retina(halfCell + cellSize * twinRow)
-    twinImage.rotation = Direction.toAngle(animation.direction)
+    birthImage.x = retina(halfCell + cellSize * birthCol)
+    birthImage.y = retina(halfCell + cellSize * birthRow)
+    birthImage.rotation = Direction.toAngle(animation.direction)
 
 
   }
@@ -648,11 +664,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       animation.col,
       animation.direction)
 
-    val twinImage = twinBotImages(animation.botId)
+    val birthImage = birthBotImages(animation.botId)
     val cellSize = config.viz.cellSize
     val halfCell = cellSize / 2.0
-    twinImage.x = retina(halfCell - cellSize)
-    twinImage.y = retina(halfCell - cellSize)
+    birthImage.x = retina(halfCell - cellSize)
+    birthImage.y = retina(halfCell - cellSize)
   }
 
 }
