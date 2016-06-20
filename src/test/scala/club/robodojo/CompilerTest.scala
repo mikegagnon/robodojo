@@ -143,6 +143,13 @@ object CompilerTest extends TestSuite {
         assert(result.sameElements(expectedResult))
       }
 
+      "To lower case"-{
+        val text = "ABC xYz"
+        val expectedResult = Array(TokenLine(Array("abc", "xyz"), 0))
+        val result = Compiler.tokenize(text)
+        assert(result.sameElements(expectedResult))
+      }
+
       "Remove empty tokens"-{
           val text = """1
           2

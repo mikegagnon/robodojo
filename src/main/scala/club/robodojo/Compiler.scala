@@ -59,6 +59,8 @@ object Compiler {
       .map { line: String => line.replaceAll(";.*", "") }
       // Replace "," with " , "
       .map { line: String => line.replaceAll(",", " , ")}
+      // To lowercase
+      .map { line: String => line.toLowerCase }
       // Separate into tokens
       .map { line: String => line.split("""\s+""") }
       // Drop empty tokens
@@ -76,7 +78,7 @@ object Compiler {
       }
       .filter { case TokenLine(tokens, _) =>
         val head = tokens.head
-        !(head == "Name" || head == "Author" || head == "Country")
+        !(head == "name" || head == "author" || head == "country")
       }
 
   def unrecognizedInstruction(tl: TokenLine) = {
@@ -155,6 +157,7 @@ object Compiler {
       }
 
     // TODO: friendlier error messages
+    // TODO: make compliant with Robocom standard
     def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult = {
       if (tl.tokens.length != 6 ||
           tl.tokens(2) != "," ||

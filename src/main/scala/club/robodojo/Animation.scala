@@ -22,7 +22,6 @@ case class TurnAnimation(
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal) extends Animation
 
-// TODO: is this necessary?
 sealed trait BirthAnimation extends Animation
 
 case class BirthAnimationProgress(
