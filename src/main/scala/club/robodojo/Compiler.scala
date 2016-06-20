@@ -180,7 +180,6 @@ object Compiler {
       val numBanksToken = tl.tokens(3).toInt
       val mobileToken = tl.tokens(5).toInt
 
-      // TODO: test
       // Check for errors
       if (instructionSetToken < 0 || instructionSetToken > 1) {
         val message = "Bad instruction-set parameter: the first parameter to the <tt>create</tt> " +
