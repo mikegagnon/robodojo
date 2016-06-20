@@ -6,9 +6,11 @@ case class Bank(var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruc
 
 object Program {
 
-  // TODO: TEST
-  // TODO: make sure the program has as at least one empty bank
   def emptyProgram(numBanks: Int): Program = {
+    if (numBanks < 1) {
+      throw new IllegalArgumentException("Empty programs must have at least one bank")
+    }
+
     var banks = Map[Int, Bank]()
     0 until numBanks foreach { bankNum =>
       banks += bankNum -> Bank(ArrayBuffer[Instruction]())

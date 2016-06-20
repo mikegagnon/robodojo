@@ -1,6 +1,7 @@
 package club.robodojo
 
 
+// TODO: only execute instructions if the bot has the proper instruction set
 object InstructionSet {
   sealed trait EnumVal
   case object Basic extends EnumVal
@@ -24,7 +25,6 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val requiredCycles = config.sim.moveCycles
 
-  // TODO: factor out common code?
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
     if (cycleNum == requiredCycles) {
       return execute(bot)
@@ -94,7 +94,6 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
         case _ => Direction.Right
       }
 
-    // TODO: factor out cycle and moveInstruction.cycle?
     def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
       if (cycleNum == requiredCycles) {
         return execute(bot)
@@ -142,7 +141,7 @@ case class CreateInstruction(
     val maxCreateDur = config.sim.maxCreateDur
 
     val primary = durCreate1 + durCreate2 * numBanks
-    val mobilityCost = if (mobile) durCreate3 else 1 
+    val mobilityCost = if (mobile) durCreate3 else 1
     val secondaryMobilityCost = if (mobile) durCreate3a else 0
 
     val instructionSetCostBasic = childInstructionSet match {
@@ -215,8 +214,5 @@ case class CreateInstruction(
       }
       case Some(_) => Some(BirthAnimationFail(bot.id, requiredCycles))
     }
-
   }
-
-
 }
