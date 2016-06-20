@@ -408,7 +408,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case _ => throw new IllegalStateException("Bad")
     }
 
-    // TODO: should these 4 lines go after the if (!success) ?
     val cellSize = config.viz.cellSize
     val halfCell = cellSize / 2.0
 
