@@ -32,6 +32,9 @@ object ErrorCode {
   case object MaxBanksExceeded extends EnumVal
   case object EmptyBanks extends EnumVal
   case object MalformedCreate extends EnumVal
+  case object BadInstructionSetParam extends EnumVal
+  case object BadNumBanksParam extends EnumVal
+  case object BadMobileParam extends EnumVal
 }
 
 // TODO: underline the offensive text in the program text?
@@ -156,7 +159,7 @@ object Compiler {
 
   // TODO: friendlier error messages
   // TODO: make compliant with Robocom standard
-  def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult = {
+  def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length != 6 ||
         tl.tokens(2) != "," ||
         tl.tokens(4) != "," ||
@@ -168,14 +171,45 @@ object Compiler {
       "integers."
       val errorCode = ErrorCode.MalformedCreate
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-      CompileLineResult(None, Some(errorMessage))
+      return CompileLineResult(None, Some(errorMessage))
     } else {
 
+      val instructionSetToken = tl.tokens(1).toInt
+      val numBanksToken = tl.tokens(3).toInt
+      val mobileToken = tl.tokens(5).toInt
+
+      // TODO: test
+      // Check for errors
+      if (instructionSetToken < 0 || instructionSetToken > 1) {
+        val message = "Bad instruction-set parameter: the first parameter to the <tt>create</tt> " +
+          "instruction, the instruction-set parameter, can only be 0 (signifying the " +
+          "<i>Basic</i> instruction set) or 1 (signifying the <i>Extended</i> instruction set)."
+        val errorCode = ErrorCode.BadInstructionSetParam
+        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+        return CompileLineResult(None, Some(errorMessage))
+      } else if (numBanksToken < 1 || numBanksToken > 50) {
+        val message = "Bad numBanks parameter: the second parameter to the <tt>create</tt> " +
+          "instruction, the numBanks parameter, must be greater (or equal to) 1 and less than " +
+          s"(or equal to) ${config.sim.maxBanks}"
+        val errorCode = ErrorCode.BadNumBanksParam
+        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+        return CompileLineResult(None, Some(errorMessage))
+      } else if (mobileToken < 0 || mobileToken > 1) {
+        val message = "Bad mobile parameter: the third parameter to the <tt>create</tt> " +
+          "instruction, the mobile parameter, can only be 0 (signifying immobility) or 1 " +
+          "(signifying mobility)."
+        val errorCode = ErrorCode.BadMobileParam
+        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+        return CompileLineResult(None, Some(errorMessage))
+      }
+
       // TODO: only accept 0 or 1
-      val instructionSet = if (tl.tokens(1) == 0) {
+      val instructionSet = if (instructionSetToken == 0) {
           InstructionSet.Basic
-        } else {
+        } else if (instructionSetToken == 1) {
           InstructionSet.Extended
+        } else {
+          throw new IllegalStateException("This code shouldn't be reachable")
         }
 
       // TODO range check
@@ -188,7 +222,6 @@ object Compiler {
 
       CompileLineResult(Some(instruction), None)
     }
-  }
 
   // TESTED
   def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
