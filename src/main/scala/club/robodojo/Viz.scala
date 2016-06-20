@@ -359,7 +359,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     currentAnimations.values.foreach { animation =>
       animation match {
         // TODO: break up MoveAnimation into succeed and fail?
-        case moveAnimation: MoveAnimationProgress => animateMove(moveAnimation)
+        case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
@@ -394,7 +394,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
   //     primary image of the bot move off screen. Then, we have the twin image move on screen.
   //     Once the movement is complete, we move the image off screen again.
-  def animateMove(animation: MoveAnimationProgress): Unit = {
+  def animateMoveProgress(animation: MoveAnimationProgress): Unit = {
 
     // This is where we look into the future to see if the move is successful or not
     val endOfMoveCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
@@ -530,7 +530,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   def animateBotImageMove(animation: MoveAnimationProgress): Unit = {
-    
+
   }
 
   // TODO: factor out code common to animateMove
