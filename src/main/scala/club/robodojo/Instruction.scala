@@ -182,7 +182,6 @@ case class CreateInstruction(
         bot.direction))
     }
 
-  // TODO: Test
   def execute(bot: Bot): Option[Animation] = {
 
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
