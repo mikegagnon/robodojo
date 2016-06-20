@@ -363,7 +363,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
-        case birthAnimation: BirthAnimationFail => animateBirthFail(birthAnimation)
+        case birthAnimation: BirthAnimationFail => ()
       }
     }
 
@@ -649,11 +649,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
 
   }
-
-  def animateBirthFail(animation: BirthAnimationFail): Unit = {
-
-  }
-
 
   // TODO: cleanup
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
