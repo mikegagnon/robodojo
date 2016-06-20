@@ -370,6 +370,54 @@ object CompilerTest extends TestSuite {
             val text = "create 1, 1, 1 X"
             testProgramFail(text, ErrorCode.MalformedCreate)(config)
           }
+          "missing comma 1"-{
+            val text = "create 1 x 1 , 1"
+            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+          }
+          "missing comma 2"-{
+            val text = "create 1 , 1 x 1"
+            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+          }
+          "non-integer params 1"-{
+            val text = "create a, 1, 1"
+            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+          }
+          "non-integer params 2"-{
+            val text = "create 1, a, 1"
+            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+          }
+          "non-integer params 3"-{
+            val text = "create 1, 1, a"
+            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+          }
+          "instruction set invalid 1"-{
+            val text = "create -1, 1, 1"
+            testProgramFail(text, ErrorCode.BadInstructionSetParam)(config)
+          }
+          "instruction set invalid 1"-{
+            val text = "create -1, 1, 1"
+            testProgramFail(text, ErrorCode.BadInstructionSetParam)(config)
+          }
+          "instruction set invalid 2"-{
+            val text = "create 2, 1, 1"
+            testProgramFail(text, ErrorCode.BadInstructionSetParam)(config)
+          }
+          "numBanks invalid 1"-{
+            val text = "create 1, 0, 1"
+            testProgramFail(text, ErrorCode.BadNumBanksParam)(config)
+          }
+          "numBanks invalid 2"-{
+            val text = s"create 1, ${config.sim.maxBanks + 1}, 1"
+            testProgramFail(text, ErrorCode.BadNumBanksParam)(config)
+          }
+          "mobile invalid 1"-{
+            val text = "create 1, 1, -1"
+            testProgramFail(text, ErrorCode.BadMobileParam)(config)
+          }
+          "mobile invalid 2"-{
+            val text = "create 1, 1, 2"
+            testProgramFail(text, ErrorCode.BadMobileParam)(config)
+          }
         }
       }
     }
