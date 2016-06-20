@@ -52,7 +52,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   // Fast forward the board, so we can begin animating. See the documentation for animateMove,
   // section (2) for an explanation.
-  1 to config.sim.moveCycles foreach { _ => cycle() }
+  1 to config.viz.lookAheadCycles foreach { _ => cycle() }
 
   // There are three cycle counters:
   //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
@@ -275,7 +275,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // Remove obsolete animations to avoid memory leak
     // TODO: test
-    animations -= board.cycleNum - config.sim.moveCycles - 1
+    animations -= board.cycleNum - config.viz.lookAheadCycles - 1
 
     animationList.foreach { animation: Animation =>
       animations(board.cycleNum)(animation.botId) = animation
@@ -514,7 +514,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImage.rotation = angle
   }
 
-  def animateBirthProgress(animation: BirthAnimationProgress): Unit = {}
+  def animateBirthProgress(animation: BirthAnimationProgress): Unit = {
+
+
+
+  }
+
   def animateBirthFail(animation: BirthAnimationFail): Unit = {}
 
 

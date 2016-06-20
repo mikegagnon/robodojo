@@ -7,7 +7,7 @@ import scala.util.Random
 class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   val board = new Board()
 
-/*  val density = 0.5
+  val density = 0.5
 
   val rand = new Random(0)
 
@@ -43,13 +43,14 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
           board.addBot(bot)
       }
     }
-  }*/
+  }
 
-  
+  /*
   val bot1Program: Program = Compiler.compile("bank foo\ncreate 0, 5, 0\n turn 1").right.get
   val bot1 = Bot(board, PlayerColor.Blue, 1, 0, Direction.Right, bot1Program)
   board.addBot(bot1)
-  
+  */
+
   /*
   val bot2Program: Program = Compiler.compile("bank foo\nturn 1").right.get
   val bot2 = Bot(board, PlayerColor.Red, 1, 1, Direction.Right, bot2Program)
