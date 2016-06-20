@@ -198,9 +198,13 @@ case class CreateInstruction(
 
         bot.board.addBot(newBot)
 
-        Some(BirthAnimationSucceed(bot.id, bot.cycleNum, newBot))
-          //(bot.id, requiredCycles, oldRow, oldCol, row, col,
-          //bot.direction))
+        Some(BirthAnimationSucceed(
+          newBot.id,
+          bot.cycleNum,
+          newBot.playerColor,
+          newBot.row,
+          newBot.col,
+          newBot.direction))
       }
       case Some(_) => Some(BirthAnimationFail(bot.id, requiredCycles))
     }

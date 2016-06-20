@@ -41,4 +41,10 @@ case class BirthAnimationFail(
   botId: Long,
   cycleNum: Int) extends BirthAnimation
 
-case class BirthAnimationSucceed(botId: Long, cycleNum: Int, newBot: Bot) extends BirthAnimation
+case class BirthAnimationSucceed(
+  botId: Long,
+  cycleNum: Int,
+  playerColor: PlayerColor.EnumVal,
+  row: Int,
+  col: Int,
+  direction: Direction.EnumVal) extends BirthAnimation

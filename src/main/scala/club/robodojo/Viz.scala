@@ -188,13 +188,18 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def addBotImages(): Unit = {
     board.bots.foreach { bot =>
-      addBot(bot)
+      addBot(bot.id, bot.playerColor, bot.row, bot.col, bot.direction)
     }
   }
 
-  def newBotContainer(bot: Bot): createjs.Container = {
+  def newBotContainer(
+      botId: Long,
+      playerColor: PlayerColor.EnumVal,
+      row: Int,
+      col: Int,
+      direction: Direction.EnumVal): createjs.Container = {
 
-    val botColor = bot.playerColor match {
+    val botColor = playerColor match {
       case PlayerColor.Blue => config.viz.preload.blueBotId
       case PlayerColor.Red => config.viz.preload.redBotId
       case PlayerColor.Green => config.viz.preload.greenBotId
@@ -232,28 +237,32 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     container.regX = retina(halfCell)
     container.regY = retina(halfCell)
 
-    container.x = retina(halfCell + config.viz.cellSize * bot.col)
-    container.y = retina(halfCell + config.viz.cellSize * bot.row)
+    container.x = retina(halfCell + config.viz.cellSize * col)
+    container.y = retina(halfCell + config.viz.cellSize * row)
 
-    container.rotation = Direction.toAngle(bot.direction)
+    container.rotation = Direction.toAngle(direction)
 
     return container
   }
 
-  def addBot(bot: Bot): Unit = {
-    val container = newBotContainer(bot)
-    botImages += (bot.id -> container)
+  def addBot(botId: Long,
+      playerColor: PlayerColor.EnumVal,
+      row: Int,
+      col: Int,
+      direction: Direction.EnumVal): Unit = {
+    val container = newBotContainer(botId, playerColor, row, col, direction)
+    botImages += (botId -> container)
     stage.addChild(container)
 
     val halfCell = config.viz.cellSize / 2.0
 
-    val twinContainer = newBotContainer(bot)
+    val twinContainer = newBotContainer(botId, playerColor, row, col, direction)
 
     // Move the twin image off screen to (row = -1, col = -1)
     twinContainer.x = retina(halfCell - config.viz.cellSize)
     twinContainer.y = retina(halfCell - config.viz.cellSize)
 
-    twinBotImages += (bot.id -> twinContainer)
+    twinBotImages += (botId -> twinContainer)
     stage.addChild(twinContainer)
   }
 
@@ -512,7 +521,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // TODO
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
     println("FOO")
-    addBot(animation.newBot)
+    addBot(animation.botId,
+      animation.playerColor,
+      animation.row,
+      animation.col,
+      animation.direction)
   }
 
 }
