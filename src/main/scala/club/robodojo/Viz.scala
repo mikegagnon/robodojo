@@ -44,7 +44,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // See documentation for animateMove, section (3)
   val twinBotImages = HashMap[Long, createjs.Container]()
 
-  // See documentation for animateBirthProgress, section (3)
+  // See documentation for animateBirthProgress
   val birthBotImages = HashMap[Long, createjs.Container]()
 
   addBotImages()
