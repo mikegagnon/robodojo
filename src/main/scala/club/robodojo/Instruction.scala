@@ -184,6 +184,8 @@ case class CreateInstruction(
         bot.direction))
     }
 
+  // TODO: If any of the params to CreateInstruction are invalid, throw a user-visible exeception
+  // that ends the game.
   def execute(bot: Bot): Option[Animation] = {
 
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
