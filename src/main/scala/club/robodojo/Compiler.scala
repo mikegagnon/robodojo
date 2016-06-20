@@ -2,8 +2,6 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: make instructions case-insensitive
-
 case class TokenLine(tokens: Array[String], lineNumber: Int) {
 
   // TESTED
