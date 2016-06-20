@@ -84,7 +84,6 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 }
 
 // TODO: take direction as a ParamValue?
-// TODO: take leftOrRight as a Direction.EnumVal
 case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
