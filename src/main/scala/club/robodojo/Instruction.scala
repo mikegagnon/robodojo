@@ -171,7 +171,14 @@ case class CreateInstruction(
       throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
       val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-      return Some(BirthAnimationProgress(bot.id, cycleNum, bot.row, bot.col, destRow, destCol,
+      return Some(BirthAnimationProgress(
+        bot.id,
+        cycleNum,
+        requiredCycles,
+        bot.row,
+        bot.col,
+        destRow,
+        destCol,
         bot.direction))
     }
 
@@ -199,8 +206,9 @@ case class CreateInstruction(
         bot.board.addBot(newBot)
 
         Some(BirthAnimationSucceed(
-          newBot.id,
+          bot.id,
           bot.cycleNum,
+          newBot.id,
           newBot.playerColor,
           newBot.row,
           newBot.col,

@@ -31,6 +31,7 @@ sealed trait BirthAnimation extends Animation
 case class BirthAnimationProgress(
   botId: Long,
   cycleNum: Int,
+  requiredCycles: Int,
   oldRow: Int,
   oldCol: Int,
   newRow: Int,
@@ -44,6 +45,7 @@ case class BirthAnimationFail(
 case class BirthAnimationSucceed(
   botId: Long,
   cycleNum: Int,
+  newBotId: Long,
   playerColor: PlayerColor.EnumVal,
   row: Int,
   col: Int,
