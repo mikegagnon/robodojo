@@ -89,10 +89,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       val stroke = params.getOrElse("viz.grid.stroke", "#ccc").asInstanceOf[String]
     }
 
-    // This value should be at least as large at the longest instruction required cycles
-    val lookAheadCycles = params.getOrElse("viz.lookAheadCycles",
-      sim.maxCreateDur).asInstanceOf[Int]
-
+    val lookAheadCycles = sim.maxCreateDur
   }
 
 }
