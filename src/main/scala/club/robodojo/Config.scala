@@ -90,7 +90,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     }
 
     // This value should be at least as large at the longest instruction required cycles
-    val lookAheadCycles = params.getOrElse("viz.lookAheadCycles", sim.maxCreateDur).asInstanceOf[Int]
+    val lookAheadCycles = params.getOrElse("viz.lookAheadCycles",
+      sim.maxCreateDur).asInstanceOf[Int]
 
   }
 
