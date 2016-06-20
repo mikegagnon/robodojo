@@ -396,128 +396,16 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
   //     primary image of the bot move off screen. Then, we have the twin image move on screen.
   //     Once the movement is complete, we move the image off screen again.
-  def animateMoveProgress(animation: MoveAnimationProgress): Unit = {
-
-    // This is where we look into the future to see if the move is successful or not
-    val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
-
-    // futureAnimation == the animation for when this bot finishes executing its move instruction
-    val futureAnimation = animations(endCycleNum)(animation.botId)
-
-    // success == true iff the bot successfully moves into a new cell
-    val success = futureAnimation match {
-      case m: MoveAnimationSucceed => true
-      case _ => false
-    }
-
-    val cellSize = config.viz.cellSize
-    val halfCell = cellSize / 2.0
-
-    val botImage = botImages(animation.botId)
-    val twinImage = twinBotImages(animation.botId)
-
-    // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
-    if (!success) {
-
-      botImage.x = retina(halfCell + cellSize * animation.oldCol)
-      botImage.y = retina(halfCell + cellSize * animation.oldRow)
-      botImage.rotation = Direction.toAngle(animation.direction)
-
-      twinImage.x = retina(halfCell - cellSize)
-      twinImage.y = retina(halfCell - cellSize)
-
-      return
-    }
-
-    // The amount the bot has moved towards its new cell (as a proportion)
-    // TODO: change to proportionCompleted (also in documentation)
-    val proportionCompleted: Double = animation.cycleNum.toDouble / animation.requiredCycles.toDouble
-
-    val oldRow = animation.oldRow
-    val oldCol = animation.oldCol
-    val newRow = animation.newRow
-    val newCol = animation.newCol
-
-    val (twinRow: Double, twinCol: Double) =
-      // if the bot has finished its movement, then move the twin off screen
-      if (animation.cycleNum == config.sim.moveCycles) {
-        (-1.0, -1.0)
-      }
-      // if the bot is moving up, towards off the screen
-      else if (newRow - oldRow > 1) {
-        (newRow + 1.0 - proportionCompleted, newCol)
-      }
-      // if the bot is moving down, towards off the screen
-      else if (oldRow - newRow > 1) {
-        (newRow - 1.0 + proportionCompleted, newCol)
-      }
-      // if the bot is moving left, towards off the screen
-      else if (newCol - oldCol > 1) {
-        (newRow, newCol + 1.0 - proportionCompleted)
-      }
-      // if the bot is moving right, towards off the screen
-      else if (oldCol - newCol > 1) {
-        (newRow, newCol - 1.0 + proportionCompleted)
-      }
-      // if the bot isn't wrapping around the screen
-      else  {
-        (-1.0, -1.0)
-      }
-
-    val (row: Double, col: Double) =
-      // if the bot has finished its movement, then move the bot to its new home
-      if (animation.cycleNum == config.sim.moveCycles) {
-        (newRow, newCol)
-      }
-      // if the bot is moving up, towards off the screen
-      else if (newRow - oldRow > 1) {
-        (oldRow - proportionCompleted, oldCol)
-      }
-      // if the bot is moving down, towards off the screen
-      else if (oldRow - newRow > 1) {
-        (oldRow + proportionCompleted, oldCol)
-      }
-      // if the bot is moving left, towards off the screen
-      else if (newCol - oldCol > 1) {
-        (oldRow, oldCol - proportionCompleted)
-      }
-      // if the bot is moving right, towards off the screen
-      else if (oldCol - newCol > 1) {
-        (oldRow, oldCol + proportionCompleted)
-      }
-      // the bot is moving up
-      else if (newRow < oldRow) {
-        (oldRow - proportionCompleted, oldCol)
-      }
-      // the bot is moving down
-      else if (newRow > oldRow) {
-        (oldRow + proportionCompleted, oldCol)
-      }
-      // the bot is moving left
-      else if (newCol < oldCol) {
-        (oldRow, oldCol - proportionCompleted)
-      }
-      // the bot is moving right
-      else if (newCol > oldCol) {
-        (oldRow, oldCol + proportionCompleted)
-      } else {
-        throw new IllegalStateException("This code shouldn't be reachable")
-      }
+  def animateMoveProgress(animation: MoveAnimationProgress): Unit = 
+    animateBotImageProgress(animation, botImages)
 
 
-    botImage.x = retina(halfCell + cellSize * col)
-    botImage.y = retina(halfCell + cellSize * row)
-    botImage.rotation = Direction.toAngle(animation.direction)
-
-    twinImage.x = retina(halfCell + cellSize * twinCol)
-    twinImage.y = retina(halfCell + cellSize * twinRow)
-    twinImage.rotation = Direction.toAngle(animation.direction)
-  }
-
+  // TODO: ?
   def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
 
   }
 
+  // TODO: ?
   def animateMoveFail(animation: MoveAnimationFail): Unit = {
 
   }
