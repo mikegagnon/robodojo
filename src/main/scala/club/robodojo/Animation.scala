@@ -19,6 +19,10 @@ sealed trait AnimationProgress extends Animation {
   val direction: Direction.EnumVal
 }
 
+
+// TODO: BOOKMARK
+sealed trait AnimationProgressSucceed extends Animation
+
 sealed trait MoveAnimation extends Animation
 
 // TODO: document

@@ -571,6 +571,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     if (!success) {
       birthImage.x = retina(halfCell - cellSize)
       birthImage.y = retina(halfCell - cellSize)
+      birthImage.rotation = Direction.toAngle(animation.direction)
+
+      twinImage.x = retina(halfCell - cellSize)
+      twinImage.y = retina(halfCell - cellSize)
+
       return
     }
 
