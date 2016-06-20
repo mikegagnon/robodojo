@@ -438,6 +438,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val futureAnimation = animations(endCycleNum)(animation.botId)
 
     // success == true iff the new bot successfully moves into its birth cell
+    // TODO: check for failure, then throw execpetion if neither success nor failure
     val success = futureAnimation match {
       case m: AnimationProgressSucceed => true
       case _ => false

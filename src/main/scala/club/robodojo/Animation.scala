@@ -9,7 +9,19 @@ sealed trait Animation {
   val botId: Long
 }
 
-// TODO: rename?
+/* Begin MoveAnimation and BirthAnimation definitions *********************************************/
+
+sealed trait MoveAnimation extends Animation
+
+sealed trait BirthAnimation extends Animation
+
+// The move animation and the create animation (animateMoveProgress and animateBirthProgress,
+// respectively) do the same thing. They animate a bot moving forward, and possibly wrapping around
+// the torus. The only difference is that for the move animation, the image of bot moves forward,
+// whereas for the birth animation, the image of the bot's child moves forward. Therefore, we
+// implement animateBotImageProgress, which is generic in the sense that it animates both
+// move and birth. To make this generic code work, we define AnimationProgress which is the parent
+// of MoveAnimationProgress and BirthAnimationProgress.
 sealed trait AnimationProgress extends Animation {
   val botId: Long
   val cycleNum: Int
@@ -21,6 +33,8 @@ sealed trait AnimationProgress extends Animation {
   val direction: Direction.EnumVal
 }
 
+// TODO: is AnimationProgressSucceed necessary?
+// Like AnimationProgress, except for the case where the instruction succeeds
 sealed trait AnimationProgressSucceed extends Animation {
   val botId: Long
   val row: Int
@@ -28,9 +42,6 @@ sealed trait AnimationProgressSucceed extends Animation {
   val direction: Direction.EnumVal
 }
 
-sealed trait MoveAnimation extends Animation
-
-// TODO: document
 case class MoveAnimationProgress(
   botId: Long,
   cycleNum: Int,
@@ -40,26 +51,6 @@ case class MoveAnimationProgress(
   newRow: Int,
   newCol: Int,
   direction: Direction.EnumVal) extends AnimationProgress with MoveAnimation
-
-// TODO: rm cycleNum?
-case class MoveAnimationFail(
-  botId: Long,
-  cycleNum: Int) extends BirthAnimation
-
-// TODO: are these fields really necessary
-case class MoveAnimationSucceed(
-  botId: Long,
-  row: Int,
-  col: Int,
-  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed
-
-case class TurnAnimation(
-  botId: Long,
-  cycleNum: Int,
-  oldDirection: Direction.EnumVal,
-  leftOrRight: Direction.EnumVal) extends Animation
-
-sealed trait BirthAnimation extends Animation
 
 case class BirthAnimationProgress(
   botId: Long,
@@ -71,10 +62,12 @@ case class BirthAnimationProgress(
   newCol: Int,
   direction: Direction.EnumVal) extends BirthAnimation with AnimationProgress
 
-// TODO: rm cycleNum?
-case class BirthAnimationFail(
+// TODO: are these fields really necessary
+case class MoveAnimationSucceed(
   botId: Long,
-  cycleNum: Int) extends BirthAnimation
+  row: Int,
+  col: Int,
+  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed
 
 // TODO: are all these fields necessary?
 case class BirthAnimationSucceed(
@@ -84,3 +77,21 @@ case class BirthAnimationSucceed(
   row: Int,
   col: Int,
   direction: Direction.EnumVal) extends BirthAnimation with AnimationProgressSucceed
+
+// TODO: rm cycleNum?
+case class MoveAnimationFail(
+  botId: Long,
+  cycleNum: Int) extends BirthAnimation
+
+// TODO: rm cycleNum?
+case class BirthAnimationFail(
+  botId: Long,
+  cycleNum: Int) extends BirthAnimation
+
+/* End MoveAnimation and BirthAnimation definitions ***********************************************/
+
+case class TurnAnimation(
+  botId: Long,
+  cycleNum: Int,
+  oldDirection: Direction.EnumVal,
+  leftOrRight: Direction.EnumVal) extends Animation
