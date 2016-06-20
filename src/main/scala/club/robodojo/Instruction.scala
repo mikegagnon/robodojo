@@ -193,7 +193,6 @@ case class CreateInstruction(
 
         val emptyProgram = Program.emptyProgram(numBanks)
 
-        // TODO: create and set mobile flag
         val newBot = Bot(
           bot.board,
           bot.playerColor,
