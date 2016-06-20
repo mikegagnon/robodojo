@@ -283,7 +283,6 @@ object CompilerTest extends TestSuite {
         }
       }
 
-      // TODO: put success and fail under different scopes
       "turn"-{
         "success 1"-{
           testInstruction("turn 1", Right(TurnInstruction(Direction.Right)))
@@ -301,7 +300,6 @@ object CompilerTest extends TestSuite {
           testInstruction("turn 1 foo", Left(ErrorCode.TooManyParams))
         }
       }
-      // TODO: put success and fail under different scopes
       "bank"-{
 
         "fail: too many params"-{
