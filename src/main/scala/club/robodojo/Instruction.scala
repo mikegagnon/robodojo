@@ -85,14 +85,10 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 
 // TODO: take direction as a ParamValue?
 // TODO: take leftOrRight as a Direction.EnumVal
-case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extends Instruction {
+case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
     val requiredCycles = config.sim.turnCycles
-    val turnDirection = leftOrRight match {
-        case 0 => Direction.Left
-        case _ => Direction.Right
-      }
 
     def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
       if (cycleNum == requiredCycles) {
@@ -100,14 +96,15 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
       } else if (cycleNum > requiredCycles) {
         throw new IllegalArgumentException("cycleNum > requiredCycles")
       } else {
-        return Some(TurnAnimation(bot.id, cycleNum, bot.direction, turnDirection))
+        return Some(TurnAnimation(bot.id, cycleNum, bot.direction, leftOrRight))
       }
 
     // Executre
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
-        case 0 => Direction.rotateLeft(currentDir)
-        case _ => Direction.rotateRight(currentDir)
+        case Direction.Left => Direction.rotateLeft(currentDir)
+        case Direction.Right => Direction.rotateRight(currentDir)
+        case _ => throw new IllegalArgumentException("leftOrRight == " + leftOrRight)
       }
 
     def execute(bot: Bot): Option[Animation] = {
@@ -116,7 +113,7 @@ case class TurnInstruction(leftOrRight: Int)(implicit val config: Config) extend
 
       bot.direction = getNewDirection(bot.direction)
 
-      Some(TurnAnimation(bot.id, requiredCycles, oldDirection, turnDirection))
+      Some(TurnAnimation(bot.id, requiredCycles, oldDirection, leftOrRight))
     }
 }
 

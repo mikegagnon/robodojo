@@ -286,13 +286,13 @@ object CompilerTest extends TestSuite {
       // TODO: put success and fail under different scopes
       "turn"-{
         "success 1"-{
-          testInstruction("turn 1", Right(TurnInstruction(1)))
+          testInstruction("turn 1", Right(TurnInstruction(Direction.Right)))
         }
         "success 2"-{
-          testInstruction("turn 2", Right(TurnInstruction(2)))
+          testInstruction("turn 2", Right(TurnInstruction(Direction.Right)))
         }
         "success -1"-{
-          testInstruction("turn -1", Right(TurnInstruction(-1)))
+          testInstruction("turn -1", Right(TurnInstruction(Direction.Right)))
         }
         "fail turn left"-{
           testInstruction("turn left", Left(ErrorCode.WrongParamType))

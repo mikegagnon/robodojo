@@ -135,7 +135,11 @@ object Compiler {
 
       // TODO: take non-literal params?
       try {
-        val leftOrRight = param.toInt
+        val leftOrRight = if (param.toInt == 0) {
+          Direction.Left
+        } else {
+          Direction.Right
+        }
         val instruction = TurnInstruction(leftOrRight)
         CompileLineResult(Some(instruction), None)
       } catch {
