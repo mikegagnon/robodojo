@@ -369,7 +369,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   }
 
-  // TODO: update with lookahead cycles
   // animateMove is a bit complex. There are three aspects that are worth documenting:
   //    (1) Animating the typical case
   //    (2) Peeking into the future (or the past, depending on your perspective)
