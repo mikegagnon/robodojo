@@ -207,7 +207,6 @@ case class CreateInstruction(
 
         Some(BirthAnimationSucceed(
           bot.id,
-          bot.cycleNum,
           newBot.id,
           newBot.playerColor,
           newBot.row,

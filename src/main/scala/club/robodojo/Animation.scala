@@ -4,10 +4,7 @@ package club.robodojo
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
 
 sealed trait Animation {
-
-  // TODO: not all animations require these
   val botId: Long
-  val cycleNum: Int
 }
 
 case class MoveAnimation(
@@ -44,7 +41,6 @@ case class BirthAnimationFail(
 
 case class BirthAnimationSucceed(
   botId: Long,
-  cycleNum: Int,
   newBotId: Long,
   playerColor: PlayerColor.EnumVal,
   row: Int,
