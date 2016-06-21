@@ -355,18 +355,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   /** Begin animation functions  ******************************************************************/
 
   // TODO: cleanup
+  // TODO: test
   def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
 
-    // TODO: maybe numCyclesThisTick can equal 0? Prevent that? No need to animate 0 cycles.
-    // TODO: test
     if (numCyclesThisTick < 1) {
       throw new IllegalStateException("numCyclesThisTick < 1")
     }
 
-    // TODO: is this correct? Off by one?
     val lastCycleNumForThisTick = animationCycleNum + numCyclesThisTick
-
-    //println(lastCycleNumForThisTick, animationCycleNum, animations.keys)
 
     // TODO: maybe make cycleNum a member of Animation? If so, then need to replace
     // animationCycleNum with boardCycleNum
@@ -385,8 +381,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   // TODO: document
-  // TODO: test for zero cycles in a tick
   def animate(numCyclesThisTick: Int): Unit = {
+
+    if (numCyclesThisTick == 0) {
+      return
+    }
 
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
