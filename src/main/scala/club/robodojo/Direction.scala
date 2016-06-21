@@ -1,6 +1,5 @@
 package club.robodojo
 
-// TODO: where to put this?
 case class RowCol(row: Int, col:Int)
 
 object Direction {
