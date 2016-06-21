@@ -65,8 +65,6 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
   // TESTED
   def cycle(): Option[Animation] = {
 
-    // TODO: Test
-    // TODO: Only draw the InactiveAnimation once
     if (!active) {
       return Option(InactiveAnimation(id))
     }

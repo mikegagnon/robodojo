@@ -47,7 +47,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // See documentation for animateBirthProgress
   val birthBotImages = HashMap[Long, createjs.Container]()
 
-  // TODO: document
+  // See documentation for BotVisualFeatures in Animation.scala
+  // botVisualFeatures(botId) == the visual features for that bot
   val botVisualFeatures = HashMap[Long, BotVisualFeatures]()
 
   addBotImages()
@@ -225,7 +226,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     return container
   }
 
-  // TODO: take active as an argument
   def addBot(botId: Long,
       playerColor: PlayerColor.EnumVal,
       row: Int,
@@ -299,8 +299,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // Remove obsolete animations to avoid memory leak
     // TODO: test
-    // TODO: configify how far to remember into the past
-    animations -= board.cycleNum - config.viz.lookAheadCycles - 1 - 1
+    animations -= board.cycleNum - config.viz.lookAheadCycles - 1
 
     animationList.foreach { animation: Animation =>
       animations(board.cycleNum)(animation.botId) = animation
@@ -568,12 +567,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animateBotImageProgress(animation, birthBotImages)
 
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
+
+    val active = false
     addBot(animation.newBotId,
       animation.playerColor,
       animation.row,
       animation.col,
       animation.direction,
-      false)
+      active)
 
     val birthImage = birthBotImages(animation.botId)
     val cellSize = config.viz.cellSize
@@ -617,7 +618,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImages(botId).addChild(line)
   }
 
-  // TODO: cleanup
   def animateInactive(inactiveAnimation: InactiveAnimation): Unit = {
 
     val botId = inactiveAnimation.botId
@@ -632,7 +632,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     features.inactive = true
 
     drawInactive(botId)
-
   }
 
 
