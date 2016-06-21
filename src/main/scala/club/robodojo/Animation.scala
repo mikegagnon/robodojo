@@ -33,7 +33,6 @@ sealed trait AnimationProgress extends Animation {
   val direction: Direction.EnumVal
 }
 
-// TODO: is AnimationProgressSucceed necessary?
 // Like AnimationProgress, except for the case where the instruction succeeds
 sealed trait AnimationProgressSucceed extends Animation {
   val botId: Long
@@ -41,6 +40,9 @@ sealed trait AnimationProgressSucceed extends Animation {
   val col: Int
   val direction: Direction.EnumVal
 }
+
+// Like AnimationProgressSucceed, except for the case when the instruction fails
+sealed trait AnimationProgressFail extends Animation
 
 case class MoveAnimationProgress(
   botId: Long,
@@ -81,12 +83,12 @@ case class BirthAnimationSucceed(
 // TODO: rm cycleNum?
 case class MoveAnimationFail(
   botId: Long,
-  cycleNum: Int) extends BirthAnimation
+  cycleNum: Int) extends BirthAnimation with AnimationProgressFail
 
 // TODO: rm cycleNum?
 case class BirthAnimationFail(
   botId: Long,
-  cycleNum: Int) extends BirthAnimation
+  cycleNum: Int) extends BirthAnimation with AnimationProgressFail
 
 /* End MoveAnimation and BirthAnimation definitions ***********************************************/
 

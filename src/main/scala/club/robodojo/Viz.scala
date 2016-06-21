@@ -437,7 +437,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // TODO: check for failure, then throw execpetion if neither success nor failure
     val success = futureAnimation match {
       case m: AnimationProgressSucceed => true
-      case _ => false
+      case _: AnimationProgressFail => false
+      case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
     // TODO: should these 4 lines go after the if (!success) ?
