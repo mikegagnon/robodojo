@@ -73,39 +73,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   /** End initialization **************************************************************************/
 
-  def newBoard(newBoard: Board): Unit = {
-    board = newBoard
-    step = false
-    remainingCycles = 0.0
-
-    botImages.keys.foreach { id =>
-      botImages -= id
-    }
-
-    twinBotImages.keys.foreach { id =>
-      twinBotImages -= id
-    }
-
-    birthBotImages.keys.foreach { id =>
-      birthBotImages -= id
-    }
-
-    animations.keys.foreach { cycleNum =>
-      animations -= cycleNum
-    }
-
-    stage.removeAllChildren()
-
-    addBackground()
-    addGrid()
-    addBotImages()
-
-    stage.update()
-
-    1 to config.viz.lookAheadCycles foreach { _ => cycle() }
-
-    animationCycleNum = 0
-  }
+  /** Begin initialization functions **************************************************************/
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
@@ -273,6 +241,44 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val halfCell = config.viz.cellSize / 2.0
   }
 
+  /** End initialization functions ****************************************************************/
+
+  /** Begin miscfunctions  ************************************************************************/
+
+  def newBoard(newBoard: Board): Unit = {
+    board = newBoard
+    step = false
+    remainingCycles = 0.0
+
+    botImages.keys.foreach { id =>
+      botImages -= id
+    }
+
+    twinBotImages.keys.foreach { id =>
+      twinBotImages -= id
+    }
+
+    birthBotImages.keys.foreach { id =>
+      birthBotImages -= id
+    }
+
+    animations.keys.foreach { cycleNum =>
+      animations -= cycleNum
+    }
+
+    stage.removeAllChildren()
+
+    addBackground()
+    addGrid()
+    addBotImages()
+
+    stage.update()
+
+    1 to config.viz.lookAheadCycles foreach { _ => cycle() }
+
+    animationCycleNum = 0
+  }
+
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
   // one. Perhaps monoids?
   def cycle(): Unit = {
@@ -343,6 +349,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
   }
 
+  /** End misc functions  *************************************************************************/
+
+  /** Begin animation functions  ******************************************************************/
+
   def animate(): Unit = {
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
@@ -351,67 +361,17 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     currentAnimations.values.foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
-        case moveAnimation: MoveAnimationSucceed => animateMoveSucceed(moveAnimation)
-        case moveAnimation: MoveAnimationFail => animateMoveFail(moveAnimation)
-        case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
+        case moveAnimation: MoveAnimationSucceed => ()
+        case moveAnimation: MoveAnimationFail => ()
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
         case birthAnimation: BirthAnimationFail => ()
+        case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
       }
     }
-
   }
 
-  // animateMove is a bit complex. There are three aspects that are worth documenting:
-  //    (1) Animating the typical case
-  //    (2) Peeking into the future (or the past, depending on your perspective)
-  //    (3) Drawing the movement when the bot goes off screen, and wraps around torus style
-  //
-  // (1) Animating the typical case. First, we peek into the future (see (2)), to determine whether
-  //     or not the move will succed (i.e. the bot will move from one cell to another cell). Recall
-  //     from MoveInstruction, bots can only move into another cell if the new cell is empty at the
-  //     time when the move instruction executes its last cycle. If the move fails, then the bot
-  //     is drawn at its current location. If the move succeeds, then we calculate
-  //     proportionCompleted, which measures how far along the move instruction has progressed. Then
-  //     we calculate (row, col) as a double based on proportionCompleted. For example if the bot is
-  //     moving from (0, 0) to (0, 1) and the move instruction is half-way done executing, then
-  //     (row, col) == (0, 0.5). Then we draw the bot at (row, col). A similar approach is used in
-  //     animateTurn.
-  // (2) Peeking into the future. We do not want to animate a bot move if the move fails.
-  //     Unfortunately, we cannot know whether or not the move will succeed or fail until
-  //     config.sim.moveCycles cycles have been executed. So, the way we get around is is by
-  //     running the animation several cycles behind the board simulator. This way, the animation
-  //     can peek into the future, to see if the move will fail or succeed.
-  // (3) Drawing the movement when the bot goes off screen, and wraps around torus style. How do
-  //     we do it? We use "twin images." A twin image is a duplicate image of a bot. The twin image
-  //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
-  //     primary image of the bot move off screen. Then, we have the twin image move on screen.
-  //     Once the movement is complete, we move the image off screen again.
-  def animateMoveProgress(animation: MoveAnimationProgress): Unit = 
-    animateBotImageProgress(animation, botImages)
-
-
-  def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = ()
-
-  def animateMoveFail(animation: MoveAnimationFail): Unit = ()
-
-  def animateTurn(animation: TurnAnimation): Unit = {
-
-    val oldDirection = animation.oldDirection
-
-    // See the documentation for animateMove, section (1).
-    val proportionCompleted = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
-
-    val angle: Double = animation.leftOrRight match {
-      case Direction.Left => Direction.toAngle(oldDirection) - 90.0 * proportionCompleted
-      case Direction.Right => Direction.toAngle(oldDirection) + 90.0 * proportionCompleted
-      case _ => throw new IllegalStateException("Bots can only turn Left or Right")
-    }
-
-    val botImage = botImages(animation.botId)
-    botImage.rotation = angle
-  }
-
+  // See Documentation for AnimationProgress
   def animateBotImageProgress(
       animation: AnimationProgress,
       primaryImages: HashMap[Long, createjs.Container]): Unit = {
@@ -528,6 +488,34 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   }
 
+  // animateMove is a bit complex. There are three aspects that are worth documenting:
+  //    (1) Animating the typical case
+  //    (2) Peeking into the future (or the past, depending on your perspective)
+  //    (3) Drawing the movement when the bot goes off screen, and wraps around torus style
+  //
+  // (1) Animating the typical case. First, we peek into the future (see (2)), to determine whether
+  //     or not the move will succed (i.e. the bot will move from one cell to another cell). Recall
+  //     from MoveInstruction, bots can only move into another cell if the new cell is empty at the
+  //     time when the move instruction executes its last cycle. If the move fails, then the bot
+  //     is drawn at its current location. If the move succeeds, then we calculate
+  //     proportionCompleted, which measures how far along the move instruction has progressed. Then
+  //     we calculate (row, col) as a double based on proportionCompleted. For example if the bot is
+  //     moving from (0, 0) to (0, 1) and the move instruction is half-way done executing, then
+  //     (row, col) == (0, 0.5). Then we draw the bot at (row, col). A similar approach is used in
+  //     animateTurn.
+  // (2) Peeking into the future. We do not want to animate a bot move if the move fails.
+  //     Unfortunately, we cannot know whether or not the move will succeed or fail until
+  //     config.sim.moveCycles cycles have been executed. So, the way we get around is is by
+  //     running the animation several cycles behind the board simulator. This way, the animation
+  //     can peek into the future, to see if the move will fail or succeed.
+  // (3) Drawing the movement when the bot goes off screen, and wraps around torus style. How do
+  //     we do it? We use "twin images." A twin image is a duplicate image of a bot. The twin image
+  //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
+  //     primary image of the bot move off screen. Then, we have the twin image move on screen.
+  //     Once the movement is complete, we move the image off screen again.
+  def animateMoveProgress(animation: MoveAnimationProgress): Unit =
+    animateBotImageProgress(animation, botImages)
+
   def animateBirthProgress(animation: BirthAnimationProgress): Unit =
     animateBotImageProgress(animation, birthBotImages)
 
@@ -548,5 +536,24 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     twinImage.x = retina(halfCell - cellSize)
     twinImage.y = retina(halfCell - cellSize)
   }
+
+  def animateTurn(animation: TurnAnimation): Unit = {
+
+    val oldDirection = animation.oldDirection
+
+    // See the documentation for animateMove, section (1).
+    val proportionCompleted = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
+
+    val angle: Double = animation.leftOrRight match {
+      case Direction.Left => Direction.toAngle(oldDirection) - 90.0 * proportionCompleted
+      case Direction.Right => Direction.toAngle(oldDirection) + 90.0 * proportionCompleted
+      case _ => throw new IllegalStateException("Bots can only turn Left or Right")
+    }
+
+    val botImage = botImages(animation.botId)
+    botImage.rotation = angle
+  }
+
+  /** End animation functions  ********************************************************************/
 
 }
