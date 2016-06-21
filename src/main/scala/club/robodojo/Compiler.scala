@@ -48,7 +48,6 @@ case class CompileLineResult(
 object Compiler {
 
   // TESTED
-  // TODO: deal with commas. How about replace all commas with " , "
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
     text
       .split("\n")
