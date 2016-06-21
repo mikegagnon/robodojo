@@ -389,6 +389,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   // TODO: document
+  // TODO: test for zero cycles in a tick
   def animate(numCyclesThisTick: Int): Unit = {
 
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,

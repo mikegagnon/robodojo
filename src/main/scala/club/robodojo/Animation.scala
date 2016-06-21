@@ -6,12 +6,17 @@ package club.robodojo
 sealed trait Animation {
   val botId: Long
 
-  // TODO: document
+  // Recall the way animation works: for every tick, Viz executes zero or more cycles (see
+  // Viz.tick). Then Viz executes the animations for the current animationCycleNum. But there is a
+  // problem with this approach! The problem is that many animations might be skipped over.
+  // For example, if tick() executes five cycles, then the animations for the first four cycles
+  // wouldn't be executed. For MoveAnimation and TurnAnimation, this is not a problem, because
+  // we only want to draw the latest animation. For BirthAnimationSucceed, however, if it gets
+  // skipped over, then the new bot (which was just created) won't be drawn to the screen. To
+  // deal with this problem, we give Animation a mandatory flag. If mandatory is set to true,
+  // for a given animation, then that animation is "mandatory" in that the animation must not be
+  // skipped over and it must be animated.
   val mandatory = false
-  // TODO: Is <% what we really need?
-  // TODO: put this code elsewhere? Type class?
-  //def merge[AnimationType](oldAnimation: AnimationType, newAnimation: AnimationType):
-  // AnimationType = newAnimation
 }
 
 /* Begin MoveAnimation and BirthAnimation definitions *********************************************/
