@@ -359,7 +359,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     currentAnimations.values.foreach { animation =>
       animation match {
-        // TODO: break up MoveAnimation into succeed and fail?
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
         case moveAnimation: MoveAnimationSucceed => animateMoveSucceed(moveAnimation)
         case moveAnimation: MoveAnimationFail => animateMoveFail(moveAnimation)
