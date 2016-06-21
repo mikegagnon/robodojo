@@ -368,7 +368,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // animationCycleNum with boardCycleNum
     // TODO: too much horizontal
     val allAnimations: IndexedSeq[Animation] = (animationCycleNum to lastCycleNumForThisTick) flatMap { cycleNum: Int =>
-        animations(cycleNum).values.toList
+        animations(cycleNum).values
       }
 
 
