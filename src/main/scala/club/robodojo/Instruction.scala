@@ -195,6 +195,8 @@ case class CreateInstruction(
 
         val emptyProgram = Program.emptyProgram(numBanks)
 
+        val active = false
+
         val newBot = Bot(
           bot.board,
           bot.playerColor,
@@ -203,7 +205,8 @@ case class CreateInstruction(
           bot.direction,
           emptyProgram,
           childInstructionSet,
-          mobile)
+          mobile,
+          active)
 
         bot.board.addBot(newBot)
 

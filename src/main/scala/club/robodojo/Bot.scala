@@ -17,8 +17,9 @@ object Bot {
             col: Int,
             direction: Direction.EnumVal = Direction.NoDir,
             program: Program = Program(Map[Int, Bank]()),
-            instructionSet: InstructionSet.EnumVal = InstructionSet.Basic,
-            mobile: Boolean = false): Bot = {
+            instructionSet: InstructionSet.EnumVal,
+            mobile: Boolean,
+            active: Boolean): Bot = {
 
     val bot = new Bot(board, playerColor)
     bot.row = row
@@ -27,6 +28,7 @@ object Bot {
     bot.program = program
     bot.instructionSet = instructionSet
     bot.mobile = mobile
+    bot.active = active
     return bot
   }
 
@@ -52,6 +54,8 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
   var mobile = false
 
+  var active = false
+
   var bankNum = 0
 
   var instructionNum = 0
@@ -60,6 +64,12 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
   // TESTED
   def cycle(): Option[Animation] = {
+
+    // TODO: Test
+    // TODO: Only draw the InactiveAnimation once
+    if (!active) {
+      return Option(InactiveAnimation(id))
+    }
 
     var bank = program.banks(bankNum)
 
@@ -83,6 +93,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
       return animation
     } else {
+      // TODO: tapout bot?
       return None
     }
   }

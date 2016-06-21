@@ -1,8 +1,12 @@
 package club.robodojo
 
+//TODO: document
+case class BotVisualFeatures(
+  // true iff the bot has the inactive visual-feature drawn
+  var inactive: Boolean = false)
+
 // The Animation classes provide just information to Viz so that Viz can animate the instruction
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
-
 sealed trait Animation {
   val botId: Long
 
@@ -95,3 +99,6 @@ case class TurnAnimation(
   cycleNum: Int,
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal) extends Animation
+
+case class InactiveAnimation(
+  botId: Long) extends Animation

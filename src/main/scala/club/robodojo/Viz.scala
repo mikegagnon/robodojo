@@ -47,6 +47,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // See documentation for animateBirthProgress
   val birthBotImages = HashMap[Long, createjs.Container]()
 
+  // TODO: document
+  val botVisualFeatures = HashMap[Long, BotVisualFeatures]()
+
   addBotImages()
   
   // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
@@ -82,6 +85,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def addCanvas(): JQuery = {
 
+    // TODO: cssify
     val canvasHtml = s"""
       <div id="${config.viz.boardWrapperDivId}" style="margin-bottom: 10px; background-color: #ccc; border-radius: 8px; padding: 10px;">
         <canvas id="${config.viz.canvas.canvasId}"
@@ -134,6 +138,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def addBackground(): Unit = {
     val rect = new createjs.Shape()
 
+    // TODO: configify #fff
     rect.graphics.beginFill("#fff").drawRect(0, 0, retina(config.viz.canvas.width),
       retina(config.viz.canvas.height))
 
@@ -162,11 +167,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
   }
 
-  def addBotImages(): Unit = {
+  def addBotImages(): Unit =
     board.bots.foreach { bot =>
-      addBot(bot.id, bot.playerColor, bot.row, bot.col, bot.direction)
+      addBot(bot.id, bot.playerColor, bot.row, bot.col, bot.direction, bot.active)
     }
-  }
 
   def newBotContainer(
       botId: Long,
@@ -221,11 +225,13 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     return container
   }
 
+  // TODO: take active as an argument
   def addBot(botId: Long,
       playerColor: PlayerColor.EnumVal,
       row: Int,
       col: Int,
-      direction: Direction.EnumVal): Unit = {
+      direction: Direction.EnumVal,
+      active: Boolean): Unit = {
 
     val twinContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val birthContainer = newBotContainer(botId, playerColor, -1, -1, direction)
@@ -239,7 +245,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     stage.addChild(birthContainer)
     stage.addChild(container)
 
-    val halfCell = config.viz.cellSize / 2.0
+    if (!active) {
+      drawInactive(botId)
+    }
+
+    botVisualFeatures(botId) = BotVisualFeatures(!active)
   }
 
   /** End initialization functions ****************************************************************/
@@ -289,7 +299,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // Remove obsolete animations to avoid memory leak
     // TODO: test
-    animations -= board.cycleNum - config.viz.lookAheadCycles - 1
+    // TODO: configify how far to remember into the past
+    animations -= board.cycleNum - config.viz.lookAheadCycles - 1 - 1
 
     animationList.foreach { animation: Animation =>
       animations(board.cycleNum)(animation.botId) = animation
@@ -403,6 +414,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
         case birthAnimation: BirthAnimationFail => ()
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
+        case inactiveAnimation: InactiveAnimation => animateInactive(inactiveAnimation)
       }
     }
   }
@@ -560,7 +572,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       animation.playerColor,
       animation.row,
       animation.col,
-      animation.direction)
+      animation.direction,
+      false)
 
     val birthImage = birthBotImages(animation.botId)
     val cellSize = config.viz.cellSize
@@ -589,6 +602,39 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val botImage = botImages(animation.botId)
     botImage.rotation = angle
   }
+
+  def drawInactive(botId: Long): Unit = {
+
+    val line = new createjs.Shape()
+
+    line.graphics.setStrokeStyle(retina(5))
+    // TODO configify color of background
+    line.graphics.beginStroke("#fff")
+    line.graphics.moveTo(retina(2), retina(15))
+    line.graphics.lineTo(retina(30), retina(15))
+    line.graphics.endStroke()
+
+    botImages(botId).addChild(line)
+  }
+
+  // TODO: cleanup
+  def animateInactive(inactiveAnimation: InactiveAnimation): Unit = {
+
+    val botId = inactiveAnimation.botId
+
+    val features: BotVisualFeatures = botVisualFeatures(botId)
+
+    // If the inactive visualization has alrady been drawn
+    if (features.inactive) {
+      return
+    }
+
+    features.inactive = true
+
+    drawInactive(botId)
+
+  }
+
 
   /** End animation functions  ********************************************************************/
 
