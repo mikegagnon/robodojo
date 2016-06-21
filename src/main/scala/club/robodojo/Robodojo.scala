@@ -56,7 +56,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
     move
   */
 
-  val bot1Program: Program = Compiler.compile("bank foo\ncreate 0, 5, 0\n turn 1").right.get
+  val bot1Program: Program = Compiler.compile("bank foo\ncreate 1,1,1\nturn 0").right.get
   //val bot1Program: Program = Compiler.compile("bank foo\nmove").right.get
   val bot1 = Bot(board, PlayerColor.Blue, 1, 0, Direction.Right, bot1Program)
   board.addBot(bot1)

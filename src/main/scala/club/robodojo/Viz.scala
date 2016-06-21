@@ -402,15 +402,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animateBotImageProgress(animation, botImages)
 
 
-  // TODO: ?
-  def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
+  def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = ()
 
-  }
-
-  // TODO: ?
-  def animateMoveFail(animation: MoveAnimationFail): Unit = {
-
-  }
+  def animateMoveFail(animation: MoveAnimationFail): Unit = ()
 
   def animateTurn(animation: TurnAnimation): Unit = {
 
@@ -456,13 +450,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
     if (!success) {
-      primaryImage.x = retina(halfCell - cellSize)
-      primaryImage.y = retina(halfCell - cellSize)
-      primaryImage.rotation = Direction.toAngle(animation.direction)
-
       twinImage.x = retina(halfCell - cellSize)
       twinImage.y = retina(halfCell - cellSize)
-
       return
     }
 
