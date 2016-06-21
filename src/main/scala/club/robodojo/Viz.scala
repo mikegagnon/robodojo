@@ -367,18 +367,25 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       throw new IllegalStateException("numCyclesThisTick < 1")
     }
 
-    // TODO: is this correct?
-    val firstCycleNumForThisTick = animationCycleNum - numCyclesThisTick + 1
+    // TODO: is this correct? Off by one?
+    val lastCycleNumForThisTick = animationCycleNum + numCyclesThisTick
 
-    // TODO: maybe make cycleNum a member of Animation. If so, then need to replace
+    //println(lastCycleNumForThisTick, animationCycleNum, animations.keys)
+
+    // TODO: maybe make cycleNum a member of Animation? If so, then need to replace
     // animationCycleNum with boardCycleNum
-    val animatiosnForThisTick = firstCycleNumForThisTick to animationCycleNum map { cycleNum =>
-        (cycleNum, animations(animationCycleNum))
+    // TODO: too much horizontal
+    val allAnimations: IndexedSeq[Animation] = (animationCycleNum to lastCycleNumForThisTick) flatMap { cycleNum: Int =>
+        animations(cycleNum).values.toList
       }
 
 
+    val mandatoryAnimations = allAnimations.filter { animation =>
+      animation.mandatory
+    }
+
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
-    currentAnimations.values
+    mandatoryAnimations ++ currentAnimations.values
   }
 
   // TODO: document

@@ -5,6 +5,13 @@ package club.robodojo
 
 sealed trait Animation {
   val botId: Long
+
+  // TODO: document
+  val mandatory = false
+  // TODO: Is <% what we really need?
+  // TODO: put this code elsewhere? Type class?
+  //def merge[AnimationType](oldAnimation: AnimationType, newAnimation: AnimationType):
+  // AnimationType = newAnimation
 }
 
 /* Begin MoveAnimation and BirthAnimation definitions *********************************************/
@@ -37,6 +44,8 @@ sealed trait AnimationProgressSucceed extends Animation
 // Like AnimationProgressSucceed, except for the case when the instruction fails
 sealed trait AnimationProgressFail extends Animation
 
+// TODO: don't let the code be too horizontal
+
 case class MoveAnimationProgress(
   botId: Long,
   cycleNum: Int,
@@ -66,7 +75,9 @@ case class BirthAnimationSucceed(
   playerColor: PlayerColor.EnumVal,
   row: Int,
   col: Int,
-  direction: Direction.EnumVal) extends BirthAnimation with AnimationProgressSucceed
+  direction: Direction.EnumVal) extends BirthAnimation with AnimationProgressSucceed {
+  override val mandatory = true
+}
 
 case class MoveAnimationFail(
   botId: Long) extends BirthAnimation with AnimationProgressFail
