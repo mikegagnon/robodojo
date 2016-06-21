@@ -67,6 +67,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   //       board.cycleNum we are currently animating. animationCycleNum != board.cycleNum
   //       because the animation lags behind the board simulation. See the documentation for
   //       animateMove, section (2) for an explanation.
+  // TODO: replace animationCycleNum with boardCycleNum?
   var animationCycleNum = 0
 
   stage.update()
@@ -329,6 +330,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
+
+  // TODO: delete below comment
+  // Returns the number of cycles executed for this tick
+  // TODO: s/cycles/numCyclesThisTick/
   def tick(event: js.Dynamic): Unit = {
     
     if (createjs.Ticker.paused) {
@@ -343,7 +348,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
       1 to cycles foreach { _ => cycle() }
 
-      animate()
+      animate(cycles)
 
       stage.update()
     }
@@ -354,20 +359,37 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   /** Begin animation functions  ******************************************************************/
 
   // TODO: cleanup
-  def getAnimationsForThisTick(): Iterable[Animation] = {
+  def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
+
+    // TODO: maybe numCyclesThisTick can equal 0? Prevent that? No need to animate 0 cycles.
+    // TODO: test
+    if (numCyclesThisTick < 1) {
+      throw new IllegalStateException("numCyclesThisTick < 1")
+    }
+
+    // TODO: is this correct?
+    val firstCycleNumForThisTick = animationCycleNum - numCyclesThisTick + 1
+
+    // TODO: maybe make cycleNum a member of Animation. If so, then need to replace
+    // animationCycleNum with boardCycleNum
+    val animatiosnForThisTick = firstCycleNumForThisTick to animationCycleNum map { cycleNum =>
+        (cycleNum, animations(animationCycleNum))
+      }
+
+
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
     currentAnimations.values
   }
 
   // TODO: document
-  def animate(): Unit = {
+  def animate(numCyclesThisTick: Int): Unit = {
 
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
 
     // TODO: BUG: the animation() function will miss animations if they occured during a cycle()
     // before this cycle
-    getAnimationsForThisTick().foreach { animation =>
+    getAnimationsForThisTick(numCyclesThisTick).foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
         case moveAnimation: MoveAnimationSucceed => ()
