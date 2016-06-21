@@ -354,30 +354,35 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   /** Begin animation functions  ******************************************************************/
 
-  // TODO: cleanup
-  // TODO: test
+
+  // See Documentation for Animation.mandatory
+  // Returns a collection contraining every mandatory animation that were produced over the last
+  // N cycles, where N == numCyclesThisTick
+  def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
+    val lastCycleNumForThisTick = animationCycleNum + numCyclesThisTick
+
+    val allAnimations = (animationCycleNum to lastCycleNumForThisTick) flatMap { cycleNum: Int =>
+        animations(cycleNum).values
+      }
+
+    allAnimations.filter { animation =>
+      animation.mandatory
+    }
+  }
+
+  // Returns a collection containing every animation that should be drawn for this step
   def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
 
     if (numCyclesThisTick < 1) {
       throw new IllegalStateException("numCyclesThisTick < 1")
     }
 
-    val lastCycleNumForThisTick = animationCycleNum + numCyclesThisTick
+    val mandatoryAnimations = getMandatoryAnimations(numCyclesThisTick)
 
-    // TODO: maybe make cycleNum a member of Animation? If so, then need to replace
-    // animationCycleNum with boardCycleNum
-    // TODO: too much horizontal
-    val allAnimations: IndexedSeq[Animation] = (animationCycleNum to lastCycleNumForThisTick) flatMap { cycleNum: Int =>
-        animations(cycleNum).values
-      }
-
-
-    val mandatoryAnimations = allAnimations.filter { animation =>
-      animation.mandatory
-    }
-
+    // The animations that were produced in the last tick of this step
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
-    mandatoryAnimations ++ currentAnimations.values
+
+    return mandatoryAnimations ++ currentAnimations.values
   }
 
   // TODO: document
