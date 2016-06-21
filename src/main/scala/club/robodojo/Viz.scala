@@ -330,25 +330,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
-
-  // TODO: delete below comment
-  // Returns the number of cycles executed for this tick
-  // TODO: s/cycles/numCyclesThisTick/
   def tick(event: js.Dynamic): Unit = {
     
     if (createjs.Ticker.paused) {
       return
     } else {
-      val cycles =
+      val numCyclesThisTick =
         if (step) {
           tickStep()
         } else {
           tickMultiStep(event)
         }
 
-      1 to cycles foreach { _ => cycle() }
+      1 to numCyclesThisTick foreach { _ => cycle() }
 
-      animate(cycles)
+      animate(numCyclesThisTick)
 
       stage.update()
     }
