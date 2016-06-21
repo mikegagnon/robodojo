@@ -260,7 +260,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val twinContainer = newBotContainer(botId, playerColor, row, col, direction)
     val birthContainer = newBotContainer(botId, playerColor, row, col, direction)
-    // TODO: rename
     val container = newBotContainer(botId, playerColor, row, col, direction)
 
     twinBotImages += (botId -> twinContainer)
