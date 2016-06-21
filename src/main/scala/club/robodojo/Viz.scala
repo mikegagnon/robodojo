@@ -353,14 +353,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   /** Begin animation functions  ******************************************************************/
 
+  // TODO: cleanup
+  def getAnimationsForThisTick(): Iterable[Animation] = {
+    val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
+    currentAnimations.values
+  }
+
+  // TODO: document
   def animate(): Unit = {
+
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
-    val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
     // TODO: BUG: the animation() function will miss animations if they occured during a cycle()
     // before this cycle
-    currentAnimations.values.foreach { animation =>
+    getAnimationsForThisTick().foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
         case moveAnimation: MoveAnimationSucceed => ()
