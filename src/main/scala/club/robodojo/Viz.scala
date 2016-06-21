@@ -382,7 +382,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // The animations that were produced in the last tick of this step
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
-    return mandatoryAnimations ++ currentAnimations.values
+    return currentAnimations.values ++ mandatoryAnimations
   }
 
   // TODO: document
@@ -394,9 +394,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
-
-    // TODO: BUG: the animation() function will miss animations if they occured during a cycle()
-    // before this cycle
     getAnimationsForThisTick(numCyclesThisTick).foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
