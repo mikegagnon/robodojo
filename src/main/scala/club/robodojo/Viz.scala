@@ -358,6 +358,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // animations will not have an entry for animationCycleNum, which causes an exception.
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
+    // TODO: BUG: the animation() function will miss animations if they occured during a cycle()
+    // before this cycle
     currentAnimations.values.foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
@@ -526,6 +528,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animateBotImageProgress(animation, birthBotImages)
 
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
+    println("success")
     addBot(animation.newBotId,
       animation.playerColor,
       animation.row,
