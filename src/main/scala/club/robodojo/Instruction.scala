@@ -47,9 +47,9 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       case None => {
 
         bot.board.moveBot(bot, row, col)
-        Some(MoveAnimationSucceed(bot.id, row, col, bot.direction))
+        Some(MoveAnimationSucceed(bot.id))
       }
-      case Some(_) => Some(MoveAnimationFail(bot.id, requiredCycles))
+      case Some(_) => Some(MoveAnimationFail(bot.id))
     }
   }
 }
@@ -215,7 +215,7 @@ case class CreateInstruction(
           newBot.col,
           newBot.direction))
       }
-      case Some(_) => Some(BirthAnimationFail(bot.id, requiredCycles))
+      case Some(_) => Some(BirthAnimationFail(bot.id))
     }
   }
 }

@@ -1,7 +1,5 @@
 package club.robodojo
 
-// TODO: cleanup and document
-
 // The Animation classes provide just information to Viz so that Viz can animate the instruction
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
 
@@ -34,11 +32,7 @@ sealed trait AnimationProgress extends Animation {
 }
 
 // Like AnimationProgress, except for the case where the instruction succeeds
-sealed trait AnimationProgressSucceed extends Animation {
-  val row: Int
-  val col: Int
-  val direction: Direction.EnumVal
-}
+sealed trait AnimationProgressSucceed extends Animation
 
 // Like AnimationProgressSucceed, except for the case when the instruction fails
 sealed trait AnimationProgressFail extends Animation
@@ -63,14 +57,9 @@ case class BirthAnimationProgress(
   newCol: Int,
   direction: Direction.EnumVal) extends BirthAnimation with AnimationProgress
 
-// TODO: are these fields really necessary
 case class MoveAnimationSucceed(
-  botId: Long,
-  row: Int,
-  col: Int,
-  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed
+  botId: Long) extends MoveAnimation with AnimationProgressSucceed
 
-// TODO: are all these fields necessary?
 case class BirthAnimationSucceed(
   botId: Long,
   newBotId: Long,
@@ -79,15 +68,11 @@ case class BirthAnimationSucceed(
   col: Int,
   direction: Direction.EnumVal) extends BirthAnimation with AnimationProgressSucceed
 
-// TODO: rm cycleNum?
 case class MoveAnimationFail(
-  botId: Long,
-  cycleNum: Int) extends BirthAnimation with AnimationProgressFail
+  botId: Long) extends BirthAnimation with AnimationProgressFail
 
-// TODO: rm cycleNum?
 case class BirthAnimationFail(
-  botId: Long,
-  cycleNum: Int) extends BirthAnimation with AnimationProgressFail
+  botId: Long) extends BirthAnimation with AnimationProgressFail
 
 /* End MoveAnimation and BirthAnimation definitions ***********************************************/
 
