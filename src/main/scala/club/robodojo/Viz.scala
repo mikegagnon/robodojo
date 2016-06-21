@@ -453,7 +453,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     // The amount the bot has moved towards its new cell (as a proportion)
-    // TODO: change to proportionCompleted (also in documentation)
     val proportionCompleted: Double =
       animation.cycleNum.toDouble / animation.requiredCycles.toDouble
 
