@@ -49,8 +49,6 @@ sealed trait AnimationProgressSucceed extends Animation
 // Like AnimationProgressSucceed, except for the case when the instruction fails
 sealed trait AnimationProgressFail extends Animation
 
-// TODO: don't let the code be too horizontal
-
 case class MoveAnimationProgress(
   botId: Long,
   cycleNum: Int,
