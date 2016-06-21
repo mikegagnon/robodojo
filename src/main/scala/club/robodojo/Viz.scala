@@ -454,8 +454,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val (twinRow: Double, twinCol: Double) =
       // if the bot has finished its movement, then move the twin off screen
       if (animation.cycleNum == animation.requiredCycles) {
-        // TODO: this shouldn't happen, right?
-        (-1.0, -1.0)
+        throw new IllegalStateException("This code shouldn't be reachable")
       }
       // if the bot is moving up, towards off the screen
       else if (newRow - oldRow > 1) {
@@ -481,7 +480,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val (primaryRow: Double, primaryCol: Double) =
       // if the bot has finished its movement, then move the bot to its new home
       if (animation.cycleNum == animation.requiredCycles) {
-        (newRow, newCol)
+        throw new IllegalStateException("This code shouldn't be reachable")
       }
       // if the bot is moving up, towards off the screen
       else if (newRow - oldRow > 1) {
