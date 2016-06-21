@@ -565,7 +565,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animateBotImageProgress(animation, birthBotImages)
 
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
-    println("success")
     addBot(animation.newBotId,
       animation.playerColor,
       animation.row,
