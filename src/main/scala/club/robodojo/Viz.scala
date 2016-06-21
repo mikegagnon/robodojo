@@ -439,11 +439,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-    // TODO: should these 4 lines go after the if (!success) ?
     val cellSize = config.viz.cellSize
     val halfCell = cellSize / 2.0
 
-    // TODO: do we really need botImage?
     val twinImage = twinBotImages(animation.botId)
     val primaryImage = primaryImages(animation.botId)
 
