@@ -258,8 +258,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       col: Int,
       direction: Direction.EnumVal): Unit = {
 
-    val twinContainer = newBotContainer(botId, playerColor, row, col, direction)
-    val birthContainer = newBotContainer(botId, playerColor, row, col, direction)
+    val twinContainer = newBotContainer(botId, playerColor, -1, -1, direction)
+    val birthContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val container = newBotContainer(botId, playerColor, row, col, direction)
 
     twinBotImages += (botId -> twinContainer)
@@ -271,15 +271,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     stage.addChild(container)
 
     val halfCell = config.viz.cellSize / 2.0
-
-    // TODO: maybe this is unnecessary if we call newBotContainer with row==col==-1
-    // Move the twin image off screen to (row = -1, col = -1)
-    twinContainer.x = retina(halfCell - config.viz.cellSize)
-    twinContainer.y = retina(halfCell - config.viz.cellSize)
-
-    // Move birth image off screen
-    birthContainer.x = retina(halfCell - config.viz.cellSize)
-    birthContainer.y = retina(halfCell - config.viz.cellSize)
   }
 
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
