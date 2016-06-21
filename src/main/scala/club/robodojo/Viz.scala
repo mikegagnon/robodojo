@@ -528,8 +528,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   }
 
-  // TODO: factor out code common to animateMove
-  // TODO: document
   def animateBirthProgress(animation: BirthAnimationProgress): Unit =
     animateBotImageProgress(animation, birthBotImages)
 
