@@ -35,7 +35,6 @@ sealed trait AnimationProgress extends Animation {
 
 // Like AnimationProgress, except for the case where the instruction succeeds
 sealed trait AnimationProgressSucceed extends Animation {
-  val botId: Long
   val row: Int
   val col: Int
   val direction: Direction.EnumVal
