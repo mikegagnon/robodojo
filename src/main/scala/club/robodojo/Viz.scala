@@ -662,7 +662,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // Second, draw a flash
     val rect = new createjs.Shape()
 
-    // TODO: base params of cellSize
     // TODO configify color of background
     val x = retina(fatalError.col * config.viz.cellSize)
     val y = retina(fatalError.row * config.viz.cellSize)
@@ -674,6 +673,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // Schedule the flash to be removed next tick
     shapesToBeRemovedNextTick +:= rect
+
+    // Third, display the error message
+    jQuery("#" + config.editor.compilerOutputId).html(fatalError.errorMessage)
   }
 
 

@@ -43,6 +43,11 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   def addHtml(): Unit = {
 
+    // TODO: change name of compilerOutputId to something else, since more than just the compiler
+    // writes to it.
+    // TODO: make compilerOutput scrollable. Make sure to put checks in so it doesn't get overly
+    // flooded
+
     val html = s"""
       <div class = "editor">
 

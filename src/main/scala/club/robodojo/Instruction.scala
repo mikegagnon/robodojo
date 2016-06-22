@@ -186,11 +186,12 @@ case class CreateInstruction(
   // TODO: get line number
   def errorCheck(bot: Bot): Option[Animation] = {
     if (numBanks <= 0 || numBanks > config.sim.maxBanks) {
-      val errorMessage = s"Error: The ${PlayerColor.toColorString(bot.playerColor)} bot located at " +
-        s"row ${bot.row}, column ${bot.col} has tapped out because it attempted to execute a " +
-        s"<tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanks}. " +
+      val errorMessage = s"<p><span class='display-failure'>Error</span>: " +
+        s"The ${PlayerColor.toColorString(bot.playerColor).toLowerCase} bot located at " +
+        s"row ${bot.row + 1}, column ${bot.col + 1} has tapped out because it attempted to " +
+        s"execute a <tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanks}. " +
         s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
-        "${config.sim.maxBanks}."
+        s"${config.sim.maxBanks}.</p>"
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
     } else {
       None
