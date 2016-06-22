@@ -123,7 +123,7 @@ case class CreateInstruction(
     numBanks: Int,
     mobile: Boolean)(implicit val config: Config) extends Instruction {
 
-  if (numBanks < 1) {
+  if (numBanks < 1 && config.compiler.safetyChecks) {
     throw new IllegalArgumentException("numBanks < 1 == " + numBanks)
   }
 

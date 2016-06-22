@@ -434,6 +434,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val success = futureAnimation match {
       case m: AnimationProgressSucceed => true
       case _: AnimationProgressFail => false
+      case _: FatalErrorAnimation => false
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
@@ -637,7 +638,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   def animateFatalError(fatalError: FatalErrorAnimation): Unit = {
-
+    val botImage = botImages(fatalError.botId)
+    println(botImage)
   }
 
 
