@@ -6,7 +6,8 @@ class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
-  val bots = new ArrayBuffer[Bot]()
+  // TODO: different data structure more amenable to removal?
+  var bots = new ArrayBuffer[Bot]()
 
   var cycleNum = 0
 
@@ -19,6 +20,14 @@ class Board(implicit val config: Config) {
       }
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
+
+  // TODO: test
+  def removeBot(bot: Bot): Unit = {
+    matrix(bot.row)(bot.col) = None
+    bots = bots.filter { b =>
+      b.id != bot.id
+    }
+  }
 
   // TESTED
   def moveBot(bot: Bot, row: Int, col: Int): Unit =

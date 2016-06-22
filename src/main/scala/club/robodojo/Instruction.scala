@@ -203,7 +203,7 @@ case class CreateInstruction(
     val error: Option[Animation] = errorCheck(bot)
 
     if (error.nonEmpty) {
-      // TODO: tapout bot
+      bot.board.removeBot(bot)
       return error
     }
 
