@@ -609,6 +609,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val line = new createjs.Shape()
 
+    // TODO: base params of cellSize
     line.graphics.setStrokeStyle(retina(5))
     // TODO configify color of background
     line.graphics.beginStroke("#fff")
