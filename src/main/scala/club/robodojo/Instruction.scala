@@ -118,10 +118,17 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 // TODO: take params as ParamValue objects?
 // TODO: crash on numBanks < 1 or > 50
 // TODO: Prevent FAT hack
+// TODO: also include the string version of the instruction as a param?
 case class CreateInstruction(
     childInstructionSet: InstructionSet.EnumVal,
     numBanks: Int,
-    mobile: Boolean)(implicit val config: Config) extends Instruction {
+    mobile: Boolean,
+    lineNumber: Int,
+    // Who's program did this instruction come from originally?
+    // Note this is different than bot.playerColor, which is the color of the bot.
+    // For example, if a blue bot infects a red bot with a bank that has as bad create instruction,
+    // then bot.playerColor == red and playerColor, here, == blue.
+    playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
   if (numBanks < 1 && config.compiler.safetyChecks) {
     throw new IllegalArgumentException("numBanks < 1 == " + numBanks)
@@ -183,15 +190,19 @@ case class CreateInstruction(
         bot.direction))
     }
 
-  // TODO: get line number
   def errorCheck(bot: Bot): Option[Animation] = {
     if (numBanks <= 0 || numBanks > config.sim.maxBanks) {
-      val errorMessage = s"<p><span class='display-failure'>Error</span>: " +
-        s"The ${PlayerColor.toColorString(bot.playerColor).toLowerCase} bot located at " +
-        s"row ${bot.row + 1}, column ${bot.col + 1} has tapped out because it attempted to " +
+
+      val errorCode = ErrorCode.InvalidParameter
+      val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
         s"execute a <tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanks}. " +
         s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
-        s"${config.sim.maxBanks}.</p>"
+        s"${config.sim.maxBanks}."
+      val errorMessage = ErrorMessage(errorCode, lineNumber, message)
+
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
     } else {
       None

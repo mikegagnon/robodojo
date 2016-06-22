@@ -110,4 +110,4 @@ case class FatalErrorAnimation(
   playerColor: PlayerColor.EnumVal,
   row: Int,
   col: Int,
-  errorMessage: String) extends Animation
+  errorMessage: ErrorMessage) extends Animation

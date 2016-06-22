@@ -157,7 +157,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
     // Compile each file
     PlayerColor.colors.foreach { playerColor =>
-      programs += playerColor -> Compiler.compile(files(playerColor))
+      programs += playerColor -> Compiler.compile(files(playerColor), playerColor)
     }
 
     val newBoard = new Board()
@@ -186,6 +186,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     jQuery("#" + config.editor.compilerOutputId).html(html)
   }
 
+  // TODO: display errors in a popup?
   def displayErrors(errors: ArrayBuffer[ErrorMessage]): Unit = {
 
     val header = if (errors.length == 1) {

@@ -60,7 +60,10 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   val mobile = true
   val active = true
 
-  val bot1Program: Program = Compiler.compile("bank foo\ncreate 1,1,1\nturn 0").right.get
+  // TODO: test for different player colors
+  val bot1Program: Program =
+    Compiler.compile("bank foo\ncreate 1,1,1\nturn 0", PlayerColor.Blue).right.get
+
   //val bot1Program: Program = Compiler.compile("bank foo\nmove").right.get
   val bot1 = Bot(
     board,
@@ -74,7 +77,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
 
   board.addBot(bot1)
 
-  val bot2Program: Program = Compiler.compile("bank foo\nturn 1").right.get
+  val bot2Program: Program = Compiler.compile("bank foo\nturn 1", PlayerColor.Red).right.get
   val bot2 = Bot(
     board,
     PlayerColor.Red,

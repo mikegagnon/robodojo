@@ -18,6 +18,7 @@ object PlayerColor {
       case _ => throw new IllegalArgumentException("Bad playerNum: " + playerNum)
     }
 
+  // TODO: is this unnecessary?
   def toColorString(playerColor: PlayerColor.EnumVal) =
     playerColor match {
       case Blue => "Blue"

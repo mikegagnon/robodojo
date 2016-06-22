@@ -24,17 +24,22 @@ case class TokenLine(tokens: Array[String], lineNumber: Int) {
 
 object ErrorCode {
   sealed trait EnumVal
-  case object UnrecognizedInstruction extends EnumVal
-  case object TooManyParams extends EnumVal
-  case object MissingParams extends EnumVal
-  case object WrongParamType extends EnumVal
-  case object UndeclaredBank extends EnumVal
-  case object MaxBanksExceeded extends EnumVal
-  case object EmptyBanks extends EnumVal
-  case object MalformedCreate extends EnumVal
-  case object BadInstructionSetParam extends EnumVal
-  case object BadNumBanksParam extends EnumVal
-  case object BadMobileParam extends EnumVal
+  sealed trait CompileTimeError extends EnumVal
+  sealed trait RunTimeError extends EnumVal
+
+  case object UnrecognizedInstruction extends CompileTimeError
+  case object TooManyParams extends CompileTimeError
+  case object MissingParams extends CompileTimeError
+  case object WrongParamType extends CompileTimeError
+  case object UndeclaredBank extends CompileTimeError
+  case object MaxBanksExceeded extends CompileTimeError
+  case object EmptyBanks extends CompileTimeError
+  case object MalformedCreate extends CompileTimeError
+  case object BadInstructionSetParam extends CompileTimeError
+  case object BadNumBanksParam extends CompileTimeError
+  case object BadMobileParam extends CompileTimeError
+
+  case object InvalidParameter extends RunTimeError
 }
 
 // TODO: underline the offensive text in the program text?
@@ -160,7 +165,10 @@ object Compiler {
 
   // TODO: make compliant with Robocom standard
   // TESTED
-  def compileCreate(tl: TokenLine)(implicit config: Config): CompileLineResult =
+  def compileCreate(
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)(implicit config: Config): CompileLineResult =
+
     if (tl.tokens.length != 6 ||
         tl.tokens(2) != "," ||
         tl.tokens(4) != "," ||
@@ -221,13 +229,21 @@ object Compiler {
       val mobile = mobileToken == 1
 
       // TODO: make instructionSet an int?
-      val instruction = CreateInstruction(instructionSet, numBanks, mobile)
+      val instruction = CreateInstruction(
+        instructionSet,
+        numBanks,
+        mobile,
+        tl.lineNumber,
+        playerColor)
 
       CompileLineResult(Some(instruction), None)
     }
 
   // TESTED
-  def compile(text: String)(implicit config: Config): Either[ArrayBuffer[ErrorMessage], Program] = {
+  def compile(
+      text: String,
+      playerColor: PlayerColor.EnumVal)(implicit config: Config):
+      Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)
     var banks = Map[Int, Bank]()
@@ -250,7 +266,7 @@ object Compiler {
         }
         case "move" => compileMove(tl)
         case "turn" => compileTurn(tl)
-        case "create" => compileCreate(tl)
+        case "create" => compileCreate(tl, playerColor)
         case _ => unrecognizedInstruction(tl)
       }
 
