@@ -197,8 +197,6 @@ case class CreateInstruction(
     }
   }
 
-  // TODO: If any of the params to CreateInstruction are invalid, throw a user-visible exeception
-  // that ends the game.
   def execute(bot: Bot): Option[Animation] = {
 
     val error: Option[Animation] = errorCheck(bot)
