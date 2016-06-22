@@ -51,6 +51,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // botVisualFeatures(botId) == the visual features for that bot
   val botVisualFeatures = HashMap[Long, BotVisualFeatures]()
 
+  // TODO: document
+  // TODO: change to List[createjs.Container]?
+  var shapesToBeRemovedNextTick = List[createjs.Shape]()
+
   addBotImages()
   
   // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
@@ -353,6 +357,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         }
 
       1 to numCyclesThisTick foreach { _ => cycle() }
+
+      shapesToBeRemovedNextTick.foreach { shape: createjs.Shape =>
+        stage.removeChild(shape)
+      }
+
+      shapesToBeRemovedNextTick = List()
 
       animate(numCyclesThisTick)
 
@@ -661,6 +671,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     rect.graphics.beginFill("#00F").drawRect(x, y, w, h)
 
     stage.addChild(rect)
+
+    shapesToBeRemovedNextTick +:= rect
   }
 
 
