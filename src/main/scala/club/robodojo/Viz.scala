@@ -414,7 +414,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case birthAnimation: BirthAnimationFail => ()
         case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
         case inactiveAnimation: InactiveAnimation => animateInactive(inactiveAnimation)
-        case fatalError: FatalErrorAnimation => () // TODO
+        case fatalError: FatalErrorAnimation => animateFatalError(fatalError)
       }
     }
   }
@@ -633,6 +633,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     features.inactive = true
 
     drawInactive(botId)
+  }
+
+  def animateFatalError(fatalError: FatalErrorAnimation): Unit = {
+
   }
 
 
