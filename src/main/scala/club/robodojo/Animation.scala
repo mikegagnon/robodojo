@@ -104,3 +104,8 @@ case class TurnAnimation(
 
 case class InactiveAnimation(
   botId: Long) extends Animation
+
+case class FatalErrorAnimation(
+  botId: Long,
+  playerColor: PlayerColor.EnumVal,
+  errorMessage: String) extends Animation

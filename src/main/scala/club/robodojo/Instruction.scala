@@ -182,9 +182,30 @@ case class CreateInstruction(
         bot.direction))
     }
 
+  // TODO: get line number
+  def errorCheck(bot: Bot): Option[Animation] = {
+    if (numBanks <= 0 || numBanks > config.sim.maxBanks) {
+      val errorMessage = s"Error: The ${PlayerColor.toColorString(bot.playerColor)} bot located at " +
+        s"row ${bot.row}, column ${bot.col} has tapped out because it attempted to execute a " +
+        s"<tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanks}. " +
+        s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
+        "${config.sim.maxBanks}."
+      return Some(FatalErrorAnimation(bot.id, bot.playerColor, errorMessage))
+    } else {
+      None
+    }
+  }
+
   // TODO: If any of the params to CreateInstruction are invalid, throw a user-visible exeception
   // that ends the game.
   def execute(bot: Bot): Option[Animation] = {
+
+    val error: Option[Animation] = errorCheck(bot)
+
+    if (error.nonEmpty) {
+      // TODO: tapout bot
+      return error
+    }
 
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
     val oldRow = bot.row

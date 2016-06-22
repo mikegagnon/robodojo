@@ -188,7 +188,7 @@ object Compiler {
           val errorCode = ErrorCode.BadInstructionSetParam
           val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
           return CompileLineResult(None, Some(errorMessage))
-        } else if (numBanksToken < 1 || numBanksToken > 50) {
+        } else if (numBanksToken < 1 || numBanksToken > config.sim.maxBanks) {
           val message = "Bad numBanks parameter: the second parameter to the <tt>create</tt> " +
             "instruction, the numBanks parameter, must be greater (or equal to) 1 and less than " +
             s"(or equal to) ${config.sim.maxBanks}"
@@ -220,6 +220,7 @@ object Compiler {
       val numBanks = numBanksToken
       val mobile = mobileToken == 1
 
+      // TODO: make instructionSet an int?
       val instruction = CreateInstruction(instructionSet, numBanks, mobile)
 
       CompileLineResult(Some(instruction), None)
