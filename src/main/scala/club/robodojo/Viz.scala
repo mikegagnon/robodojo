@@ -672,6 +672,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     stage.addChild(rect)
 
+    // Schedule the flash to be removed next tick
     shapesToBeRemovedNextTick +:= rect
   }
 

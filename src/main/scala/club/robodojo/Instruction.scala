@@ -130,6 +130,7 @@ case class CreateInstruction(
   val instructionSet = InstructionSet.Basic
 
   // TODO: will need to change to def if take ParamValue objects as params
+  // TODO: what if numBanks, etc., is wonky? Then we get wonky requiredCycles. Check for that.
   val requiredCycles = {
 
     val durCreate1 = config.sim.durCreate1
