@@ -2,6 +2,7 @@ package club.robodojo
 
 
 // TODO: only execute instructions if the bot has the proper instruction set
+// TODO: document instruction set
 object InstructionSet {
   sealed trait EnumVal
   case object Basic extends EnumVal
@@ -10,7 +11,6 @@ object InstructionSet {
 
 sealed abstract class Instruction {
 
-  // TODO: document instruction set
   val instructionSet: InstructionSet.EnumVal
   val requiredCycles: Int
 
