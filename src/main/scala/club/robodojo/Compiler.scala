@@ -180,27 +180,29 @@ object Compiler {
       val mobileToken = tl.tokens(5).toInt
 
       // Check for errors
-      if (instructionSetToken < 0 || instructionSetToken > 1) {
-        val message = "Bad instruction-set parameter: the first parameter to the <tt>create</tt> " +
-          "instruction, the instruction-set parameter, can only be 0 (signifying the " +
-          "<i>Basic</i> instruction set) or 1 (signifying the <i>Extended</i> instruction set)."
-        val errorCode = ErrorCode.BadInstructionSetParam
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-        return CompileLineResult(None, Some(errorMessage))
-      } else if (numBanksToken < 1 || numBanksToken > 50) {
-        val message = "Bad numBanks parameter: the second parameter to the <tt>create</tt> " +
-          "instruction, the numBanks parameter, must be greater (or equal to) 1 and less than " +
-          s"(or equal to) ${config.sim.maxBanks}"
-        val errorCode = ErrorCode.BadNumBanksParam
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-        return CompileLineResult(None, Some(errorMessage))
-      } else if (mobileToken < 0 || mobileToken > 1) {
-        val message = "Bad mobile parameter: the third parameter to the <tt>create</tt> " +
-          "instruction, the mobile parameter, can only be 0 (signifying immobility) or 1 " +
-          "(signifying mobility)."
-        val errorCode = ErrorCode.BadMobileParam
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-        return CompileLineResult(None, Some(errorMessage))
+      if (config.compiler.safetyChecks) {
+        if (instructionSetToken < 0 || instructionSetToken > 1) {
+          val message = "Bad instruction-set parameter: the first parameter to the <tt>create</tt> " +
+            "instruction, the instruction-set parameter, can only be 0 (signifying the " +
+            "<i>Basic</i> instruction set) or 1 (signifying the <i>Extended</i> instruction set)."
+          val errorCode = ErrorCode.BadInstructionSetParam
+          val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+          return CompileLineResult(None, Some(errorMessage))
+        } else if (numBanksToken < 1 || numBanksToken > 50) {
+          val message = "Bad numBanks parameter: the second parameter to the <tt>create</tt> " +
+            "instruction, the numBanks parameter, must be greater (or equal to) 1 and less than " +
+            s"(or equal to) ${config.sim.maxBanks}"
+          val errorCode = ErrorCode.BadNumBanksParam
+          val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+          return CompileLineResult(None, Some(errorMessage))
+        } else if (mobileToken < 0 || mobileToken > 1) {
+          val message = "Bad mobile parameter: the third parameter to the <tt>create</tt> " +
+            "instruction, the mobile parameter, can only be 0 (signifying immobility) or 1 " +
+            "(signifying mobility)."
+          val errorCode = ErrorCode.BadMobileParam
+          val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+          return CompileLineResult(None, Some(errorMessage))
+        }
       }
 
       val instructionSet = if (instructionSetToken == 0) {
@@ -208,7 +210,11 @@ object Compiler {
         } else if (instructionSetToken == 1) {
           InstructionSet.Extended
         } else {
-          throw new IllegalStateException("This code shouldn't be reachable")
+          if (config.compiler.safetyChecks) {
+            throw new IllegalStateException("This code shouldn't be reachable")
+          } else {
+            InstructionSet.Basic
+          }
         }
 
       val numBanks = numBanksToken

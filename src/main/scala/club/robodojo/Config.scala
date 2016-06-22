@@ -39,6 +39,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   object compiler {
     val maxLineLength = params.getOrElse("compiler.maxLineLength", 1000).asInstanceOf[Int]
+    val safetyChecks = params.getOrElse("compiler.safetyChecks", true).asInstanceOf[Boolean]
   }
 
   object editor {
