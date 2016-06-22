@@ -240,6 +240,9 @@ object Compiler {
     }
 
   // TESTED
+  // We need playerColor because of run-time errors. Specifically, some instructions (such as the
+  // CreateInstruction) need to report the color of the bot that that the instruction came from.
+  // See for example CreateInstruction.errorCheck(...)
   def compile(
       text: String,
       playerColor: PlayerColor.EnumVal)(implicit config: Config):
