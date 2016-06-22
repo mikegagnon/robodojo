@@ -58,7 +58,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
                       class="btn btn-default dropdown-toggle dark-border"
                       type="button"
                       data-toggle="dropdown">
-              ${PlayerColor.toColorString(PlayerColor.Blue)} bot
+              ${PlayerColor.Blue} bot
               <span class="caret"></span></button>
               <ul class="dropdown-menu">
                 <li><a href="javascript:club.robodojo.App().clickSelectBotDropdown(0, '${config.id}')">Blue bot</a></li>
@@ -108,7 +108,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   // playerColor is the color that has been selected from the dropdown
   def clickSelectBotDropdown(playerColor: PlayerColor.EnumVal): Unit = {
 
-    val newDropDownText = PlayerColor.toColorString(playerColor) + " bot <span class='caret'></span>"
+    val newDropDownText = playerColor.toString + " bot <span class='caret'></span>"
 
     jQuery("#" + config.editor.selectBotButtonId)
       .html(newDropDownText)
