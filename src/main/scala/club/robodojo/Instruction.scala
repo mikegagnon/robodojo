@@ -97,7 +97,6 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
         return Some(TurnAnimation(bot.id, cycleNum, bot.direction, leftOrRight))
       }
 
-    // Executre
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
         case Direction.Left => Direction.rotateLeft(currentDir)
@@ -116,9 +115,7 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 }
 
 // TODO: take params as ParamValue objects?
-// TODO: crash on numBanks < 1 or > 50
 // TODO: Prevent FAT hack
-// TODO: also include the string version of the instruction as a param?
 case class CreateInstruction(
     childInstructionSet: InstructionSet.EnumVal,
     numBanks: Int,
