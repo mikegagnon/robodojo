@@ -190,7 +190,7 @@ case class CreateInstruction(
         s"<tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanks}. " +
         s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
         "${config.sim.maxBanks}."
-      return Some(FatalErrorAnimation(bot.id, bot.playerColor, errorMessage))
+      return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
     } else {
       None
     }

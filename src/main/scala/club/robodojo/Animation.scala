@@ -108,4 +108,6 @@ case class InactiveAnimation(
 case class FatalErrorAnimation(
   botId: Long,
   playerColor: PlayerColor.EnumVal,
+  row: Int,
+  col: Int,
   errorMessage: String) extends Animation

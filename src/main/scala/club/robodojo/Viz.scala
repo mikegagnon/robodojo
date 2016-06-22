@@ -392,6 +392,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // The animations that were produced in the last tick of this step
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
+    // TODO: mandatoryAnimations first
     return currentAnimations.values ++ mandatoryAnimations
   }
 
@@ -638,8 +639,28 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   }
 
   def animateFatalError(fatalError: FatalErrorAnimation): Unit = {
+
+    // First remove the bot images
     val botImage = botImages(fatalError.botId)
-    println(botImage)
+    val twinBotImage = twinBotImages(fatalError.botId)
+    val birthBotImage = birthBotImages(fatalError.botId)
+
+    stage.removeChild(botImage)
+    stage.removeChild(twinBotImage)
+    stage.removeChild(birthBotImage)
+
+    // Second, draw a flash
+    val rect = new createjs.Shape()
+
+    // TODO: base params of cellSize
+    // TODO configify color of background
+    val x = retina(fatalError.col * config.viz.cellSize)
+    val y = retina(fatalError.row * config.viz.cellSize)
+    val w = retina(config.viz.cellSize)
+    val h = retina(config.viz.cellSize)
+    rect.graphics.beginFill("#00F").drawRect(x, y, w, h)
+
+    stage.addChild(rect)
   }
 
 
