@@ -306,7 +306,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // Remove obsolete animations to avoid memory leak
     // TODO: test
     // TODO: config.viz.lookBehindCycles
-    animations -= board.cycleNum - (config.viz.lookAheadCycles * 2) - 1
+    animations -= board.cycleNum - config.viz.lookAheadCycles - 1 - config.viz.maxCyclesPerTick
 
     animationList.foreach { animation: Animation =>
       animations(board.cycleNum - 1)(animation.botId) = animation
@@ -352,12 +352,15 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     if (createjs.Ticker.paused) {
       return
     } else {
-      val numCyclesThisTick =
+
+      val calculatedCycles =
         if (step) {
           tickStep()
         } else {
           tickMultiStep(event)
         }
+
+      val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
       0 until numCyclesThisTick foreach { _ => cycle() }
 
