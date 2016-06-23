@@ -1,5 +1,7 @@
 package club.robodojo
 
+import scala.collection.mutable.ArrayBuffer
+
 object Bot {
 
   var nextId: Long = 0
@@ -19,7 +21,7 @@ object Bot {
             program: Program = Program(Map[Int, Bank]()),
             instructionSet: InstructionSet.EnumVal = InstructionSet.Basic,
             mobile: Boolean = true,
-            active: Boolean = true): Bot = {
+            active: Boolean = true)(implicit config: Config): Bot = {
 
     val bot = new Bot(board, playerColor)
     bot.row = row
@@ -36,7 +38,7 @@ object Bot {
 
 // TODO: bots can only execute instructions from their instruction set
 // TODO: bots can only move if they are mobile
-class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
+class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val config: Config) {
 
   val id = Bot.getNextId
 
@@ -61,6 +63,9 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
   var instructionNum = 0
 
   var cycleNum = 0
+
+  // TODO: test
+  var registers = new ArrayBuffer[Int](config.sim.maxNumVariables)
 
   // TESTED
   def cycle(): Option[Animation] = {
