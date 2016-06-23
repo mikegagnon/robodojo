@@ -170,7 +170,6 @@ object Compiler {
       tl: TokenLine,
       playerColor: PlayerColor.EnumVal)(implicit config: Config): CompileLineResult =
 
-    // TODO: <tt>create</tt>
     if (tl.tokens.length != 6 ||
         tl.tokens(2) != "," ||
         tl.tokens(4) != "," ||
