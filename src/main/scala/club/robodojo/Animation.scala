@@ -102,7 +102,6 @@ case class BirthAnimationFail(
 
 /* End MoveAnimation and BirthAnimation definitions ***********************************************/
 
-// TODO: turn animation finish, with mandatory = true?
 case class TurnAnimationProgress(
   botId: Long,
   cycleNum: Int,
