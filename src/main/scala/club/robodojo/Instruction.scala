@@ -124,7 +124,7 @@ case class CreateInstruction(
     numBanks: Int,
     mobile: Boolean,
     lineNumber: Int,
-    // Who's program did this instruction come from originally?
+    // Whose program did this instruction come from originally?
     // Note this is different than bot.playerColor, which is the color of the bot.
     // For example, if a blue bot infects a red bot with a bank that has as bad create instruction,
     // then bot.playerColor == red and playerColor, here, == blue.
