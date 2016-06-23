@@ -60,20 +60,17 @@ object BoardTest extends TestSuite {
     }
 
     "removeBot"-{
-      // TODO: better name
-      "test1"-{
-        val board = new Board()
-        val bot1 = Bot(board, PlayerColor.Blue, 1, 1)
-        board.addBot(bot1)
-        val bot2 = Bot(board, PlayerColor.Blue, 2, 1)
-        board.addBot(bot2)
+      val board = new Board()
+      val bot1 = Bot(board, PlayerColor.Blue, 1, 1)
+      board.addBot(bot1)
+      val bot2 = Bot(board, PlayerColor.Blue, 2, 1)
+      board.addBot(bot2)
 
-        board.removeBot(bot1)
+      board.removeBot(bot1)
 
-        board.matrix(1,1) ==> None
-
-
-      }
+      board.matrix(1)(1) ==> None
+      board.bots.length ==> 1
+      board.bots(0).id ==> bot2.id
     }
   }
 }
