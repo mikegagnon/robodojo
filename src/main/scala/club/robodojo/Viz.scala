@@ -76,7 +76,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   //       board.cycleNum we are currently animating. animationCycleNum != board.cycleNum
   //       because the animation lags behind the board simulation. See the documentation for
   //       animateMove, section (2) for an explanation.
-  // TODO: replace animationCycleNum with boardCycleNum?
   var animationCycleNum = 0
 
   stage.update()
@@ -304,8 +303,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animations(board.cycleNum - 1) = HashMap[Long, Animation]()
 
     // Remove obsolete animations to avoid memory leak
-    // TODO: test
-    // TODO: config.viz.lookBehindCycles
     animations -= board.cycleNum - config.viz.lookAheadCycles - 1 - config.viz.maxCyclesPerTick
 
     animationList.foreach { animation: Animation =>
@@ -415,7 +412,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // The animations that were produced in the last tick of this step
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
-    // TODO: mandatoryAnimations first
     return mandatoryAnimations ++ currentAnimations.values
   }
 
@@ -428,6 +424,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
+    // NOTE: The bug may have been squashed
     getAnimationsForThisTick(numCyclesThisTick).foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
@@ -661,8 +658,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImages(botId).addChild(line)
   }
 
-  // TODO animateInactive happens twice: once from addBot and once again here. addBot should
-  // set botVisualFeatures
   def animateInactive(inactiveAnimation: InactiveAnimation): Unit = {
 
     val botId = inactiveAnimation.botId
