@@ -174,8 +174,8 @@ object Compiler {
         !isInt(tl.tokens(1)) ||
         !isInt(tl.tokens(3)) ||
         !isInt(tl.tokens(5))) {
-      val message = "Malformed create instruction: the <tt>create</tt> instruction must be of " +
-      "the form: <tt>create a, b, c</tt>, where <tt>a</tt>, <tt>b<tt>, and <tt>c</tt> are " +
+      val message = "Malformed <tt>create</tt> instruction: the <tt>create</tt> instruction must " +
+      "be of the form: <tt>create a, b, c</tt>, where <tt>a</tt>, <tt>b<tt>, and <tt>c</tt> are " +
       "integers."
       val errorCode = ErrorCode.MalformedCreate
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
