@@ -38,6 +38,8 @@ object ErrorCode {
   case object BadInstructionSetParam extends CompileTimeError
   case object BadNumBanksParam extends CompileTimeError
   case object BadMobileParam extends CompileTimeError
+  // TODO: create MalformedInstruction instead of MalformedCreate and MalformedSet
+  case object MalformedSet extends CompileTimeError
 
   case object InvalidParameter extends RunTimeError
 }
@@ -168,6 +170,7 @@ object Compiler {
       tl: TokenLine,
       playerColor: PlayerColor.EnumVal)(implicit config: Config): CompileLineResult =
 
+    // TODO: <tt>create</tt>
     if (tl.tokens.length != 6 ||
         tl.tokens(2) != "," ||
         tl.tokens(4) != "," ||
@@ -238,10 +241,81 @@ object Compiler {
       CompileLineResult(Some(instruction), None)
     }
 
+  // TODO: friendlier error messages
+  def isRegister(token: String)(implicit config: Config): Boolean = {
+    if (token(0) != '#') {
+      return false
+    }
 
-  def compileSet(tl: TokenLine) = {
-    CompileLineResult(None, None)
+    val num = token.substring(1)
+
+    if (!isInt(num)) {
+      return false
+    }
+
+    val registerNum = num.toInt
+
+    if (registerNum < 1 || registerNum > config.sim.maxNumVariables) {
+      return false
+    }
+
+    return true
   }
+
+  def isVariable(token: String)(implicit config: Config): Boolean =
+    isRegister(token) || token.toLowerCase == "#active"
+
+  def isRemote(token: String): Boolean = {
+    val lowercase = token.toLowerCase
+
+    return lowercase == "%active" ||
+           lowercase == "%banks" ||
+           lowercase == "%instrset" ||
+           lowercase == "%mobile"
+  }
+
+  def isConstant(token: String): Boolean = {
+    val lowercase = token.toLowerCase
+
+    return lowercase == "$banks" ||
+           lowercase == "$instrset" ||
+           lowercase == "$mobile" ||
+           lowercase == "$fields"
+  }
+
+  def isParamValue(token: String)(implicit config: Config): Boolean =
+    return isInt(token) || isVariable(token) || isRemote(token) || isConstant(token)
+
+  // TODO: test
+  def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult =
+    if (tl.tokens.length != 4 ||
+        tl.tokens(2) != ",") {
+      val message = "Malformed <tt>set</tt> instruction: the <tt>set</tt> instruction must be of " +
+      "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
+      "a parameter value."
+      val errorCode = ErrorCode.MalformedSet
+      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+      return CompileLineResult(None, Some(errorMessage))
+    } else if (!isVariable(tl.tokens(1))) {
+      val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
+      "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
+      s"a parameter value. Your first parameter, <tt>${tl.tokens(1)}</tt>, must be either #1 ... " +
+      s"#${config.sim.maxNumVariables}, or #Active."
+      val errorCode = ErrorCode.WrongParamType
+      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+      return CompileLineResult(None, Some(errorMessage))
+    } else if (!isParamValue(tl.tokens(3))) {
+      val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
+      "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
+      s"a parameter value. Your second parameter, <tt>${tl.tokens(3)}</tt>, must be either " +
+      "an integer (such as 5), a constant (such as $Banks), a remote (such as %Banks), or " +
+      "a register (such as #3)."
+      val errorCode = ErrorCode.WrongParamType
+      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+      return CompileLineResult(None, Some(errorMessage))
+    } else {
+      CompileLineResult(None, None)
+    }
 
   // TESTED
   // We need playerColor because of run-time errors. Specifically, some instructions (such as the
