@@ -260,7 +260,6 @@ object Compiler {
                 s"Too many banks: programs may only have ${config.sim.maxBanks} banks.")
               CompileLineResult(None, Some(errorMessage))
           } else {
-            // TODO: predeclare all banks to empty banks?
             bankNumber += 1
             banks += (bankNumber -> new Bank)
             compileBank(tl)
