@@ -416,9 +416,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       return
     }
 
-    // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
-    // animations will not have an entry for animationCycleNum, which causes an exception.
-    // NOTE: The bug may have been squashed
     getAnimationsForThisTick(numCyclesThisTick).foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
