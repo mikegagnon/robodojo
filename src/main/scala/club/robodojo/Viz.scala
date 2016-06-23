@@ -16,7 +16,6 @@ import scala.collection.mutable.{ArrayBuffer, HashMap}
 
 import com.scalawarrior.scalajs.createjs
 
-
 class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config: Config) {
 
   /** Begin constant definitions ******************************************************************/
