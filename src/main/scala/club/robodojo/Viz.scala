@@ -390,15 +390,13 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         animations(cycleNum).values
       }
 
-    val mandatoryAnimations = 
+    val mandatoryAnimations =
       allAnimations.filter { animation: Animation =>
         animation.mandatory
       }
 
     return mandatoryAnimations
   }
-
-  //def animationsThatGotSkippedOverBetweenTicks()
 
   // Returns a collection containing every animation that should be drawn for this step
   def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
