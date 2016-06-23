@@ -14,30 +14,39 @@ class Controller(val viz: Viz)(implicit val config: Config) {
 
   /** End initialization **************************************************************************/
 
-  def buttonHtml(functionName: String, glyph: String): String = 
+  def buttonHtml(functionName: String, glyph: String, spanId: String): String =
     s"""
       <button class="btn btn-default dark-border" onclick='club.robodojo.App().${functionName}("${config.id}")'>
-        <span class='glyphicon glyphicon-${glyph}'></span>
+        <span id=${spanId} class='glyphicon glyphicon-${glyph}'></span>
       </button>"""
 
   def addHtml(): Unit = {
     val html = s"""
       <div id='${config.viz.consoleDivId}'>
-        ${buttonHtml("clickPlay", "play")}
-        ${buttonHtml("clickPause", "pause")}
-        ${buttonHtml("clickStep", "step-forward")}
+        ${buttonHtml("clickPlayPause", "play", config.viz.playPauseSpanId)}
+        ${buttonHtml("clickStep", "step-forward", config.viz.stepSpanId)}
       </div>
       """
     jQuery("#" + config.viz.boardWrapperDivId).append(html)
   }
 
-  def clickPlay(): Unit = {
-    viz.step = false
-    createjs.Ticker.paused = false
+  def drawPause(): Unit = {
+    jQuery("#" + config.viz.playPauseSpanId).attr("class", "glyphicon glyphicon-pause")
   }
 
-  def clickPause(): Unit = {
-    createjs.Ticker.paused = true
+  def drawPlay(): Unit = {
+    jQuery("#" + config.viz.playPauseSpanId).attr("class", "glyphicon glyphicon-play")
+  }
+
+  def clickPlayPause(): Unit = {
+    viz.step = false
+    if (createjs.Ticker.paused) {
+      createjs.Ticker.paused = false
+      drawPause()
+    } else {
+      createjs.Ticker.paused = true
+      drawPlay()
+    }
   }
 
   def clickStep(): Unit =
@@ -45,7 +54,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
       viz.step = true
       createjs.Ticker.paused = false
     } else {
-      clickPause()
+      clickPlayPause()
     }
 
 }

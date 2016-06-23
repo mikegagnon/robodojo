@@ -175,6 +175,8 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
 
     viz.newBoard(newBoard)
+
+    controller.drawPlay()
     createjs.Ticker.paused = true
   }
 

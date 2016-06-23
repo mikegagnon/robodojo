@@ -65,6 +65,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     // TODO: shouldn't this (and more) go into object controller, outside of viz
     def consoleDivId = id + "-console"
+    def playPauseSpanId = consoleDivId + "-playPause"
+    def stepSpanId = consoleDivId + "-step"
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 30).asInstanceOf[Int]
