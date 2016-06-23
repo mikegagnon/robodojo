@@ -254,7 +254,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     botVisualFeatures(botId) = BotVisualFeatures(!active)
-
   }
 
   /** End initialization functions ****************************************************************/
@@ -394,8 +393,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       allAnimations.filter { animation: Animation =>
         animation.mandatory
       }
-
-    // TODO: validate that mandatoryAnimations are sorted by cycleNum
 
     return mandatoryAnimations
   }
