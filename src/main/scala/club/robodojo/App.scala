@@ -98,7 +98,7 @@ object App extends JSApp {
   def tick(event: js.Dynamic): Boolean = {
 
     if (createjs.Ticker.paused) {
-      return falsea
+      return false
     }
 
     val rd = instances(activeInstanceId.get)

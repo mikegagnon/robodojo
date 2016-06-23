@@ -103,11 +103,17 @@ case class BirthAnimationFail(
 /* End MoveAnimation and BirthAnimation definitions ***********************************************/
 
 // TODO: turn animation finish, with mandatory = true?
-case class TurnAnimation(
+case class TurnAnimationProgress(
   botId: Long,
   cycleNum: Int,
   oldDirection: Direction.EnumVal,
   leftOrRight: Direction.EnumVal) extends Animation
+
+case class TurnAnimationFinish(
+  botId: Long,
+  direction: Direction.EnumVal) extends Animation {
+  override val mandatory = true
+}
 
 case class InactiveAnimation(
   botId: Long) extends Animation

@@ -428,7 +428,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
         case birthAnimation: BirthAnimationFail => ()
-        case turnAnimation: TurnAnimation => animateTurn(turnAnimation)
+        case turnAnimation: TurnAnimationProgress => animateTurnProgress(turnAnimation)
+        case turnAnimation: TurnAnimationFinish => animateTurnFinish(turnAnimation)
         case inactiveAnimation: InactiveAnimation => animateInactive(inactiveAnimation)
         case fatalError: FatalErrorAnimation => animateFatalError(fatalError)
       }
@@ -564,7 +565,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   //     we calculate (row, col) as a double based on proportionCompleted. For example if the bot is
   //     moving from (0, 0) to (0, 1) and the move instruction is half-way done executing, then
   //     (row, col) == (0, 0.5). Then we draw the bot at (row, col). A similar approach is used in
-  //     animateTurn.
+  //     animateTurnProgress.
   // (2) Peeking into the future. We do not want to animate a bot move if the move fails.
   //     Unfortunately, we cannot know whether or not the move will succeed or fail until
   //     config.sim.moveCycles cycles have been executed. So, the way we get around is is by
@@ -612,7 +613,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     twinImage.y = retina(halfCell - cellSize)
   }
 
-  def animateTurn(animation: TurnAnimation): Unit = {
+  def animateTurnProgress(animation: TurnAnimationProgress): Unit = {
 
     val oldDirection = animation.oldDirection
 
@@ -624,6 +625,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case Direction.Right => Direction.toAngle(oldDirection) + 90.0 * proportionCompleted
       case _ => throw new IllegalStateException("Bots can only turn Left or Right")
     }
+
+    val botImage = botImages(animation.botId)
+    botImage.rotation = angle
+  }
+
+  def animateTurnFinish(animation: TurnAnimationFinish): Unit = {
+
+    val angle = Direction.toAngle(animation.direction)
 
     val botImage = botImages(animation.botId)
     botImage.rotation = angle
