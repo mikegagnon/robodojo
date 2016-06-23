@@ -229,7 +229,7 @@ case class CreateInstruction(
 
         val emptyProgram = Program.emptyProgram(numBanks)
 
-        val active = false
+        val active: Short = 0
 
         val newBot = Bot(
           bot.board,

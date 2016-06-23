@@ -19,7 +19,7 @@ object Bot {
             program: Program = Program(Map[Int, Bank]()),
             instructionSet: InstructionSet.EnumVal = InstructionSet.Basic,
             mobile: Boolean = true,
-            active: Boolean = true): Bot = {
+            active: Short = 1): Bot = {
 
     val bot = new Bot(board, playerColor)
     bot.row = row
@@ -54,7 +54,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
   var mobile = false
 
-  var active = false
+  var active: Short = 0
 
   var bankNum = 0
 
@@ -65,7 +65,8 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
   // TESTED
   def cycle(): Option[Animation] = {
 
-    if (!active) {
+    // TODO: I don't  think we really want to return an inactive animation every time.
+    if (active < 1) {
       return Option(InactiveAnimation(id))
     }
 

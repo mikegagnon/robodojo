@@ -141,7 +141,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
     val instructionSet = InstructionSet.Extended
     val mobile = true
-    val active = true
+    val active: Short = 1
 
     val bot = Bot(board, playerColor, row, col, direction, program, instructionSet, mobile, active)
 
