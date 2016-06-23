@@ -123,7 +123,7 @@ object InstructionTest extends TestSuite {
           numBanks: Int,
           mobile: Boolean): Option[Bot] = {
         val bot = Bot(board, color, 0, 0, Direction.Right)
-        val instruction = CreateInstruction(instructionSet, numBanks, mobile)
+        val instruction = CreateInstruction(instructionSet, numBanks, mobile, 0, PlayerColor.Blue)
         instruction.execute(bot)
         return board.matrix(0)(1)
       }

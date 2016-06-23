@@ -218,7 +218,7 @@ object CompilerTest extends TestSuite {
           result: Either[ErrorCode.EnumVal, Instruction]) : Unit = {
 
         val text = "bank Main\n" + instruction
-        val compiledResult = Compiler.compile(text)
+        val compiledResult = Compiler.compile(text, PlayerColor.Blue)
 
         result match {
           case Left(expectedErrorCode) =>
@@ -243,7 +243,7 @@ object CompilerTest extends TestSuite {
       }
 
       def testBankFail(program: String, expectedErrorCode: ErrorCode.EnumVal): Unit = {
-        Compiler.compile(program) match {
+        Compiler.compile(program, PlayerColor.Blue) match {
           case Left(errorMessages) => {
             errorMessages.length ==> 1
             errorMessages.head match {
@@ -256,14 +256,14 @@ object CompilerTest extends TestSuite {
       }
 
       def testProgram(program: String, expectedProgram: Program)(implicit config: Config): Unit =
-        Compiler.compile(program) match {
+        Compiler.compile(program, PlayerColor.Blue) match {
           case Left(_) => assert(false)
           case Right(program) => (program ==> expectedProgram)
         }
 
       def testProgramFail(program: String, expectedErrorCode: ErrorCode.EnumVal)
           (implicit config: Config): Unit =
-        Compiler.compile(program) match {
+        Compiler.compile(program, PlayerColor.Blue) match {
           case Left(errorMessages) => {
             errorMessages.length ==> 1
             errorMessages.head match {
@@ -420,19 +420,24 @@ object CompilerTest extends TestSuite {
         "succeed"-{
           "instructionSet == 0"-{
             testInstruction("create 0, 1, 1",
-              Right(CreateInstruction(InstructionSet.Basic, 1, true)))
+              Right(CreateInstruction(InstructionSet.Basic, 1, true, 1, PlayerColor.Blue)))
           }
           "instructionSet == 1"-{
             testInstruction("create 1, 1, 1",
-              Right(CreateInstruction(InstructionSet.Extended, 1, true)))
+              Right(CreateInstruction(InstructionSet.Extended, 1, true, 1, PlayerColor.Blue)))
           }
           "numBanks == max"-{
             testInstruction(s"create 1, ${config.sim.maxBanks} , 1",
-              Right(CreateInstruction(InstructionSet.Extended, config.sim.maxBanks, true)))
+              Right(CreateInstruction(
+                InstructionSet.Extended,
+                config.sim.maxBanks,
+                true,
+                1,
+                PlayerColor.Blue)))
           }
           "mobile = false"-{
             testInstruction("create 1, 1, 0",
-              Right(CreateInstruction(InstructionSet.Extended, 1, false)))
+              Right(CreateInstruction(InstructionSet.Extended, 1, false, 1, PlayerColor.Blue)))
           }
         }
       }

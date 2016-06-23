@@ -17,9 +17,9 @@ object Bot {
             col: Int,
             direction: Direction.EnumVal = Direction.NoDir,
             program: Program = Program(Map[Int, Bank]()),
-            instructionSet: InstructionSet.EnumVal,
-            mobile: Boolean,
-            active: Boolean): Bot = {
+            instructionSet: InstructionSet.EnumVal = InstructionSet.Basic,
+            mobile: Boolean = true,
+            active: Boolean = true): Bot = {
 
     val bot = new Bot(board, playerColor)
     bot.row = row
