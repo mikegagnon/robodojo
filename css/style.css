@@ -51,3 +51,10 @@
 .line-error {
     font-weight: bold;
 }
+
+.board-wrapper {
+    margin-bottom: 10px;
+    background-color: #ccc;
+    border-radius: 8px;
+    padding: 10px;
+}

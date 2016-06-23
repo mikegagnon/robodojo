@@ -99,7 +99,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // TODO: cssify
     val canvasHtml = s"""
-      <div id="${config.viz.boardWrapperDivId}" style="margin-bottom: 10px; background-color: #ccc; border-radius: 8px; padding: 10px;">
+      <div id="${config.viz.boardWrapperDivId}" class="board-wrapper">
         <canvas id="${config.viz.canvas.canvasId}"
                 class="dark-border"
                 width="${config.viz.canvas.width}"
