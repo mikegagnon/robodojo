@@ -377,7 +377,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
 
   // See Documentation for Animation.mandatory
-  // Returns a collection contraining every mandatory animation that was produced over the last
+  // Returns a collection containing every mandatory animation that was produced over the last
   // N cycles, where N == numCyclesThisTick
   // TODO: debug
   /*
