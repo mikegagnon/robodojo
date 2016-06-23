@@ -167,7 +167,8 @@ case class CreateInstruction(
       instructionSetCostBasic +
       instructionSetCostExtended
 
-    // We use max here because numBanks, childInstructionSet, and mobile might have wonky values
+    // We use max and min here because numBanks, childInstructionSet, and mobile might have wonky
+    // values
     Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
