@@ -6,7 +6,6 @@ class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
-  // TODO: different data structure more amenable to removal?
   var bots = new ArrayBuffer[Bot]()
 
   var cycleNum = 0
