@@ -366,27 +366,27 @@ object CompilerTest extends TestSuite {
         "fail"-{
           "too many tokens"-{
             val text = "create 1, 1, 1 X"
-            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
           }
           "missing comma 1"-{
             val text = "create 1 x 1 , 1"
-            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
           }
           "missing comma 2"-{
             val text = "create 1 , 1 x 1"
-            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
           }
           "non-integer params 1"-{
             val text = "create a, 1, 1"
-            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
           }
           "non-integer params 2"-{
             val text = "create 1, a, 1"
-            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
           }
           "non-integer params 3"-{
             val text = "create 1, 1, a"
-            testProgramFail(text, ErrorCode.MalformedCreate)(config)
+            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
           }
           "instruction set invalid 1"-{
             val text = "create -1, 1, 1"

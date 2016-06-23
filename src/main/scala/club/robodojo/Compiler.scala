@@ -34,12 +34,10 @@ object ErrorCode {
   case object UndeclaredBank extends CompileTimeError
   case object MaxBanksExceeded extends CompileTimeError
   case object EmptyBanks extends CompileTimeError
-  case object MalformedCreate extends CompileTimeError
+  case object MalformedInstruction extends CompileTimeError
   case object BadInstructionSetParam extends CompileTimeError
   case object BadNumBanksParam extends CompileTimeError
   case object BadMobileParam extends CompileTimeError
-  // TODO: create MalformedInstruction instead of MalformedCreate and MalformedSet
-  case object MalformedSet extends CompileTimeError
 
   case object InvalidParameter extends RunTimeError
 }
@@ -179,7 +177,7 @@ object Compiler {
       val message = "Malformed <tt>create</tt> instruction: the <tt>create</tt> instruction must " +
       "be of the form: <tt>create a, b, c</tt>, where <tt>a</tt>, <tt>b<tt>, and <tt>c</tt> are " +
       "integers."
-      val errorCode = ErrorCode.MalformedCreate
+      val errorCode = ErrorCode.MalformedInstruction
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       return CompileLineResult(None, Some(errorMessage))
     } else {
@@ -292,7 +290,7 @@ object Compiler {
       val message = "Malformed <tt>set</tt> instruction: the <tt>set</tt> instruction must be of " +
       "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
       "a parameter value."
-      val errorCode = ErrorCode.MalformedSet
+      val errorCode = ErrorCode.MalformedInstruction
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       return CompileLineResult(None, Some(errorMessage))
     } else if (!isVariable(tl.tokens(1))) {
