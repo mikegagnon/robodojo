@@ -395,6 +395,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         animation.mandatory
       }
 
+    // TODO: validate that mandatoryAnimations are sorted by cycleNum
+
     return mandatoryAnimations
   }
 
