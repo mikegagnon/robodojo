@@ -17,19 +17,20 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val numRows: Int = params.getOrElse("sim.numRows", 3).asInstanceOf[Int]
     val numCols: Int = params.getOrElse("sim.numCols", 6).asInstanceOf[Int]
 
+    // Update according to http://robocom.rrobek.de/help/instr1.html
     object cycleCount {
 
-      val durMove = params.getOrElse("sim.moveCycles", 18).asInstanceOf[Int]
-      val durTurn = params.getOrElse("sim.turnCycles", 5).asInstanceOf[Int]
+      val durMove = params.getOrElse("sim.moveCycles", 20).asInstanceOf[Int]
+      val durTurn = params.getOrElse("sim.turnCycles", 8).asInstanceOf[Int]
 
       // For the create instruction
-      val durCreate1 = params.getOrElse("sim.durCreate1", 5).asInstanceOf[Int]
-      val durCreate2 = params.getOrElse("sim.durCreate2", 1).asInstanceOf[Int]
+      val durCreate1 = params.getOrElse("sim.durCreate1", 100).asInstanceOf[Int]
+      val durCreate2 = params.getOrElse("sim.durCreate2", 25).asInstanceOf[Int]
       val durCreate3 = params.getOrElse("sim.durCreate3", 1).asInstanceOf[Int]
-      val durCreate3a = params.getOrElse("sim.durCreate3a", 5).asInstanceOf[Int]
-      val durCreate4 = params.getOrElse("sim.durCreate4", 0).asInstanceOf[Int]
-      val durCreate5 = params.getOrElse("sim.durCreate5", 5).asInstanceOf[Int]
-      val maxCreateDur = params.getOrElse("sim.maxCreateDur", 50).asInstanceOf[Int]
+      val durCreate3a = params.getOrElse("sim.durCreate3a", 120).asInstanceOf[Int]
+      val durCreate4 = params.getOrElse("sim.durCreate4", 40).asInstanceOf[Int]
+      val durCreate5 = params.getOrElse("sim.durCreate5", 100).asInstanceOf[Int]
+      val maxCreateDur = params.getOrElse("sim.maxCreateDur", 1500).asInstanceOf[Int]
     }
 
     val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
@@ -67,7 +68,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 30).asInstanceOf[Int]
-    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 60).asInstanceOf[Int]
+    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 250).asInstanceOf[Int]
     val maxCyclesPerTick = params.getOrElse("viz.maxCyclesPerTick", 200).asInstanceOf[Int]
 
     object canvas {
