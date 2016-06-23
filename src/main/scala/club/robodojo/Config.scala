@@ -58,6 +58,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   object viz {
 
+    val backgroundColor = params.getOrElse("viz.backgroundColor", "#fff").asInstanceOf[String]
+
     val boardWrapperDivId = id + "-board-wrapper"
 
     // TODO: shouldn't this (and more) go into object controller, outside of viz

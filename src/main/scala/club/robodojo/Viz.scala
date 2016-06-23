@@ -150,9 +150,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def addBackground(): Unit = {
     val rect = new createjs.Shape()
 
-    // TODO: configify #fff
-    rect.graphics.beginFill("#fff").drawRect(0, 0, retina(config.viz.canvas.width),
-      retina(config.viz.canvas.height))
+    rect.graphics.beginFill(config.viz.backgroundColor)
+      .drawRect(0, 0, retina(config.viz.canvas.width), retina(config.viz.canvas.height))
 
     stage.addChild(rect)
   }
@@ -640,12 +639,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val line = new createjs.Shape()
 
-    // TODO: base params of cellSize
-    line.graphics.setStrokeStyle(retina(5))
-    // TODO configify color of background
-    line.graphics.beginStroke("#fff")
-    line.graphics.moveTo(retina(2), retina(15))
-    line.graphics.lineTo(retina(30), retina(15))
+    line.graphics.setStrokeStyle(retina(cellSize * 0.15))
+    line.graphics.beginStroke(config.viz.backgroundColor)
+    line.graphics.moveTo(retina(1), retina(cellSize / 2.0))
+    line.graphics.lineTo(retina(cellSize - 1), retina(cellSize / 2.0))
     line.graphics.endStroke()
 
     botImages(botId).addChild(line)
