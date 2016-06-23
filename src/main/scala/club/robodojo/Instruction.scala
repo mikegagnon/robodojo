@@ -130,7 +130,7 @@ case class CreateInstruction(
     // then bot.playerColor == red and playerColor, here, == blue.
     playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
-  if (numBanks < 1 && config.compiler.safetyChecks) {
+  if (config.compiler.safetyChecks && (numBanks < 1 || numBanks > config.sim.maxBanks)) {
     throw new IllegalArgumentException("numBanks < 1 == " + numBanks)
   }
 
