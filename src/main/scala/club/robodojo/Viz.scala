@@ -410,7 +410,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     return mandatoryAnimations ++ currentAnimations.values
   }
 
-  // TODO: document
   def animate(numCyclesThisTick: Int): Unit = {
 
     if (numCyclesThisTick == 0) {
