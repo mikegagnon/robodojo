@@ -238,6 +238,11 @@ object Compiler {
       CompileLineResult(Some(instruction), None)
     }
 
+
+  def compileSet(tl: TokenLine) = {
+    CompileLineResult(None, None)
+  }
+
   // TESTED
   // We need playerColor because of run-time errors. Specifically, some instructions (such as the
   // CreateInstruction) need to report the color of the bot that that the instruction came from.
@@ -268,6 +273,7 @@ object Compiler {
         case "move" => compileMove(tl)
         case "turn" => compileTurn(tl)
         case "create" => compileCreate(tl, playerColor)
+        case "set" => compileSet(tl)
         case _ => unrecognizedInstruction(tl)
       }
 
