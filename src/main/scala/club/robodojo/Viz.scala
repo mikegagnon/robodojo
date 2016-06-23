@@ -676,7 +676,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // Second, draw a flash
     val rect = new createjs.Shape()
 
-    // TODO configify color of background
     val x = retina(fatalError.col * config.viz.cellSize)
     val y = retina(fatalError.row * config.viz.cellSize)
     val w = retina(config.viz.cellSize)
