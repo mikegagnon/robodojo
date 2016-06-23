@@ -258,3 +258,14 @@ case class CreateInstruction(
   }
 }
 
+case class SetInstruction(
+  destination: Variable,
+  source: ParamValue)(implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+  val requiredCycles = config.sim.cycleCount.durSet
+
+  def cycle(bot: Bot, cycleNum: Int) : Option[Animation] = {
+    None
+  }
+}
