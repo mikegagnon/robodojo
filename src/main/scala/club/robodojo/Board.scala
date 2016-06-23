@@ -20,7 +20,7 @@ class Board(implicit val config: Config) {
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
 
-  // TODO: test
+  // TESTED
   def removeBot(bot: Bot): Unit = {
     matrix(bot.row)(bot.col) = None
     bots = bots.filter { b =>
