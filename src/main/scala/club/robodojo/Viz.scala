@@ -613,7 +613,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val oldDirection = animation.oldDirection
 
     // See the documentation for animateMove, section (1).
-    val proportionCompleted = animation.cycleNum.toDouble / config.sim.turnCycles.toDouble
+    val proportionCompleted = animation.cycleNum.toDouble / config.sim.cycleCount.durTurn.toDouble
 
     val angle: Double = animation.leftOrRight match {
       case Direction.Left => Direction.toAngle(oldDirection) - 90.0 * proportionCompleted

@@ -26,7 +26,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
 
-  val requiredCycles = config.sim.moveCycles
+  val requiredCycles = config.sim.cycleCount.durMove
 
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
     if (cycleNum == requiredCycles) {
@@ -89,7 +89,7 @@ final case class Variable(value: Either[Int, ActiveVariable])(implicit config: C
 case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
-    val requiredCycles = config.sim.turnCycles
+    val requiredCycles = config.sim.cycleCount.durTurn
 
     def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
       if (cycleNum == requiredCycles) {
@@ -140,13 +140,13 @@ case class CreateInstruction(
   // TODO: will need to change to def if take ParamValue objects as params
   val requiredCycles = {
 
-    val durCreate1 = config.sim.durCreate1
-    val durCreate2 = config.sim.durCreate2
-    val durCreate3 = config.sim.durCreate3
-    val durCreate3a = config.sim.durCreate3a
-    val durCreate4 = config.sim.durCreate4
-    val durCreate5 = config.sim.durCreate5
-    val maxCreateDur = config.sim.maxCreateDur
+    val durCreate1 = config.sim.cycleCount.durCreate1
+    val durCreate2 = config.sim.cycleCount.durCreate2
+    val durCreate3 = config.sim.cycleCount.durCreate3
+    val durCreate3a = config.sim.cycleCount.durCreate3a
+    val durCreate4 = config.sim.cycleCount.durCreate4
+    val durCreate5 = config.sim.cycleCount.durCreate5
+    val maxCreateDur = config.sim.cycleCount.maxCreateDur
 
     val primary = durCreate1 + durCreate2 * numBanks
     val mobilityCost = if (mobile) durCreate3 else 1
