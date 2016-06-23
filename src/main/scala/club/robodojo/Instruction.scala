@@ -2,7 +2,10 @@ package club.robodojo
 
 
 // TODO: only execute instructions if the bot has the proper instruction set
-// TODO: document instruction set
+// There are two instruction sets: Basic and extended. Each instruction is associated with one
+// of those instruction sets. Each bot is also associated with an instruction set.
+// A basic-bot may only execute basic instructions, whereas an extended-bot may execute any
+// instruction.
 object InstructionSet {
   sealed trait EnumVal
   case object Basic extends EnumVal
