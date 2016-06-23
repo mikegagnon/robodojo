@@ -79,7 +79,9 @@ case class MoveAnimationSucceed(
   botId: Long,
   newRow: Int,
   newCol: Int,
-  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed
+  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed {
+  override val mandatory = true
+}
 
 case class BirthAnimationSucceed(
   botId: Long,
@@ -91,6 +93,7 @@ case class BirthAnimationSucceed(
   override val mandatory = true
 }
 
+// Make mandatory?
 case class MoveAnimationFail(
   botId: Long) extends BirthAnimation with AnimationProgressFail
 
@@ -99,6 +102,7 @@ case class BirthAnimationFail(
 
 /* End MoveAnimation and BirthAnimation definitions ***********************************************/
 
+// TODO: turn animation finish, with mandatory = true
 case class TurnAnimation(
   botId: Long,
   cycleNum: Int,
