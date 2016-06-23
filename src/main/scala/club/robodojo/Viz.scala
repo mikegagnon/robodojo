@@ -24,7 +24,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   val cellSize = config.viz.cellSize
   val halfCell = cellSize / 2.0
 
-  /** End constant definitions ******************************************************************/
+  /** End constant definitions ********************************************************************/
 
   /** Begin initialization ************************************************************************/
 
