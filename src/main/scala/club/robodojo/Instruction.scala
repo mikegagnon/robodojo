@@ -29,6 +29,14 @@ object Constant {
   case object Fields extends EnumVal
 }
 
+object RemoteValue {
+  sealed trait EnumVal
+  case object Active extends EnumVal
+  case object Banks extends EnumVal
+  case object InstrSet extends EnumVal
+  case object Mobile extends EnumVal
+}
+
 case class ActiveVariable()
 
 // TODO: short?
@@ -57,7 +65,7 @@ sealed trait SettableParamValue extends ParamValue {
 
 // TODO: replace more ints with Short?
 // TODO: is Integer really needed?
-final case class Integer(value: Short) extends ParamValue {
+final case class IntegerValue(value: Short) extends ParamValue {
   def getValue(bot: Bot): Int = value
 }
 
@@ -72,7 +80,7 @@ final case class Constant(value: Constant.EnumVal) extends ParamValue {
 
 // TODO: implement
 // TODO: setable?
-final case class Remote(value: Constant.EnumVal) extends ParamValue {
+final case class Remote(value: RemoteValue.EnumVal) extends ParamValue {
     def getValue(bot: Bot): Int = 0
 }
 

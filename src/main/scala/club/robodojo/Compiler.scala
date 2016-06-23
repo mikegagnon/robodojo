@@ -155,6 +155,7 @@ object Compiler {
       }
     }
 
+  // TODO: change to isShort?
   def isInt(value: String): Boolean =
     try {
       value.toInt
@@ -283,7 +284,71 @@ object Compiler {
   def isParamValue(token: String)(implicit config: Config): Boolean =
     return isInt(token) || isVariable(token) || isRemote(token) || isConstant(token)
 
+  // assuming error checking has already taken place
+  def getVariable(token: String)(implicit config: Config): Variable = {
+    if (token(0) == '#') {
+      val registerNum = token.substring(1).toInt
+      if (registerNum < 1 || registerNum > config.sim.maxNumVariables) {
+        throw new IllegalArgumentException("registerNum is out of bounds")
+      }
+      return Variable(Left(registerNum))
+    } else {
+      if (token.toLowerCase != "#active") {
+        throw new IllegalArgumentException("token is neither registerNum, nor #active")
+      }
+      return Variable(Right(ActiveVariable()))
+    }
+  }
+
+  def getRemote(token: String): Remote = {
+    val lowercase = token.toLowerCase
+
+    if (lowercase == "%active") {
+      return Remote(RemoteValue.Active)
+    } else if (lowercase == "%banks") {
+      return Remote(RemoteValue.Banks)
+    } else if (lowercase == "%instrset") {
+      return Remote(RemoteValue.InstrSet)
+    } else if (lowercase == "%mobile") {
+      return Remote(RemoteValue.InstrSet)
+    } else {
+      throw new IllegalArgumentException("Bad token: " + token)
+    }
+  }
+
+  def getConstant(token: String): Constant = {
+    val lowercase = token.toLowerCase
+
+    if (lowercase == "$banks") {
+      return Constant(Constant.Banks)
+    } else if (lowercase == "$instrset") {
+      return Constant(Constant.InstrSet)
+    } else if (lowercase == "$mobile") {
+      return Constant(Constant.InstrSet)
+    } else if (lowercase == "$fields") {
+      return Constant(Constant.Fields)
+    } else {
+      throw new IllegalArgumentException("Bad token: " + token)
+    }
+  }
+
+  // TODO: change to Option[ParamValue] then use that in error checking?
+  def getParamValue(token: String)(implicit config: Config): ParamValue = {
+    if (isInt(token)) {
+      return IntegerValue(token.toShort)
+    } else if (isVariable(token)) {
+      return getVariable(token)
+    } else if (isRemote(token)) {
+      return getRemote(token)
+    } else if (isConstant(token)) {
+      return getConstant(token)
+    } else {
+      throw new IllegalArgumentException("Bad token: " + token)
+    }
+  }
+
   // TODO: test
+  // TODO: set remote values?
   def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length != 4 ||
         tl.tokens(2) != ",") {
@@ -311,7 +376,12 @@ object Compiler {
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       return CompileLineResult(None, Some(errorMessage))
     } else {
-      CompileLineResult(None, None)
+
+      val destination: Variable = getVariable(tl.tokens(1))
+      val source: ParamValue = getParamValue(tl.tokens(3))
+
+      val instruction = SetInstruction(destination, source)
+      CompileLineResult(Some(instruction), None)
     }
 
   // TESTED
