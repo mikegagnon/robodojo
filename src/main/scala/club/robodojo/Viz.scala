@@ -348,32 +348,26 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   // Bummer: 20FPS burns between 30% and 40% CPU on my machine
   def tick(event: js.Dynamic): Unit = {
-    
-    if (createjs.Ticker.paused) {
-      return
-    } else {
-
-      val calculatedCycles =
-        if (step) {
-          tickStep()
-        } else {
-          tickMultiStep(event)
-        }
-
-      val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
-
-      0 until numCyclesThisTick foreach { _ => cycle() }
-
-      shapesToBeRemovedNextTick.foreach { shape: createjs.Shape =>
-        stage.removeChild(shape)
+    val calculatedCycles =
+      if (step) {
+        tickStep()
+      } else {
+        tickMultiStep(event)
       }
 
-      shapesToBeRemovedNextTick = List()
+    val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
-      animate(numCyclesThisTick)
+    0 until numCyclesThisTick foreach { _ => cycle() }
 
-      stage.update()
+    shapesToBeRemovedNextTick.foreach { shape: createjs.Shape =>
+      stage.removeChild(shape)
     }
+
+    shapesToBeRemovedNextTick = List()
+
+    animate(numCyclesThisTick)
+
+    stage.update()
   }
 
   /** End misc functions  *************************************************************************/

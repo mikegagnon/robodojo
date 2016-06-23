@@ -95,8 +95,12 @@ object App extends JSApp {
     createjs.Ticker.paused = true
   }
 
-  // TODO: check for paused
   def tick(event: js.Dynamic): Boolean = {
+
+    if (createjs.Ticker.paused) {
+      return falsea
+    }
+
     val rd = instances(activeInstanceId.get)
     rd.viz.tick(event)
     return true
