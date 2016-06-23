@@ -76,7 +76,10 @@ case class BirthAnimationProgress(
   direction: Direction.EnumVal) extends BirthAnimation with AnimationProgress
 
 case class MoveAnimationSucceed(
-  botId: Long) extends MoveAnimation with AnimationProgressSucceed
+  botId: Long,
+  newRow: Int,
+  newCol: Int,
+  direction: Direction.EnumVal) extends MoveAnimation with AnimationProgressSucceed
 
 case class BirthAnimationSucceed(
   botId: Long,

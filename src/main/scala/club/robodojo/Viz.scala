@@ -408,36 +408,19 @@ a._handleTimeout
     val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick
     val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
-    println("firstCycleThatGotSkippedOver" + firstCycleThatGotSkippedOver)
-    println("lastCycleThatGotSkippedOver" + lastCycleThatGotSkippedOver)
-    println("animation cycles" + animations.keys.toList.sorted)
-
-    //println(firstCycleThatGotSkippedOver)
-    //println(lastCycleThatGotSkippedOver)
-    //println(animations.keys.toList.sorted)    
-
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
-        //println("foo" + cycleNum)
-        //aprintln("bar" + animations(cycleNum))
+
         animations(cycleNum).values
       }
 
     val mandatoryAnimations = 
       allAnimations.filter { animation: Animation =>
-        //println("animation " + animation)
         animation.mandatory
       }
 
-    //println("mandatoryAnimations " + mandatoryAnimations)
-
-    //println(firstCycleThatGotSkippedOver)
-
-
-
     mandatoryAnimations
 
-    //IndexedSeq[Animation]()
   }
 
   //def animationsThatGotSkippedOverBetweenTicks()
@@ -465,12 +448,14 @@ a._handleTimeout
       return
     }
 
+    println("Animations: " + getAnimationsForThisTick(numCyclesThisTick))
+
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
     getAnimationsForThisTick(numCyclesThisTick).foreach { animation =>
       animation match {
         case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
-        case moveAnimation: MoveAnimationSucceed => ()
+        case moveAnimation: MoveAnimationSucceed => animateMoveSucceed(moveAnimation)
         case moveAnimation: MoveAnimationFail => ()
         case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
@@ -501,6 +486,7 @@ a._handleTimeout
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
+    // TODO: what to do about this code repetition
     val cellSize = config.viz.cellSize
     val halfCell = cellSize / 2.0
 
@@ -511,6 +497,7 @@ a._handleTimeout
     if (!success) {
       twinImage.x = retina(halfCell - cellSize)
       twinImage.y = retina(halfCell - cellSize)
+      println("fail")
       return
     }
 
@@ -631,9 +618,22 @@ a._handleTimeout
   def animateBirthProgress(animation: BirthAnimationProgress): Unit =
     animateBotImageProgress(animation, birthBotImages)
 
-  def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
+  def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
 
-    println("Success")
+    val cellSize = config.viz.cellSize
+    val halfCell = cellSize / 2.0
+
+    val botImage = botImages(animation.botId)
+    botImage.x = retina(halfCell + cellSize * animation.newCol)
+    botImage.y = retina(halfCell + cellSize * animation.newRow)
+    botImage.rotation = Direction.toAngle(animation.direction)
+
+    val twinImage = twinBotImages(animation.botId)
+    twinImage.x = retina(halfCell - cellSize)
+    twinImage.y = retina(halfCell - cellSize)
+  }
+
+  def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
 
     val active = false
     addBot(animation.newBotId,
@@ -691,8 +691,6 @@ a._handleTimeout
   def animateInactive(inactiveAnimation: InactiveAnimation): Unit = {
 
     val botId = inactiveAnimation.botId
-
-    //println("animateInactive " + botId)
 
     val features: BotVisualFeatures = botVisualFeatures(botId)
 
