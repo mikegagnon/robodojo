@@ -21,7 +21,7 @@ object Bot {
             program: Program = Program(Map[Int, Bank]()),
             instructionSet: InstructionSet.EnumVal = InstructionSet.Basic,
             mobile: Boolean = true,
-            active: Boolean = true)(implicit config: Config): Bot = {
+            active: Short = 1)(implicit config: Config): Bot = {
 
     val bot = new Bot(board, playerColor)
     bot.row = row
@@ -56,8 +56,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var mobile = false
 
-  // Should be int or short?
-  var active = false
+  var active: Short = 0
 
   var bankNum = 0
 
@@ -68,12 +67,13 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   // TODO: test
   // TODO: ensure zero'd out
   // TODO: should be short?
-  var registers = new ArrayBuffer[Int](config.sim.maxNumVariables)
+  var registers = new ArrayBuffer[Short](config.sim.maxNumVariables)
 
   // TESTED
   def cycle(): Option[Animation] = {
 
-    if (!active) {
+    // TODO: I don't  think we really want to return an inactive animation every time.
+    if (active < 1) {
       return Option(InactiveAnimation(id))
     }
 
