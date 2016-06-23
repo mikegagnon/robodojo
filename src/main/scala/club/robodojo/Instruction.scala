@@ -1,5 +1,6 @@
 package club.robodojo
 
+// TODO: make prettier with ...****/
 
 // TODO: only execute instructions if the bot has the proper instruction set
 // There are two instruction sets: Basic and extended. Each instruction is associated with one
@@ -30,33 +31,96 @@ object Constant {
 
 case class ActiveVariable()
 
-sealed trait Param
-sealed trait ParamValue extends Param // Like Param, but without Label
+// TODO: short?
+object Param {
+  def boolToInt(bool: Boolean): Int =
+    bool match {
+      case true => 1
+      case false => 0
+    }
+}
 
-final case class Integer(value: Short) extends ParamValue
+
+// TODO: test
+sealed trait Param
+sealed trait ParamValue extends Param { // Like Param, but without Label {
+
+  // TODO: should be short?
+  def getValue(bot: Bot): Int
+}
+
+sealed trait SettableParamValue extends ParamValue {
+
+  // TODO: should be short?
+  def setValue(bot: Bot, value: Int): Unit
+}
+
+// TODO: replace more ints with Short?
+// TODO: is Integer really needed?
+final case class Integer(value: Short) extends ParamValue {
+  def getValue(bot: Bot): Int = value
+}
+
 // TODO: should Label be under Param?
+// TODO: move above Integer
 final case class Label(value: String) extends Param
-final case class Constant(value: Constant.EnumVal) extends ParamValue
-final case class Remote(value: Constant.EnumVal) extends ParamValue
-final case class Variable(value: Either[Int, ActiveVariable])(implicit config: Config)
-    extends ParamValue {
-  value match {
+
+// TODO: implement
+final case class Constant(value: Constant.EnumVal) extends ParamValue {
+  def getValue(bot: Bot): Int = 1
+}
+
+// TODO: implement
+// TODO: setable?
+final case class Remote(value: Constant.EnumVal) extends ParamValue {
+    def getValue(bot: Bot): Int = 0
+}
+
+// TODO: change name to Register?
+// TODO: change Int to Short?
+// TODO: Either[Int, ActiveVariable] is too narrow?
+final case class Variable(variable: Either[Int, ActiveVariable])(implicit config: Config)
+    extends SettableParamValue {
+
+  variable match {
+    // TODO: change name to maxNumRegisters?
     case Left(v) => if (v < 0 || v >= config.sim.maxNumVariables) {
       throw new IllegalArgumentException("variable value out of range: " + v)
     }
     case _ => ()
   }
+
+  // TODO: register numbers go from #1 to #20. Compiler does translation from #N to register(N-1)
+  def getValue(bot: Bot): Int =
+    variable match {
+      case Left(registerNum) => bot.registers(registerNum)
+      //TODO: implement
+      case Right(ActiveVariable()) => Param.boolToInt(bot.active)
+    }
+
+  // TODO: how to animate bot going inactive or active?
+  def setValue(bot: Bot, value: Int): Unit =
+    variable match {
+      case Left(registerNum) => bot.registers(registerNum) = value
+      //TODO: implement
+      case Right(ActiveVariable()) => if (value <= 0) {
+        bot.active = false
+      } else {
+        bot.active = true
+      }
+    }
+
 }
 
 
 // TODO: move appropriate functions into objects
-
 case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
 
   val requiredCycles = config.sim.cycleCount.durMove
 
+  // TODO: factor out common code from all cycle functions?
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
     if (cycleNum == requiredCycles) {
       return execute(bot)
@@ -259,13 +323,29 @@ case class CreateInstruction(
 }
 
 case class SetInstruction(
-  destination: Variable,
+  destination: SettableParamValue,
   source: ParamValue)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
   val requiredCycles = config.sim.cycleCount.durSet
 
-  def cycle(bot: Bot, cycleNum: Int) : Option[Animation] = {
+  def cycle(bot: Bot, cycleNum: Int) : Option[Animation] =
+    if (cycleNum == requiredCycles) {
+      return execute(bot)
+    } else if (cycleNum > requiredCycles) {
+      throw new IllegalArgumentException("cycleNum > requiredCycles")
+    } else {
+      val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+      return Some(MoveAnimationProgress(bot.id, cycleNum, requiredCycles, bot.row, bot.col, destRow, destCol,
+        bot.direction))
+    }
+
+  // TODO: how to handle side effects of set
+  def execute(bot: Bot): Option[Animation] = {
+
+    val sourceValue = source.getValue(bot)
+    destination.setValue(bot, sourceValue)
+
     None
   }
 }

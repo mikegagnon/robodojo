@@ -56,6 +56,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var mobile = false
 
+  // Should be int or short?
   var active = false
 
   var bankNum = 0
@@ -65,6 +66,8 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   var cycleNum = 0
 
   // TODO: test
+  // TODO: ensure zero'd out
+  // TODO: should be short?
   var registers = new ArrayBuffer[Int](config.sim.maxNumVariables)
 
   // TESTED
