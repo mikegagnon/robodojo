@@ -16,7 +16,15 @@ import scala.collection.mutable.{ArrayBuffer, HashMap}
 
 import com.scalawarrior.scalajs.createjs
 
+
 class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config: Config) {
+
+  /** Begin constant definitions ******************************************************************/
+
+  val cellSize = config.viz.cellSize
+  val halfCell = cellSize / 2.0
+
+  /** End constant definitions ******************************************************************/
 
   /** Begin initialization ************************************************************************/
 
@@ -212,8 +220,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val container = new createjs.Container()
 
     container.addChild(bitmap)
-
-    val halfCell = config.viz.cellSize / 2.0
 
     // Set the "registration point" for the image to the center of image. This way, we can rotate
     // around the center. As a consequnce of having a centered registration point, when we move
@@ -456,10 +462,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case _ => throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-    // TODO: what to do about this code repetition
-    val cellSize = config.viz.cellSize
-    val halfCell = cellSize / 2.0
-
     val twinImage = twinBotImages(animation.botId)
     val primaryImage = primaryImages(animation.botId)
 
@@ -589,9 +591,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
 
-    val cellSize = config.viz.cellSize
-    val halfCell = cellSize / 2.0
-
     val botImage = botImages(animation.botId)
     botImage.x = retina(halfCell + cellSize * animation.newCol)
     botImage.y = retina(halfCell + cellSize * animation.newRow)
@@ -613,8 +612,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       active)
 
     val birthImage = birthBotImages(animation.botId)
-    val cellSize = config.viz.cellSize
-    val halfCell = cellSize / 2.0
     birthImage.x = retina(halfCell - cellSize)
     birthImage.y = retina(halfCell - cellSize)
 
