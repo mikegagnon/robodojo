@@ -97,7 +97,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def addCanvas(): JQuery = {
 
-    // TODO: cssify
     val canvasHtml = s"""
       <div id="${config.viz.boardWrapperDivId}" class="board-wrapper">
         <canvas id="${config.viz.canvas.canvasId}"
