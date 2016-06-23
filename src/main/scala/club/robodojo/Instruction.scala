@@ -46,19 +46,19 @@ sealed trait Param
 sealed trait ParamValue extends Param { // Like Param, but without Label {
 
   // TODO: should be short?
-  def getValue(bot: Bot): Int
+  def getValue(bot: Bot): Short
 }
 
 sealed trait SettableParamValue extends ParamValue {
 
   // TODO: should be short?
-  def setValue(bot: Bot, value: Int): Unit
+  def setValue(bot: Bot, value: Short): Unit
 }
 
 // TODO: replace more ints with Short?
 // TODO: is Integer really needed?
 final case class Integer(value: Short) extends ParamValue {
-  def getValue(bot: Bot): Int = value
+  def getValue(bot: Bot): Short = value
 }
 
 // TODO: should Label be under Param?
@@ -67,13 +67,13 @@ final case class Label(value: String) extends Param
 
 // TODO: implement
 final case class Constant(value: Constant.EnumVal) extends ParamValue {
-  def getValue(bot: Bot): Int = 1
+  def getValue(bot: Bot): Short = 1
 }
 
 // TODO: implement
 // TODO: setable?
 final case class Remote(value: Constant.EnumVal) extends ParamValue {
-    def getValue(bot: Bot): Int = 0
+    def getValue(bot: Bot): Short = 0
 }
 
 // TODO: change name to Register?
@@ -91,23 +91,19 @@ final case class Variable(variable: Either[Int, ActiveVariable])(implicit config
   }
 
   // TODO: register numbers go from #1 to #20. Compiler does translation from #N to register(N-1)
-  def getValue(bot: Bot): Int =
+  def getValue(bot: Bot): Short =
     variable match {
       case Left(registerNum) => bot.registers(registerNum)
       //TODO: implement
-      case Right(ActiveVariable()) => Param.boolToInt(bot.active)
+      case Right(ActiveVariable()) => bot.active
     }
 
   // TODO: how to animate bot going inactive or active?
-  def setValue(bot: Bot, value: Int): Unit =
+  def setValue(bot: Bot, value: Short): Unit =
     variable match {
       case Left(registerNum) => bot.registers(registerNum) = value
       //TODO: implement
-      case Right(ActiveVariable()) => if (value <= 0) {
-        bot.active = false
-      } else {
-        bot.active = true
-      }
+      case Right(ActiveVariable()) => bot.active = value
     }
 
 }
@@ -294,7 +290,7 @@ case class CreateInstruction(
 
         val emptyProgram = Program.emptyProgram(numBanks)
 
-        val active = false
+        val active: Short = 0
 
         val newBot = Bot(
           bot.board,

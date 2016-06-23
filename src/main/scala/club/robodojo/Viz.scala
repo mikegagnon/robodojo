@@ -238,7 +238,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       row: Int,
       col: Int,
       direction: Direction.EnumVal,
-      active: Boolean): Unit = {
+      active: Short): Unit = {
 
     val twinContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val birthContainer = newBotContainer(botId, playerColor, -1, -1, direction)
@@ -252,11 +252,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     stage.addChild(birthContainer)
     stage.addChild(container)
 
-    if (!active) {
+    if (active < 1) {
       drawInactive(botId)
     }
 
-    botVisualFeatures(botId) = BotVisualFeatures(!active)
+    botVisualFeatures(botId) = BotVisualFeatures(active < 1)
   }
 
   /** End initialization functions ****************************************************************/
@@ -591,7 +591,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
 
-    val active = false
+    val active: Short = 0
     addBot(animation.newBotId,
       animation.playerColor,
       animation.row,
