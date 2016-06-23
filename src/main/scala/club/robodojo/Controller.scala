@@ -40,8 +40,6 @@ class Controller(val viz: Viz)(implicit val config: Config) {
     createjs.Ticker.paused = true
   }
 
-  // TODO: BUG: if you click step (as the first click), it doesn't step. It only steps on the second
-  // click
   def clickStep(): Unit =
     if (createjs.Ticker.paused) {
       viz.step = true
