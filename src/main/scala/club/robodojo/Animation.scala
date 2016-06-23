@@ -122,4 +122,6 @@ case class FatalErrorAnimation(
   playerColor: PlayerColor.EnumVal,
   row: Int,
   col: Int,
-  errorMessage: ErrorMessage) extends Animation
+  errorMessage: ErrorMessage) extends Animation {
+  override val mandatory = true
+}
