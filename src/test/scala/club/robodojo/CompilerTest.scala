@@ -441,6 +441,17 @@ object CompilerTest extends TestSuite {
           }
         }
       }
+      "set"-{
+        "fail"-{
+
+        }
+        "succeed"-{
+          "1"-{
+            //testInstruction("set #1, 1",
+              //Right(SetInstruction()))
+          }
+        }
+      }
     }
   }
 }
