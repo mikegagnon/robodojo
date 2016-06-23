@@ -422,7 +422,7 @@ a._handleTimeout
     val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
 
     // TODO: mandatoryAnimations first
-    return currentAnimations.values ++ mandatoryAnimations
+    return mandatoryAnimations ++ currentAnimations.values
   }
 
   // TODO: document
