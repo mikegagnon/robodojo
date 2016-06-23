@@ -17,4 +17,13 @@ object PlayerColor {
       case 3 => Yellow
       case _ => throw new IllegalArgumentException("Bad playerNum: " + playerNum)
     }
+
+  def toHtmlColor(playerColor: PlayerColor.EnumVal): String =
+    playerColor match {
+      case PlayerColor.Blue => "#4381b6"
+      case PlayerColor.Red => "#b84644"
+      case PlayerColor.Green => "#5eb83f"
+      case PlayerColor.Yellow => "#dad800"
+    }
+
 }

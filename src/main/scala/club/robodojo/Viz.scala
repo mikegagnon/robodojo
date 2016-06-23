@@ -682,7 +682,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val y = retina(fatalError.row * config.viz.cellSize)
     val w = retina(config.viz.cellSize)
     val h = retina(config.viz.cellSize)
-    rect.graphics.beginFill("#00F").drawRect(x, y, w, h)
+    val htmlColor = PlayerColor.toHtmlColor(fatalError.playerColor)
+    rect.graphics.beginFill(htmlColor).drawRect(x, y, w, h)
 
     stage.addChild(rect)
 
