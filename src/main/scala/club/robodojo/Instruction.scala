@@ -31,7 +31,8 @@ object Constant {
 
 object RemoteValue {
   sealed trait EnumVal
-  case object Active extends EnumVal
+  sealed trait Writable
+  case object Active extends EnumVal with Writable
   case object Banks extends EnumVal
   case object InstrSet extends EnumVal
   case object Mobile extends EnumVal
