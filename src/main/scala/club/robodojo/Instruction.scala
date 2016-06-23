@@ -340,7 +340,7 @@ case class SetInstruction(
         bot.direction))
     }
 
-  // TODO: how to handle side effects of set
+  // TODO: how to handle side effects of set?
   def execute(bot: Bot): Option[Animation] = {
 
     val sourceValue = source.getValue(bot)
