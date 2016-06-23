@@ -14,24 +14,55 @@ object InstructionSet {
 }
 
 sealed abstract class Instruction {
-
   val instructionSet: InstructionSet.EnumVal
   val requiredCycles: Int
-
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
 }
 
-object Constant {
-  sealed trait EnumVal
-  case object Banks extends EnumVal
-  case object Mobile extends EnumVal
-  case object InstrSet extends EnumVal
-  case object Fields extends EnumVal
+/* Begin param values *****************************************************************************/
+
+/* Parent types *****************************************/
+
+sealed trait Param
+
+// TODO: how to animate these writes
+
+sealed trait WritableLocal {
+  def writeLocal(bot: Bot, value: Short): Unit
 }
+
+sealed trait WritableRemote {
+  def writeRemote(bot: Bot, value: Short): Unit
+}
+
+sealed trait ReadableLocal {
+  def readLocal(bot: Bot): Short
+}
+
+sealed trait ReadableRemote {
+  def readRemote(bot: Bot): Short
+}
+
+/* Begin param types ************************************/
+
+/*case object ActiveParam extends
+    Param with
+    WritableLocal with
+    WritableRemote with 
+    ReadableLocal with
+    ReadableRemote {
+
+  def writeLocal(bot: Bot, value: Short) = bot.active = value
+  def writeRemote(bot: Bot, value: Short) = bot.getRemote.foreach{ _.active = value }
+  def writeLocal(bot: Bot, value: Short) = bot.active = value
+}*/
 
 case class ActiveVariable()
 
+/*
 // TODO: short?
+// TODO: where to put this?
+/*
 object Param {
   def boolToInt(bool: Boolean): Int =
     bool match {
@@ -39,11 +70,10 @@ object Param {
       case false => 0
     }
 }
+*/
 
 
 // TODO: test
-sealed trait Param
-sealed trait ParamValue extends Param { // Like Param, but without Label {
 
   // TODO: should be short?
   def getValue(bot: Bot): Int
@@ -111,6 +141,10 @@ final case class Variable(variable: Either[Int, ActiveVariable])(implicit config
     }
 
 }
+*/
+/* End param values *******************************************************************************/
+
+/* Begin instructions *****************************************************************************/
 
 
 // TODO: move appropriate functions into objects
@@ -322,6 +356,7 @@ case class CreateInstruction(
   }
 }
 
+/*
 case class SetInstruction(
   destination: SettableParamValue,
   source: ParamValue)(implicit val config: Config) extends Instruction {
@@ -348,4 +383,5 @@ case class SetInstruction(
 
     None
   }
-}
+
+}*/
