@@ -137,7 +137,6 @@ case class CreateInstruction(
   val instructionSet = InstructionSet.Basic
 
   // TODO: will need to change to def if take ParamValue objects as params
-  // TODO: what if numBanks, etc., is wonky? Then we get wonky requiredCycles. Check for that.
   val requiredCycles = {
 
     val durCreate1 = config.sim.durCreate1
@@ -168,7 +167,8 @@ case class CreateInstruction(
       instructionSetCostBasic +
       instructionSetCostExtended
 
-    Math.min(calculatedCost, maxCreateDur)
+    // We use max here because numBanks, childInstructionSet, and mobile might have wonky values
+    Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =

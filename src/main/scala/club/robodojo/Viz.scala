@@ -51,7 +51,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // botVisualFeatures(botId) == the visual features for that bot
   val botVisualFeatures = HashMap[Long, BotVisualFeatures]()
 
-  // TODO: document
+  // Sometimes Viz draws a shape on the board that must be visible for at least one tick.
+  // shapesToBeRemovedNextTick contains the shapes that should be removed after the next tick.
   // TODO: change to List[createjs.Container]?
   var shapesToBeRemovedNextTick = List[createjs.Shape]()
 
