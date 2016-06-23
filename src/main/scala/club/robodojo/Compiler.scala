@@ -163,7 +163,7 @@ object Compiler {
       case _ : NumberFormatException => false
     }
 
-  // TODO: make compliant with Robocom standard
+  // TODO: make compliant with Robocom standard: generation, maxGeneration, and maxNumBots
   // TESTED
   def compileCreate(
       tl: TokenLine,
