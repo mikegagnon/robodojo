@@ -238,8 +238,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       direction: Direction.EnumVal,
       active: Boolean): Unit = {
 
-    //println("asdfklajsdflkasjlfkjalksjdfklfads " + botId)
-
     val twinContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val birthContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val container = newBotContainer(botId, playerColor, row, col, direction)
@@ -258,7 +256,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     botVisualFeatures(botId) = BotVisualFeatures(!active)
 
-    //println("botVisualFeatures" + botVisualFeatures)
   }
 
   /** End initialization functions ****************************************************************/
@@ -370,8 +367,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
       shapesToBeRemovedNextTick = List()
 
-      //println(numCyclesThisTick)
-
       animate(numCyclesThisTick)
 
       stage.update()
@@ -386,31 +381,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // See Documentation for Animation.mandatory
   // Returns a collection containing every mandatory animation that was produced over the last
   // N cycles, where N == numCyclesThisTick
-  // TODO: debug
-  /*
-$c_jl_Throwable.fillInStackTrace__jl_Throwable  @ StackTrace.scala:33
-$c_jl_Throwable.init___T__jl_Throwable  @ Throwables.scala:12
-$c_ju_NoSuchElementException.init___T @ Throwables.scala:136
-$s_sc_MapLike$class__$default__sc_MapLike__O__O @ MapLike.scala:228
-$c_scm_HashMap.apply__O__O  @ Map.scala:59
-$c_Lclub_robodojo_Viz.getMandatoryAnimations__I__sc_IndexedSeq  @ Range.scala:156
-$c_Lclub_robodojo_Viz.getAnimationsForThisTick__I__sc_Iterable  @ Viz.scala:394
-$c_Lclub_robodojo_Viz.animate__I__V @ Viz.scala:418
-$c_Lclub_robodojo_Viz.tick__sjs_js_Dynamic__V @ Viz.scala:367
-$c_Lclub_robodojo_App$.tick__sjs_js_Dynamic__Z  @ App.scala:99
-(anonymous function)  @ App.scala:93
-b._dispatchEvent  @ easeljs-0.8.2.min.js:12
-b.dispatchEvent @ easeljs-0.8.2.min.js:12
-a._tick @ easeljs-0.8.2.min.js:12
-a._handleTimeout
-  */
   def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
     val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick
     val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
-
         animations(cycleNum).values
       }
 
@@ -419,8 +395,7 @@ a._handleTimeout
         animation.mandatory
       }
 
-    mandatoryAnimations
-
+    return mandatoryAnimations
   }
 
   //def animationsThatGotSkippedOverBetweenTicks()
@@ -447,8 +422,6 @@ a._handleTimeout
     if (numCyclesThisTick == 0) {
       return
     }
-
-    println("Animations: " + getAnimationsForThisTick(numCyclesThisTick))
 
     // TODO: a bug reveals itself here. Sometimes, in the beginning of simualtion run,
     // animations will not have an entry for animationCycleNum, which causes an exception.
@@ -497,7 +470,6 @@ a._handleTimeout
     if (!success) {
       twinImage.x = retina(halfCell - cellSize)
       twinImage.y = retina(halfCell - cellSize)
-      println("fail")
       return
     }
 
