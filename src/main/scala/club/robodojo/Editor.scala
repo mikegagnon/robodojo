@@ -80,7 +80,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
             <div class="code-mirror-div">
               <textarea id='${config.editor.textAreaId}'></textarea>
             </div>
-            <div id='${config.editor.compilerOutputId}' class="compiler-output">
+            <div id='${config.editor.outputId}' class="compiler-output">
             </div>
             <div style='clear: both;'></div>
           </div> <!-- end codemirror -->
@@ -120,7 +120,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     currentPlayerColor = playerColor
     cmEditor.getDoc().setValue(files(currentPlayerColor))
 
-    jQuery("#" + config.editor.compilerOutputId).html("")
+    jQuery("#" + config.editor.outputId).html("")
 
   }
 
@@ -183,7 +183,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   def displaySuccess(): Unit = {
     val html = s"""<p class="display-success">Your program successfully compiled.</p>"""
 
-    jQuery("#" + config.editor.compilerOutputId).html(html)
+    jQuery("#" + config.editor.outputId).html(html)
   }
 
   // TODO: display errors in a popup?
@@ -201,7 +201,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
         }
         .mkString("\n")
 
-    jQuery("#" + config.editor.compilerOutputId)
+    jQuery("#" + config.editor.outputId)
       .html(html)
 
   }

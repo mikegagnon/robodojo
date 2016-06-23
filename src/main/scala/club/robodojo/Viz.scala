@@ -693,7 +693,7 @@ a._handleTimeout
     shapesToBeRemovedNextTick +:= rect
 
     // Third, display the error message
-    jQuery("#" + config.editor.compilerOutputId).html(fatalError.errorMessage.message)
+    jQuery("#" + config.editor.outputId).html(fatalError.errorMessage.message)
   }
 
 
