@@ -64,7 +64,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   // Fast forward the board, so we can begin animating. See the documentation for animateMove,
   // section (2) for an explanation.
-  1 to config.viz.lookAheadCycles foreach { _ => cycle() }
+  0 until config.viz.lookAheadCycles foreach { _ => cycle() }
 
   // There are three cycle counters:
   //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
@@ -238,6 +238,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       direction: Direction.EnumVal,
       active: Boolean): Unit = {
 
+    //println("asdfklajsdflkasjlfkjalksjdfklfads " + botId)
+
     val twinContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val birthContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val container = newBotContainer(botId, playerColor, row, col, direction)
@@ -255,6 +257,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     botVisualFeatures(botId) = BotVisualFeatures(!active)
+
+    //println("botVisualFeatures" + botVisualFeatures)
   }
 
   /** End initialization functions ****************************************************************/
@@ -290,7 +294,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     stage.update()
 
-    1 to config.viz.lookAheadCycles foreach { _ => cycle() }
+    0 until config.viz.lookAheadCycles foreach { _ => cycle() }
 
     animationCycleNum = 0
   }
@@ -300,14 +304,15 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def cycle(): Unit = {
     val animationList = board.cycle()
 
-    animations(board.cycleNum) = HashMap[Long, Animation]()
+    animations(board.cycleNum - 1) = HashMap[Long, Animation]()
 
     // Remove obsolete animations to avoid memory leak
     // TODO: test
-    animations -= board.cycleNum - config.viz.lookAheadCycles - 1
+    // TODO: config.viz.lookBehindCycles
+    animations -= board.cycleNum - (config.viz.lookAheadCycles * 2) - 1
 
     animationList.foreach { animation: Animation =>
-      animations(board.cycleNum)(animation.botId) = animation
+      animations(board.cycleNum - 1)(animation.botId) = animation
     }
 
     animationCycleNum += 1
@@ -357,13 +362,15 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
           tickMultiStep(event)
         }
 
-      1 to numCyclesThisTick foreach { _ => cycle() }
+      0 until numCyclesThisTick foreach { _ => cycle() }
 
       shapesToBeRemovedNextTick.foreach { shape: createjs.Shape =>
         stage.removeChild(shape)
       }
 
       shapesToBeRemovedNextTick = List()
+
+      //println(numCyclesThisTick)
 
       animate(numCyclesThisTick)
 
@@ -398,16 +405,42 @@ a._tick @ easeljs-0.8.2.min.js:12
 a._handleTimeout
   */
   def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
-    val lastCycleNumForThisTick = animationCycleNum + numCyclesThisTick
+    val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick
+    val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
-    val allAnimations = (animationCycleNum to lastCycleNumForThisTick) flatMap { cycleNum: Int =>
+    println("firstCycleThatGotSkippedOver" + firstCycleThatGotSkippedOver)
+    println("lastCycleThatGotSkippedOver" + lastCycleThatGotSkippedOver)
+    println("animation cycles" + animations.keys.toList.sorted)
+
+    //println(firstCycleThatGotSkippedOver)
+    //println(lastCycleThatGotSkippedOver)
+    //println(animations.keys.toList.sorted)    
+
+    val allAnimations =
+      firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
+        //println("foo" + cycleNum)
+        //aprintln("bar" + animations(cycleNum))
         animations(cycleNum).values
       }
 
-    allAnimations.filter { animation =>
-      animation.mandatory
-    }
+    val mandatoryAnimations = 
+      allAnimations.filter { animation: Animation =>
+        //println("animation " + animation)
+        animation.mandatory
+      }
+
+    //println("mandatoryAnimations " + mandatoryAnimations)
+
+    //println(firstCycleThatGotSkippedOver)
+
+
+
+    mandatoryAnimations
+
+    //IndexedSeq[Animation]()
   }
+
+  //def animationsThatGotSkippedOverBetweenTicks()
 
   // Returns a collection containing every animation that should be drawn for this step
   def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
@@ -600,6 +633,8 @@ a._handleTimeout
 
   def animateBirthSucceed(animation: BirthAnimationSucceed): Unit = {
 
+    println("Success")
+
     val active = false
     addBot(animation.newBotId,
       animation.playerColor,
@@ -651,9 +686,13 @@ a._handleTimeout
     botImages(botId).addChild(line)
   }
 
+  // TODO animateInactive happens twice: once from addBot and once again here. addBot should
+  // set botVisualFeatures
   def animateInactive(inactiveAnimation: InactiveAnimation): Unit = {
 
     val botId = inactiveAnimation.botId
+
+    //println("animateInactive " + botId)
 
     val features: BotVisualFeatures = botVisualFeatures(botId)
 

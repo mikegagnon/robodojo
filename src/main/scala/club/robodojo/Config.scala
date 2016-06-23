@@ -50,7 +50,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val selectBotButtonId = consoleDivId + "-select-bot-button"
 
     val defaultPrograms = Map(
-      0 -> "bank Main\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
+      0 -> "bank Main\ncreate 1,1,1\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
       1 -> "bank Main\nmove",
       2 -> "",
       3 -> "")
@@ -65,7 +65,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 30).asInstanceOf[Int]
-    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 100).asInstanceOf[Int]
+    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 1000).asInstanceOf[Int]
 
     object canvas {
       val canvasId = id + "-canvas"
