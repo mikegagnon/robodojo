@@ -86,10 +86,6 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
 }
 
 case class BanksKeyword(local: Boolean)(implicit config: Config) extends ReadableFromBot {
-  //def read(bot: Bot): (Short, Option[Animation]) =
-  //  KeywordParam.read(bot, local){ _.program.banks.size.toShort }
-  // TODO: For this result to be accurate all the banks must be filled between 0 and the highest
-  // bank
   def readFromBot(bot: Bot): Short = bot.program.banks.size.toShort 
 }
 
