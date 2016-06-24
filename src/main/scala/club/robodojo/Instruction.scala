@@ -49,12 +49,11 @@ sealed trait KeywordParam extends Param
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam
 
 // TODO: implement
-sealed trait WriteableKeyword extends KeywordParam with WritableParam {
-  def write(bot: Bot, value: Short): Option[Animation] = None
-}
+sealed trait WriteableKeyword extends KeywordParam with WritableParam
 
 sealed trait ReadableFromBot extends ReadableKeyword {
 
+  // local == true iff the read is local
   val local: Boolean
 
   def read(bot: Bot): Short =
