@@ -134,5 +134,18 @@ object InstructionTest extends TestSuite {
       }
 
     }
+
+    // TODO: simplify
+    // TODO: test animation
+    "SetInstruction.execute"-{
+
+      // Execute set #1, 5
+      val instruction = SetInstruction(RegisterParam(0), IntegerParam(5))
+      val board = new Board()
+      val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+      board.addBot(bot)
+      instruction.execute(bot)
+      bot.registers(0) ==> 5
+    }
   }
 }
