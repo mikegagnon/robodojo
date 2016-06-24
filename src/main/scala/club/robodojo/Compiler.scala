@@ -393,7 +393,9 @@ object Compiler {
 
   def getWritable(token: String)(implicit config: Config): WritableParam =
     if (token == "#active") {
-      ActiveKeyword()
+      ActiveKeyword(true)
+    } else if (token == "%active") {
+      ActiveKeyword(false)
     } else if (isRegister(token)) {
       val registerNum = token.substring(1).toShort
       Register(registerNum)
@@ -407,14 +409,22 @@ object Compiler {
       Register(registerNum)
     } else if (isShort(token)) {
       IntegerParam(token.toShort)
-    } else if (token == "#active" || token == "%active") {
-      ActiveKeyword()
-    } else if (token == "$banks" || token == "%banks") {
-      BanksKeyword()
-    } else if (token == "$instrset" || token == "%instrset") {
-      InstrSetKeyword()
-    } else if (token == "$mobile" || token == "%mobile") {
-      MobileKeyword()
+    } else if (token == "#active") {
+      ActiveKeyword(true)      
+    } else if (token == "%active") {
+      ActiveKeyword(false)
+    } else if (token == "$banks") {
+      BanksKeyword(true)
+    } else if (token == "%banks") {
+      BanksKeyword(false)
+    } else if (token == "$instrset") {
+      InstrSetKeyword(true)
+    } else if (token == "%instrset") {
+      InstrSetKeyword(false)
+    } else if (token == "$mobile") {
+      MobileKeyword(true)
+    } else if (token == "%mobile") {
+      MobileKeyword(false)
     } else if (token == "$fields") {
       FieldsKeyword()
     } else {
