@@ -156,9 +156,9 @@ object Compiler {
     }
 
   // TODO: change to isShort?
-  def isInt(value: String): Boolean =
+  def isShort(value: String): Boolean =
     try {
-      value.toInt
+      value.toShort
       true
     } catch {
       case _ : NumberFormatException => false
@@ -172,9 +172,9 @@ object Compiler {
     if (tl.tokens.length != 6 ||
         tl.tokens(2) != "," ||
         tl.tokens(4) != "," ||
-        !isInt(tl.tokens(1)) ||
-        !isInt(tl.tokens(3)) ||
-        !isInt(tl.tokens(5))) {
+        !isShort(tl.tokens(1)) ||
+        !isShort(tl.tokens(3)) ||
+        !isShort(tl.tokens(5))) {
       val message = "Malformed <tt>create</tt> instruction: the <tt>create</tt> instruction must " +
       "be of the form: <tt>create a, b, c</tt>, where <tt>a</tt>, <tt>b<tt>, and <tt>c</tt> are " +
       "integers."
@@ -239,6 +239,7 @@ object Compiler {
       CompileLineResult(Some(instruction), None)
     }
 
+  /*
   // TODO: friendlier error messages
   def isRegister(token: String)(implicit config: Config): Boolean = {
     if (token(0) != '#') {
@@ -283,6 +284,10 @@ object Compiler {
 
   def isParamValue(token: String)(implicit config: Config): Boolean =
     return isInt(token) || isVariable(token) || isRemote(token) || isConstant(token)
+
+  */
+
+  /*
 
   // assuming error checking has already taken place
   def getVariable(token: String)(implicit config: Config): Variable = {
@@ -345,7 +350,76 @@ object Compiler {
     } else {
       throw new IllegalArgumentException("Bad token: " + token)
     }
+  }*/
+
+  // TODO: test
+  def isRegister(token: String)(implicit config: Config): Boolean = {
+    if (token(0) != '#') {
+      return false
+    }
+
+    val num = token.substring(1)
+
+    if (!isShort(num)) {
+      return false
+    }
+
+    val registerNum = num.toInt
+
+    if (registerNum < 1 || registerNum > config.sim.maxNumVariables) {
+      return false
+    }
+
+    return true
   }
+
+  val readableKeywords = Set("#active", "%active", "$banks", "%banks", "$instrset", "%instrset",
+    "$mobile", "%mobile", "$fields")
+
+  def isReadableKeyword(token: String): Boolean = readableKeywords.contains(token)
+
+  val writableKeywords = Set("#active", "%active")
+
+  def isWritableKeyword(token: String): Boolean = writableKeywords.contains(token)
+
+  def isReadable(token: String)(implicit config: Config): Boolean =
+    isRegister(token) ||
+    isReadableKeyword(token) ||
+    isShort(token)
+
+  def isWritable(token: String)(implicit config: Config): Boolean =
+    isRegister(token) ||
+    isWritableKeyword(token)
+
+  def getWritable(token: String)(implicit config: Config): WritableParam =
+    if (token == "#active") {
+      ActiveKeyword(token)
+    } else if (isRegister(token)) {
+      val registerNum = token.substring(1).toShort
+      Register(registerNum)
+    } else {
+     throw new IllegalArgumentException("Bad token: " + token)
+    }
+
+  def getReadable(token: String)(implicit config: Config): ReadableParam =
+    if (isRegister(token)) {
+      val registerNum = token.substring(1).toShort
+      Register(registerNum)
+    } else if (isShort(token)) {
+      IntegerParam(token.toShort)
+    } else if (token == "#active" || token == "%active") {
+      ActiveKeyword(token)
+    } else if (token == "$banks" || token == "%banks") {
+      BanksKeyword(token)
+    } else if (token == "$instrset" || token == "%instrset") {
+      InstrSetKeyword(token)
+    } else if (token == "$mobile" || token == "%mobile") {
+      MobileKeyword(token)
+    } else if (token == "$fields") {
+      FieldsKeyword(token)
+    } else {
+      throw new IllegalArgumentException("Bad token: " + token)
+    }
 
   // TODO: test
   // TODO: set remote values?
@@ -358,7 +432,7 @@ object Compiler {
       val errorCode = ErrorCode.MalformedInstruction
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       return CompileLineResult(None, Some(errorMessage))
-    } else if (!isVariable(tl.tokens(1))) {
+    } else if (!isWritable(tl.tokens(1))) {
       val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
       "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
       s"a parameter value. Your first parameter, <tt>${tl.tokens(1)}</tt>, must be either #1 ... " +
@@ -366,7 +440,7 @@ object Compiler {
       val errorCode = ErrorCode.WrongParamType
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       return CompileLineResult(None, Some(errorMessage))
-    } else if (!isParamValue(tl.tokens(3))) {
+    } else if (!isReadable(tl.tokens(3))) {
       val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
       "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
       s"a parameter value. Your second parameter, <tt>${tl.tokens(3)}</tt>, must be either " +
@@ -377,8 +451,8 @@ object Compiler {
       return CompileLineResult(None, Some(errorMessage))
     } else {
 
-      val destination: Variable = getVariable(tl.tokens(1))
-      val source: ParamValue = getParamValue(tl.tokens(3))
+      val destination: WritableParam = getWritable(tl.tokens(1))
+      val source: ReadableParam = getReadable(tl.tokens(3))
 
       val instruction = SetInstruction(destination, source)
       CompileLineResult(Some(instruction), None)
