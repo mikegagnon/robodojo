@@ -179,6 +179,36 @@ object InstructionTest extends TestSuite {
       }
       "source params"-{
 
+        def testSourceParam(source: ReadableParam, expectedValue: Short)
+            (setup: ((Bot, Bot) => Unit)): Unit = {
+          val instruction = SetInstruction(RegisterParam(0), source)
+          val board = new Board()
+          val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+          board.addBot(bot1)
+          val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+          board.addBot(bot2)
+
+          setup(bot1, bot2)
+
+          instruction.execute(bot1)
+          bot1.registers(0) ==> expectedValue
+        }
+
+        // source Integer already covered by tests in "destination params"
+
+        // #active
+        testSourceParam(ActiveKeyword(true), 1) { (_, _) => () }
+
+        // %active with remote bot
+        testSourceParam(ActiveKeyword(false), 5) {
+          (bot1, bot2) => bot2.active = 5
+        }
+
+        // %active without remote bot
+        testSourceParam(ActiveKeyword(false), 0) {
+          (bot1, bot2) => bot1.direction = Direction.Left
+        }
+
       }
     }
   }
