@@ -78,9 +78,8 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   // TESTED
   def cycle(): Option[Animation] = {
 
-    // TODO: I don't  think we really want to return an inactive animation every time.
     if (active < 1) {
-      return Option(InactiveAnimation(id))
+      return None
     }
 
     var bank = program.banks(bankNum)
