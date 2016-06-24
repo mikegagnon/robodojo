@@ -8,18 +8,20 @@ package club.robodojo
 // A basic-bot may only execute basic instructions, whereas an extended-bot may execute any
 // instruction.
 object InstructionSet {
+
   sealed trait EnumVal {
     val value: Short
   }
 
   // TODO: are these the correct values?
   case object Basic extends EnumVal {
-    val value = 0.toShort
+    val value: Short = 0
   }
 
   case object Extended extends EnumVal {
-    val value = 1.toShort
+    val value: Short = 1
   }
+
 }
 
 sealed abstract class Instruction {
