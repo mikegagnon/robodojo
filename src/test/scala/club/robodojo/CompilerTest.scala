@@ -445,22 +445,22 @@ object CompilerTest extends TestSuite {
       "isRegister"-{
         implicit val config = new Config(Map("sim.maxNumVariables" -> 10))
 
-        Compiler.isRegister("#1") ==> true
-        Compiler.isRegister("#2") ==> true
-        Compiler.isRegister("#3") ==> true
-        Compiler.isRegister("#4") ==> true
-        Compiler.isRegister("#5") ==> true
-        Compiler.isRegister("#6") ==> true
-        Compiler.isRegister("#7") ==> true
-        Compiler.isRegister("#8") ==> true
-        Compiler.isRegister("#9") ==> true
-        Compiler.isRegister("#10") ==> true
+        assert(Compiler.isRegister("#1"))
+        assert(Compiler.isRegister("#2"))
+        assert(Compiler.isRegister("#3"))
+        assert(Compiler.isRegister("#4"))
+        assert(Compiler.isRegister("#5"))
+        assert(Compiler.isRegister("#6"))
+        assert(Compiler.isRegister("#7"))
+        assert(Compiler.isRegister("#8"))
+        assert(Compiler.isRegister("#9"))
+        assert(Compiler.isRegister("#10"))
 
-        Compiler.isRegister("#-1") ==> false
-        Compiler.isRegister("#0") ==> false
-        Compiler.isRegister("#11") ==> false
-        Compiler.isRegister("5") ==> false
-        Compiler.isRegister("#foo") ==> false
+        assert(!Compiler.isRegister("#-1"))
+        assert(!Compiler.isRegister("#0"))
+        assert(!Compiler.isRegister("#11"))
+        assert(!Compiler.isRegister("5"))
+        assert(!Compiler.isRegister("#foo"))
       }
 
       "getWritable"-{
