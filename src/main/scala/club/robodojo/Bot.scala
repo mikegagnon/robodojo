@@ -69,6 +69,12 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   // TODO: should be short?
   var registers = ArrayBuffer.fill(config.sim.maxNumVariables)(0.toShort)
 
+  // TODO: test
+  def getRemote(): Option[Bot] = {
+    val RowCol(remoteRow, remoteCol) = Direction.dirRowCol(direction, row, col)
+    return board.matrix(remoteRow)(remoteCol)
+  }
+
   // TESTED
   def cycle(): Option[Animation] = {
 

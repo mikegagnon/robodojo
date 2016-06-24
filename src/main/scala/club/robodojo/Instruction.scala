@@ -13,7 +13,6 @@ object InstructionSet {
     val value: Short
   }
 
-  // TODO: are these the correct values?
   case object Basic extends EnumVal {
     val value: Short = 0
   }
@@ -55,14 +54,6 @@ object KeywordParam {
     "$mobile",
     "%mobile",
     "$fields")
-
-  // TODO: test
-  def getRemote(bot: Bot)(implicit config: Config): Option[Bot] = {
-    val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-    bot.board.matrix(row)(col)
-  }
-
-  
 }
 
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
@@ -88,8 +79,7 @@ sealed trait ReadableFromBot extends ReadableKeyword {
     if (local) {
       (readFromBot(bot), None)
     } else {
-      val result: Short =
-        KeywordParam.getRemote(bot)
+      val result: Short = bot.getRemote
           .map{ remoteBot => readFromBot(remoteBot) }
           .getOrElse(0)
       (result, None)
@@ -110,9 +100,7 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
       bot.active = value
       None
     } else {
-      KeywordParam
-        .getRemote(bot)
-        .foreach { _.active = value}
+      bot.getRemote.foreach { _.active = value}
       None
     }
 }
