@@ -43,19 +43,6 @@ sealed trait WritableParam extends Param {
 
 /* Begin KeywordParam values **********************************************************************/
 
-object KeywordParam {
-  val validKeywords = Set(
-    "#active",
-    "%active",
-    "$banks",
-    "%banks",
-    "$instrset",
-    "%instrset",
-    "$mobile",
-    "%mobile",
-    "$fields")
-}
-
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
 // Keyword should contain prefixes. So, keyword should be "#Active" not "Active"
 sealed trait KeywordParam extends Param 
