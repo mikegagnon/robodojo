@@ -155,7 +155,6 @@ object Compiler {
       }
     }
 
-  // TODO: change to isShort?
   def isShort(value: String): Boolean =
     try {
       value.toShort
