@@ -48,7 +48,6 @@ sealed trait KeywordParam extends Param
 
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam
 
-// TODO: implement
 sealed trait WriteableKeyword extends KeywordParam with WriteableParam
 
 sealed trait ReadableFromBot extends ReadableKeyword {
