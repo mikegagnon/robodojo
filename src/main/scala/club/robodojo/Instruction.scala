@@ -38,7 +38,7 @@ sealed trait ReadableParam extends Param {
 }
 
 // TODO: change to Writeable
-sealed trait WritableParam extends Param {
+sealed trait WriteableParam extends Param {
   def write(bot: Bot, value: Short): Option[Animation]
 }
 
@@ -50,7 +50,7 @@ sealed trait KeywordParam extends Param
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam
 
 // TODO: implement
-sealed trait WriteableKeyword extends KeywordParam with WritableParam
+sealed trait WriteableKeyword extends KeywordParam with WriteableParam
 
 sealed trait ReadableFromBot extends ReadableKeyword {
 
@@ -111,7 +111,7 @@ final case class IntegerParam(value: Short) extends ReadableParam {
 
 // NOTE: registerIndex >= 0 && registerIndex < config.sim.maxNumVariables
 final case class RegisterParam(registerIndex: Int)(implicit config: Config)
-    extends ReadableParam with WritableParam {
+    extends ReadableParam with WriteableParam {
 
   if (registerIndex < 0 || registerIndex >= config.sim.maxNumVariables) {
     throw new IllegalArgumentException("Register num out of range: " + registerIndex)
@@ -341,7 +341,7 @@ case class CreateInstruction(
 }
 
 case class SetInstruction(
-  destination: WritableParam,
+  destination: WriteableParam,
   source: ReadableParam)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
