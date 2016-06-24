@@ -506,15 +506,13 @@ object CompilerTest extends TestSuite {
         }
       }
 
-      "set"-{
+      "set instruction"-{
         "fail"-{
 
         }
         "succeed"-{
-          "1"-{
-            //testInstruction("set #1, 1",
-              //Right(SetInstruction()))
-          }
+          testInstruction("set #1, 1",
+              Right(SetInstruction(RegisterParam(0), IntegerParam(1))))
         }
       }
     }
