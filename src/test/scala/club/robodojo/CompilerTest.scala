@@ -443,9 +443,25 @@ object CompilerTest extends TestSuite {
       }
 
       "isRegister"-{
-        val isRegister = Compiler.isRegister _
 
-        isRegister("#0") ==> false
+        implicit val config = new Config(Map("sim.maxNumVariables" -> 10))
+
+        Compiler.isRegister("#1") ==> true
+        Compiler.isRegister("#2") ==> true
+        Compiler.isRegister("#3") ==> true
+        Compiler.isRegister("#4") ==> true
+        Compiler.isRegister("#5") ==> true
+        Compiler.isRegister("#6") ==> true
+        Compiler.isRegister("#7") ==> true
+        Compiler.isRegister("#8") ==> true
+        Compiler.isRegister("#9") ==> true
+        Compiler.isRegister("#10") ==> true
+
+        Compiler.isRegister("#-1") ==> false
+        Compiler.isRegister("#0") ==> false
+        Compiler.isRegister("#11") ==> false
+        Compiler.isRegister("5") ==> false
+        Compiler.isRegister("#foo") ==> false
       }
 
 
