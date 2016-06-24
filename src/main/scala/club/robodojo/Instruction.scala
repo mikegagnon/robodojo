@@ -108,9 +108,6 @@ final case class IntegerParam(value: Short) extends ReadableParam {
   def read(bot: Bot): Short = value
 }
 
-// TODO: change name to Register?
-// TODO: change Int to Short?
-// TODO: Either[Int, ActiveVariable] is too narrow?
 final case class Register(registerNum: Int)(implicit config: Config)
     extends ReadableParam with WritableParam {
 
