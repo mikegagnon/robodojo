@@ -94,7 +94,7 @@ case class InstrSetKeyword(local: Boolean) extends ReadableFromBot {
 }
 
 case class MobileKeyword(local: Boolean) extends ReadableFromBot {
-  def readFromBot(bot: Bot): Short = if (bot.mobile) 1.toShort else 0.toShort
+  def readFromBot(bot: Bot): Short = if (bot.mobile) 1 else 0
 }
 
 case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
