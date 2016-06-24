@@ -490,6 +490,28 @@ object CompilerTest extends TestSuite {
 
       }
 
+      "getReadable"-{
+
+        getReadable("#active") ==> ActiveKeyword(true)
+        getReadable("%active") ==> ActiveKeyword(false)
+        getReadable("$banks") ==> BanksKeyword(true)
+        getReadable("%banks") ==> BanksKeyword(false)
+        getReadable("$instrset") ==> InstrSetKeyword(true)
+        getReadable("%instrset") ==> InstrSetKeyword(false)
+        getReadable("$mobile") ==> MobileKeyword(true)
+        getReadable("%mobile") ==> MobileKeyword(false)
+        getReadable("$fields") ==> FieldsKeyword()
+        getReadable("#1") ==> RegisterParam(0)
+        getReadable("5") ==> IntegerParam(5)
+        getReadable("-11") ==> IntegerParam(-11)
+
+        intercept[IllegalArgumentException] {
+          getWritable("foo")
+        }
+
+
+      }
+
       "set"-{
         "fail"-{
 
