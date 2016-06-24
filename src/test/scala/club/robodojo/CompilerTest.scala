@@ -443,7 +443,6 @@ object CompilerTest extends TestSuite {
       }
 
       "isRegister"-{
-
         implicit val config = new Config(Map("sim.maxNumVariables" -> 10))
 
         Compiler.isRegister("#1") ==> true
@@ -465,7 +464,6 @@ object CompilerTest extends TestSuite {
       }
 
       "getWritable"-{
-
         getWritable("#active") ==> ActiveKeyword(true)
         getWritable("%active") ==> ActiveKeyword(false)
         getWritable("#1") ==> RegisterParam(0)
@@ -487,11 +485,9 @@ object CompilerTest extends TestSuite {
         intercept[IllegalArgumentException] {
           getWritable("$fields")
         }
-
       }
 
       "getReadable"-{
-
         getReadable("#active") ==> ActiveKeyword(true)
         getReadable("%active") ==> ActiveKeyword(false)
         getReadable("$banks") ==> BanksKeyword(true)
@@ -508,8 +504,6 @@ object CompilerTest extends TestSuite {
         intercept[IllegalArgumentException] {
           getWritable("foo")
         }
-
-
       }
 
       "set"-{
