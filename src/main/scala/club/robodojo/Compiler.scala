@@ -266,16 +266,16 @@ object Compiler {
 
   val writableKeywords = Set("#active", "%active")
 
-  def isWritableKeyword(token: String): Boolean = writableKeywords.contains(token)
+  def isWriteableKeyword(token: String): Boolean = writableKeywords.contains(token)
 
   def isReadable(token: String)(implicit config: Config): Boolean =
     isRegister(token) ||
     isReadableKeyword(token) ||
     isShort(token)
 
-  def isWritable(token: String)(implicit config: Config): Boolean =
+  def isWriteable(token: String)(implicit config: Config): Boolean =
     isRegister(token) ||
-    isWritableKeyword(token)
+    isWriteableKeyword(token)
 
   def getWritable(token: String)(implicit config: Config): WriteableParam =
     if (token == "#active") {
@@ -328,7 +328,7 @@ object Compiler {
       val errorCode = ErrorCode.MalformedInstruction
       val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
       return CompileLineResult(None, Some(errorMessage))
-    } else if (!isWritable(tl.tokens(1))) {
+    } else if (!isWriteable(tl.tokens(1))) {
       val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
       "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
       s"a parameter value. Your first parameter, <tt>${tl.tokens(1)}</tt>, must be either #1 ... " +
