@@ -201,13 +201,13 @@ object InstructionTest extends TestSuite {
         testSourceParam(ActiveKeyword(true), 1) { (_, _) => () }
 
         // %active with remote bot
-        testSourceParam(ActiveKeyword(false), 5) { (bot1, bot2) =>
+        testSourceParam(ActiveKeyword(false), 5) { (_, bot2) =>
           bot2.active = 5
         }
 
         // %active without remote bot
         testSourceParam(ActiveKeyword(false), 0) {
-          (bot1, bot2) => bot1.direction = Direction.Left
+          (bot1, _) => bot1.direction = Direction.Left
         }
 
         // $banks
@@ -215,6 +215,19 @@ object InstructionTest extends TestSuite {
             bot1.program.banks = Map[Int, Bank](
               0 -> Bank(ArrayBuffer()),
               1 -> Bank(ArrayBuffer()))
+        }
+
+        // %banks with remote bot
+        testSourceParam(BanksKeyword(false), 3) { (_, bot2) =>
+            bot2.program.banks = Map[Int, Bank](
+              0 -> Bank(ArrayBuffer()),
+              1 -> Bank(ArrayBuffer()),
+              2 -> Bank(ArrayBuffer()))
+        }
+
+        // %banks without remote bot
+        testSourceParam(BanksKeyword(false), 0) {
+          (bot1, _) => bot1.direction = Direction.Left
         }
 
       }
