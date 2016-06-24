@@ -463,27 +463,27 @@ object CompilerTest extends TestSuite {
         assert(!Compiler.isRegister("#foo"))
       }
 
-      "getWritable"-{
-        getWritable("#active") ==> ActiveKeyword(true)
-        getWritable("%active") ==> ActiveKeyword(false)
-        getWritable("#1") ==> RegisterParam(0)
-        getWritable("#" + config.sim.maxNumVariables) ==>
+      "getWriteable"-{
+        getWriteable("#active") ==> ActiveKeyword(true)
+        getWriteable("%active") ==> ActiveKeyword(false)
+        getWriteable("#1") ==> RegisterParam(0)
+        getWriteable("#" + config.sim.maxNumVariables) ==>
           RegisterParam(config.sim.maxNumVariables - 1)
 
         intercept[IllegalArgumentException] {
-          getWritable("#0")
+          getWriteable("#0")
         }
 
         intercept[IllegalArgumentException] {
-          getWritable("#" + config.sim.maxNumVariables + 1)
+          getWriteable("#" + config.sim.maxNumVariables + 1)
         }
 
         intercept[IllegalArgumentException] {
-          getWritable("%banks")
+          getWriteable("%banks")
         }
 
         intercept[IllegalArgumentException] {
-          getWritable("$fields")
+          getWriteable("$fields")
         }
       }
 
@@ -502,7 +502,7 @@ object CompilerTest extends TestSuite {
         getReadable("-11") ==> IntegerParam(-11)
 
         intercept[IllegalArgumentException] {
-          getWritable("foo")
+          getWriteable("foo")
         }
       }
 

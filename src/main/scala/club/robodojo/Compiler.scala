@@ -277,7 +277,7 @@ object Compiler {
     isRegister(token) ||
     isWriteableKeyword(token)
 
-  def getWritable(token: String)(implicit config: Config): WriteableParam =
+  def getWriteable(token: String)(implicit config: Config): WriteableParam =
     if (token == "#active") {
       ActiveKeyword(true)
     } else if (token == "%active") {
@@ -347,7 +347,7 @@ object Compiler {
       return CompileLineResult(None, Some(errorMessage))
     } else {
 
-      val destination: WriteableParam = getWritable(tl.tokens(1))
+      val destination: WriteableParam = getWriteable(tl.tokens(1))
       val source: ReadableParam = getReadable(tl.tokens(3))
 
       val instruction = SetInstruction(destination, source)
