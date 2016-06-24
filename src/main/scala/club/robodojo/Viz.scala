@@ -425,7 +425,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case birthAnimation: BirthAnimationFail => ()
         case turnAnimation: TurnAnimationProgress => animateTurnProgress(turnAnimation)
         case turnAnimation: TurnAnimationFinish => animateTurnFinish(turnAnimation)
-        case inactiveAnimation: InactiveAnimation => animateInactive(inactiveAnimation)
+        case deactivateAnimation: DeactivateAnimation => animateDeactivate(deactivateAnimation)
         case fatalError: FatalErrorAnimation => animateFatalError(fatalError)
       }
     }
@@ -646,15 +646,15 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImages(botId).addChild(line)
   }
 
-  def animateInactive(inactiveAnimation: InactiveAnimation): Unit = {
+  def animateDeactivate(deactivateAnimation: DeactivateAnimation): Unit = {
 
-    val botId = inactiveAnimation.botId
+    val botId = deactivateAnimation.botId
 
     val features: BotVisualFeatures = botVisualFeatures(botId)
 
-    // If the inactive visualization has alrady been drawn
+    // If the deactivate visualization has alrady been drawn
     if (features.inactive) {
-      return
+      throw new IllegalStateException("Bot is already drawn as deactivated")
     }
 
     features.inactive = true
