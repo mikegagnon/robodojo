@@ -441,6 +441,14 @@ object CompilerTest extends TestSuite {
           }
         }
       }
+
+      "isRegister"-{
+        val isRegister = Compiler.isRegister _
+
+        isRegister("#0") ==> false
+      }
+
+
       "set"-{
         "fail"-{
 

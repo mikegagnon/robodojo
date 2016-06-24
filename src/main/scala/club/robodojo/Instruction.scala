@@ -108,17 +108,18 @@ final case class IntegerParam(value: Short) extends ReadableParam {
   def read(bot: Bot): Short = value
 }
 
-final case class RegisterParam(registerNum: Int)(implicit config: Config)
+// NOTE: registerIndex >= 0 && registerIndex < config.sim.maxNumVariables
+final case class RegisterParam(registerIndex: Int)(implicit config: Config)
     extends ReadableParam with WritableParam {
 
-  if (registerNum < 0 || registerNum >= config.sim.maxNumVariables) {
-    throw new IllegalArgumentException("Register num out of range: " + registerNum)
+  if (registerIndex < 0 || registerIndex >= config.sim.maxNumVariables) {
+    throw new IllegalArgumentException("Register num out of range: " + registerIndex)
   }
 
-  def read(bot: Bot) = bot.registers(registerNum)
+  def read(bot: Bot) = bot.registers(registerIndex)
 
   def write(bot: Bot, value: Short): Option[Animation] = {
-    bot.registers(registerNum) = value
+    bot.registers(registerIndex) = value
     return None
   }
 
