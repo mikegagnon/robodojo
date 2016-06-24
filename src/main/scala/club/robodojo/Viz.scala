@@ -300,6 +300,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
   // one. Perhaps monoids?
   def cycle(): Unit = {
+    // TODO: this might be empty
     val animationList = board.cycle()
 
     animations(board.cycleNum - 1) = HashMap[Long, Animation]()

@@ -44,6 +44,8 @@ class Board(implicit val config: Config) {
   // TODO: cycle bots sorted by id
   def cycle(): ArrayBuffer[Animation] = {
     cycleNum += 1
+
+    // TODO: this might be empty if all bots return None, which causes exceptions
     bots.flatMap{ (bot: Bot) => bot.cycle() }
   }
 
