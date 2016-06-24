@@ -264,9 +264,9 @@ object Compiler {
 
   def isReadableKeyword(token: String): Boolean = readableKeywords.contains(token)
 
-  val writableKeywords = Set("#active", "%active")
+  val writeableKeywords = Set("#active", "%active")
 
-  def isWriteableKeyword(token: String): Boolean = writableKeywords.contains(token)
+  def isWriteableKeyword(token: String): Boolean = writeableKeywords.contains(token)
 
   def isReadable(token: String)(implicit config: Config): Boolean =
     isRegister(token) ||
