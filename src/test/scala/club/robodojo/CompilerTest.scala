@@ -508,7 +508,18 @@ object CompilerTest extends TestSuite {
 
       "set instruction"-{
         "fail"-{
-
+          testProgramFail("set foo", ErrorCode.MalformedInstruction)
+          testProgramFail("set #active 1", ErrorCode.MalformedInstruction)
+          testProgramFail("set foo, 1", ErrorCode.WrongParamType)
+          testProgramFail("set 1, 1", ErrorCode.WrongParamType)
+          testProgramFail("set $banks, 1", ErrorCode.WrongParamType)
+          testProgramFail("set %banks, 1", ErrorCode.WrongParamType)
+          testProgramFail("set $instrset, 1", ErrorCode.WrongParamType)
+          testProgramFail("set %instrset, 1", ErrorCode.WrongParamType)
+          testProgramFail("set $mobile, 1", ErrorCode.WrongParamType)
+          testProgramFail("set %mobile, 1", ErrorCode.WrongParamType)
+          testProgramFail("set $fields, 1", ErrorCode.WrongParamType)
+          testProgramFail("set #1, $foo", ErrorCode.WrongParamType)
         }
         "succeed"-{
 
@@ -541,7 +552,6 @@ object CompilerTest extends TestSuite {
             Right(SetInstruction(RegisterParam(0), MobileKeyword(false))))
           testInstruction("set #1, $Fields",
             Right(SetInstruction(RegisterParam(0), FieldsKeyword())))
-
         }
       }
     }
