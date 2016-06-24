@@ -523,35 +523,30 @@ object CompilerTest extends TestSuite {
         }
         "succeed"-{
 
-          // Test the destination param
-          testInstruction("Set #1, 1",
-            Right(SetInstruction(RegisterParam(0), IntegerParam(1))))
-          testInstruction("Set #active, 1",
-            Right(SetInstruction(ActiveKeyword(true), IntegerParam(1))))
-          testInstruction("Set %active, 5",
-            Right(SetInstruction(ActiveKeyword(false), IntegerParam(5))))
+          def testDestParam(param: String, keyword: WriteableParam): Unit =
+            testInstruction("set " + param + ", 1",
+              Right(SetInstruction(keyword, IntegerParam(1))))
 
-          // Test the source param
-          testInstruction("set #1, #Active",
-            Right(SetInstruction(RegisterParam(0), ActiveKeyword(true))))
-          testInstruction("set #1, %Active",
-            Right(SetInstruction(RegisterParam(0), ActiveKeyword(false))))
-          testInstruction("set #1, $Banks",
-            Right(SetInstruction(RegisterParam(0), BanksKeyword(true))))
-          testInstruction("set #1, %Banks",
-            Right(SetInstruction(RegisterParam(0), BanksKeyword(false))))
-          testInstruction("set #1, %Banks",
-            Right(SetInstruction(RegisterParam(0), BanksKeyword(false))))
-          testInstruction("set #1, $InstrSet",
-            Right(SetInstruction(RegisterParam(0), InstrSetKeyword(true))))
-          testInstruction("set #1, %InstrSet",
-            Right(SetInstruction(RegisterParam(0), InstrSetKeyword(false))))
-          testInstruction("set #1, $Mobile",
-            Right(SetInstruction(RegisterParam(0), MobileKeyword(true))))
-          testInstruction("set #1, %Mobile",
-            Right(SetInstruction(RegisterParam(0), MobileKeyword(false))))
-          testInstruction("set #1, $Fields",
-            Right(SetInstruction(RegisterParam(0), FieldsKeyword())))
+          testDestParam("#1", RegisterParam(0))
+          testDestParam("#2", RegisterParam(1))
+          testDestParam("#" + config.sim.maxNumVariables,
+            RegisterParam(config.sim.maxNumVariables - 1))
+          testDestParam("#Active", ActiveKeyword(true))
+          testDestParam("%Active", ActiveKeyword(false))
+
+          def testSourceParam(param: String, keyword: ReadableParam): Unit =
+            testInstruction("set #1, " + param,
+              Right(SetInstruction(RegisterParam(0), keyword)))
+
+          testSourceParam("#Active", ActiveKeyword(true))
+          testSourceParam("%Active", ActiveKeyword(false))
+          testSourceParam("$Banks", BanksKeyword(true))
+          testSourceParam("%Banks", BanksKeyword(false))
+          testSourceParam("$InstrSet", InstrSetKeyword(true))
+          testSourceParam("%InstrSet", InstrSetKeyword(false))
+          testSourceParam("$Mobile", MobileKeyword(true))
+          testSourceParam("%Mobile", MobileKeyword(false))
+          testSourceParam("$Fields", FieldsKeyword())
         }
       }
     }
