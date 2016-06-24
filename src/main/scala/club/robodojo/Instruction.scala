@@ -48,20 +48,7 @@ object KeywordParam {
 
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
 // Keyword should contain prefixes. So, keyword should be "#Active" not "Active"
-sealed abstract class KeywordParam extends Param {
-
-  val keyword: String
-
-  if (!KeywordParam.validKeywords.contains(keyword)) {
-    throw new IllegalArgumentException("Bad keyword: " + keyword)
-  }
-
-  val localWritable: Boolean = keyword(0) == '#'
-  val remoteWritable: Boolean = keyword(0) == '%'
-
-  val localReadable: Boolean = keyword(0) == '#' || keyword(0) == '$'
-  val remoteReadable: Boolean = keyword(0) == '%'
-}
+sealed trait KeywordParam extends Param 
 
 // TODO: implement
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
@@ -73,11 +60,11 @@ sealed trait WriteableKeyword extends KeywordParam with WritableParam {
   def write(bot: Bot, value: Short): Option[Animation] = None
 }
 
-case class ActiveKeyword(keyword: String) extends WriteableKeyword with ReadableKeyword
-case class BanksKeyword(keyword: String) extends ReadableKeyword
-case class InstrSetKeyword(keyword: String) extends ReadableKeyword
-case class MobileKeyword(keyword: String) extends ReadableKeyword
-case class FieldsKeyword(keyword: String) extends ReadableKeyword
+case class ActiveKeyword() extends WriteableKeyword with ReadableKeyword
+case class BanksKeyword() extends ReadableKeyword
+case class InstrSetKeyword() extends ReadableKeyword
+case class MobileKeyword() extends ReadableKeyword
+case class FieldsKeyword() extends ReadableKeyword
 
 /* End KeywordParam values **********************************************************************/
 

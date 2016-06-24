@@ -393,7 +393,7 @@ object Compiler {
 
   def getWritable(token: String)(implicit config: Config): WritableParam =
     if (token == "#active") {
-      ActiveKeyword(token)
+      ActiveKeyword()
     } else if (isRegister(token)) {
       val registerNum = token.substring(1).toShort
       Register(registerNum)
@@ -408,15 +408,15 @@ object Compiler {
     } else if (isShort(token)) {
       IntegerParam(token.toShort)
     } else if (token == "#active" || token == "%active") {
-      ActiveKeyword(token)
+      ActiveKeyword()
     } else if (token == "$banks" || token == "%banks") {
-      BanksKeyword(token)
+      BanksKeyword()
     } else if (token == "$instrset" || token == "%instrset") {
-      InstrSetKeyword(token)
+      InstrSetKeyword()
     } else if (token == "$mobile" || token == "%mobile") {
-      MobileKeyword(token)
+      MobileKeyword()
     } else if (token == "$fields") {
-      FieldsKeyword(token)
+      FieldsKeyword()
     } else {
       throw new IllegalArgumentException("Bad token: " + token)
     }
