@@ -356,10 +356,8 @@ case class SetInstruction(
 
   // TODO: how to handle side effects of set?
   def execute(bot: Bot): Option[Animation] = {
-
     val sourceValue = source.read(bot)
     val animationWrite = destination.write(bot, sourceValue)
-
     None
   }
 
