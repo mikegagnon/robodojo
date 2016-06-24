@@ -464,6 +464,31 @@ object CompilerTest extends TestSuite {
         Compiler.isRegister("#foo") ==> false
       }
 
+      "getWritable"-{
+
+        getWritable("#active") ==> ActiveKeyword(true)
+        getWritable("%active") ==> ActiveKeyword(false)
+        getWritable("#1") ==> RegisterParam(0)
+        getWritable("#" + config.sim.maxNumVariables) ==>
+          RegisterParam(config.sim.maxNumVariables - 1)
+
+        intercept[IllegalArgumentException] {
+          getWritable("#0")
+        }
+
+        intercept[IllegalArgumentException] {
+          getWritable("#" + config.sim.maxNumVariables + 1)
+        }
+
+        intercept[IllegalArgumentException] {
+          getWritable("%banks")
+        }
+
+        intercept[IllegalArgumentException] {
+          getWritable("$fields")
+        }
+
+      }
 
       "set"-{
         "fail"-{
