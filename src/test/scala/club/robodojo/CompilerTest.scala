@@ -538,6 +538,7 @@ object CompilerTest extends TestSuite {
             testInstruction("set #1, " + param,
               Right(SetInstruction(RegisterParam(0), keyword)))
 
+          testSourceParam("5", IntegerParam(5))
           testSourceParam("#Active", ActiveKeyword(true))
           testSourceParam("%Active", ActiveKeyword(false))
           testSourceParam("$Banks", BanksKeyword(true))
