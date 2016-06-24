@@ -67,41 +67,11 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   // TODO: test
   // TODO: ensure zero'd out
   // TODO: should be short?
-  var registers = new ArrayBuffer[Short](config.sim.maxNumVariables)
+  var registers = ArrayBuffer.fill(config.sim.maxNumVariables)(0.toShort)
 
-  /*
   // TODO: implement
-  def getRemote(): Option[Bot] = None 
-
   // TODO: TEST
-  // Move this code to Instruction.scala
-  def writeToSpecialVariable(variableName: String, value: Short): Option[Animation] = {
-    val lowercase = variableName.toLowerCase
-
-    val animation: Option[Animation] =
-      if (lowercase == "#active") {
-        active = value
-        if (active > 0) {
-          Some(ActivateAnimation(id))
-        } else {
-          Some(InactiveAnimation(id))
-        }
-      } else if (lowercase == "%active") {
-        getRemote.map { remoteBot =>
-          remoteBot.active = value
-          if (value > 0) {
-            ActivateAnimation(remoteBot.id)
-          } else {
-            InactiveAnimation(remoteBot.id)
-          }
-        }
-      } else {
-        throw new IllegalArgumentException("Bad variable name: " + variableName)
-      }
-
-    return animation
-  }
-  */
+  def getRemote(): Option[Bot] = None 
 
   // TESTED
   def cycle(): Option[Animation] = {

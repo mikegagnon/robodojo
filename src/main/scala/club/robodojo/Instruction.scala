@@ -60,7 +60,16 @@ sealed trait WriteableKeyword extends KeywordParam with WritableParam {
   def write(bot: Bot, value: Short): Option[Animation] = None
 }
 
-case class ActiveKeyword(local: Boolean) extends WriteableKeyword with ReadableKeyword
+case class ActiveKeyword(local: Boolean) extends WriteableKeyword with ReadableKeyword {
+  override def read(bot: Bot): (Short, Option[Animation]) = {
+    if (local) {
+      (bot.active, None)
+    } else {
+      (0, None)
+    }
+  }
+}
+
 case class BanksKeyword(local: Boolean) extends ReadableKeyword
 case class InstrSetKeyword(local: Boolean) extends ReadableKeyword
 case class MobileKeyword(local: Boolean) extends ReadableKeyword
