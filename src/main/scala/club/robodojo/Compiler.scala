@@ -284,7 +284,7 @@ object Compiler {
       ActiveKeyword(false)
     } else if (isRegister(token)) {
       val registerNum = token.substring(1).toShort
-      Register(registerNum)
+      RegisterParam(registerNum)
     } else {
      throw new IllegalArgumentException("Bad token: " + token)
     }
@@ -292,7 +292,7 @@ object Compiler {
   def getReadable(token: String)(implicit config: Config): ReadableParam =
     if (isRegister(token)) {
       val registerNum = token.substring(1).toShort
-      Register(registerNum)
+      RegisterParam(registerNum)
     } else if (isShort(token)) {
       IntegerParam(token.toShort)
     } else if (token == "#active") {

@@ -108,7 +108,7 @@ final case class IntegerParam(value: Short) extends ReadableParam {
   def read(bot: Bot): Short = value
 }
 
-final case class Register(registerNum: Int)(implicit config: Config)
+final case class RegisterParam(registerNum: Int)(implicit config: Config)
     extends ReadableParam with WritableParam {
 
   if (registerNum < 0 || registerNum >= config.sim.maxNumVariables) {
