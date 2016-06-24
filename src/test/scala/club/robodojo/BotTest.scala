@@ -116,31 +116,30 @@ object BotTest extends TestSuite {
       }
     }
 
-    // TODO: cleanup tab whitespace
     "registers"-{
-        val board = new Board()
-        val bot = Bot(board, PlayerColor.Blue, 0, 0)
-        bot.registers.length ==> config.sim.maxNumVariables
-        bot.registers.foreach {
-            _ ==> 0.toShort
-        }
+      val board = new Board()
+      val bot = Bot(board, PlayerColor.Blue, 0, 0)
+      bot.registers.length ==> config.sim.maxNumVariables
+      bot.registers.foreach {
+          _ ==> 0.toShort
+      }
     }
 
     "getRemote"-{
-        "looking at another bot"-{
-            val board = new Board()
-            val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Up)
-            val bot2 = Bot(board, PlayerColor.Blue, config.sim.numRows - 1, 0)
-            board.addBot(bot1)
-            board.addBot(bot2)
-            bot1.getRemote() ==> Some(bot2)
-        }
-        "not looking at another bot"-{
-            val board = new Board()
-            val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Down)
-            board.addBot(bot1)
-            bot1.getRemote() ==> None
-        }
+      "looking at another bot"-{
+        val board = new Board()
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Up)
+        val bot2 = Bot(board, PlayerColor.Blue, config.sim.numRows - 1, 0)
+        board.addBot(bot1)
+        board.addBot(bot2)
+        bot1.getRemote() ==> Some(bot2)
+      }
+      "not looking at another bot"-{
+        val board = new Board()
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Down)
+        board.addBot(bot1)
+        bot1.getRemote() ==> None
+      }
     }
   }
 }
