@@ -8,9 +8,18 @@ package club.robodojo
 // A basic-bot may only execute basic instructions, whereas an extended-bot may execute any
 // instruction.
 object InstructionSet {
-  sealed trait EnumVal
-  case object Basic extends EnumVal
-  case object Extended extends EnumVal
+  sealed trait EnumVal {
+    val value: Short
+  }
+
+  // TODO: are these the correct values?
+  case object Basic extends EnumVal {
+    val value = 0.toShort
+  }
+
+  case object Extended extends EnumVal {
+    val value = 1.toShort
+  }
 }
 
 sealed abstract class Instruction {
@@ -24,11 +33,11 @@ sealed abstract class Instruction {
 sealed trait Param
 
 sealed trait ReadableParam extends Param {
-  def read(bot: Bot): (Short, Option[Animation])
+  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation])
 }
 
 sealed trait WritableParam extends Param {
-  def write(bot: Bot, value: Short): Option[Animation]
+  def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation]
 }
 
 /* Begin KeywordParam values **********************************************************************/
@@ -50,6 +59,8 @@ object KeywordParam {
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
     bot.board.matrix(row)(col)
   }
+
+  
 }
 
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
@@ -58,7 +69,8 @@ sealed trait KeywordParam extends Param
 
 // TODO: implement
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
-  def read(bot: Bot): (Short, Option[Animation]) = (0, None)
+  // TODO: do we really need config?
+  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation])
 }
 
 // TODO: implement
@@ -66,24 +78,32 @@ sealed trait WriteableKeyword extends KeywordParam with WritableParam {
   def write(bot: Bot, value: Short): Option[Animation] = None
 }
 
-// TODO: TEST
-case class ActiveKeyword(local: Boolean)(implicit config: Config) extends WriteableKeyword
-    with ReadableKeyword {
+sealed trait ReadableFromBot extends ReadableKeyword {
 
-  override def read(bot: Bot): (Short, Option[Animation]) =
+  val local: Boolean
+
+  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation]) =
     if (local) {
-      (bot.active, None)
+      (readFromBot(bot), None)
     } else {
-      val active: Short =
-        KeywordParam
-          .getRemote(bot)
-          .map{ _.active }
+      val result: Short =
+        KeywordParam.getRemote(bot)
+          .map{ remoteBot => readFromBot(remoteBot) }
           .getOrElse(0)
-      (active, None)
+      (result, None)
     }
 
+  def readFromBot(bot: Bot): Short
+}
+
+// TODO: TEST
+case class ActiveKeyword(local: Boolean)(implicit config: Config) extends WriteableKeyword
+    with ReadableFromBot {
+
+  def readFromBot(bot: Bot): Short = bot.active
+
   // TODO: animate
-  override def write(bot: Bot, value: Short): Option[Animation] =
+  override def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation] =
     if (local) {
       bot.active = value
       None
@@ -95,16 +115,33 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
     }
 }
 
-case class BanksKeyword(local: Boolean) extends ReadableKeyword
-case class InstrSetKeyword(local: Boolean) extends ReadableKeyword
-case class MobileKeyword(local: Boolean) extends ReadableKeyword
-case class FieldsKeyword() extends ReadableKeyword
+case class BanksKeyword(local: Boolean)(implicit config: Config) extends ReadableFromBot {
+  //def read(bot: Bot): (Short, Option[Animation]) =
+  //  KeywordParam.read(bot, local){ _.program.banks.size.toShort }
+  // TODO: For this result to be accurate all the banks must be filled between 0 and the highest
+  // bank
+  def readFromBot(bot: Bot): Short = bot.program.banks.size.toShort 
+}
+
+case class InstrSetKeyword(local: Boolean) extends ReadableFromBot {
+  def readFromBot(bot: Bot): Short = bot.instructionSet.value
+}
+
+case class MobileKeyword(local: Boolean) extends ReadableFromBot {
+  def readFromBot(bot: Bot): Short = if (bot.mobile) 1.toShort else 0.toShort
+}
+
+case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
+
+  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation]) =
+    (config.sim.numRows.toShort, None)
+}
 
 /* End KeywordParam values **********************************************************************/
 
 // TODO: test
 final case class IntegerParam(value: Short) extends ReadableParam {
-  def read(bot: Bot): (Short, Option[Animation]) = (value, None)
+  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation]) = (value, None)
 }
 
 // TODO: change name to Register?
@@ -117,9 +154,9 @@ final case class Register(registerNum: Int)(implicit config: Config)
     throw new IllegalArgumentException("Register num out of range: " + registerNum)
   }
 
-  def read(bot: Bot) = (bot.registers(registerNum), None)
+  def read(bot: Bot)(implicit config: Config) = (bot.registers(registerNum), None)
 
-  def write(bot: Bot, value: Short): Option[Animation] = {
+  def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation] = {
     bot.registers(registerNum) = value
     return None
   }
