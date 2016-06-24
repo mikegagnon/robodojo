@@ -21,45 +21,67 @@ sealed abstract class Instruction {
 
 /* Begin param values *****************************************************************************/
 
-/* Parent types *****************************************/
-
 sealed trait Param
 
-// TODO: how to animate these writes
-
-sealed trait WritableLocal {
-  def writeLocal(bot: Bot, value: Short): Unit
+sealed trait ReadableParam extends Param {
+  def read(bot: Bot): (Short, Option[Animation])
 }
 
-sealed trait WritableRemote {
-  def writeRemote(bot: Bot, value: Short): Unit
+sealed trait WritableParam extends Param {
+  def write(bot: Bot, value: Short): Option[Animation]
 }
 
-sealed trait ReadableLocal {
-  def readLocal(bot: Bot): Short
+/* Begin KeywordParam values **********************************************************************/
+
+object KeywordParam {
+  val validKeywords = Set(
+    "#active",
+    "%active",
+    "$banks",
+    "%banks",
+    "$instrset",
+    "%instrset",
+    "$mobile",
+    "%mobile",
+    "$fields")
 }
 
-sealed trait ReadableRemote {
-  def readRemote(bot: Bot): Short
+// Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
+// Keyword should contain prefixes. So, keyword should be "#Active" not "Active"
+sealed abstract class KeywordParam extends Param {
+
+  val keyword: String
+
+  if (!KeywordParam.validKeywords.contains(keyword)) {
+    throw new IllegalArgumentException("Bad keyword: " + keyword)
+  }
+
+  val localWritable: Boolean = keyword(0) == '#'
+  val remoteWritable: Boolean = keyword(0) == '%'
+
+  val localReadable: Boolean = keyword(0) == '#' || keyword(0) == '$'
+  val remoteReadable: Boolean = keyword(0) == '%'
 }
 
-/* Begin param types ************************************/
+// TODO: implement
+sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
+  def read(bot: Bot): (Short, Option[Animation]) = (0, None)
+}
 
-/*case object ActiveParam extends
-    Param with
-    WritableLocal with
-    WritableRemote with 
-    ReadableLocal with
-    ReadableRemote {
+// TODO: implement
+sealed trait WriteableKeyword extends KeywordParam with WritableParam {
+  def write(bot: Bot, value: Short): Option[Animation] = None
+}
 
-  def writeLocal(bot: Bot, value: Short) = bot.active = value
-  def writeRemote(bot: Bot, value: Short) = bot.getRemote.foreach{ _.active = value }
-  def writeLocal(bot: Bot, value: Short) = bot.active = value
-}*/
+case class ActiveKeyword(keyword: String) extends WriteableKeyword with ReadableKeyword
+case class BanksKeyword(keyword: String) extends ReadableKeyword
+case class InstrSetKeyword(keyword: String) extends ReadableKeyword
+case class MobileKeyword(keyword: String) extends ReadableKeyword
+case class FieldsKeyword(keyword: String) extends ReadableKeyword
 
-case class ActiveVariable()
+/* End KeywordParam values **********************************************************************/
 
-/*
+
 // TODO: short?
 // TODO: where to put this?
 /*
@@ -75,69 +97,32 @@ object Param {
 
 // TODO: test
 
-  // TODO: should be short?
-  def getValue(bot: Bot): Short
-}
 
-sealed trait SettableParamValue extends ParamValue {
 
-  // TODO: should be short?
-  def setValue(bot: Bot, value: Short): Unit
-}
 
-// TODO: replace more ints with Short?
-// TODO: is Integer really needed?
-final case class Integer(value: Short) extends ParamValue {
-  def getValue(bot: Bot): Short = value
-}
-
-// TODO: should Label be under Param?
-// TODO: move above Integer
-final case class Label(value: String) extends Param
-
-// TODO: implement
-final case class Constant(value: Constant.EnumVal) extends ParamValue {
-  def getValue(bot: Bot): Short = 1
-}
-
-// TODO: implement
-// TODO: setable?
-final case class Remote(value: Constant.EnumVal) extends ParamValue {
-    def getValue(bot: Bot): Short = 0
+final case class IntegerParam(value: Short) extends ReadableParam {
+  def read(bot: Bot): (Short, Option[Animation]) = (value, None)
 }
 
 // TODO: change name to Register?
 // TODO: change Int to Short?
 // TODO: Either[Int, ActiveVariable] is too narrow?
-final case class Variable(variable: Either[Int, ActiveVariable])(implicit config: Config)
-    extends SettableParamValue {
+final case class Register(registerNum: Int)(implicit config: Config)
+    extends ReadableParam with WritableParam {
 
-  variable match {
-    // TODO: change name to maxNumRegisters?
-    case Left(v) => if (v < 0 || v >= config.sim.maxNumVariables) {
-      throw new IllegalArgumentException("variable value out of range: " + v)
-    }
-    case _ => ()
+  if (registerNum < 0 || registerNum >= config.sim.maxNumVariables) {
+    throw new IllegalArgumentException("Register num out of range: " + registerNum)
   }
 
-  // TODO: register numbers go from #1 to #20. Compiler does translation from #N to register(N-1)
-  def getValue(bot: Bot): Short =
-    variable match {
-      case Left(registerNum) => bot.registers(registerNum)
-      //TODO: implement
-      case Right(ActiveVariable()) => bot.active
-    }
+  def read(bot: Bot) = (bot.registers(registerNum), None)
 
-  // TODO: how to animate bot going inactive or active?
-  def setValue(bot: Bot, value: Short): Unit =
-    variable match {
-      case Left(registerNum) => bot.registers(registerNum) = value
-      //TODO: implement
-      case Right(ActiveVariable()) => bot.active = value
-    }
+  def write(bot: Bot, value: Short): Option[Animation] = {
+    bot.registers(registerNum) = value
+    return None
+  }
 
 }
-*/
+
 /* End param values *******************************************************************************/
 
 /* Begin instructions *****************************************************************************/
