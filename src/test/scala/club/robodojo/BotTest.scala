@@ -115,5 +115,15 @@ object BotTest extends TestSuite {
         bot.board.matrix(1)(config.sim.numCols - 1) ==> Some(bot)
       }
     }
+
+    // TODO: cleanup tab whitespace
+    "registers"-{
+        val board = new Board()
+        val bot = Bot(board, PlayerColor.Blue, 0, 0)
+        bot.registers.length ==> config.sim.maxNumVariables
+        bot.registers.foreach {
+            _ ==> 0.toShort
+        }
+    }
   }
 }
