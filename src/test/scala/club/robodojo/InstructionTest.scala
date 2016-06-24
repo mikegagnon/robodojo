@@ -137,6 +137,22 @@ object InstructionTest extends TestSuite {
 
     // TODO: simplify
     // TODO: test animation
+    // TODO: Tests:
+    //    Dest params:
+    //      registers (in bounds, out of bounds)
+    //      #active
+    //      %active
+    //    Source params:
+    //      IntegerParam
+    //      #active
+    //      %active
+    //      $banks
+    //      %banks
+    //      $instrset
+    //      %instrset
+    //      $mobile
+    //      %mobile
+    //      $fields
     "SetInstruction.execute"-{
 
       // Execute set #1, 5
