@@ -34,7 +34,7 @@ sealed abstract class Instruction {
 sealed trait Param
 
 sealed trait ReadableParam extends Param {
-  def read(bot: Bot): (Short, Option[Animation])
+  def read(bot: Bot): Short
 }
 
 sealed trait WritableParam extends Param {
@@ -46,11 +46,7 @@ sealed trait WritableParam extends Param {
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
 sealed trait KeywordParam extends Param 
 
-sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
-  // TODO: do we really need config?
-  // TODO: drop the animation
-  def read(bot: Bot): (Short, Option[Animation])
-}
+sealed trait ReadableKeyword extends KeywordParam with ReadableParam
 
 // TODO: implement
 sealed trait WriteableKeyword extends KeywordParam with WritableParam {
@@ -61,14 +57,13 @@ sealed trait ReadableFromBot extends ReadableKeyword {
 
   val local: Boolean
 
-  def read(bot: Bot): (Short, Option[Animation]) =
+  def read(bot: Bot): Short =
     if (local) {
-      (readFromBot(bot), None)
+      readFromBot(bot)
     } else {
-      val result: Short = bot.getRemote
+      bot.getRemote
           .map{ remoteBot => readFromBot(remoteBot) }
           .getOrElse(0)
-      (result, None)
     }
 
   def readFromBot(bot: Bot): Short
@@ -108,16 +103,14 @@ case class MobileKeyword(local: Boolean) extends ReadableFromBot {
 }
 
 case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
-
-  def read(bot: Bot): (Short, Option[Animation]) =
-    (config.sim.numRows.toShort, None)
+  def read(bot: Bot): Short = config.sim.numRows.toShort
 }
 
 /* End KeywordParam values **********************************************************************/
 
 // TODO: test
 final case class IntegerParam(value: Short) extends ReadableParam {
-  def read(bot: Bot): (Short, Option[Animation]) = (value, None)
+  def read(bot: Bot): Short = value
 }
 
 // TODO: change name to Register?
@@ -130,7 +123,7 @@ final case class Register(registerNum: Int)(implicit config: Config)
     throw new IllegalArgumentException("Register num out of range: " + registerNum)
   }
 
-  def read(bot: Bot) = (bot.registers(registerNum), None)
+  def read(bot: Bot) = bot.registers(registerNum)
 
   def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation] = {
     bot.registers(registerNum) = value
@@ -374,7 +367,7 @@ case class SetInstruction(
   // TODO: how to handle side effects of set?
   def execute(bot: Bot): Option[Animation] = {
 
-    val (sourceValue, animationRead) = source.read(bot)
+    val sourceValue = source.read(bot)
     val animationWrite = destination.write(bot, sourceValue)
 
     None
