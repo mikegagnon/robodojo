@@ -69,6 +69,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   // TODO: should be short?
   var registers = new ArrayBuffer[Short](config.sim.maxNumVariables)
 
+  /*
   // TODO: implement
   def getRemote(): Option[Bot] = None 
 
@@ -100,6 +101,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
     return animation
   }
+  */
 
   // TESTED
   def cycle(): Option[Animation] = {
