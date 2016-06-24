@@ -136,24 +136,7 @@ object InstructionTest extends TestSuite {
 
     }
 
-    // TODO: simplify
     // TODO: test animation
-    // TODO: Tests:
-    //    Dest params:
-    //      registers (in bounds, out of bounds)
-    //      #active
-    //      %active
-    //    Source params:
-    //      IntegerParam
-    //      #active
-    //      %active
-    //      $banks
-    //      %banks
-    //      $instrset
-    //      %instrset
-    //      $mobile
-    //      %mobile
-    //      $fields
     "SetInstruction.execute"-{
 
       "destination params"-{
@@ -229,6 +212,59 @@ object InstructionTest extends TestSuite {
         testSourceParam(BanksKeyword(false), 0) {
           (bot1, _) => bot1.direction = Direction.Left
         }
+
+        // $InstrSet basic
+        testSourceParam(InstrSetKeyword(true), 0) { (bot1, _) =>
+          bot1.instructionSet = InstructionSet.Basic
+        }
+
+        // $InstrSet extended
+        testSourceParam(InstrSetKeyword(true), 1) { (bot1, _) =>
+          bot1.instructionSet = InstructionSet.Extended
+        }
+
+        // %InstrSet with remote basic
+        testSourceParam(InstrSetKeyword(false), 0) { (_, bot2) =>
+          bot2.instructionSet = InstructionSet.Basic
+        }
+
+        // %InstrSet with remote extended
+        testSourceParam(InstrSetKeyword(false), 1) { (_, bot2) =>
+          bot2.instructionSet = InstructionSet.Extended
+        }
+
+        // %InstrSet without remote
+        testSourceParam(InstrSetKeyword(false), 0) { (bot1, _) =>
+          bot1.direction = Direction.Left
+        }
+
+        // $Mobile true
+        testSourceParam(MobileKeyword(true), 1) { (bot1, _) =>
+          bot1.mobile = true
+        }
+
+        // $Mobile false
+        testSourceParam(MobileKeyword(true), 0) { (bot1, _) =>
+          bot1.mobile = false
+        }
+
+        // %Mobile remote true
+        testSourceParam(MobileKeyword(false), 1) { (_, bot2) =>
+          bot2.mobile = true
+        }
+
+        // %Mobile remote false
+        testSourceParam(MobileKeyword(false), 0) { (_, bot2) =>
+          bot2.mobile = false
+        }
+
+        // %Mobile without remote
+        testSourceParam(MobileKeyword(false), 0) { (bot1, _) =>
+          bot1.direction = Direction.Left
+        }
+
+        // $Fields
+        testSourceParam(FieldsKeyword(), config.sim.numRows.toShorts) { (_, _) => }
 
       }
     }
