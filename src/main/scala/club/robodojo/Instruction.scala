@@ -44,6 +44,12 @@ object KeywordParam {
     "$mobile",
     "%mobile",
     "$fields")
+
+  // TODO: test
+  def getRemote(bot: Bot)(implicit config: Config): Option[Bot] = {
+    val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+    bot.board.matrix(row)(col)
+  }
 }
 
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
@@ -60,14 +66,33 @@ sealed trait WriteableKeyword extends KeywordParam with WritableParam {
   def write(bot: Bot, value: Short): Option[Animation] = None
 }
 
-case class ActiveKeyword(local: Boolean) extends WriteableKeyword with ReadableKeyword {
-  override def read(bot: Bot): (Short, Option[Animation]) = {
+// TODO: TEST
+case class ActiveKeyword(local: Boolean)(implicit config: Config) extends WriteableKeyword
+    with ReadableKeyword {
+
+  override def read(bot: Bot): (Short, Option[Animation]) =
     if (local) {
       (bot.active, None)
     } else {
-      (0, None)
+      val active: Short =
+        KeywordParam
+          .getRemote(bot)
+          .map{ _.active }
+          .getOrElse(0)
+      (active, None)
     }
-  }
+
+  // TODO: animate
+  override def write(bot: Bot, value: Short): Option[Animation] =
+    if (local) {
+      bot.active = value
+      None
+    } else {
+      KeywordParam
+        .getRemote(bot)
+        .foreach { _.active = value}
+      None
+    }
 }
 
 case class BanksKeyword(local: Boolean) extends ReadableKeyword
