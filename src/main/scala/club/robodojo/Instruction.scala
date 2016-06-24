@@ -38,7 +38,7 @@ sealed trait ReadableParam extends Param {
 }
 
 sealed trait WritableParam extends Param {
-  def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation]
+  def write(bot: Bot, value: Short): Option[Animation]
 }
 
 /* Begin KeywordParam values **********************************************************************/
@@ -75,7 +75,7 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
   def readFromBot(bot: Bot): Short = bot.active
 
   // TODO: animate
-  override def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation] =
+  override def write(bot: Bot, value: Short): Option[Animation] =
     if (local) {
       bot.active = value
       None
@@ -117,7 +117,7 @@ final case class Register(registerNum: Int)(implicit config: Config)
 
   def read(bot: Bot) = bot.registers(registerNum)
 
-  def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation] = {
+  def write(bot: Bot, value: Short): Option[Animation] = {
     bot.registers(registerNum) = value
     return None
   }
