@@ -102,7 +102,6 @@ case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
 
 /* End KeywordParam values **********************************************************************/
 
-// TODO: test
 final case class IntegerParam(value: Short) extends ReadableParam {
   def read(bot: Bot): Short = value
 }
