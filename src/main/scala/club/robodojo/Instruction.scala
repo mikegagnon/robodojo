@@ -14,33 +14,76 @@ object InstructionSet {
 }
 
 sealed abstract class Instruction {
-
   val instructionSet: InstructionSet.EnumVal
   val requiredCycles: Int
-
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
 }
 
-object Constant {
-  sealed trait EnumVal
-  case object Banks extends EnumVal
-  case object Mobile extends EnumVal
-  case object InstrSet extends EnumVal
-  case object Fields extends EnumVal
+/* Begin param values *****************************************************************************/
+
+sealed trait Param
+
+sealed trait ReadableParam extends Param {
+  def read(bot: Bot): (Short, Option[Animation])
 }
 
-object RemoteValue {
-  sealed trait EnumVal
-  sealed trait Writable
-  case object Active extends EnumVal with Writable
-  case object Banks extends EnumVal
-  case object InstrSet extends EnumVal
-  case object Mobile extends EnumVal
+sealed trait WritableParam extends Param {
+  def write(bot: Bot, value: Short): Option[Animation]
 }
 
-case class ActiveVariable()
+/* Begin KeywordParam values **********************************************************************/
+
+object KeywordParam {
+  val validKeywords = Set(
+    "#active",
+    "%active",
+    "$banks",
+    "%banks",
+    "$instrset",
+    "%instrset",
+    "$mobile",
+    "%mobile",
+    "$fields")
+}
+
+// Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
+// Keyword should contain prefixes. So, keyword should be "#Active" not "Active"
+sealed abstract class KeywordParam extends Param {
+
+  val keyword: String
+
+  if (!KeywordParam.validKeywords.contains(keyword)) {
+    throw new IllegalArgumentException("Bad keyword: " + keyword)
+  }
+
+  val localWritable: Boolean = keyword(0) == '#'
+  val remoteWritable: Boolean = keyword(0) == '%'
+
+  val localReadable: Boolean = keyword(0) == '#' || keyword(0) == '$'
+  val remoteReadable: Boolean = keyword(0) == '%'
+}
+
+// TODO: implement
+sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
+  def read(bot: Bot): (Short, Option[Animation]) = (0, None)
+}
+
+// TODO: implement
+sealed trait WriteableKeyword extends KeywordParam with WritableParam {
+  def write(bot: Bot, value: Short): Option[Animation] = None
+}
+
+case class ActiveKeyword(keyword: String) extends WriteableKeyword with ReadableKeyword
+case class BanksKeyword(keyword: String) extends ReadableKeyword
+case class InstrSetKeyword(keyword: String) extends ReadableKeyword
+case class MobileKeyword(keyword: String) extends ReadableKeyword
+case class FieldsKeyword(keyword: String) extends ReadableKeyword
+
+/* End KeywordParam values **********************************************************************/
 
 // TODO: short?
+// TODO: where to put this?
+/*
 object Param {
   def boolToInt(bool: Boolean): Int =
     bool match {
@@ -48,78 +91,37 @@ object Param {
       case false => 0
     }
 }
+*/
 
 
 // TODO: test
-sealed trait Param
-sealed trait ParamValue extends Param { // Like Param, but without Label {
 
-  // TODO: should be short?
-  def getValue(bot: Bot): Int
-}
-
-sealed trait SettableParamValue extends ParamValue {
-
-  // TODO: should be short?
-  def setValue(bot: Bot, value: Int): Unit
-}
-
-// TODO: replace more ints with Short?
-// TODO: is Integer really needed?
-final case class IntegerValue(value: Short) extends ParamValue {
-  def getValue(bot: Bot): Int = value
-}
-
-// TODO: should Label be under Param?
-// TODO: move above Integer
-final case class Label(value: String) extends Param
-
-// TODO: implement
-final case class Constant(value: Constant.EnumVal) extends ParamValue {
-  def getValue(bot: Bot): Int = 1
-}
-
-// TODO: implement
-// TODO: setable?
-final case class Remote(value: RemoteValue.EnumVal) extends ParamValue {
-    def getValue(bot: Bot): Int = 0
+final case class IntegerParam(value: Short) extends ReadableParam {
+  def read(bot: Bot): (Short, Option[Animation]) = (value, None)
 }
 
 // TODO: change name to Register?
 // TODO: change Int to Short?
 // TODO: Either[Int, ActiveVariable] is too narrow?
-final case class Variable(variable: Either[Int, ActiveVariable])(implicit config: Config)
-    extends SettableParamValue {
+final case class Register(registerNum: Int)(implicit config: Config)
+    extends ReadableParam with WritableParam {
 
-  variable match {
-    // TODO: change name to maxNumRegisters?
-    case Left(v) => if (v < 0 || v >= config.sim.maxNumVariables) {
-      throw new IllegalArgumentException("variable value out of range: " + v)
-    }
-    case _ => ()
+  if (registerNum < 0 || registerNum >= config.sim.maxNumVariables) {
+    throw new IllegalArgumentException("Register num out of range: " + registerNum)
   }
 
-  // TODO: register numbers go from #1 to #20. Compiler does translation from #N to register(N-1)
-  def getValue(bot: Bot): Int =
-    variable match {
-      case Left(registerNum) => bot.registers(registerNum)
-      //TODO: implement
-      case Right(ActiveVariable()) => Param.boolToInt(bot.active)
-    }
+  def read(bot: Bot) = (bot.registers(registerNum), None)
 
-  // TODO: how to animate bot going inactive or active?
-  def setValue(bot: Bot, value: Int): Unit =
-    variable match {
-      case Left(registerNum) => bot.registers(registerNum) = value
-      //TODO: implement
-      case Right(ActiveVariable()) => if (value <= 0) {
-        bot.active = false
-      } else {
-        bot.active = true
-      }
-    }
+  def write(bot: Bot, value: Short): Option[Animation] = {
+    bot.registers(registerNum) = value
+    return None
+  }
 
 }
+
+/* End param values *******************************************************************************/
+
+/* Begin instructions *****************************************************************************/
 
 
 // TODO: move appropriate functions into objects
@@ -303,7 +305,7 @@ case class CreateInstruction(
 
         val emptyProgram = Program.emptyProgram(numBanks)
 
-        val active = false
+        val active: Short = 0
 
         val newBot = Bot(
           bot.board,
@@ -331,6 +333,7 @@ case class CreateInstruction(
   }
 }
 
+/*
 case class SetInstruction(
   destination: SettableParamValue,
   source: ParamValue)(implicit val config: Config) extends Instruction {
@@ -357,4 +360,5 @@ case class SetInstruction(
 
     None
   }
-}
+
+}*/

@@ -58,7 +58,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
 
   val instructionSet = InstructionSet.Extended
   val mobile = true
-  val active = true
+  val active: Short = 1
 
   val bot1Program: Program =
     Compiler.compile("bank foo\ncreate 1,1,1\nturn 0", PlayerColor.Blue).right.get

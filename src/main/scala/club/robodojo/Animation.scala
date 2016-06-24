@@ -117,6 +117,10 @@ case class TurnAnimationFinish(
 case class InactiveAnimation(
   botId: Long) extends Animation
 
+// TODO: implement
+case class ActivateAnimation(
+  botId: Long) extends Animation
+
 case class FatalErrorAnimation(
   botId: Long,
   playerColor: PlayerColor.EnumVal,
