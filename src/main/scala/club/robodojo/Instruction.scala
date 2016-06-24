@@ -85,7 +85,7 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
 }
 
 case class BanksKeyword(local: Boolean)(implicit config: Config) extends ReadableFromBot {
-  def readFromBot(bot: Bot): Short = bot.program.banks.size.toShort 
+  def readFromBot(bot: Bot): Short = bot.program.banks.size.toShort
 }
 
 case class InstrSetKeyword(local: Boolean) extends ReadableFromBot {
