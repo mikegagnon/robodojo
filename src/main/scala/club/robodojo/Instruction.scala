@@ -81,21 +81,7 @@ case class FieldsKeyword(keyword: String) extends ReadableKeyword
 
 /* End KeywordParam values **********************************************************************/
 
-// TODO: short?
-// TODO: where to put this?
-/*
-object Param {
-  def boolToInt(bool: Boolean): Int =
-    bool match {
-      case true => 1
-      case false => 0
-    }
-}
-*/
-
-
 // TODO: test
-
 final case class IntegerParam(value: Short) extends ReadableParam {
   def read(bot: Bot): (Short, Option[Animation]) = (value, None)
 }
