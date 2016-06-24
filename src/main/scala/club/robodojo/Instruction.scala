@@ -37,7 +37,6 @@ sealed trait ReadableParam extends Param {
   def read(bot: Bot): Short
 }
 
-// TODO: change to Writeable
 sealed trait WriteableParam extends Param {
   def write(bot: Bot, value: Short): Option[Animation]
 }
