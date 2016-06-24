@@ -511,8 +511,37 @@ object CompilerTest extends TestSuite {
 
         }
         "succeed"-{
-          testInstruction("set #1, 1",
-              Right(SetInstruction(RegisterParam(0), IntegerParam(1))))
+
+          // Test the destination param
+          testInstruction("Set #1, 1",
+            Right(SetInstruction(RegisterParam(0), IntegerParam(1))))
+          testInstruction("Set #active, 1",
+            Right(SetInstruction(ActiveKeyword(true), IntegerParam(1))))
+          testInstruction("Set %active, 5",
+            Right(SetInstruction(ActiveKeyword(false), IntegerParam(5))))
+
+          // Test the source param
+          testInstruction("set #1, #Active",
+            Right(SetInstruction(RegisterParam(0), ActiveKeyword(true))))
+          testInstruction("set #1, %Active",
+            Right(SetInstruction(RegisterParam(0), ActiveKeyword(false))))
+          testInstruction("set #1, $Banks",
+            Right(SetInstruction(RegisterParam(0), BanksKeyword(true))))
+          testInstruction("set #1, %Banks",
+            Right(SetInstruction(RegisterParam(0), BanksKeyword(false))))
+          testInstruction("set #1, %Banks",
+            Right(SetInstruction(RegisterParam(0), BanksKeyword(false))))
+          testInstruction("set #1, $InstrSet",
+            Right(SetInstruction(RegisterParam(0), InstrSetKeyword(true))))
+          testInstruction("set #1, %InstrSet",
+            Right(SetInstruction(RegisterParam(0), InstrSetKeyword(false))))
+          testInstruction("set #1, $Mobile",
+            Right(SetInstruction(RegisterParam(0), MobileKeyword(true))))
+          testInstruction("set #1, %Mobile",
+            Right(SetInstruction(RegisterParam(0), MobileKeyword(false))))
+          testInstruction("set #1, $Fields",
+            Right(SetInstruction(RegisterParam(0), FieldsKeyword())))
+
         }
       }
     }
