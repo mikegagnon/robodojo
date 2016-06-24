@@ -76,8 +76,13 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
   // TODO: animate
   override def write(bot: Bot, value: Short): Option[Animation] =
     if (local) {
+      val oldActive = bot.active
       bot.active = value
-      None
+      if (bot.active < 1 && oldActive >= 1) {
+        Some(DeactivateAnimation(bot.id))
+      } else {
+        None
+      }
     } else {
       bot.getRemote.foreach { _.active = value}
       None
@@ -357,8 +362,7 @@ case class SetInstruction(
   // TODO: how to handle side effects of set?
   def execute(bot: Bot): Option[Animation] = {
     val sourceValue = source.read(bot)
-    val animationWrite = destination.write(bot, sourceValue)
-    None
+    return destination.write(bot, sourceValue)
   }
 
 }

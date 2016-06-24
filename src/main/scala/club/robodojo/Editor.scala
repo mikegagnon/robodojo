@@ -123,8 +123,16 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   }
 
   def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
-    val row = Random.nextInt(config.sim.numRows)
-    val col = Random.nextInt(config.sim.numCols)
+
+    // TODO: cycle through row, col until you find an empty spot
+    var row = Random.nextInt(config.sim.numRows)
+    var col = Random.nextInt(config.sim.numCols)
+
+    while (board.matrix(row)(col).nonEmpty) {
+      row = Random.nextInt(config.sim.numRows)
+      col = Random.nextInt(config.sim.numCols)
+    }
+
     val dirNum = Random.nextInt(4)
     val direction = dirNum match {
       case 0 => Direction.Up

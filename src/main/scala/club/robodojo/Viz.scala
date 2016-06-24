@@ -447,7 +447,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case m: AnimationProgressSucceed => true
       case _: AnimationProgressFail => false
       case _: FatalErrorAnimation => false
-      case _ => throw new IllegalStateException("This code shouldn't be reachable")
+      case _ => {
+        println(futureAnimation)
+        throw new IllegalStateException("This code shouldn't be reachable")
+      }
     }
 
     val twinImage = twinBotImages(animation.botId)
