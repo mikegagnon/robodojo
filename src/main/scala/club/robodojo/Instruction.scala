@@ -34,7 +34,7 @@ sealed abstract class Instruction {
 sealed trait Param
 
 sealed trait ReadableParam extends Param {
-  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation])
+  def read(bot: Bot): (Short, Option[Animation])
 }
 
 sealed trait WritableParam extends Param {
@@ -48,7 +48,8 @@ sealed trait KeywordParam extends Param
 
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
   // TODO: do we really need config?
-  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation])
+  // TODO: drop the animation
+  def read(bot: Bot): (Short, Option[Animation])
 }
 
 // TODO: implement
@@ -60,7 +61,7 @@ sealed trait ReadableFromBot extends ReadableKeyword {
 
   val local: Boolean
 
-  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation]) =
+  def read(bot: Bot): (Short, Option[Animation]) =
     if (local) {
       (readFromBot(bot), None)
     } else {
@@ -108,7 +109,7 @@ case class MobileKeyword(local: Boolean) extends ReadableFromBot {
 
 case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
 
-  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation]) =
+  def read(bot: Bot): (Short, Option[Animation]) =
     (config.sim.numRows.toShort, None)
 }
 
@@ -116,7 +117,7 @@ case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
 
 // TODO: test
 final case class IntegerParam(value: Short) extends ReadableParam {
-  def read(bot: Bot)(implicit config: Config): (Short, Option[Animation]) = (value, None)
+  def read(bot: Bot): (Short, Option[Animation]) = (value, None)
 }
 
 // TODO: change name to Register?
@@ -129,7 +130,7 @@ final case class Register(registerNum: Int)(implicit config: Config)
     throw new IllegalArgumentException("Register num out of range: " + registerNum)
   }
 
-  def read(bot: Bot)(implicit config: Config) = (bot.registers(registerNum), None)
+  def read(bot: Bot) = (bot.registers(registerNum), None)
 
   def write(bot: Bot, value: Short)(implicit config: Config): Option[Animation] = {
     bot.registers(registerNum) = value
