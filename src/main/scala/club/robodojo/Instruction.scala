@@ -333,10 +333,9 @@ case class CreateInstruction(
   }
 }
 
-/*
 case class SetInstruction(
-  destination: SettableParamValue,
-  source: ParamValue)(implicit val config: Config) extends Instruction {
+  destination: WritableParam,
+  source: ReadableParam)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
   val requiredCycles = config.sim.cycleCount.durSet
@@ -355,10 +354,10 @@ case class SetInstruction(
   // TODO: how to handle side effects of set?
   def execute(bot: Bot): Option[Animation] = {
 
-    val sourceValue = source.getValue(bot)
-    destination.setValue(bot, sourceValue)
+    val (sourceValue, animationRead) = source.read(bot)
+    val animationWrite = destination.write(bot, sourceValue)
 
     None
   }
 
-}*/
+}
