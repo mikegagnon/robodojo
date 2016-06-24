@@ -158,9 +158,10 @@ object InstructionTest extends TestSuite {
       "destination params"-{
 
         def testDestinationParam(destination: WriteableParam, source: Short)(test: (Bot => Unit)): Unit = {
-          val instruction = SetInstruction(RegisterParam(0), IntegerParam(source))
+          val instruction = SetInstruction(destination, IntegerParam(source))
           val board = new Board()
           val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+          board.addBot(bot)
           instruction.execute(bot)
           test(bot)
         }
