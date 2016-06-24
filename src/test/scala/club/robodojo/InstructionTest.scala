@@ -1,6 +1,7 @@
 package club.robodojo
 
 import utest._
+import scala.collection.mutable.ArrayBuffer
 
 object InstructionTest extends TestSuite {
 
@@ -200,13 +201,20 @@ object InstructionTest extends TestSuite {
         testSourceParam(ActiveKeyword(true), 1) { (_, _) => () }
 
         // %active with remote bot
-        testSourceParam(ActiveKeyword(false), 5) {
-          (bot1, bot2) => bot2.active = 5
+        testSourceParam(ActiveKeyword(false), 5) { (bot1, bot2) =>
+          bot2.active = 5
         }
 
         // %active without remote bot
         testSourceParam(ActiveKeyword(false), 0) {
           (bot1, bot2) => bot1.direction = Direction.Left
+        }
+
+        // $banks
+        testSourceParam(BanksKeyword(true), 2) { (bot1, _) =>
+            bot1.program.banks = Map[Int, Bank](
+              0 -> Bank(ArrayBuffer()),
+              1 -> Bank(ArrayBuffer()))
         }
 
       }
