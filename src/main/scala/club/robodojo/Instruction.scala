@@ -46,7 +46,6 @@ sealed trait WritableParam extends Param {
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
 sealed trait KeywordParam extends Param 
 
-// TODO: implement
 sealed trait ReadableKeyword extends KeywordParam with ReadableParam {
   // TODO: do we really need config?
   def read(bot: Bot)(implicit config: Config): (Short, Option[Animation])
