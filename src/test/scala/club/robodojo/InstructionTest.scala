@@ -160,10 +160,12 @@ object InstructionTest extends TestSuite {
         def testDestinationParam(destination: WriteableParam, source: Short)(test: (Bot => Unit)): Unit = {
           val instruction = SetInstruction(destination, IntegerParam(source))
           val board = new Board()
-          val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
-          board.addBot(bot)
-          instruction.execute(bot)
-          test(bot)
+          val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+          board.addBot(bot1)
+          val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+          board.addBot(bot2)
+          instruction.execute(bot1)
+          test(bot1)
         }
 
         // destination register
@@ -172,7 +174,8 @@ object InstructionTest extends TestSuite {
         // destination #active
         testDestinationParam(ActiveKeyword(true), 5) { _.active ==> 5 }
 
-
+        // destination %active
+        testDestinationParam(ActiveKeyword(false), 5) { _.board.matrix(0)(1).get.active ==> 5 }
       }
       "source params"-{
 
