@@ -40,6 +40,7 @@ object ErrorCode {
   case object BadMobileParam extends CompileTimeError
 
   case object InvalidParameter extends RunTimeError
+  case object DataHunger extends RunTimeError
 }
 
 // TODO: underline the offensive text in the program text?

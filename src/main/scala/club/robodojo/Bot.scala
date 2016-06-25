@@ -91,8 +91,22 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal) {
 
       return animation
     } else {
-      // TODO: tapout bot?
-      return None
+
+      // TODO: test
+
+      val errorCode = ErrorCode.DataHunger
+
+      val message = s"<p><span class='display-failure'>Error in ${playerColor}'s bot' " +
+        s"located at row ${row + 1}, column ${col + 1}</span>: " +
+        s"The ${playerColor} bot has tapped out because it attempted to " +
+        s"execute an empty bank (bank ${bankNum + 1}). The bot has thus tapped out, due to " +
+        "\"<tt>Data Hunger</tt>.\" "
+
+      val errorMessage = ErrorMessage(errorCode, 0, message)
+
+      board.removeBot(this)
+
+      return Some(FatalErrorAnimation(id, playerColor, row, col, errorMessage))
     }
   }
 
