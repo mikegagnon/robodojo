@@ -651,11 +651,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     botImages(botId).addChild(line)
 
-    botVisualFeatures(botId) = BotVisualFeatures(Some(line))
-
+    botVisualFeatures(botId).inactiveShape = Some(line)
   }
 
   def drawActive(botId: Long): Unit = {
+
 
   }
 
