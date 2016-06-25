@@ -252,11 +252,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     stage.addChild(birthContainer)
     stage.addChild(container)
 
+
+    botVisualFeatures(botId) = BotVisualFeatures(None)
+
     if (active < 1) {
       drawInactive(botId)
     }
-
-    botVisualFeatures(botId) = BotVisualFeatures(active < 1)
   }
 
   /** End initialization functions ****************************************************************/
@@ -649,6 +650,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     line.graphics.endStroke()
 
     botImages(botId).addChild(line)
+
+    botVisualFeatures(botId) = BotVisualFeatures(Some(line))
+
   }
 
   def drawActive(botId: Long): Unit = {
@@ -662,11 +666,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val features: BotVisualFeatures = botVisualFeatures(botId)
 
     // If the deactivate visualization has alrady been drawn
-    if (features.inactive) {
+    if (features.inactiveShape.nonEmpty) {
       throw new IllegalStateException("Bot is already drawn as deactivated")
     }
-
-    features.inactive = true
 
     drawInactive(botId)
   }
@@ -677,11 +679,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val features: BotVisualFeatures = botVisualFeatures(botId)
 
-    if (!features.inactive) {
+    if (features.inactiveShape.isEmpty) {
       throw new IllegalStateException("Bot os already drawn as activated")
     }
-
-    features.inactive = false
 
     drawActive(botId)
   }
