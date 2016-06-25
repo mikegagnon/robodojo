@@ -354,9 +354,7 @@ case class SetInstruction(
     } else if (cycleNum > requiredCycles) {
       throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
-      val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-      return Some(MoveAnimationProgress(bot.id, cycleNum, requiredCycles, bot.row, bot.col, destRow, destCol,
-        bot.direction))
+      return None
     }
 
   // TODO: how to handle side effects of set?
