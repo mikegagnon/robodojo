@@ -104,7 +104,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
       return animation
     } else {
-      // TODO: tapout bot?
+      // TODO: tapout bot: http://robocom.rrobek.de/help/glossary.html#datahunger
       return None
     }
   }

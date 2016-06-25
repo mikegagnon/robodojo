@@ -383,6 +383,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick
     val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
+    // TODO: sort by botId
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
         animations(cycleNum).values
@@ -442,6 +443,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // This is where we look into the future to see if the move is successful or not
     val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
 
+    // TODO: bugfix
     // futureAnimation == the animation for when this bot finishes executing its create instruction
     val futureAnimation = animations(endCycleNum)(animation.botId)
 
@@ -659,6 +661,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val line = botVisualFeatures(botId).inactiveShape.get
 
     botImages(botId).removeChild(line)
+    botVisualFeatures(botId).inactiveShape = None
   }
 
   def animateDeactivate(deactivateAnimation: DeactivateAnimation): Unit = {
@@ -682,7 +685,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val features: BotVisualFeatures = botVisualFeatures(botId)
 
     if (features.inactiveShape.isEmpty) {
-      throw new IllegalStateException("Bot os already drawn as activated")
+      throw new IllegalStateException("Bot is already drawn as activated")
     }
 
     drawActive(botId)
