@@ -67,6 +67,21 @@ sealed trait ReadableFromBot extends ReadableKeyword {
   def readFromBot(bot: Bot): Short
 }
 
+object ActiveKeyword {
+
+  def writeTo(bot: Bot, value: Short, writerBotId: Long, recipientBotId: Long): Option[Animation] = {
+    val oldActive = bot.active
+    bot.active = value
+    if (bot.active < 1 && oldActive >= 1) {
+      Some(DeactivateAnimation(writerBotId, recipientBotId))
+    } else if (bot.active >= 1 && oldActive < 1) {
+      Some(ActivateAnimation(writerBotId, recipientBotId))
+    } else {
+      None
+    }
+  }
+}
+
 // TODO: TEST
 case class ActiveKeyword(local: Boolean)(implicit config: Config) extends WriteableKeyword
     with ReadableFromBot {
@@ -76,28 +91,12 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
   // TODO: factor out common code
   override def write(bot: Bot, value: Short): Option[Animation] =
     if (local) {
-      val oldActive = bot.active
-      bot.active = value
-      if (bot.active < 1 && oldActive >= 1) {
-        Some(DeactivateAnimation(bot.id, bot.id))
-      } else if (bot.active >= 1 && oldActive < 1) {
-        Some(ActivateAnimation(bot.id, bot.id))
-      } else {
-        None
-      }
+      ActiveKeyword.writeTo(bot, value, bot.id, bot.id)
     } else {
       bot
         .getRemote
         .flatMap { remoteBot =>
-          val oldActive = remoteBot.active
-          remoteBot.active = value
-          if (remoteBot.active < 1 && oldActive >= 1) {
-            Some(DeactivateAnimation(bot.id, remoteBot.id))
-          } else if (remoteBot.active >= 1 && oldActive < 1) {
-            Some(ActivateAnimation(bot.id, remoteBot.id))
-          } else {
-            None
-          }
+          ActiveKeyword.writeTo(remoteBot, value, bot.id, remoteBot.id)
         }
     }
 }
