@@ -382,7 +382,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // Returns a collection containing every mandatory animation that was produced over the last
   // N cycles, where N == numCyclesThisTick
   def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
-    val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick
+    val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick + 1
     val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
     // TODO: iy botId
@@ -396,18 +396,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
       }
 
-
-
     val mandatoryAnimations =
       allAnimations.filter { animation: Animation =>
         animation.mandatory
       }
-
-    println("-----")
-    println(botVisualFeatures)
-    println("")
-    println(mandatoryAnimations)
-    println("")
 
     return mandatoryAnimations
   }
@@ -669,6 +661,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImages(botId).addChild(line)
 
     botVisualFeatures(botId).inactiveShape = Some(line)
+
   }
 
   def drawActive(botId: Long): Unit = {
@@ -677,6 +670,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     botImages(botId).removeChild(line)
     botVisualFeatures(botId).inactiveShape = None
+
   }
 
   def animateDeactivate(deactivateAnimation: DeactivateAnimation): Unit = {
