@@ -124,7 +124,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
 
-    // TODO: cycle through row, col until you find an empty spot
+    // Cycle through row, col until you find an empty spot
     var row = Random.nextInt(config.sim.numRows)
     var col = Random.nextInt(config.sim.numCols)
 
