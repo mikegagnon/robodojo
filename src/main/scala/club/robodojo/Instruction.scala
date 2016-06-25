@@ -79,9 +79,9 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
       val oldActive = bot.active
       bot.active = value
       if (bot.active < 1 && oldActive >= 1) {
-        Some(DeactivateAnimation(bot.id))
+        Some(DeactivateAnimation(bot.id, bot.id))
       } else if (bot.active >= 1 && oldActive < 1) {
-        Some(ActivateAnimation(bot.id))
+        Some(ActivateAnimation(bot.id, bot.id))
       } else {
         None
       }
@@ -92,9 +92,9 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
           val oldActive = remoteBot.active
           remoteBot.active = value
           if (remoteBot.active < 1 && oldActive >= 1) {
-            Some(DeactivateAnimation(remoteBot.id))
+            Some(DeactivateAnimation(bot.id, remoteBot.id))
           } else if (remoteBot.active >= 1 && oldActive < 1) {
-            Some(ActivateAnimation(remoteBot.id))
+            Some(ActivateAnimation(bot.id, remoteBot.id))
           } else {
             None
           }

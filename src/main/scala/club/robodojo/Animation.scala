@@ -11,6 +11,7 @@ case class BotVisualFeatures(
 // The Animation classes provide just information to Viz so that Viz can animate the instruction
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.
 sealed trait Animation {
+  // The id of the bot that is producing this animation.
   val botId: Long
 
   // Recall the way animation works: for every tick, Viz executes zero or more cycles (see
@@ -116,12 +117,16 @@ case class TurnAnimationFinish(
 }
 
 case class DeactivateAnimation(
-  botId: Long) extends Animation {
+  botId: Long,
+  // The id of the bot that is being deactivated
+  recipientBotId: Long) extends Animation {
   override val mandatory = true
 }
 
 case class ActivateAnimation(
-  botId: Long) extends Animation {
+  botId: Long,
+  // The id of the bot that is being activated
+  recipientBotId: Long) extends Animation {
   override val mandatory = true
 }
 
