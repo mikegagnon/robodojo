@@ -26,18 +26,15 @@ object BotTest extends TestSuite {
         bot
       }
 
-      "empty bank"-{
+      "empty bank leads to tapout"-{
         val bot = getBot(0, 0, Direction.Up)
 
         bot.board.matrix(0)(0) ==> Some(bot)
         bot.direction ==> Direction.Up
 
         bot.cycle()
-        bot.cycle()
-        bot.cycle()
         
-        bot.board.matrix(0)(0) ==> Some(bot)
-        bot.direction ==> Direction.Up
+        bot.board.matrix(0)(0) ==> None
       }
 
       "one move instruction"-{
