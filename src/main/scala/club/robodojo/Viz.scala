@@ -56,7 +56,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   // See documentation for BotVisualFeatures in Animation.scala
   // botVisualFeatures(botId) == the visual features for that bot
-  val botVisualFeatures = HashMap[Long, BotVisualFeatures]()
+  var botVisualFeatures = HashMap[Long, BotVisualFeatures]()
 
   // Sometimes Viz draws a shape on the board that must be visible for at least one tick.
   // shapesToBeRemovedNextTick contains the shapes that should be removed after the next tick.
@@ -286,6 +286,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     stage.removeAllChildren()
+
+    botVisualFeatures = HashMap[Long, BotVisualFeatures]()
 
     addBackground()
     addGrid()
