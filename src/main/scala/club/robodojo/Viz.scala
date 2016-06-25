@@ -383,16 +383,29 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick
     val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
-    // TODO: sort by botId
+    // TODO: iy botId
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
-        animations(cycleNum).values
+
+        animations(cycleNum)
+          .toList
+          .sortBy { _._1 }
+          .map { _._2 }
+
       }
+
+
 
     val mandatoryAnimations =
       allAnimations.filter { animation: Animation =>
         animation.mandatory
       }
+
+    println("-----")
+    println(botVisualFeatures)
+    println("")
+    println(mandatoryAnimations)
+    println("")
 
     return mandatoryAnimations
   }
