@@ -252,7 +252,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     stage.addChild(birthContainer)
     stage.addChild(container)
 
-
     botVisualFeatures(botId) = BotVisualFeatures(None)
 
     if (active < 1) {
@@ -389,6 +388,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
 
+        // Sort animations by botId
         animations(cycleNum)
           .toList
           .sortBy { _._1 }
