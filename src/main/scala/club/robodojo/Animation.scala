@@ -119,9 +119,10 @@ case class DeactivateAnimation(
   override val mandatory = true
 }
 
-// TODO: implement
 case class ActivateAnimation(
-  botId: Long) extends Animation
+  botId: Long) extends Animation {
+  override val mandatory = true
+}
 
 case class FatalErrorAnimation(
   botId: Long,

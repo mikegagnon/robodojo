@@ -427,6 +427,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case turnAnimation: TurnAnimationProgress => animateTurnProgress(turnAnimation)
         case turnAnimation: TurnAnimationFinish => animateTurnFinish(turnAnimation)
         case deactivateAnimation: DeactivateAnimation => animateDeactivate(deactivateAnimation)
+        case activateAnimation: ActivateAnimation => animateActivate(activateAnimation)
         case fatalError: FatalErrorAnimation => animateFatalError(fatalError)
       }
     }
@@ -650,6 +651,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     botImages(botId).addChild(line)
   }
 
+  def drawActive(botId: Long): Unit = {
+
+  }
+
   def animateDeactivate(deactivateAnimation: DeactivateAnimation): Unit = {
 
     val botId = deactivateAnimation.botId
@@ -664,6 +669,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     features.inactive = true
 
     drawInactive(botId)
+  }
+
+  def animateActivate(activateAnimation: ActivateAnimation): Unit = {
+
+    val botId = activateAnimation.botId
+
+    val features: BotVisualFeatures = botVisualFeatures(botId)
+
+    if (!features.inactive) {
+      throw new IllegalStateException("Bot os already drawn as activated")
+    }
+
+    features.inactive = false
+
+    drawActive(botId)
   }
 
   def animateFatalError(fatalError: FatalErrorAnimation): Unit = {
