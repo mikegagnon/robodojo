@@ -656,7 +656,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def drawActive(botId: Long): Unit = {
 
+    val line = botVisualFeatures(botId).inactiveShape.get
 
+    botImages(botId).removeChild(line)
   }
 
   def animateDeactivate(deactivateAnimation: DeactivateAnimation): Unit = {

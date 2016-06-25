@@ -73,19 +73,32 @@ case class ActiveKeyword(local: Boolean)(implicit config: Config) extends Writea
 
   def readFromBot(bot: Bot): Short = bot.active
 
-  // TODO: animate
+  // TODO: factor out common code
   override def write(bot: Bot, value: Short): Option[Animation] =
     if (local) {
       val oldActive = bot.active
       bot.active = value
       if (bot.active < 1 && oldActive >= 1) {
         Some(DeactivateAnimation(bot.id))
+      } else if (bot.active >= 1 && oldActive < 1) {
+        Some(ActivateAnimation(bot.id))
       } else {
         None
       }
     } else {
-      bot.getRemote.foreach { _.active = value}
-      None
+      bot
+        .getRemote
+        .flatMap { remoteBot =>
+          val oldActive = remoteBot.active
+          remoteBot.active = value
+          if (remoteBot.active < 1 && oldActive >= 1) {
+            Some(DeactivateAnimation(remoteBot.id))
+          } else if (remoteBot.active >= 1 && oldActive < 1) {
+            Some(ActivateAnimation(remoteBot.id))
+          } else {
+            None
+          }
+        }
     }
 }
 
