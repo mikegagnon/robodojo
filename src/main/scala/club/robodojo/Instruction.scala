@@ -34,6 +34,8 @@ sealed abstract class Instruction {
 sealed trait Param
 
 sealed trait ReadableParam extends Param {
+  // local == true iff the read is local
+  def local: Boolean
   def read(bot: Bot): Short
 }
 
@@ -52,7 +54,6 @@ sealed trait WriteableKeyword extends KeywordParam with WriteableParam
 
 sealed trait ReadableFromBot extends ReadableKeyword {
 
-  // local == true iff the read is local
   val local: Boolean
 
   def read(bot: Bot): Short =
@@ -114,17 +115,21 @@ case class MobileKeyword(local: Boolean) extends ReadableFromBot {
 }
 
 case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
+  val local = false
   def read(bot: Bot): Short = config.sim.numRows.toShort
 }
 
 /* End KeywordParam values **********************************************************************/
 
 final case class IntegerParam(value: Short) extends ReadableParam {
+  val local = false
   def read(bot: Bot): Short = value
 }
 
 final case class RegisterParam(registerIndex: Int)(implicit config: Config)
     extends ReadableParam with WriteableParam {
+
+  val local = false
 
   if (registerIndex < 0 || registerIndex >= config.sim.maxNumVariables) {
     throw new IllegalArgumentException("Register num out of range: " + registerIndex)
