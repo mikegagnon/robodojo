@@ -40,6 +40,7 @@ sealed trait ReadableParam extends Param {
 }
 
 sealed trait WriteableParam extends Param {
+  def local: Boolean
   def write(bot: Bot, value: Short): Option[Animation]
 }
 
