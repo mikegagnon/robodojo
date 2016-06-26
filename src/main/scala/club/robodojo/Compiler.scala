@@ -108,6 +108,7 @@ object Compiler {
     s"must be of the form: <tt>${instructionName} ${instructionForm}</tt>, where ${paramTypes}. "
   }
 
+  // TODO: Test
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
@@ -152,6 +153,7 @@ object Compiler {
 
   /* Begin: reading parameters from a TokenLine ***************************************************/
 
+  // TODO: Test
   def getParam(
       instructionName: String,
       parameterIndex: Int,
@@ -192,6 +194,7 @@ object Compiler {
       }
 
   // TODO: test
+  // TODO: refactor after test
   def parseParams(
       instructionName: String,
       tl: TokenLine,
@@ -202,6 +205,7 @@ object Compiler {
         !foundCommas(paramTypes.length, tl)) {
       return Left(getErrorMalformedInstruction(instructionName, tl.lineNumber, paramTypes))
     } else {
+
       val paramsAndErrors: Seq[Either[ErrorMessage, Param]] =
         paramTypes
           .zipWithIndex
