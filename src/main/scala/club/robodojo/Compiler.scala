@@ -64,7 +64,6 @@ case object WriteableParamType extends ParamType {
 object Compiler {
 
   // TODO: move
-  // TODO: "wrong param type" isn't precisely what this error covers
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
