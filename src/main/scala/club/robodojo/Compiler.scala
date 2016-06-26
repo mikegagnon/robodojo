@@ -111,7 +111,6 @@ object Compiler {
     return ErrorMessage(errorCode, lineNumber, message)
   }
 
-
   def getParam(
       instructionName: String,
       parameterIndex: Int,
@@ -128,7 +127,12 @@ object Compiler {
             Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
         }
       // TODO:
-      case WriteableParamType => Right(getWriteable(token))
+      case WriteableParamType => try {
+          Right(getWriteable(token))
+        } catch {
+          case _: IllegalArgumentException =>
+            Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
+        }
     }
   }
 

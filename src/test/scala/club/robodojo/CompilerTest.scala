@@ -227,6 +227,7 @@ object CompilerTest extends TestSuite {
       result ==> ErrorMessage(ErrorCode.WrongParamType, 3, expectedMessage)
     }
 
+    // TODO: test
     "parseParams"-{
       "success"-{
         val result = parseParams(
