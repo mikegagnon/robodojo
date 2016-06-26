@@ -485,10 +485,12 @@ object Compiler {
 
       */
       // TODO: make instructionSet an int?
+      // NOTE: these casts are safe because getParam and parseParams ensure the parsms
+      // have the right type.
       val instruction = CreateInstruction(
-        instructionSet,
-        numBanks,
-        mobile,
+        instructionSet.asInstanceOf[ReadableParam],
+        numBanks.asInstanceOf[ReadableParam],
+        mobile.asInstanceOf[ReadableParam],
         tl.lineNumber,
         playerColor)
 

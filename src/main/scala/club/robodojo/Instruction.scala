@@ -20,6 +20,16 @@ object InstructionSet {
     val value: Short = 1
   }
 
+  def fromInt(value: Int): InstructionSet.EnumVal =
+    if (value == 0) {
+      InstructionSet.Basic
+    } else if (value == 1) {
+      InstructionSet.Extended
+    } else {
+      throw new IllegalArgumentException("Bad value: " + value)
+  }
+
+
 }
 
 sealed abstract class Instruction {
@@ -118,6 +128,18 @@ case class BanksKeyword(local: Boolean)(implicit config: Config) extends Readabl
 
 case class InstrSetKeyword(local: Boolean) extends ReadableFromBot {
   def readFromBot(bot: Bot): Short = bot.instructionSet.value
+}
+
+// TODO: is there a better place to put this?
+object Mobile {
+  def fromInt(value: Int): Boolean =
+    if (value == 0) {
+      false
+    } else if (value == 1) {
+      true
+    } else {
+      throw new IllegalArgumentException("Bad value")
+    }
 }
 
 case class MobileKeyword(local: Boolean) extends ReadableFromBot {
@@ -232,7 +254,9 @@ case class CreateInstruction(
     // then bot.playerColor == red and playerColor, here, == blue.
     playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
-  var requiredCycles: Int
+  val instructionSet = InstructionSet.Basic
+
+  var requiredCycles: Int = 0
 
   // TODO: will need to change to def if take ParamValue objects as params
   def calculateRequiredCycles(
@@ -253,8 +277,8 @@ case class CreateInstruction(
     val secondaryMobilityCost = if (mobileValue > 0) durCreate3a else 0
 
     val instructionSetCostBasic = childInstructionSetValue match {
-      case InstructionSet.Basic => durCreate4
-      case InstructionSet.Extended => 0
+      case InstructionSet.Basic.value => durCreate4
+      case InstructionSet.Extended.value => 0
     }
 
     val instructionSetCostExtended = childInstructionSetValue match {
@@ -275,8 +299,8 @@ case class CreateInstruction(
     return Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
-  def errorCheck(bot: Bot): Option[Animation] = {
-    if (numBanks <= 0 || numBanks > config.sim.maxBanks) {
+  def errorCheck(bot: Bot, numBanksValue: Int): Option[Animation] = {
+    if (numBanksValue <= 0 || numBanksValue > config.sim.maxBanks) {
 
       val errorCode = ErrorCode.InvalidParameter
       val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
@@ -299,7 +323,7 @@ case class CreateInstruction(
     if (cycleNum == 0) {
       val childInstructionSetValue: Int = childInstructionSet.read(bot)
       val numBanksValue: Int = numBanks.read(bot)
-      val mobileValue: Int = mobileValue.read(bot)
+      val mobileValue: Int = mobile.read(bot)
 
       requiredCycles = calculateRequiredCycles(childInstructionSetValue, numBanksValue, mobileValue)
     }
@@ -315,13 +339,14 @@ case class CreateInstruction(
 
   }
 
+  // TODO: prevent FAT hack
   def execute(bot: Bot): Option[Animation] = {
 
     val childInstructionSetValue: Int = childInstructionSet.read(bot)
     val numBanksValue: Int = numBanks.read(bot)
-    val mobileValue: Int = mobileValue.read(bot)
+    val mobileValue: Int = mobile.read(bot)
 
-    val error: Option[Animation] = errorCheck(bot)
+    val error: Option[Animation] = errorCheck(bot, numBanksValue)
 
     if (error.nonEmpty) {
       bot.board.removeBot(bot)
@@ -346,8 +371,9 @@ case class CreateInstruction(
           col,
           bot.direction,
           emptyProgram,
-          childInstructionSetValue,
-          mobileValue,
+          // TODO: is childInstructionSetValue safe?
+          InstructionSet.fromInt(childInstructionSetValue),
+          Mobile.fromInt(mobileValue),
           active)
 
         bot.board.addBot(newBot)
