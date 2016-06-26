@@ -62,7 +62,7 @@ object Compiler {
   def parseParams(
       instructionName: String,
       tl: TokenLine,
-      paramTypes: ParamType*)(implicit config: Config): Either[ErrorMessage, Seq[Param]] = {
+      paramTypes: ParamType*)(implicit config: Config): Either[ErrorMessage, Seq[Param]] =
 
     if (tl.tokens.length != paramTypes.length * 2) {
 
@@ -93,12 +93,8 @@ object Compiler {
           }
         }
 
-      Right(params)
+      return Right(params)
     }
-
-
-    Right(Seq[Param]())
-  }
 
   // TESTED
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =

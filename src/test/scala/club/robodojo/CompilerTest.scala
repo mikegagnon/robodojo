@@ -274,6 +274,7 @@ object CompilerTest extends TestSuite {
           case Right(_) => assert(false)
         }
 
+      // TODO: move downs
       "move"-{
         "success"-{
           testInstruction("move", Right(MoveInstruction()))
@@ -283,6 +284,7 @@ object CompilerTest extends TestSuite {
         }
       }
 
+      // TODO: move down
       "turn"-{
         "success 1"-{
           testInstruction("turn 1", Right(TurnInstruction(Direction.Right)))
@@ -300,6 +302,7 @@ object CompilerTest extends TestSuite {
           testInstruction("turn 1 foo", Left(ErrorCode.TooManyParams))
         }
       }
+
       "bank"-{
 
         "fail: too many params"-{
@@ -362,6 +365,8 @@ object CompilerTest extends TestSuite {
           testProgram(text, expectedProgram)
         }
       }
+
+      // TODO: move down
       "create"-{
         "fail"-{
           "too many tokens"-{
@@ -504,6 +509,19 @@ object CompilerTest extends TestSuite {
         intercept[IllegalArgumentException] {
           getWriteable("foo")
         }
+      }
+
+      "parseParams"-{
+        "success"-{
+          import scala.language.postfixOps
+          val instructionName = "foo"
+          val tl = TokenLine(Array("foo", "1", ",", "2", ",", "3"), 5)
+          val result = parseParams("foo", tl, ReadableParamType, ReadableParamType,
+            ReadableParamType)
+          val expectedResult = Right(Seq(IntegerParam(1), IntegerParam(2), IntegerParam(3)))
+          result ==> expectedResult
+        }
+
       }
 
       "set instruction"-{
