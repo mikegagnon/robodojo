@@ -63,10 +63,12 @@ case object WriteableParamType extends ParamType {
 
 object Compiler {
 
+  // TODO: move
+  /* Begin: reading parameters from a TokenLine ***************************************************/
+
   // converts 0 to "a", 1 to "b" and so on
   def indexToLetter(index: Int) = (index + 'a'.toInt).toChar.toString
 
-  // TODO: move
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
@@ -193,6 +195,8 @@ object Compiler {
         }
       }
     }
+
+  /* End: reading parameters from a TokenLine *****************************************************/
 
   // TESTED
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
