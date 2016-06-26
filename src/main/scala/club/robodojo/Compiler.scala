@@ -69,7 +69,7 @@ object Compiler {
       instructionName: String,
       badParameterIndex: Int,
       lineNumber: Int,
-      types: Array[ParamType]): ErrorMessage = {
+      types: Seq[ParamType]): ErrorMessage = {
 
     // TODO: factor out common code
     // Produces a string like: "set a, b" or "create a, b, c"
@@ -116,7 +116,7 @@ object Compiler {
       instructionName: String,
       parameterIndex: Int,
       lineNumber: Int,
-      types: Array[ParamType],
+      types: Seq[ParamType],
       paramType: ParamType,
       token: String)(implicit config: Config): Either[ErrorMessage, Param] = {
 
@@ -127,6 +127,7 @@ object Compiler {
           case _: IllegalArgumentException =>
             Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
         }
+      // TODO:
       case WriteableParamType => Right(getWriteable(token))
     }
   }
@@ -153,18 +154,42 @@ object Compiler {
       return Left(ErrorMessage(errorCode, tl.lineNumber, message))
     } else {
       // TODO: more error checking...
-      //val params: Seq[Either[ErrorMessage, Param]] =
-      val params: Seq[Param] =
-
+      val paramsAndErrors: Seq[Either[ErrorMessage, Param]] =
         paramTypes
           .zipWithIndex
           .map { case (paramType: ParamType, index: Int) =>
             val token = tl.tokens(index * 2 + 1)
-            //getParam(paramType)
-            null
+            getParam(instructionName, index, tl.lineNumber, paramTypes, paramType, token)
           }
 
-      return Right(params)
+      val errorMessage: Option[ErrorMessage] =
+        paramsAndErrors
+          .flatMap { element: Either[ErrorMessage, Param] =>
+            element match {
+              case Left(error) => Some(error)
+              case Right(_) => None
+            }
+          }
+          .headOption
+
+      val params: Seq[Param] =
+        paramsAndErrors
+          .flatMap { element: Either[ErrorMessage, Param] =>
+            element match {
+              case Left(_) => None
+              case Right(param) => Some(param)
+            }
+          }
+
+      errorMessage match {
+        case Some(error) => Left(error)
+        case None => {
+          if (params.length != paramTypes.length) {
+            throw new IllegalStateException("params.length != paramTypes.length")
+          }
+          Right(params)
+        }
+      }
     }
 
   // TESTED
