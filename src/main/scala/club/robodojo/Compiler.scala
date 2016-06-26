@@ -69,6 +69,32 @@ object Compiler {
   // converts 0 to "a", 1 to "b" and so on
   def indexToLetter(index: Int) = (index + 'a'.toInt).toChar.toString
 
+  // Produces a string like: "a, b" or "a, b, c"
+  def instructionForm(numParams: Int): String =
+    (0 until numParams)
+      .map { indexToLetter(_) }
+      .mkString(", ")
+
+  // Produces a string like: "a is a writeable parameter, and b is a readable parameter"
+  def instructionTypes(types: Seq[ParamType]): String =
+    types
+      .zipWithIndex
+      .map { case (t: ParamType, i: Int) =>
+        s"<tt>${indexToLetter(i)}</tt> is a <i>${t}</i>"
+      }
+      .mkString(", and ")
+
+  def parameterNumber(index: Int): String =
+    if (index == 0) {
+      "first"
+    } else if (index == 1) {
+      "second"
+    } else if (index == 2) {
+      "third"
+    } else {
+      throw new IllegalArgumentException("index is bad")
+    }
+
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
@@ -76,40 +102,41 @@ object Compiler {
       types: Seq[ParamType]): ErrorMessage = {
 
     // TODO: factor out common code
-    // Produces a string like: "set a, b" or "create a, b, c"
-    val instructionForm: String = (0 until types.length)
-      .map { indexToLetter(_) }
-      .mkString(", ")
+    val form: String = instructionForm(types.length)
 
     // Produces a string like: "a is a writeable parameter, and b is a readable parameter"
-    val instructionTypes: String = types
-      .zipWithIndex
-      .map { case (t: ParamType, i: Int) =>
-        s"<tt>${indexToLetter(i)}</tt> is a <i>${t}</i>"
-      }
-      .mkString(", and ")
+    val instrTypes: String = instructionTypes(types)
 
-    val parameterNumber =
-      if (badParameterIndex == 0) {
-        "first"
-      } else if (badParameterIndex == 1) {
-        "second"
-      } else if (badParameterIndex == 2) {
-        "third"
-      } else {
-        throw new IllegalArgumentException("badParameterIndex is bad")
-      }
+    val paramNumber:String = parameterNumber(badParameterIndex)
 
     val badParamLetter = indexToLetter(badParameterIndex)
 
     val message = s"<b>Wrong parameter type</b>: the <tt>${instructionName}</tt> instruction must be of " +
-    s"the form: <tt>${instructionName} ${instructionForm}</tt>, where ${instructionTypes}. " +
-    s"Your ${parameterNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
+    s"the form: <tt>${instructionName} ${form}</tt>, where ${instrTypes}. " +
+    s"Your ${paramNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
     s"${types(badParameterIndex)}."
 
     val errorCode = ErrorCode.WrongParamType
     
     return ErrorMessage(errorCode, lineNumber, message)
+  }
+
+  // TODO: test
+  def getErrorMalformedInstruction(
+      instructionName: String,
+      lineNumber: Int,
+      types: Seq[ParamType]): ErrorMessage = {
+
+      val form: String = instructionForm(types.length)
+
+      val message = s"Malformed <tt>${instructionName}</tt> instruction: the " +
+        s"<tt>${instructionName}</tt> must be of the form <tt>${instructionName} " +
+        s"${form}</tt>."
+
+      val errorCode = ErrorCode.MalformedInstruction
+
+      return ErrorMessage(errorCode, lineNumber, message)
+
   }
 
   def getParam(
@@ -135,7 +162,6 @@ object Compiler {
         }
     }
 
-  // TODO: move
   // TODO: test
   def parseParams(
       instructionName: String,
@@ -144,18 +170,7 @@ object Compiler {
         Either[ErrorMessage, Seq[Param]] =
 
     if (tl.tokens.length != paramTypes.length * 2) {
-
-
-
-      // TODO: finish
-      /*val message = s"Malformed <tt>${instructionName}</tt> instruction: the " +
-        s"<tt>${instructionName}</tt> must be of the form <tt>${instructionName} " +
-        s"${instructionForm}</tt>..."
-      */
-      val message = ""
-      val errorCode = ErrorCode.MalformedInstruction
-
-      return Left(ErrorMessage(errorCode, tl.lineNumber, message))
+      return Left(getErrorMalformedInstruction(instructionName, tl.lineNumber, paramTypes))
     } else {
       // TODO: more error checking...
       val paramsAndErrors: Seq[Either[ErrorMessage, Param]] =
