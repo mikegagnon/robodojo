@@ -146,7 +146,6 @@ final case class RegisterParam(registerIndex: Int)(implicit config: Config)
 
 /* Begin instructions *****************************************************************************/
 
-// TODO: move appropriate functions into objects
 case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
