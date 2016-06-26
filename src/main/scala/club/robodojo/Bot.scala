@@ -64,9 +64,6 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var cycleNum = 0
 
-  // TODO: test
-  // TODO: ensure zero'd out
-  // TODO: should be short?
   var registers = ArrayBuffer.fill(config.sim.maxNumVariables)(0.toShort)
 
   // TODO: test
