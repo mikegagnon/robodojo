@@ -52,29 +52,58 @@ case class CompileLineResult(
   errorMessage: Option[ErrorMessage])
 
 sealed trait ParamType
-case object ReadableParamType extends ParamType
-case object WriteableParamType extends ParamType
+
+case object ReadableParamType extends ParamType {
+  override val toString = "readable parameter"
+}
+
+case object WriteableParamType extends ParamType {
+  override val toString = "writeable parameter"
+}
 
 object Compiler {
 
   def getErrorWrongParamType(
       instructionName: String,
+      badParameterIndex: Int,
       tl: TokenLine,
       types: Array[ParamType]): ErrorMessage = {
 
+    // TODO: factor out common code
+    // Produces a string like: "set a, b" or "create a, b, c"
     val instructionForm: String = (0 until types.length)
       .map { i =>
         (i + 'a'.toInt).toChar
       }
       .mkString(", ")
 
+    // Produces a string like: "a is a writeable parameter, and b is a readable parameter"
+    val instructionTypes: String = types
+      .zipWithIndex
+      .map { case (t: ParamType, i: Int) =>
+        val letter = (i + 'a'.toInt.toChar)
+        s"<tt>${letter}</tt> is a <i>${t}</i>"
+      }
+      .mkString(", and ")
+
+    val parameterNumber =
+      if (badParameterIndex == 0) {
+        "first"
+      } else if (badParameterIndex == 1) {
+        "second"
+      } else if (badParameterIndex == 2) {
+        "third"
+      } else {
+        throw new IllegalArgumentException("badParameterIndex is bad")
+      }
+
     val message = s"Wrong parameter type: the <tt>${instructionName}</tt> instruction must be of " +
-    s"the form: <tt>${instructionForm}</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
-    s"a parameter value. Your second parameter, <tt>${tl.tokens(3)}</tt>, must be either " +
-    s"an integer (such as 5), a constant (such as $$Banks), a remote (such as %Banks), or " +
-    s"a register (such as #3)."
+    s"the form: <tt>${instructionForm}</tt>, where ${instructionTypes}. " +
+    s"Your ${parameterNumber} parameter is not a ${types(badParameterIndex)}."
+
     val errorCode = ErrorCode.WrongParamType
-    ErrorMessage(errorCode, tl.lineNumber, message)
+    
+    return ErrorMessage(errorCode, tl.lineNumber, message)
   }
 
 
