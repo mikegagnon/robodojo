@@ -253,7 +253,7 @@ object Compiler {
         paramIndex * 2 + 2
       }
 
-  // TODO: test
+  // TESTED
   // Returns true iff there are commas in all the right places
   def foundCommas(numParams: Int, tl: TokenLine): Boolean =
     getCommaIndices(numParams)

@@ -238,6 +238,17 @@ object CompilerTest extends TestSuite {
       getCommaIndices(3) ==> Seq(2, 4)
     }
 
+    "foundCommas"-{
+      foundCommas(0, TokenLine(Array("move"), 1)) ==> true
+      foundCommas(1, TokenLine(Array("turn", "0"), 1)) ==> true
+      foundCommas(2, TokenLine(Array("set", "#1", ",", "#2"), 1)) ==> true
+      foundCommas(2, TokenLine(Array("set", "#1", "x", "#2"), 1)) ==> false
+      foundCommas(3, TokenLine(Array("create", "1", ",", "2", ",", "3"), 1)) ==> true
+      foundCommas(3, TokenLine(Array("create", "1", "x", "2", ",", "3"), 1)) ==> false
+      foundCommas(3, TokenLine(Array("create", "1", ",", "2", "x", "3"), 1)) ==> false
+      foundCommas(3, TokenLine(Array("create", "1", "x", "2", "x", "3"), 1)) ==> false
+    }
+
     "TokenLine.equals"-{
       "simple case"-{
         "equals"-{
