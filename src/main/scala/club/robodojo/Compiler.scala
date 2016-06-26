@@ -178,7 +178,7 @@ object Compiler {
   // TODO: test
   // The indices for where we should find commas
   def getCommaIndices(numParams: Int): Seq[Int] =
-    (0 until numParams)
+    (0 until numParams - 1)
       .map { paramIndex: Int =>
         paramIndex * 2 + 2
       }
