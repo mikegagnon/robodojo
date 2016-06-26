@@ -176,16 +176,32 @@ object Compiler {
     }
 
   // TODO: test
+  // The indices for where we should find commas
+  def getCommaIndices(numParams: Int): Seq[Int] =
+    (0 until numParams)
+      .map { paramIndex: Int =>
+        paramIndex * 2 + 2
+      }
+
+  // TODO: test
+  // Returns true iff there are commas in all the right places
+  def foundCommas(numParams: Int, tl: TokenLine): Boolean =
+    getCommaIndices(numParams)
+      .forall { index =>
+        tl.tokens(index) == ","
+      }
+
+  // TODO: test
   def parseParams(
       instructionName: String,
       tl: TokenLine,
       paramTypes: ParamType*)(implicit config: Config):
         Either[ErrorMessage, Seq[Param]] =
 
-    if (tl.tokens.length != paramTypes.length * 2) {
+    if (tl.tokens.length != paramTypes.length * 2 ||
+        !foundCommas(paramTypes.length, tl)) {
       return Left(getErrorMalformedInstruction(instructionName, tl.lineNumber, paramTypes))
     } else {
-      // TODO: more error checking...
       val paramsAndErrors: Seq[Either[ErrorMessage, Param]] =
         paramTypes
           .zipWithIndex
