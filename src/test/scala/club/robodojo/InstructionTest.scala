@@ -101,8 +101,12 @@ object InstructionTest extends TestSuite {
           instructionSet: InstructionSet.EnumVal,
           numBanks: Int,
           mobile: Boolean): Option[Bot] = {
+
+        val iSet = if(instructionSet == InstructionSet.Basic) IntegerParam(0) else IntegerParam(1)
+        val banks = IntegerParam(numBanks.toShort)
+        val mob = if (mobile) IntegerParam(1) else IntegerParam(0)
         val bot = Bot(board, color, 0, 0, Direction.Right)
-        val instruction = CreateInstruction(instructionSet, numBanks, mobile, 0, PlayerColor.Blue)
+        val instruction = CreateInstruction(iSet, banks, mob, 0, PlayerColor.Blue)
         instruction.execute(bot)
         return board.matrix(0)(1)
       }
