@@ -364,7 +364,14 @@ case class SetInstruction(
   source: ReadableParam)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
-  val requiredCycles = config.sim.cycleCount.durSet
+  val requiredCycles = {
+
+    // TODO: Test
+    val remoteWriteCost = if (destination.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteReadCost = if (source.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durSet + remoteWriteCost + remoteReadCost
+  }
 
   def cycle(bot: Bot, cycleNum: Int) : Option[Animation] =
     if (cycleNum == requiredCycles) {
