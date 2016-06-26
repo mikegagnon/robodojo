@@ -68,7 +68,7 @@ object Compiler {
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
-      tl: TokenLine,
+      lineNumber: Int,
       types: Array[ParamType]): ErrorMessage = {
 
     // TODO: factor out common code
@@ -108,24 +108,28 @@ object Compiler {
 
     val errorCode = ErrorCode.WrongParamType
     
-    return ErrorMessage(errorCode, tl.lineNumber, message)
+    return ErrorMessage(errorCode, lineNumber, message)
   }
 
 
-  /*
-  def getParam(paramType: ParamType, token: String, lineNumber: Int):
-  8    Either[ErrorMessage, Param] = {
+  def getParam(
+      instructionName: String,
+      parameterIndex: Int,
+      lineNumber: Int,
+      types: Array[ParamType],
+      paramType: ParamType,
+      token: String)(implicit config: Config): Either[ErrorMessage, Param] = {
 
     paramType match {
       case ReadableParamType => try {
           Right(getReadable(token))
         } catch {
           case _: IllegalArgumentException =>
-            
+            Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
         }
-      case WriteableParamType => getWriteable(token)
+      case WriteableParamType => Right(getWriteable(token))
     }
-  }*/
+  }
 
   // TODO: move
   // TODO: test

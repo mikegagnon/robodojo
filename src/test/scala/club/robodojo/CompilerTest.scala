@@ -215,7 +215,7 @@ object CompilerTest extends TestSuite {
       val result = getErrorWrongParamType(
         "create",
         1,
-        TokenLine(Array[String](), 3),
+        3,
         Array(ReadableParamType, ReadableParamType, ReadableParamType))
       
       val expectedMessage = "<b>Wrong parameter type</b>: the <tt>create</tt> instruction must " + 
