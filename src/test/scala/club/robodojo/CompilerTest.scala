@@ -228,8 +228,14 @@ object CompilerTest extends TestSuite {
             case Right(param) => assert(false)
           }
         }
-
       }
+    }
+
+    "getCommaIndices"-{
+      getCommaIndices(0) ==> Seq[Int]()
+      getCommaIndices(1) ==> Seq[Int]()
+      getCommaIndices(2) ==> Seq(2)
+      getCommaIndices(3) ==> Seq(2, 4)
     }
 
     "TokenLine.equals"-{

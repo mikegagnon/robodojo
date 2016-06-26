@@ -245,7 +245,7 @@ object Compiler {
     }
   }
 
-  // TODO: test
+  // TESTED
   // The indices for where we should find commas
   def getCommaIndices(numParams: Int): Seq[Int] =
     (0 until numParams - 1)
