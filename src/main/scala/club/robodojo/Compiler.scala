@@ -67,24 +67,24 @@ object Compiler {
   /* Begin: reading parameters from a TokenLine ***************************************************/
 
   // converts 0 to "a", 1 to "b" and so on
-  def indexToLetter(index: Int) = (index + 'a'.toInt).toChar.toString
+  def getIndexToLetter(index: Int) = (index + 'a'.toInt).toChar.toString
 
   // Produces a string like: "a, b" or "a, b, c"
-  def instructionForm(numParams: Int): String =
+  def getInstructionForm(numParams: Int): String =
     (0 until numParams)
-      .map { indexToLetter(_) }
+      .map { getIndexToLetter(_) }
       .mkString(", ")
 
   // Produces a string like: "a is a writeable parameter, and b is a readable parameter"
-  def instructionTypes(types: Seq[ParamType]): String =
+  def getParamTypes(types: Seq[ParamType]): String =
     types
       .zipWithIndex
       .map { case (t: ParamType, i: Int) =>
-        s"<tt>${indexToLetter(i)}</tt> is a <i>${t}</i>"
+        s"<tt>${getIndexToLetter(i)}</tt> is a <i>${t}</i>"
       }
       .mkString(", and ")
 
-  def parameterNumber(index: Int): String =
+  def getParamNumber(index: Int): String =
     if (index == 0) {
       "first"
     } else if (index == 1) {
@@ -95,25 +95,33 @@ object Compiler {
       throw new IllegalArgumentException("index is bad")
     }
 
+  def getErrorIntro(
+      begin: String,
+      instructionName: String,
+      types: Seq[ParamType]): String = {
+
+    val instructionForm: String = getInstructionForm(types.length)
+
+    val paramTypes: String = getParamTypes(types)
+
+    return s"<b>${begin}</b>: the <tt>${instructionName}</tt> instruction " +
+    s"must be of the form: <tt>${instructionName} ${instructionForm}</tt>, where ${paramTypes}. "
+  }
+
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
       lineNumber: Int,
       types: Seq[ParamType]): ErrorMessage = {
 
-    val form: String = instructionForm(types.length)
+    val paramNumber: String = getParamNumber(badParameterIndex)
 
-    val instrTypes: String = instructionTypes(types)
+    val badParamLetter: String = getIndexToLetter(badParameterIndex)
 
-    val paramNumber:String = parameterNumber(badParameterIndex)
+    val intro: String = getErrorIntro("Wrong parameter type", instructionName, types)
 
-    val badParamLetter = indexToLetter(badParameterIndex)
-
-    val message = s"<b>Wrong parameter type</b>: the <tt>${instructionName}</tt> instruction " +
-    s"must be of " +
-    s"the form: <tt>${instructionName} ${form}</tt>, where ${instrTypes}. " +
-    s"Your ${paramNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
-    s"${types(badParameterIndex)}."
+    val message = intro + s"Your ${paramNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
+      s"${types(badParameterIndex)}."
 
     val errorCode = ErrorCode.WrongParamType
     
@@ -126,9 +134,9 @@ object Compiler {
       lineNumber: Int,
       types: Seq[ParamType]): ErrorMessage = {
 
-      val form: String = instructionForm(types.length)
+      val form: String = getInstructionForm(types.length)
 
-      val instrTypes: String = instructionTypes(types)
+      val instrTypes: String = getParamTypes(types)
 
       val message = s"<b>Malformed <tt>${instructionName}</tt> instruction</b>: the " +
         s"<tt>${instructionName}</tt> must be of the form <tt>${instructionName} " +
