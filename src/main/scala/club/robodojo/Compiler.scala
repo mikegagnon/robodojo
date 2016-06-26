@@ -108,7 +108,6 @@ object Compiler {
     s"must be of the form: <tt>${instructionName} ${instructionForm}</tt>, where ${paramTypes}. "
   }
 
-  // TODO: Test
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
@@ -129,7 +128,6 @@ object Compiler {
     return ErrorMessage(errorCode, lineNumber, message)
   }
 
-  // TODO: test
   def getErrorMalformedInstruction(
       instructionName: String,
       lineNumber: Int,
@@ -153,14 +151,55 @@ object Compiler {
 
   /* Begin: reading parameters from a TokenLine ***************************************************/
 
-  // TODO: Test
+  def getWriteable(token: String)(implicit config: Config): WriteableParam =
+    if (token == "#active") {
+      ActiveKeyword(true)
+    } else if (token == "%active") {
+      ActiveKeyword(false)
+    } else if (isRegister(token)) {
+      val registerNum = token.substring(1).toShort
+      RegisterParam(registerNum - 1)
+    } else {
+     throw new IllegalArgumentException("Bad token: " + token)
+    }
+
+  def getReadable(token: String)(implicit config: Config): ReadableParam =
+    if (isRegister(token)) {
+      val registerNum = token.substring(1).toShort
+      RegisterParam(registerNum - 1)
+    } else if (isShort(token)) {
+      IntegerParam(token.toShort)
+    } else if (token == "#active") {
+      ActiveKeyword(true)
+    } else if (token == "%active") {
+      ActiveKeyword(false)
+    } else if (token == "$banks") {
+      BanksKeyword(true)
+    } else if (token == "%banks") {
+      BanksKeyword(false)
+    } else if (token == "$instrset") {
+      InstrSetKeyword(true)
+    } else if (token == "%instrset") {
+      InstrSetKeyword(false)
+    } else if (token == "$mobile") {
+      MobileKeyword(true)
+    } else if (token == "%mobile") {
+      MobileKeyword(false)
+    } else if (token == "$fields") {
+      FieldsKeyword()
+    } else {
+      throw new IllegalArgumentException("Bad token: " + token)
+    }
+
+  // TESTED
   def getParam(
       instructionName: String,
       parameterIndex: Int,
       lineNumber: Int,
       types: Seq[ParamType],
-      paramType: ParamType,
-      token: String)(implicit config: Config): Either[ErrorMessage, Param] =
+      token: String)(implicit config: Config): Either[ErrorMessage, Param] = {
+
+    val paramType = types(parameterIndex)
 
     paramType match {
       case ReadableParamType => try {
@@ -176,6 +215,7 @@ object Compiler {
             Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
         }
     }
+  }
 
   // TODO: test
   // The indices for where we should find commas
@@ -211,7 +251,7 @@ object Compiler {
           .zipWithIndex
           .map { case (paramType: ParamType, index: Int) =>
             val token = tl.tokens(index * 2 + 1)
-            getParam(instructionName, index, tl.lineNumber, paramTypes, paramType, token)
+            getParam(instructionName, index, tl.lineNumber, paramTypes, token)
           }
 
       val errorMessage: Option[ErrorMessage] =
@@ -326,45 +366,7 @@ object Compiler {
     isRegister(token) ||
     isWriteableKeyword(token)
 
-  def getWriteable(token: String)(implicit config: Config): WriteableParam =
-    if (token == "#active") {
-      ActiveKeyword(true)
-    } else if (token == "%active") {
-      ActiveKeyword(false)
-    } else if (isRegister(token)) {
-      val registerNum = token.substring(1).toShort
-      RegisterParam(registerNum - 1)
-    } else {
-     throw new IllegalArgumentException("Bad token: " + token)
-    }
 
-  def getReadable(token: String)(implicit config: Config): ReadableParam =
-    if (isRegister(token)) {
-      val registerNum = token.substring(1).toShort
-      RegisterParam(registerNum - 1)
-    } else if (isShort(token)) {
-      IntegerParam(token.toShort)
-    } else if (token == "#active") {
-      ActiveKeyword(true)
-    } else if (token == "%active") {
-      ActiveKeyword(false)
-    } else if (token == "$banks") {
-      BanksKeyword(true)
-    } else if (token == "%banks") {
-      BanksKeyword(false)
-    } else if (token == "$instrset") {
-      InstrSetKeyword(true)
-    } else if (token == "%instrset") {
-      InstrSetKeyword(false)
-    } else if (token == "$mobile") {
-      MobileKeyword(true)
-    } else if (token == "%mobile") {
-      MobileKeyword(false)
-    } else if (token == "$fields") {
-      FieldsKeyword()
-    } else {
-      throw new IllegalArgumentException("Bad token: " + token)
-    }
 
 
 

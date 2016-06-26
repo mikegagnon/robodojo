@@ -12,6 +12,35 @@ object CompilerTest extends TestSuite {
 
     implicit val config = new Config
 
+    "getParam"-{
+      "success"-{
+        val instructionName = "foo"
+        val parameterIndex = 1
+        val lineNumber = 5
+        val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+        val token = "%active"
+
+        val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+        val expectedResult = Right(ActiveKeyword(false))
+
+        result ==> expectedResult
+      }
+      "fail"-{
+        val instructionName = "foo"
+        val parameterIndex = 1
+        val lineNumber = 5
+        val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+        val token = "active"
+
+        val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+
+        result match {
+          case Left(error) => error.errorCode ==> ErrorCode.WrongParamType
+          case Right(param) => assert(false)
+        }
+      }
+    }
+
     "TokenLine.equals"-{
       "simple case"-{
         "equals"-{
