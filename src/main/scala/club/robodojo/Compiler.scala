@@ -51,7 +51,16 @@ case class CompileLineResult(
   instruction: Option[Instruction],
   errorMessage: Option[ErrorMessage])
 
+sealed trait ParamType
+case object ReadableParamType extends ParamType
+case object WriteableParamType extends ParamType
+
 object Compiler {
+
+  // TODO: move
+  def parseParams(tl: TokenLine, paramTypes: ParamType*): Array[Param] = {
+    Array[Param]()
+  }
 
   // TESTED
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
