@@ -413,15 +413,15 @@ object CompilerTest extends TestSuite {
           }
           "non-integer params 1"-{
             val text = "create a, 1, 1"
-            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
+            testProgramFail(text, ErrorCode.WrongParamType)(config)
           }
           "non-integer params 2"-{
             val text = "create 1, a, 1"
-            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
+            testProgramFail(text, ErrorCode.WrongParamType)(config)
           }
           "non-integer params 3"-{
             val text = "create 1, 1, a"
-            testProgramFail(text, ErrorCode.MalformedInstruction)(config)
+            testProgramFail(text, ErrorCode.WrongParamType)(config)
           }
           "instruction set invalid 1"-{
             val text = "create -1, 1, 1"
