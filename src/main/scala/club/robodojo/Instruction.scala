@@ -1,8 +1,7 @@
 package club.robodojo
 
-// TODO: make prettier with ...****/
-
 // TODO: only execute instructions if the bot has the proper instruction set
+//
 // There are two instruction sets: Basic and extended. Each instruction is associated with one
 // of those instruction sets. Each bot is also associated with an instruction set.
 // A basic-bot may only execute basic instructions, whereas an extended-bot may execute any
@@ -69,7 +68,7 @@ sealed trait ReadableFromBot extends ReadableKeyword {
 
 object ActiveKeyword {
 
-  def writeTo(bot: Bot, value: Short, writerBotId: Long, recipientBotId: Long): Option[Animation] = {
+  def writeTo(bot: Bot, value: Short, writerBotId: Long, recipientBotId: Long): Option[Animation]= {
     val oldActive = bot.active
     bot.active = value
     if (bot.active < 1 && oldActive >= 1) {
@@ -146,7 +145,6 @@ final case class RegisterParam(registerIndex: Int)(implicit config: Config)
 /* End param values *******************************************************************************/
 
 /* Begin instructions *****************************************************************************/
-
 
 // TODO: move appropriate functions into objects
 case class MoveInstruction(implicit val config: Config) extends Instruction {
@@ -385,5 +383,7 @@ case class SetInstruction(
     val sourceValue = source.read(bot)
     return destination.write(bot, sourceValue)
   }
+
+/* End instructions *******************************************************************************/
 
 }

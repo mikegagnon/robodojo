@@ -318,8 +318,6 @@ object Compiler {
       throw new IllegalArgumentException("Bad token: " + token)
     }
 
-  // TODO: test
-  // TODO: set remote values?
   def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length != 4 ||
         tl.tokens(2) != ",") {
