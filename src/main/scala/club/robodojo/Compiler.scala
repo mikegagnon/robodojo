@@ -101,17 +101,16 @@ object Compiler {
       lineNumber: Int,
       types: Seq[ParamType]): ErrorMessage = {
 
-    // TODO: factor out common code
     val form: String = instructionForm(types.length)
 
-    // Produces a string like: "a is a writeable parameter, and b is a readable parameter"
     val instrTypes: String = instructionTypes(types)
 
     val paramNumber:String = parameterNumber(badParameterIndex)
 
     val badParamLetter = indexToLetter(badParameterIndex)
 
-    val message = s"<b>Wrong parameter type</b>: the <tt>${instructionName}</tt> instruction must be of " +
+    val message = s"<b>Wrong parameter type</b>: the <tt>${instructionName}</tt> instruction " +
+    s"must be of " +
     s"the form: <tt>${instructionName} ${form}</tt>, where ${instrTypes}. " +
     s"Your ${paramNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
     s"${types(badParameterIndex)}."
@@ -129,9 +128,11 @@ object Compiler {
 
       val form: String = instructionForm(types.length)
 
-      val message = s"Malformed <tt>${instructionName}</tt> instruction: the " +
+      val instrTypes: String = instructionTypes(types)
+
+      val message = s"<b>Malformed <tt>${instructionName}</tt> instruction</b>: the " +
         s"<tt>${instructionName}</tt> must be of the form <tt>${instructionName} " +
-        s"${form}</tt>."
+        s"${form}</tt>, where ${instrTypes}."
 
       val errorCode = ErrorCode.MalformedInstruction
 
