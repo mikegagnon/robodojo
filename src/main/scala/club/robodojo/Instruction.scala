@@ -25,7 +25,21 @@ object InstructionSet {
 sealed abstract class Instruction {
   val instructionSet: InstructionSet.EnumVal
   val requiredCycles: Int
-  def cycle(bot: Bot, cycleNum: Int) : Option[Animation]
+
+  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
+    if (cycleNum == requiredCycles) {
+      return execute(bot)
+    } else if (cycleNum > requiredCycles) {
+      throw new IllegalArgumentException("cycleNum > requiredCycles")
+    } else {
+      return progress(bot, cycleNum)
+    }
+
+  // Execute the instruction
+  def execute(bot: Bot): Option[Animation]
+
+  // Make progress toward reaching requiredCycles
+  def progress(bot: Bot, cycleNum: Int): Option[Animation]
 }
 
 /* Begin param values *****************************************************************************/
@@ -81,13 +95,11 @@ object ActiveKeyword {
   }
 }
 
-// TODO: TEST
 case class ActiveKeyword(local: Boolean)(implicit config: Config) extends WriteableKeyword
     with ReadableFromBot {
 
   def readFromBot(bot: Bot): Short = bot.active
 
-  // TODO: factor out common code
   override def write(bot: Bot, value: Short): Option[Animation] =
     if (local) {
       ActiveKeyword.writeTo(bot, value, bot.id, bot.id)
@@ -152,18 +164,6 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val requiredCycles = config.sim.cycleCount.durMove
 
-  // TODO: factor out common code from all cycle functions?
-  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
-    if (cycleNum == requiredCycles) {
-      return execute(bot)
-    } else if (cycleNum > requiredCycles) {
-      throw new IllegalArgumentException("cycleNum > requiredCycles")
-    } else {
-      val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-      return Some(MoveAnimationProgress(bot.id, cycleNum, requiredCycles, bot.row, bot.col, destRow, destCol,
-        bot.direction))
-    }
-
   // TESTED
   def execute(bot: Bot): Option[Animation] = {
 
@@ -180,6 +180,19 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
       case Some(_) => Some(MoveAnimationFail(bot.id))
     }
   }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = {
+    val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+    return Some(MoveAnimationProgress(
+      bot.id,
+      cycleNum,
+      requiredCycles,
+      bot.row,
+      bot.col,
+      destRow,
+      destCol,
+      bot.direction))
+  }
 }
 
 // TODO: take direction as a ParamValue?
@@ -188,15 +201,7 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
     val instructionSet = InstructionSet.Basic
     val requiredCycles = config.sim.cycleCount.durTurn
 
-    def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
-      if (cycleNum == requiredCycles) {
-        return execute(bot)
-      } else if (cycleNum > requiredCycles) {
-        throw new IllegalArgumentException("cycleNum > requiredCycles")
-      } else {
-        return Some(TurnAnimationProgress(bot.id, cycleNum, bot.direction, leftOrRight))
-      }
-
+    // TODO: move to object TurnInstruction?
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
         case Direction.Left => Direction.rotateLeft(currentDir)
@@ -205,13 +210,13 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
       }
 
     def execute(bot: Bot): Option[Animation] = {
-
       val oldDirection = bot.direction
-
       bot.direction = getNewDirection(bot.direction)
-
       Some(TurnAnimationFinish(bot.id, bot.direction))
     }
+
+    def progress(bot: Bot, cycleNum: Int): Option[Animation] =
+      Some(TurnAnimationProgress(bot.id, cycleNum, bot.direction, leftOrRight))
 }
 
 // TODO: take params as ParamValue objects?
@@ -269,25 +274,6 @@ case class CreateInstruction(
     // values
     Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
-
-  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
-    if (cycleNum == requiredCycles) {
-      return execute(bot)
-    } else if (cycleNum > requiredCycles) {
-      throw new IllegalArgumentException("cycleNum > requiredCycles")
-    } else {
-      val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
-
-      return Some(BirthAnimationProgress(
-        bot.id,
-        cycleNum,
-        requiredCycles,
-        bot.row,
-        bot.col,
-        destRow,
-        destCol,
-        bot.direction))
-    }
 
   def errorCheck(bot: Bot): Option[Animation] = {
     if (numBanks <= 0 || numBanks > config.sim.maxBanks) {
@@ -352,6 +338,20 @@ case class CreateInstruction(
       case Some(_) => Some(BirthAnimationFail(bot.id))
     }
   }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = {
+     val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
+
+    return Some(BirthAnimationProgress(
+      bot.id,
+      cycleNum,
+      requiredCycles,
+      bot.row,
+      bot.col,
+      destRow,
+      destCol,
+      bot.direction))
+  }
 }
 
 case class SetInstruction(
@@ -361,27 +361,18 @@ case class SetInstruction(
   val instructionSet = InstructionSet.Basic
   val requiredCycles = {
 
-    // TODO: Test
     val remoteWriteCost = if (destination.local) 0 else config.sim.cycleCount.durRemoteAccessCost
     val remoteReadCost = if (source.local) 0 else config.sim.cycleCount.durRemoteAccessCost
 
     config.sim.cycleCount.durSet + remoteWriteCost + remoteReadCost
   }
 
-  def cycle(bot: Bot, cycleNum: Int) : Option[Animation] =
-    if (cycleNum == requiredCycles) {
-      return execute(bot)
-    } else if (cycleNum > requiredCycles) {
-      throw new IllegalArgumentException("cycleNum > requiredCycles")
-    } else {
-      return None
-    }
-
-  // TODO: how to handle side effects of set?
   def execute(bot: Bot): Option[Animation] = {
     val sourceValue = source.read(bot)
     return destination.write(bot, sourceValue)
   }
+
+  def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 
 /* End instructions *******************************************************************************/
 
