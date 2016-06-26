@@ -57,6 +57,42 @@ case object WriteableParamType extends ParamType
 
 object Compiler {
 
+  def getErrorWrongParamType(
+      instructionName: String,
+      tl: TokenLine,
+      types: Array[ParamType]): ErrorMessage = {
+
+    val instructionForm: String = (0 until types.length)
+      .map { i =>
+        (i + 'a'.toInt).toChar
+      }
+      .mkString(", ")
+
+    val message = s"Wrong parameter type: the <tt>${instructionName}</tt> instruction must be of " +
+    s"the form: <tt>${instructionForm}</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
+    s"a parameter value. Your second parameter, <tt>${tl.tokens(3)}</tt>, must be either " +
+    s"an integer (such as 5), a constant (such as $$Banks), a remote (such as %Banks), or " +
+    s"a register (such as #3)."
+    val errorCode = ErrorCode.WrongParamType
+    ErrorMessage(errorCode, tl.lineNumber, message)
+  }
+
+
+  /*
+  def getParam(paramType: ParamType, token: String, lineNumber: Int):
+  8    Either[ErrorMessage, Param] = {
+
+    paramType match {
+      case ReadableParamType => try {
+          Right(getReadable(token))
+        } catch {
+          case _: IllegalArgumentException =>
+            
+        }
+      case WriteableParamType => getWriteable(token)
+    }
+  }*/
+
   // TODO: move
   // TODO: test
   def parseParams(
@@ -66,32 +102,29 @@ object Compiler {
 
     if (tl.tokens.length != paramTypes.length * 2) {
 
-      val instructionForm = (0 until paramTypes.length)
-        .map { i =>
-          (i + 'a'.toInt).toChar
-        }
-        .mkString(", ")
+
 
       // TODO: finish
-      val message = s"Malformed <tt>${instructionName}</tt> instruction: the " +
+      /*val message = s"Malformed <tt>${instructionName}</tt> instruction: the " +
         s"<tt>${instructionName}</tt> must be of the form <tt>${instructionName} " +
         s"${instructionForm}</tt>..."
-
+      */
+      val message = ""
       val errorCode = ErrorCode.MalformedInstruction
 
       return Left(ErrorMessage(errorCode, tl.lineNumber, message))
     } else {
       // TODO: more error checking...
-      val params: Seq[Param] = paramTypes
-        .zipWithIndex
-        .map { case (paramType: ParamType, index: Int) =>
-          val token = tl.tokens(index * 2 + 1)
+      //val params: Seq[Either[ErrorMessage, Param]] =
+      val params: Seq[Param] =
 
-          paramType match {
-            case ReadableParamType => getReadable(token)
-            case WriteableParamType => getWriteable(token)
+        paramTypes
+          .zipWithIndex
+          .map { case (paramType: ParamType, index: Int) =>
+            val token = tl.tokens(index * 2 + 1)
+            //getParam(paramType)
+            null
           }
-        }
 
       return Right(params)
     }

@@ -515,11 +515,26 @@ object CompilerTest extends TestSuite {
         "success"-{
           import scala.language.postfixOps
           val instructionName = "foo"
-          val tl = TokenLine(Array("foo", "1", ",", "2", ",", "3"), 5)
-          val result = parseParams("foo", tl, ReadableParamType, ReadableParamType,
-            ReadableParamType)
-          val expectedResult = Right(Seq(IntegerParam(1), IntegerParam(2), IntegerParam(3)))
-          result ==> expectedResult
+
+          "foo 1, 2, 3"-{
+            val tl = TokenLine(Array("foo", "1", ",", "2", ",", "3"), 5)
+            val result = parseParams("foo", tl, ReadableParamType, ReadableParamType,
+              ReadableParamType)
+            val expectedResult = Right(Seq(IntegerParam(1), IntegerParam(2), IntegerParam(3)))
+            result ==> expectedResult
+          }
+
+          "forr %active, #active, #6"-{
+            val tl = TokenLine(Array("foo", "%active", ",", "#active", ",", "#7"), 5)
+            val result = parseParams("foo", tl, WriteableParamType, ReadableParamType,
+              ReadableParamType)
+            val expectedResult = Right(Seq(ActiveKeyword(false), ActiveKeyword(true),
+              RegisterParam(6)))
+            result ==> expectedResult
+          }
+
+
+
         }
 
       }
