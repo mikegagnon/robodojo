@@ -140,8 +140,19 @@ object InstructionTest extends TestSuite {
     "SetInstruction.execute"-{
 
       "required cycles"-{
-        val instruction = SetInstruction(RegisterParam(0), RegisterParam(0))
-        instruction.requiredCycles ==> config.sim.cycleCount.durSet
+
+        SetInstruction(RegisterParam(0), RegisterParam(0)).requiredCycles ==>
+          config.sim.cycleCount.durSet
+
+        SetInstruction(ActiveKeyword(false), RegisterParam(0)).requiredCycles ==>
+          config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost
+
+        SetInstruction(ActiveKeyword(true), BanksKeyword(false)).requiredCycles ==>
+          config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost
+
+        SetInstruction(ActiveKeyword(false), BanksKeyword(false)).requiredCycles ==>
+          config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost * 2
+
       }
 
       "destination params"-{
