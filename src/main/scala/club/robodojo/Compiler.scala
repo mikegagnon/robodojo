@@ -63,6 +63,9 @@ case object WriteableParamType extends ParamType {
 
 object Compiler {
 
+  // converts 0 to "a", 1 to "b" and so on
+  def indexToLetter(index: Int) = (index + 'a'.toInt).toChar.toString
+
   // TODO: move
   def getErrorWrongParamType(
       instructionName: String,
@@ -73,17 +76,14 @@ object Compiler {
     // TODO: factor out common code
     // Produces a string like: "set a, b" or "create a, b, c"
     val instructionForm: String = (0 until types.length)
-      .map { i =>
-        (i + 'a'.toInt).toChar
-      }
+      .map { indexToLetter(_) }
       .mkString(", ")
 
     // Produces a string like: "a is a writeable parameter, and b is a readable parameter"
     val instructionTypes: String = types
       .zipWithIndex
       .map { case (t: ParamType, i: Int) =>
-        val letter = (i + 'a'.toInt).toChar
-        s"<tt>${letter}</tt> is a <i>${t}</i>"
+        s"<tt>${indexToLetter(i)}</tt> is a <i>${t}</i>"
       }
       .mkString(", and ")
 
@@ -98,7 +98,7 @@ object Compiler {
         throw new IllegalArgumentException("badParameterIndex is bad")
       }
 
-    val badParamLetter = (badParameterIndex + 'a'.toInt).toChar
+    val badParamLetter = indexToLetter(badParameterIndex)
 
     val message = s"<b>Wrong parameter type</b>: the <tt>${instructionName}</tt> instruction must be of " +
     s"the form: <tt>${instructionName} ${instructionForm}</tt>, where ${instructionTypes}. " +
@@ -116,7 +116,7 @@ object Compiler {
       lineNumber: Int,
       types: Seq[ParamType],
       paramType: ParamType,
-      token: String)(implicit config: Config): Either[ErrorMessage, Param] = {
+      token: String)(implicit config: Config): Either[ErrorMessage, Param] =
 
     paramType match {
       case ReadableParamType => try {
@@ -125,7 +125,6 @@ object Compiler {
           case _: IllegalArgumentException =>
             Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
         }
-      // TODO:
       case WriteableParamType => try {
           Right(getWriteable(token))
         } catch {
@@ -133,7 +132,6 @@ object Compiler {
             Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
         }
     }
-  }
 
   // TODO: move
   // TODO: test
