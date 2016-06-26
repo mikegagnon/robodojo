@@ -239,7 +239,6 @@ object Compiler {
       CompileLineResult(Some(instruction), None)
     }
 
-  // TODO: test
   def isRegister(token: String)(implicit config: Config): Boolean = {
     if (token(0) != '#') {
       return false
