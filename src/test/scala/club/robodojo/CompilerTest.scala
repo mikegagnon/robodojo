@@ -14,30 +14,221 @@ object CompilerTest extends TestSuite {
 
     "getParam"-{
       "success"-{
-        val instructionName = "foo"
-        val parameterIndex = 1
-        val lineNumber = 5
-        val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
-        val token = "%active"
+        "writeable"-{
+          {
+            val instructionName = "foo"
+            val parameterIndex = 1
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "%active"
 
-        val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
-        val expectedResult = Right(ActiveKeyword(false))
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(ActiveKeyword(false))
 
-        result ==> expectedResult
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(WriteableParamType, ReadableParamType, ReadableParamType)
+            val token = "#active"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(ActiveKeyword(true))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 1
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType)
+            val token = "#1"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(RegisterParam(0))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 1
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "#" + config.sim.maxNumVariables
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(RegisterParam(config.sim.maxNumVariables - 1))
+
+            result ==> expectedResult
+          }
+        }
+        "readable"-{
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(ReadableParamType)
+            val token = "#1"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(RegisterParam(0))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 1
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "#" + config.sim.maxNumVariables
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(RegisterParam(config.sim.maxNumVariables - 1))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 2
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "#active"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(ActiveKeyword(true))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "%active"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(ActiveKeyword(false))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "$banks"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(BanksKeyword(true))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 2
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "%banks"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(BanksKeyword(false))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 2
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "$instrset"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(InstrSetKeyword(true))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "%instrset"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(InstrSetKeyword(false))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "$mobile"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(MobileKeyword(true))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 2
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "%mobile"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(MobileKeyword(false))
+
+            result ==> expectedResult
+          }
+          {
+            val instructionName = "foo"
+            val parameterIndex = 0
+            val lineNumber = 5
+            val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+            val token = "$fields"
+
+            val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+            val expectedResult = Right(FieldsKeyword())
+
+            result ==> expectedResult
+          }
+        }
       }
       "fail"-{
-        val instructionName = "foo"
-        val parameterIndex = 1
-        val lineNumber = 5
-        val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
-        val token = "active"
+        {
+          val instructionName = "foo"
+          val parameterIndex = 1
+          val lineNumber = 5
+          val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+          val token = "active"
 
-        val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+          val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
 
-        result match {
-          case Left(error) => error.errorCode ==> ErrorCode.WrongParamType
-          case Right(param) => assert(false)
+          result match {
+            case Left(error) => error.errorCode ==> ErrorCode.WrongParamType
+            case Right(param) => assert(false)
+          }
         }
+        {
+          val instructionName = "foo"
+          val parameterIndex = 1
+          val lineNumber = 5
+          val types = Seq(ReadableParamType, WriteableParamType, ReadableParamType)
+          val token = "$banks"
+
+          val result = getParam(instructionName, parameterIndex, lineNumber, types, token)
+
+          result match {
+            case Left(error) => error.errorCode ==> ErrorCode.WrongParamType
+            case Right(param) => assert(false)
+          }
+        }
+
       }
     }
 
