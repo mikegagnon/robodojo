@@ -151,6 +151,14 @@ object Compiler {
 
   /* Begin: reading parameters from a TokenLine ***************************************************/
 
+  def isShort(value: String): Boolean =
+    try {
+      value.toShort
+      true
+    } catch {
+      case _ : NumberFormatException => false
+    }
+
   def isRegister(token: String)(implicit config: Config): Boolean = {
     if (token(0) != '#') {
       return false
@@ -338,15 +346,9 @@ object Compiler {
         !(head == "name" || head == "author" || head == "country")
       }
 
-  def isShort(value: String): Boolean =
-    try {
-      value.toShort
-      true
-    } catch {
-      case _ : NumberFormatException => false
-    }
 
-    val readableKeywords = Set("#active", "%active", "$banks", "%banks", "$instrset", "%instrset",
+
+  val readableKeywords = Set("#active", "%active", "$banks", "%banks", "$instrset", "%instrset",
     "$mobile", "%mobile", "$fields")
 
   def isReadableKeyword(token: String): Boolean = readableKeywords.contains(token)
