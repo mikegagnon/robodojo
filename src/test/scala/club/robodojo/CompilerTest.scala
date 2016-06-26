@@ -2,7 +2,7 @@ package club.robodojo
 
 import utest._
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable.{ArrayBuffer, WrappedArray}
 
 object CompilerTest extends TestSuite {
 
@@ -225,6 +225,18 @@ object CompilerTest extends TestSuite {
         "parameter."
 
       result ==> ErrorMessage(ErrorCode.WrongParamType, 3, expectedMessage)
+    }
+
+    "parseParams"-{
+      "success"-{
+        val result = parseParams(
+          "create",
+          TokenLine(Array("create", "1", ",", "2", ",", "3"), 5),
+          ReadableParamType, ReadableParamType, ReadableParamType)
+        val expectedResult = Right(Seq(IntegerParam(1), IntegerParam(2), IntegerParam(3)))
+        result ==> expectedResult
+
+      }
     }
 
     "compile"-{
