@@ -63,6 +63,8 @@ case object WriteableParamType extends ParamType {
 
 object Compiler {
 
+  // TODO: move
+  // TODO: "wrong param type" isn't precisely what this error covers
   def getErrorWrongParamType(
       instructionName: String,
       badParameterIndex: Int,
@@ -81,7 +83,7 @@ object Compiler {
     val instructionTypes: String = types
       .zipWithIndex
       .map { case (t: ParamType, i: Int) =>
-        val letter = (i + 'a'.toInt.toChar)
+        val letter = (i + 'a'.toInt).toChar
         s"<tt>${letter}</tt> is a <i>${t}</i>"
       }
       .mkString(", and ")
@@ -97,9 +99,12 @@ object Compiler {
         throw new IllegalArgumentException("badParameterIndex is bad")
       }
 
-    val message = s"Wrong parameter type: the <tt>${instructionName}</tt> instruction must be of " +
-    s"the form: <tt>${instructionForm}</tt>, where ${instructionTypes}. " +
-    s"Your ${parameterNumber} parameter is not a ${types(badParameterIndex)}."
+    val badParamLetter = (badParameterIndex + 'a'.toInt).toChar
+
+    val message = s"<b>Wrong parameter type</b>: the <tt>${instructionName}</tt> instruction must be of " +
+    s"the form: <tt>${instructionName} ${instructionForm}</tt>, where ${instructionTypes}. " +
+    s"Your ${parameterNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
+    s"${types(badParameterIndex)}."
 
     val errorCode = ErrorCode.WrongParamType
     
