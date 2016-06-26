@@ -201,7 +201,6 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
     val instructionSet = InstructionSet.Basic
     val requiredCycles = config.sim.cycleCount.durTurn
 
-    // TODO: move to object TurnInstruction?
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
         case Direction.Left => Direction.rotateLeft(currentDir)
