@@ -55,8 +55,6 @@ sealed trait WriteableKeyword extends KeywordParam with WriteableParam
 
 sealed trait ReadableFromBot extends ReadableKeyword {
 
-  val local: Boolean
-
   def read(bot: Bot): Short =
     if (local) {
       readFromBot(bot)
@@ -116,21 +114,21 @@ case class MobileKeyword(local: Boolean) extends ReadableFromBot {
 }
 
 case class FieldsKeyword()(implicit config: Config) extends ReadableKeyword {
-  val local = false
+  val local = true
   def read(bot: Bot): Short = config.sim.numRows.toShort
 }
 
 /* End KeywordParam values **********************************************************************/
 
 final case class IntegerParam(value: Short) extends ReadableParam {
-  val local = false
+  val local = true
   def read(bot: Bot): Short = value
 }
 
 final case class RegisterParam(registerIndex: Int)(implicit config: Config)
     extends ReadableParam with WriteableParam {
 
-  val local = false
+  val local = true
 
   if (registerIndex < 0 || registerIndex >= config.sim.maxNumVariables) {
     throw new IllegalArgumentException("Register num out of range: " + registerIndex)

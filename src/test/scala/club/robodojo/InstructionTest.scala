@@ -139,6 +139,11 @@ object InstructionTest extends TestSuite {
     // TODO: test animation
     "SetInstruction.execute"-{
 
+      "required cycles"-{
+        val instruction = SetInstruction(RegisterParam(0), RegisterParam(0))
+        instruction.requiredCycles ==> config.sim.cycleCount.durSet
+      }
+
       "destination params"-{
 
         def testDestinationParam(destination: WriteableParam, source: Short)(test: (Bot => Unit)): Unit = {
@@ -264,7 +269,7 @@ object InstructionTest extends TestSuite {
         }
 
         // $Fields
-        testSourceParam(FieldsKeyword(), config.sim.numRows.toShorts) { (_, _) => }
+        testSourceParam(FieldsKeyword(), config.sim.numRows.toShort) { (_, _) => }
 
       }
     }
