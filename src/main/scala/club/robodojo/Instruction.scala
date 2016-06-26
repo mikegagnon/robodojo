@@ -222,9 +222,9 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 // TODO: Prevent FAT hack
 // TODO: make compliant with Robocom standard: generation, maxGeneration, and maxNumBots?
 case class CreateInstruction(
-    childInstructionSet: InstructionSet.EnumVal,
-    numBanks: Int,
-    mobile: Boolean,
+    childInstructionSet: ReadableParam,
+    numBanks: ReadableParam,
+    mobile: ReadableParam,
     lineNumber: Int,
     // Whose program did this instruction come from originally?
     // Note this is different than bot.playerColor, which is the color of the bot.
