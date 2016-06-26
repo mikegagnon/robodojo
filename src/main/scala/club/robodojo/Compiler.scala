@@ -141,7 +141,8 @@ object Compiler {
   def parseParams(
       instructionName: String,
       tl: TokenLine,
-      paramTypes: ParamType*)(implicit config: Config): Either[ErrorMessage, Seq[Param]] =
+      paramTypes: ParamType*)(implicit config: Config):
+        Either[ErrorMessage, Seq[Param]] =
 
     if (tl.tokens.length != paramTypes.length * 2) {
 
@@ -406,20 +407,19 @@ object Compiler {
       return CompileLineResult(None, Some(errorMessage))
     } else {
 
-      val resultParseParams: Either[ErrorMessage, Seq[Param]] = parseParams(
-        "create",
-        tl,
-        ReadableParamType,
-        ReadableParamType,
-        ReadableParamType)
+      val resultParseParams: Either[ErrorMessage, Seq[Param]] =
+        parseParams(
+          "create",
+          tl,
+          ReadableParamType,
+          ReadableParamType,
+          ReadableParamType)
 
-      if (resultParseParams.isLeft) {
-        val errorMessage = resultParseParams.left
-        return CompileLineResult(None, Some(errorMessage))
+      val params: Seq[Param] = resultParseParams match {
+          case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+          case Right(params) => params
       }
-
-      val params: Seq[Param] = resultParseParams.right
-
+        
       val instructionSet = params(0)
       val numBanks = params(1)
       val mobile = params(2)

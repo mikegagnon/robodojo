@@ -24,7 +24,7 @@ object InstructionSet {
 
 sealed abstract class Instruction {
   val instructionSet: InstructionSet.EnumVal
-  val requiredCycles: Int
+  def requiredCycles: Int
 
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
     if (cycleNum == requiredCycles) {
@@ -232,14 +232,13 @@ case class CreateInstruction(
     // then bot.playerColor == red and playerColor, here, == blue.
     playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
-  if (config.compiler.safetyChecks && (numBanks < 1 || numBanks > config.sim.maxBanks)) {
-    throw new IllegalArgumentException("numBanks < 1 == " + numBanks)
-  }
-
-  val instructionSet = InstructionSet.Basic
+  var requiredCycles: Int
 
   // TODO: will need to change to def if take ParamValue objects as params
-  val requiredCycles = {
+  def calculateRequiredCycles(
+      childInstructionSetValue: Int,
+      numBanksValue: Int,
+      mobileValue: Int): Int = {
 
     val durCreate1 = config.sim.cycleCount.durCreate1
     val durCreate2 = config.sim.cycleCount.durCreate2
@@ -249,18 +248,20 @@ case class CreateInstruction(
     val durCreate5 = config.sim.cycleCount.durCreate5
     val maxCreateDur = config.sim.cycleCount.maxCreateDur
 
-    val primary = durCreate1 + durCreate2 * numBanks
-    val mobilityCost = if (mobile) durCreate3 else 1
-    val secondaryMobilityCost = if (mobile) durCreate3a else 0
+    val primary = durCreate1 + durCreate2 * numBanksValue
+    val mobilityCost = if (mobileValue > 0) durCreate3 else 1
+    val secondaryMobilityCost = if (mobileValue > 0) durCreate3a else 0
 
-    val instructionSetCostBasic = childInstructionSet match {
+    val instructionSetCostBasic = childInstructionSetValue match {
       case InstructionSet.Basic => durCreate4
       case InstructionSet.Extended => 0
     }
 
-    val instructionSetCostExtended = childInstructionSet match {
-      case InstructionSet.Basic => 0
-      case InstructionSet.Extended => durCreate5
+    val instructionSetCostExtended = childInstructionSetValue match {
+      case 0 => 0
+      case 1 => durCreate5
+      // TODO: what to do here?
+      case _ => 0
     }
 
     val calculatedCost =
@@ -271,7 +272,7 @@ case class CreateInstruction(
 
     // We use max and min here because numBanks, childInstructionSet, and mobile might have wonky
     // values
-    Math.max(Math.min(calculatedCost, maxCreateDur), 1)
+    return Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
   def errorCheck(bot: Bot): Option[Animation] = {
@@ -293,7 +294,32 @@ case class CreateInstruction(
     }
   }
 
+  override def cycle(bot: Bot, cycleNum: Int): Option[Animation] = {
+
+    if (cycleNum == 0) {
+      val childInstructionSetValue: Int = childInstructionSet.read(bot)
+      val numBanksValue: Int = numBanks.read(bot)
+      val mobileValue: Int = mobileValue.read(bot)
+
+      requiredCycles = calculateRequiredCycles(childInstructionSetValue, numBanksValue, mobileValue)
+    }
+
+    // TODO: prevent FAT hack
+    if (cycleNum == requiredCycles) {
+      return execute(bot)
+    } else if (cycleNum > requiredCycles) {
+      throw new IllegalArgumentException("cycleNum > requiredCycles")
+    } else {
+      return progress(bot, cycleNum)
+    }
+
+  }
+
   def execute(bot: Bot): Option[Animation] = {
+
+    val childInstructionSetValue: Int = childInstructionSet.read(bot)
+    val numBanksValue: Int = numBanks.read(bot)
+    val mobileValue: Int = mobileValue.read(bot)
 
     val error: Option[Animation] = errorCheck(bot)
 
@@ -309,7 +335,7 @@ case class CreateInstruction(
     bot.board.matrix(row)(col) match {
       case None => {
 
-        val emptyProgram = Program.emptyProgram(numBanks)
+        val emptyProgram = Program.emptyProgram(numBanksValue)
 
         val active: Short = 0
 
@@ -320,8 +346,8 @@ case class CreateInstruction(
           col,
           bot.direction,
           emptyProgram,
-          childInstructionSet,
-          mobile,
+          childInstructionSetValue,
+          mobileValue,
           active)
 
         bot.board.addBot(newBot)
