@@ -85,6 +85,74 @@ object Compiler {
         !(head == "name" || head == "author" || head == "country")
       }
 
+  def isShort(value: String): Boolean =
+    try {
+      value.toShort
+      true
+    } catch {
+      case _ : NumberFormatException => false
+    }
+
+    val readableKeywords = Set("#active", "%active", "$banks", "%banks", "$instrset", "%instrset",
+    "$mobile", "%mobile", "$fields")
+
+  def isReadableKeyword(token: String): Boolean = readableKeywords.contains(token)
+
+  val writeableKeywords = Set("#active", "%active")
+
+  def isWriteableKeyword(token: String): Boolean = writeableKeywords.contains(token)
+
+  def isReadable(token: String)(implicit config: Config): Boolean =
+    isRegister(token) ||
+    isReadableKeyword(token) ||
+    isShort(token)
+
+  def isWriteable(token: String)(implicit config: Config): Boolean =
+    isRegister(token) ||
+    isWriteableKeyword(token)
+
+  def getWriteable(token: String)(implicit config: Config): WriteableParam =
+    if (token == "#active") {
+      ActiveKeyword(true)
+    } else if (token == "%active") {
+      ActiveKeyword(false)
+    } else if (isRegister(token)) {
+      val registerNum = token.substring(1).toShort
+      RegisterParam(registerNum - 1)
+    } else {
+     throw new IllegalArgumentException("Bad token: " + token)
+    }
+
+  def getReadable(token: String)(implicit config: Config): ReadableParam =
+    if (isRegister(token)) {
+      val registerNum = token.substring(1).toShort
+      RegisterParam(registerNum - 1)
+    } else if (isShort(token)) {
+      IntegerParam(token.toShort)
+    } else if (token == "#active") {
+      ActiveKeyword(true)
+    } else if (token == "%active") {
+      ActiveKeyword(false)
+    } else if (token == "$banks") {
+      BanksKeyword(true)
+    } else if (token == "%banks") {
+      BanksKeyword(false)
+    } else if (token == "$instrset") {
+      InstrSetKeyword(true)
+    } else if (token == "%instrset") {
+      InstrSetKeyword(false)
+    } else if (token == "$mobile") {
+      MobileKeyword(true)
+    } else if (token == "%mobile") {
+      MobileKeyword(false)
+    } else if (token == "$fields") {
+      FieldsKeyword()
+    } else {
+      throw new IllegalArgumentException("Bad token: " + token)
+    }
+
+
+
   def unrecognizedInstruction(tl: TokenLine) = {
     val message = s"Unrecognized instruction: <tt>${tl.tokens(0)}</tt>."
     val errorMessage = ErrorMessage(ErrorCode.UnrecognizedInstruction, tl.lineNumber, message)
@@ -154,14 +222,6 @@ object Compiler {
           CompileLineResult(None, Some(errorMessage))
         }
       }
-    }
-
-  def isShort(value: String): Boolean =
-    try {
-      value.toShort
-      true
-    } catch {
-      case _ : NumberFormatException => false
     }
 
   // TESTED
@@ -258,64 +318,6 @@ object Compiler {
 
     return true
   }
-
-  val readableKeywords = Set("#active", "%active", "$banks", "%banks", "$instrset", "%instrset",
-    "$mobile", "%mobile", "$fields")
-
-  def isReadableKeyword(token: String): Boolean = readableKeywords.contains(token)
-
-  val writeableKeywords = Set("#active", "%active")
-
-  def isWriteableKeyword(token: String): Boolean = writeableKeywords.contains(token)
-
-  def isReadable(token: String)(implicit config: Config): Boolean =
-    isRegister(token) ||
-    isReadableKeyword(token) ||
-    isShort(token)
-
-  def isWriteable(token: String)(implicit config: Config): Boolean =
-    isRegister(token) ||
-    isWriteableKeyword(token)
-
-  def getWriteable(token: String)(implicit config: Config): WriteableParam =
-    if (token == "#active") {
-      ActiveKeyword(true)
-    } else if (token == "%active") {
-      ActiveKeyword(false)
-    } else if (isRegister(token)) {
-      val registerNum = token.substring(1).toShort
-      RegisterParam(registerNum - 1)
-    } else {
-     throw new IllegalArgumentException("Bad token: " + token)
-    }
-
-  def getReadable(token: String)(implicit config: Config): ReadableParam =
-    if (isRegister(token)) {
-      val registerNum = token.substring(1).toShort
-      RegisterParam(registerNum - 1)
-    } else if (isShort(token)) {
-      IntegerParam(token.toShort)
-    } else if (token == "#active") {
-      ActiveKeyword(true)      
-    } else if (token == "%active") {
-      ActiveKeyword(false)
-    } else if (token == "$banks") {
-      BanksKeyword(true)
-    } else if (token == "%banks") {
-      BanksKeyword(false)
-    } else if (token == "$instrset") {
-      InstrSetKeyword(true)
-    } else if (token == "%instrset") {
-      InstrSetKeyword(false)
-    } else if (token == "$mobile") {
-      MobileKeyword(true)
-    } else if (token == "%mobile") {
-      MobileKeyword(false)
-    } else if (token == "$fields") {
-      FieldsKeyword()
-    } else {
-      throw new IllegalArgumentException("Bad token: " + token)
-    }
 
   def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult =
     if (tl.tokens.length != 4 ||
