@@ -384,7 +384,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick + 1
     val lastCycleThatGotSkippedOver = animationCycleNum - 1
 
-    // TODO: iy botId
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
 
