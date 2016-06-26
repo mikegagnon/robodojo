@@ -136,7 +136,6 @@ object InstructionTest extends TestSuite {
 
     }
 
-    // TODO: test animation
     "SetInstruction.execute"-{
 
       "required cycles"-{
