@@ -58,8 +58,46 @@ case object WriteableParamType extends ParamType
 object Compiler {
 
   // TODO: move
-  def parseParams(tl: TokenLine, paramTypes: ParamType*): Array[Param] = {
-    Array[Param]()
+  // TODO: test
+  def parseParams(
+      instructionName: String,
+      tl: TokenLine,
+      paramTypes: ParamType*)(implicit config: Config): Either[ErrorMessage, Seq[Param]] = {
+
+    if (tl.tokens.length != paramTypes.length * 2) {
+
+      val instructionForm = (0 until paramTypes.length)
+        .map { i =>
+          (i + 'a'.toInt).toChar
+        }
+        .mkString(", ")
+
+      // TODO: finish
+      val message = s"Malformed <tt>${instructionName}</tt> instruction: the " +
+        s"<tt>${instructionName}</tt> must be of the form <tt>${instructionName} " +
+        s"${instructionForm}</tt>..."
+
+      val errorCode = ErrorCode.MalformedInstruction
+
+      return Left(ErrorMessage(errorCode, tl.lineNumber, message))
+    } else {
+      // TODO: more error checking...
+      val params: Seq[Param] = paramTypes
+        .zipWithIndex
+        .map { case (paramType: ParamType, index: Int) =>
+          val token = tl.tokens(index * 2 + 1)
+
+          paramType match {
+            case ReadableParamType => getReadable(token)
+            case WriteableParamType => getWriteable(token)
+          }
+        }
+
+      Right(params)
+    }
+
+
+    Right(Seq[Param]())
   }
 
   // TESTED
