@@ -151,6 +151,26 @@ object Compiler {
 
   /* Begin: reading parameters from a TokenLine ***************************************************/
 
+  def isRegister(token: String)(implicit config: Config): Boolean = {
+    if (token(0) != '#') {
+      return false
+    }
+
+    val num = token.substring(1)
+
+    if (!isShort(num)) {
+      return false
+    }
+
+    val registerNum = num.toInt
+
+    if (registerNum < 1 || registerNum > config.sim.maxNumVariables) {
+      return false
+    }
+
+    return true
+  }
+
   def getWriteable(token: String)(implicit config: Config): WriteableParam =
     if (token == "#active") {
       ActiveKeyword(true)
@@ -317,26 +337,6 @@ object Compiler {
         val head = tokens.head
         !(head == "name" || head == "author" || head == "country")
       }
-
-  def isRegister(token: String)(implicit config: Config): Boolean = {
-    if (token(0) != '#') {
-      return false
-    }
-
-    val num = token.substring(1)
-
-    if (!isShort(num)) {
-      return false
-    }
-
-    val registerNum = num.toInt
-
-    if (registerNum < 1 || registerNum > config.sim.maxNumVariables) {
-      return false
-    }
-
-    return true
-  }
 
   def isShort(value: String): Boolean =
     try {
