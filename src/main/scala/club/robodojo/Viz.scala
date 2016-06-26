@@ -449,7 +449,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // This is where we look into the future to see if the move is successful or not
     val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
 
-    // TODO: bugfix
     // futureAnimation == the animation for when this bot finishes executing its create instruction
     val futureAnimation = animations(endCycleNum)(animation.botId)
 
