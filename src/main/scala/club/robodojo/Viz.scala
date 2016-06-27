@@ -254,8 +254,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val container = newBotContainer(botId, playerColor, row, col, direction)
 
     def onBotClick(event: Object): Boolean = {
-      println(botId)
-      println(event)
+      controller.debugger.onBotClick(botId)
       return false
     }
 

@@ -35,6 +35,10 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     jQuery("#" + config.id).append(html)
   }
 
+  def onBotClick(botId: Long): Unit = {
+    println("controller.onBotClick: " + botId)
+  }
+
   // TODO: factor our common code between Debugger and Editor
   def getCmEditor(): org.denigma.codemirror.Editor = {
     val mode = "clike"
