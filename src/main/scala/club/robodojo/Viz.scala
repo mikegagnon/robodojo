@@ -233,6 +233,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     return container
   }
 
+
+  /*def onBotClick(event: Object): Boolean = {
+    //println(botId)
+    println(event)
+    println("asdf")
+    return true
+  }*/
+
   def addBot(botId: Long,
       playerColor: PlayerColor.EnumVal,
       row: Int,
@@ -243,6 +251,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val twinContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val birthContainer = newBotContainer(botId, playerColor, -1, -1, direction)
     val container = newBotContainer(botId, playerColor, row, col, direction)
+
+    def onBotClick(event: Object): Boolean = {
+      println(botId)
+      println(event)
+      return false
+    }
+
+    stage.on("click", onBotClick _)
 
     twinBotImages += (botId -> twinContainer)
     birthBotImages += (botId -> birthContainer)
