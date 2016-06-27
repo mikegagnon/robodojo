@@ -249,6 +249,16 @@ object CompilerTest extends TestSuite {
       foundCommas(3, TokenLine(Array("create", "1", "x", "2", "x", "3"), 1)) ==> false
     }
 
+    "parseParams"-{
+      "success"-{
+        val result = parseParams("turn", TokenLine(Array("turn", "#1"), 0), ReadableParamType)
+        result ==> Right(Seq(RegisterParam(0)))
+      }
+      "fail"-{
+
+      }
+    }
+
     "TokenLine.equals"-{
       "simple case"-{
         "equals"-{
