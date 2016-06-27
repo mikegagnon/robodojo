@@ -142,18 +142,21 @@ object InstructionTest extends TestSuite {
 
     "SetInstruction.execute"-{
 
+      val board = new Board()
+      val bot = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+
       "required cycles"-{
 
-        SetInstruction(RegisterParam(0), RegisterParam(0)).requiredCycles ==>
+        SetInstruction(RegisterParam(0), RegisterParam(0)).getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet
 
-        SetInstruction(ActiveKeyword(false), RegisterParam(0)).requiredCycles ==>
+        SetInstruction(ActiveKeyword(false), RegisterParam(0)).getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost
 
-        SetInstruction(ActiveKeyword(true), BanksKeyword(false)).requiredCycles ==>
+        SetInstruction(ActiveKeyword(true), BanksKeyword(false)).getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost
 
-        SetInstruction(ActiveKeyword(false), BanksKeyword(false)).requiredCycles ==>
+        SetInstruction(ActiveKeyword(false), BanksKeyword(false)).getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost * 2
 
       }

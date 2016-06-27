@@ -256,6 +256,7 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 
 // TODO: Prevent FAT hack
 // TODO: make compliant with Robocom standard: generation, maxGeneration, and maxNumBots?
+// TODO: test required cycles
 case class CreateInstruction(
     childInstructionSet: ReadableParam,
     numBanks: ReadableParam,
