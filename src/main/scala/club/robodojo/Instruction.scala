@@ -38,6 +38,7 @@ sealed abstract class Instruction {
 
   val instructionSet: InstructionSet.EnumVal
 
+  // TODO: foreach concrete subclass, factor into account remote penalty
   def getRequiredCycles(bot: Bot): Int
 
   // TODO: TEST
@@ -194,7 +195,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
 
-  val requiredCycles = config.sim.cycleCount.durMove
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durMove
 
   // TESTED
   def execute(bot: Bot): Option[Animation] = {
@@ -231,7 +232,8 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
-    val requiredCycles = config.sim.cycleCount.durTurn
+
+    def requiredCycles(bot: Bot): Int = config.sim.cycleCount.durTurn
 
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
@@ -265,7 +267,7 @@ case class CreateInstruction(
 
   val instructionSet = InstructionSet.Basic
 
-  var requiredCycles: Int = 0
+  def getRequiredCycles(bot: Bot): Int = 0
 
   def calculateRequiredCycles(
       childInstructionSetValue: Int,
