@@ -13,7 +13,6 @@ class Controller(val viz: Viz)(implicit val config: Config) {
   // TODO: debugger isn't used here
   val debugger = new Debugger(this, viz)
 
-  // TODO: editor isn't used here
   val editor = new Editor(this, viz)
 
   /** End initialization **************************************************************************/
