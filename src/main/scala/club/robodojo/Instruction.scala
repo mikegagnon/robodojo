@@ -214,12 +214,13 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     }
   }
 
+  // TODO: TEST
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = {
     val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
     return Some(MoveAnimationProgress(
       bot.id,
       cycleNum,
-      requiredCycles,
+      bot.requiredCycles,
       bot.row,
       bot.col,
       destRow,
@@ -267,12 +268,11 @@ case class CreateInstruction(
 
   val instructionSet = InstructionSet.Basic
 
-  def getRequiredCycles(bot: Bot): Int = 0
+  def getRequiredCycles(bot: Bot): Int = {
 
-  def calculateRequiredCycles(
-      childInstructionSetValue: Int,
-      numBanksValue: Int,
-      mobileValue: Int): Int = {
+    val childInstructionSetValue = childInstructionSet.read(bot)
+    val numBanksValue = numBanks.read(bot)
+    val mobileValue = mobile.read(bot)
 
     val durCreate1 = config.sim.cycleCount.durCreate1
     val durCreate2 = config.sim.cycleCount.durCreate2
