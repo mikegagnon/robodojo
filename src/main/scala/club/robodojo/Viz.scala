@@ -71,6 +71,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   var controller: Controller = null
 
+  /** End initialization **************************************************************************/
+
+  /** Begin initialization functions **************************************************************/
+
   def init(control: Controller): Unit = {
 
     controller = control
@@ -95,10 +99,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     stage.update()
   }
-
-  /** End initialization **************************************************************************/
-
-  /** Begin initialization functions **************************************************************/
 
   def updateMainDiv(): Unit = {
     jQuery("#" + config.id).attr("class", "robo")
