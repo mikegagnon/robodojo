@@ -46,6 +46,12 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val safetyChecks = params.getOrElse("compiler.safetyChecks", true).asInstanceOf[Boolean]
   }
 
+  object debugger {
+    val divId = id + "-debugger-div"
+    val textAreaId = divId + "-textArea"
+    val outputId = divId + "-output"
+  }
+
   object editor {
     val divId = id + "-editor-div"
     val textAreaId = divId + "-textArea"
