@@ -331,7 +331,7 @@ case class CreateInstruction(
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
         s"The ${bot.playerColor} bot has tapped out because it attempted to " +
-        s"execute a <tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanks}. " +
+        s"execute a <tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanksValue}. "+
         s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
         s"${config.sim.maxBanks}.</p>"
       val errorMessage = ErrorMessage(errorCode, lineNumber, message)
