@@ -75,6 +75,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   }
 
   // TESTED
+  // TODO: do a proper Auto Reboot
   def cycle(): Option[Animation] = {
 
     if (active < 1) {
@@ -89,7 +90,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
       val animation: Option[Animation] = instruction.cycle(this, cycleNum)
 
-      if (cycleNum == instruction.requiredCycles) {
+      if (cycleNum >= requiredCycles) {
 
         cycleNum = 0
         instructionNum += 1

@@ -458,6 +458,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case _: AnimationProgressFail => false
       case _: FatalErrorAnimation => false
       case _ => {
+        println(animationCycleNum)
+        println(animation.requiredCycles)
+        println(animation.cycleNum)
+        println("+++ ==> " + endCycleNum)
         println(futureAnimation)
         throw new IllegalStateException("This code shouldn't be reachable")
       }

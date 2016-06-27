@@ -44,7 +44,8 @@ sealed abstract class Instruction {
   // TODO: TEST
   // TODO: document FAT hack and this work around
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] = {
-    if (cycleNum >= bot.requiredCycles) {
+
+    if (cycleNum == 0 || cycleNum >= bot.requiredCycles) {
       bot.requiredCycles = getRequiredCycles(bot)
     }
 
@@ -234,7 +235,7 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 
     val instructionSet = InstructionSet.Basic
 
-    def requiredCycles(bot: Bot): Int = config.sim.cycleCount.durTurn
+    def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durTurn
 
     def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
       leftOrRight match {
@@ -309,6 +310,7 @@ case class CreateInstruction(
     return Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
+  // TODO: Check for more errors
   def errorCheck(bot: Bot, numBanksValue: Int): Option[Animation] = {
     if (numBanksValue <= 0 || numBanksValue > config.sim.maxBanks) {
 
@@ -328,28 +330,6 @@ case class CreateInstruction(
     }
   }
 
-  override def cycle(bot: Bot, cycleNum: Int): Option[Animation] = {
-
-    if (cycleNum == 0) {
-      val childInstructionSetValue: Int = childInstructionSet.read(bot)
-      val numBanksValue: Int = numBanks.read(bot)
-      val mobileValue: Int = mobile.read(bot)
-
-      requiredCycles = calculateRequiredCycles(childInstructionSetValue, numBanksValue, mobileValue)
-    }
-
-    // TODO: prevent FAT hack
-    if (cycleNum == requiredCycles) {
-      return execute(bot)
-    } else if (cycleNum > requiredCycles) {
-      throw new IllegalArgumentException("cycleNum > requiredCycles")
-    } else {
-      return progress(bot, cycleNum)
-    }
-
-  }
-
-  // TODO: prevent FAT hack
   def execute(bot: Bot): Option[Animation] = {
 
     val childInstructionSetValue: Int = childInstructionSet.read(bot)
@@ -406,7 +386,7 @@ case class CreateInstruction(
     return Some(BirthAnimationProgress(
       bot.id,
       cycleNum,
-      requiredCycles,
+      bot.requiredCycles,
       bot.row,
       bot.col,
       destRow,
@@ -420,12 +400,13 @@ case class SetInstruction(
   source: ReadableParam)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
-  val requiredCycles = {
+
+  def getRequiredCycles(bot: Bot): Int = {
 
     val remoteWriteCost = if (destination.local) 0 else config.sim.cycleCount.durRemoteAccessCost
     val remoteReadCost = if (source.local) 0 else config.sim.cycleCount.durRemoteAccessCost
 
-    config.sim.cycleCount.durSet + remoteWriteCost + remoteReadCost
+    return config.sim.cycleCount.durSet + remoteWriteCost + remoteReadCost
   }
 
   def execute(bot: Bot): Option[Animation] = {
