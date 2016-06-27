@@ -606,6 +606,12 @@ object CompilerTest extends TestSuite {
         "success -1"-{
           testInstruction("turn -1", Right(TurnInstruction(IntegerParam(-1))))
         }
+        "success #2"-{
+          testInstruction("turn #2", Right(TurnInstruction(RegisterParam(1))))
+        }
+        "success %banks"-{
+          testInstruction("turn %banks", Right(TurnInstruction(BanksKeyword(false))))
+        }
         "fail turn left"-{
           testInstruction("turn left", Left(ErrorCode.WrongParamType))
         }
