@@ -441,7 +441,6 @@ object Compiler {
       }
     }
 
-  // TODO: TEST
   def compileCreate(
       tl: TokenLine,
       playerColor: PlayerColor.EnumVal)(implicit config: Config): CompileLineResult = {

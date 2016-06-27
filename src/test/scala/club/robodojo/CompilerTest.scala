@@ -755,6 +755,10 @@ object CompilerTest extends TestSuite {
             testInstruction("create 1, 1, 0",
               Right(CreateInstruction(IntegerParam(1), IntegerParam(1), IntegerParam(0), 1, PlayerColor.Blue)))
           }
+          "register params"-{
+            testInstruction("create #1, #2, #3",
+              Right(CreateInstruction(RegisterParam(0), RegisterParam(1), RegisterParam(2), 1, PlayerColor.Blue)))
+          }
         }
       }
 

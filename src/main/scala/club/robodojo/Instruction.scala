@@ -240,7 +240,6 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
       Some(TurnAnimationProgress(bot.id, cycleNum, bot.direction, leftOrRight))
 }
 
-// TODO: take params as ParamValue objects?
 // TODO: Prevent FAT hack
 // TODO: make compliant with Robocom standard: generation, maxGeneration, and maxNumBots?
 case class CreateInstruction(
