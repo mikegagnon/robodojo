@@ -64,6 +64,9 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var cycleNum = 0
 
+  // The number of cycles that must be executed before executing the current instruction
+  var requiredCycles = 0
+
   var registers = ArrayBuffer.fill(config.sim.maxNumVariables)(0.toShort)
 
   def getRemote(): Option[Bot] = {

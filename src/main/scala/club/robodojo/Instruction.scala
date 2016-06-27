@@ -32,18 +32,28 @@ object InstructionSet {
 
 }
 
+// Instruction instances must be stateless, so multiple bots can execute the same instruction
+// at the same time.
 sealed abstract class Instruction {
-  val instructionSet: InstructionSet.EnumVal
-  def requiredCycles: Int
 
-  def cycle(bot: Bot, cycleNum: Int): Option[Animation] =
-    if (cycleNum == requiredCycles) {
+  val instructionSet: InstructionSet.EnumVal
+
+  def getRequiredCycles(bot: Bot): Int
+
+  // TODO: TEST
+  // TODO: document FAT hack and this work around
+  def cycle(bot: Bot, cycleNum: Int): Option[Animation] = {
+    if (cycleNum >= bot.requiredCycles) {
+      bot.requiredCycles = getRequiredCycles(bot)
+    }
+
+    if (cycleNum >= bot.requiredCycles) {
       return execute(bot)
-    } else if (cycleNum > requiredCycles) {
-      throw new IllegalArgumentException("cycleNum > requiredCycles")
     } else {
       return progress(bot, cycleNum)
     }
+
+  }
 
   // Execute the instruction
   def execute(bot: Bot): Option[Animation]
