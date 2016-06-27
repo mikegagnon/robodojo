@@ -49,7 +49,7 @@ object BotTest extends TestSuite {
       }
 
       "one turn instruction"-{
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(Direction.Left)))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(IntegerParam(0))))
 
         bot.direction ==> Direction.Right
         for ( _ <- 0 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
@@ -59,7 +59,7 @@ object BotTest extends TestSuite {
       }
 
       "turn instruction followed by move instruction"-{
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(Direction.Right), MoveInstruction()))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(IntegerParam(1)), MoveInstruction()))
 
         // Turn instruction
         bot.direction ==> Direction.Right
@@ -79,7 +79,7 @@ object BotTest extends TestSuite {
 
       "turn instruction followed by move instruction, and then repeat"-{
 
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(Direction.Right), MoveInstruction()))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(IntegerParam(1)), MoveInstruction()))
 
         // Turn instruction
         bot.direction ==> Direction.Right
