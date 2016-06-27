@@ -53,8 +53,13 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     }
   }
 
+  def getProgramText(botId: Long): String = {
+    return "Bar"
+  }
+
   def setupDebugger(botId: Long): Unit = {
-    cmEditor.getDoc().setValue("Foo")
+    val programText = getProgramText(botId)
+    cmEditor.getDoc().setValue(programText)
   }
 
 }
