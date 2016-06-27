@@ -257,7 +257,6 @@ case class CreateInstruction(
 
   var requiredCycles: Int = 0
 
-  // TODO: will need to change to def if take ParamValue objects as params
   def calculateRequiredCycles(
       childInstructionSetValue: Int,
       numBanksValue: Int,
