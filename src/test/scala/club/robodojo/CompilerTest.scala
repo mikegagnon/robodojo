@@ -762,6 +762,22 @@ object CompilerTest extends TestSuite {
         }
       }
 
+      "compileSet"-{
+        "fail"-{
+
+        }
+        "succeed"-{
+          testInstruction("set #2, 5",
+            Right(SetInstruction(RegisterParam(1), IntegerParam(5))))
+          testInstruction(s"set #${config.sim.maxNumVariables}, %mobile",
+            Right(SetInstruction(RegisterParam(config.sim.maxNumVariables - 1), MobileKeyword(false))))
+          testInstruction("set #Active, %banks",
+            Right(SetInstruction(ActiveKeyword(true), BanksKeyword(false))))
+          testInstruction("set %ACTIVE, $fields",
+            Right(SetInstruction(ActiveKeyword(false), FieldsKeyword())))
+        }
+      }
+
       "isRegister"-{
         implicit val config = new Config(Map("sim.maxNumVariables" -> 10))
 
