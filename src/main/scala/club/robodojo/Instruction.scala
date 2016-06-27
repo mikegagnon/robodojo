@@ -275,6 +275,14 @@ case class CreateInstruction(
     val numBanksValue = numBanks.read(bot)
     val mobileValue = mobile.read(bot)
 
+    val remoteCost1 = if (childInstructionSet.local) {
+        0
+      } else {
+        config.sim.cycleCount.durRemoteAccessCost
+      }
+    val remoteCost2 = if (numBanks.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteCost3 = if (mobile.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
     val durCreate1 = config.sim.cycleCount.durCreate1
     val durCreate2 = config.sim.cycleCount.durCreate2
     val durCreate3 = config.sim.cycleCount.durCreate3
@@ -303,7 +311,10 @@ case class CreateInstruction(
       primary * mobilityCost +
       secondaryMobilityCost +
       instructionSetCostBasic +
-      instructionSetCostExtended
+      instructionSetCostExtended +
+      remoteCost1 +
+      remoteCost2 +
+      remoteCost3
 
     // We use max and min here because numBanks, childInstructionSet, and mobile might have wonky
     // values
