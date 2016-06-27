@@ -330,44 +330,40 @@ case class CreateInstruction(
       numBanksValue: Short,
       mobileValue: Short): Option[Animation] = {
 
-    // TODO: factor out common code and strings
-    if (childInstructionSetValue < 0 || childInstructionSetValue > 1) {
-      val errorCode = ErrorCode.InvalidParameter
-      val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
+    val errorCode = ErrorCode.InvalidParameter
+
+    val messageHeader = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
         s"The ${bot.playerColor} bot has tapped out because it attempted to " +
-        s"execute a <tt>create</tt> instruction with <tt>childInstructionSet</tt> equal to " +
+        s"execute a <tt>create</tt> instruction with "
+
+    // TODO: factor out common code and strings
+    if (childInstructionSetValue < 0 || childInstructionSetValue > 1) {
+
+      val message = messageHeader + s"<tt>childInstructionSet</tt> equal to " +
         s"${childInstructionSetValue}. <tt>childInstructionSet</tt> must be either 0 (signifying " +
         s"the Basic instruction set) or 1 (signifying the Extended instruction set).</p>"
       val errorMessage = ErrorMessage(errorCode, lineNumber, message)
-
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+
     } else if (numBanksValue <= 0 || numBanksValue > config.sim.maxBanks) {
-      val errorCode = ErrorCode.InvalidParameter
-      val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
-        s"${playerColor}'s program, executed by the " +
-        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
-        s"execute a <tt>create</tt> instruction with <tt>numBanks</tt> equal to ${numBanksValue}. "+
+
+      val message = messageHeader + s"<tt>numBanks</tt> equal to ${numBanksValue}. "+
         s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
         s"${config.sim.maxBanks}.</p>"
       val errorMessage = ErrorMessage(errorCode, lineNumber, message)
-
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+
     } else if (mobileValue < 0 || mobileValue > 1) {
-      val errorCode = ErrorCode.InvalidParameter
-      val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
-        s"${playerColor}'s program, executed by the " +
-        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
-        s"execute a <tt>create</tt> instruction with <tt>mobile</tt> equal to " +
+
+      val message = messageHeader + s"<tt>mobile</tt> equal to " +
         s"${mobileValue}. <tt>mobile</tt> must be either 0 (signifying " +
         s"immobility) or 1 (signifying mobility).</p>"
       val errorMessage = ErrorMessage(errorCode, lineNumber, message)
-
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
-    }else {
+
+    } else {
       None
     }
   }
