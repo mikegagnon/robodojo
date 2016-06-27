@@ -63,7 +63,6 @@ case object WriteableParamType extends ParamType {
 
 object Compiler {
 
-  // TODO: move
   /* Begin: ErrorMessage production ***************************************************************/
 
   // converts 0 to "a", 1 to "b" and so on
