@@ -214,7 +214,6 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
     }
   }
 
-  // TODO: TEST
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = {
     val RowCol(destRow, destCol) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
     return Some(MoveAnimationProgress(
@@ -255,7 +254,6 @@ case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: 
 
 // TODO: Prevent FAT hack
 // TODO: make compliant with Robocom standard: generation, maxGeneration, and maxNumBots?
-// TODO: test required cycles
 case class CreateInstruction(
     childInstructionSet: ReadableParam,
     numBanks: ReadableParam,
@@ -322,7 +320,6 @@ case class CreateInstruction(
     return Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
-  // TODO: TEST
   def errorCheck(
       bot: Bot,
       childInstructionSetValue: Short,
