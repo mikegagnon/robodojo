@@ -404,41 +404,21 @@ object Compiler {
     }
 
   // TESTED
-  def compileTurn(tl: TokenLine)(implicit config: Config): CompileLineResult =
-    if (tl.tokens.length < 2) {
-      val message = "Missing parameter: the <tt>turn</tt> instruction requires an integer paramete."
-      val errorCode = ErrorCode.MissingParams
-      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-      CompileLineResult(None, Some(errorMessage))
-    } else if (tl.tokens.length > 2) {
-      val message = "Too many parameters: the <tt>turn</tt> instruction requires exactly one " +
-        "integer parameter."
-      val errorCode = ErrorCode.TooManyParams
-      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-      CompileLineResult(None, Some(errorMessage))   
-    } else {
+  def compileTurn(tl: TokenLine)(implicit config: Config): CompileLineResult = {
 
-      val param = tl.tokens(1)
+    val parsed: Either[ErrorMessage, Seq[Param]] = parseParams("turn", tl, ReadableParamType)
 
-      // TODO: take non-literal params?
-      try {
-        val leftOrRight = if (param.toInt == 0) {
-          Direction.Left
-        } else {
-          Direction.Right
-        }
-        val instruction = TurnInstruction(leftOrRight)
-        CompileLineResult(Some(instruction), None)
-      } catch {
-        case _ : NumberFormatException => {
-          val message = "Wrong parameter type: the <tt>turn</tt> instruction requires an integer " +
-            s"parameter. <tt>${param}</tt> is not an integer."
-          val errorCode = ErrorCode.WrongParamType
-          val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-          CompileLineResult(None, Some(errorMessage))
-        }
-      }
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
     }
+
+    val direction = params(0).asInstanceOf[ReadableParam]
+
+    val instruction = TurnInstruction(direction)
+
+    CompileLineResult(Some(instruction), None)
+  }
 
   // TESTED
   def compileCreate(
@@ -515,6 +495,7 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+  // TESTED
   def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] =

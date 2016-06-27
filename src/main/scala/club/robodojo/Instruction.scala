@@ -229,22 +229,22 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
 }
 
 // TODO: take direction as a ParamValue?
-case class TurnInstruction(leftOrRight: Direction.EnumVal)(implicit val config: Config) extends Instruction {
+case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
 
     def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durTurn
 
-    def getNewDirection(currentDir: Direction.EnumVal): Direction.EnumVal =
-      leftOrRight match {
-        case Direction.Left => Direction.rotateLeft(currentDir)
-        case Direction.Right => Direction.rotateRight(currentDir)
-        case _ => throw new IllegalArgumentException("leftOrRight == " + leftOrRight)
+    def getNewDirection(currentDir: Direction.EnumVal, bot: Bot): Direction.EnumVal =
+      if (leftOrRight.read(bot) == 0) {
+        Direction.rotateLeft(currentDir)
+      } else {
+        Direction.rotateRight(currentDir)
       }
 
     def execute(bot: Bot): Option[Animation] = {
       val oldDirection = bot.direction
-      bot.direction = getNewDirection(bot.direction)
+      bot.direction = getNewDirection(bot.direction, bot)
       Some(TurnAnimationFinish(bot.id, bot.direction))
     }
 
