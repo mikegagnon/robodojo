@@ -53,9 +53,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     }
   }
 
-  def setupDebugger(botId: Long) {
+  def setupDebugger(botId: Long): Unit = {
     cmEditor.getDoc().setValue("Foo")
-
   }
 
 }
