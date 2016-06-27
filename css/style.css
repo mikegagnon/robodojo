@@ -3,6 +3,13 @@
     margin: 10px;
 }
 
+.debugger {
+    background-color: #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 .editor {
     background-color: #ccc;
     border-radius: 8px;
