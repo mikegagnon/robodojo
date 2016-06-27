@@ -41,7 +41,6 @@ sealed abstract class Instruction {
   // TODO: foreach concrete subclass, factor into account remote penalty
   def getRequiredCycles(bot: Bot): Int
 
-  // TODO: TEST
   // TODO: document FAT hack and this work around
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] = {
 
