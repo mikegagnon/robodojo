@@ -109,17 +109,16 @@ object Compiler {
 
   def getErrorWrongParamType(
       instructionName: String,
+      token: String,
       badParameterIndex: Int,
       lineNumber: Int,
       types: Seq[ParamType]): ErrorMessage = {
 
     val paramNumber: String = getParamNumber(badParameterIndex)
 
-    val badParamLetter: String = getIndexToLetter(badParameterIndex)
-
     val intro: String = getErrorIntro("Wrong parameter type", instructionName, types)
 
-    val message = intro + s"Your ${paramNumber} parameter, <tt>${badParamLetter}</tt>, is not a " +
+    val message = intro + s"Your ${paramNumber} parameter, <tt>${token}</tt>, is not a " +
       s"${types(badParameterIndex)}."
 
     val errorCode = ErrorCode.WrongParamType
@@ -233,13 +232,13 @@ object Compiler {
           Right(getReadable(token))
         } catch {
           case _: IllegalArgumentException =>
-            Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
+            Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineNumber, types))
         }
       case WriteableParamType => try {
           Right(getWriteable(token))
         } catch {
           case _: IllegalArgumentException =>
-            Left(getErrorWrongParamType(instructionName, parameterIndex, lineNumber, types))
+            Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineNumber, types))
         }
     }
   }
