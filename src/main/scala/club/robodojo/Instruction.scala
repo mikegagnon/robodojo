@@ -233,7 +233,12 @@ case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Conf
 
     val instructionSet = InstructionSet.Basic
 
-    def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durTurn
+    def getRequiredCycles(bot: Bot): Int = {
+
+      val remoteReadCost = if (leftOrRight.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+      return config.sim.cycleCount.durTurn + remoteReadCost
+    }
 
     def getNewDirection(currentDir: Direction.EnumVal, bot: Bot): Direction.EnumVal =
       if (leftOrRight.read(bot) == 0) {
