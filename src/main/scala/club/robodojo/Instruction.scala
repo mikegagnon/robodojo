@@ -299,6 +299,7 @@ case class CreateInstruction(
     val instructionSetCostBasic = childInstructionSetValue match {
       case InstructionSet.Basic.value => durCreate4
       case InstructionSet.Extended.value => 0
+      case _ => 0
     }
 
     val instructionSetCostExtended = childInstructionSetValue match {
@@ -322,10 +323,27 @@ case class CreateInstruction(
     return Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
-  // TODO: Check for more errors
-  def errorCheck(bot: Bot, numBanksValue: Int): Option[Animation] = {
-    if (numBanksValue <= 0 || numBanksValue > config.sim.maxBanks) {
+  // TODO: TEST
+  def errorCheck(
+      bot: Bot,
+      childInstructionSetValue: Short,
+      numBanksValue: Short,
+      mobileValue: Short): Option[Animation] = {
 
+    // TODO: factor out common code and strings
+    if (childInstructionSetValue < 0 || childInstructionSetValue > 1) {
+      val errorCode = ErrorCode.InvalidParameter
+      val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
+        s"execute a <tt>create</tt> instruction with <tt>childInstructionSet</tt> equal to " +
+        s"${childInstructionSetValue}. <tt>childInstructionSet</tt> must be either 0 (signifying " +
+        s"the Basic instruction set) or 1 (signifying the Extended instruction set).</p>"
+      val errorMessage = ErrorMessage(errorCode, lineNumber, message)
+
+      return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+    } else if (numBanksValue <= 0 || numBanksValue > config.sim.maxBanks) {
       val errorCode = ErrorCode.InvalidParameter
       val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
         s"${playerColor}'s program, executed by the " +
@@ -337,18 +355,34 @@ case class CreateInstruction(
       val errorMessage = ErrorMessage(errorCode, lineNumber, message)
 
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
-    } else {
+    } else if (mobileValue < 0 || mobileValue > 1) {
+      val errorCode = ErrorCode.InvalidParameter
+      val message = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
+        s"execute a <tt>create</tt> instruction with <tt>mobile</tt> equal to " +
+        s"${mobileValue}. <tt>mobile</tt> must be either 0 (signifying " +
+        s"immobility) or 1 (signifying mobility).</p>"
+      val errorMessage = ErrorMessage(errorCode, lineNumber, message)
+
+      return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+    }else {
       None
     }
   }
 
   def execute(bot: Bot): Option[Animation] = {
 
-    val childInstructionSetValue: Int = childInstructionSet.read(bot)
-    val numBanksValue: Int = numBanks.read(bot)
-    val mobileValue: Int = mobile.read(bot)
+    val childInstructionSetValue: Short = childInstructionSet.read(bot)
+    val numBanksValue: Short = numBanks.read(bot)
+    val mobileValue: Short = mobile.read(bot)
 
-    val error: Option[Animation] = errorCheck(bot, numBanksValue)
+    val error: Option[Animation] = errorCheck(
+      bot,
+      childInstructionSetValue,
+      numBanksValue,
+      mobileValue)
 
     if (error.nonEmpty) {
       bot.board.removeBot(bot)
