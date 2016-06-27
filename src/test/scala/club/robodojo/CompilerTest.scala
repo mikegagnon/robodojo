@@ -267,7 +267,29 @@ object CompilerTest extends TestSuite {
         }
       }
       "fail"-{
-
+        {
+          val result = parseParams("turn", TokenLine(Array("foo", "$fields"), 0),
+            WriteableParamType)
+          result match {
+            case Left(error) => error.errorCode ==> ErrorCode.WrongParamType
+            case Right(_) => assert(false)
+          }
+        }
+        {
+          val result = parseParams("turn", TokenLine(Array("foo"), 0), WriteableParamType)
+          result match {
+            case Left(error) => error.errorCode ==> ErrorCode.MalformedInstruction
+            case Right(_) => assert(false)
+          }
+        }
+        {
+          val result = parseParams("set", TokenLine(Array("foo", "#1", "#2", ","), 0),
+            WriteableParamType, WriteableParamType)
+          result match {
+            case Left(error) => error.errorCode ==> ErrorCode.MalformedInstruction
+            case Right(_) => assert(false)
+          }
+        }
       }
     }
 

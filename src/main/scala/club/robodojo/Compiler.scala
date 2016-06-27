@@ -261,8 +261,7 @@ object Compiler {
         tl.tokens(index) == ","
       }
 
-  // TODO: test
-  // TODO: refactor after test
+  // TESTED
   def parseParams(
       instructionName: String,
       tl: TokenLine,
