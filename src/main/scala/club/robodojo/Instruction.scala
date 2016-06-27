@@ -228,7 +228,6 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   }
 }
 
-// TODO: take direction as a ParamValue?
 case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
