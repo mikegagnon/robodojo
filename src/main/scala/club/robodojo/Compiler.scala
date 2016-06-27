@@ -517,39 +517,21 @@ object Compiler {
   }
 
   // TODO: refactor
-  def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult =
-    if (tl.tokens.length != 4 ||
-        tl.tokens(2) != ",") {
-      val message = "Malformed <tt>set</tt> instruction: the <tt>set</tt> instruction must be of " +
-      "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
-      "a parameter value."
-      val errorCode = ErrorCode.MalformedInstruction
-      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-      return CompileLineResult(None, Some(errorMessage))
-    } else if (!isWriteable(tl.tokens(1))) {
-      val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
-      "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
-      s"a parameter value. Your first parameter, <tt>${tl.tokens(1)}</tt>, must be either #1 ... " +
-      s"#${config.sim.maxNumVariables}, or #Active."
-      val errorCode = ErrorCode.WrongParamType
-      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-      return CompileLineResult(None, Some(errorMessage))
-    } else if (!isReadable(tl.tokens(3))) {
-      val message = "Wrong parameter type: the <tt>set</tt> instruction must be of " +
-      "the form: <tt>set a, b</tt>, where <tt>a</tt>, is a variable and <tt>b</tt> is " +
-      s"a parameter value. Your second parameter, <tt>${tl.tokens(3)}</tt>, must be either " +
-      "an integer (such as 5), a constant (such as $Banks), a remote (such as %Banks), or " +
-      "a register (such as #3)."
-      val errorCode = ErrorCode.WrongParamType
-      val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
-      return CompileLineResult(None, Some(errorMessage))
-    } else {
+  def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult = {
 
-      val destination: WriteableParam = getWriteable(tl.tokens(1))
-      val source: ReadableParam = getReadable(tl.tokens(3))
+    val parsed: Either[ErrorMessage, Seq[Param]] =
+      parseParams("set", tl, WriteableParamType, ReadableParamType)
 
-      val instruction = SetInstruction(destination, source)
-      CompileLineResult(Some(instruction), None)
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
+    }
+
+    val destination = params(0).asInstanceOf[WriteableParam]
+    val source = params(1).asInstanceOf[ReadableParam]
+    val instruction = SetInstruction(destination, source)
+
+    CompileLineResult(Some(instruction), None)
     }
 
   // TESTED
