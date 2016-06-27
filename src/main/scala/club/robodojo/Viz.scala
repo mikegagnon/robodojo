@@ -62,30 +62,34 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // shapesToBeRemovedNextTick contains the shapes that should be removed after the next tick.
   // TODO: change to List[createjs.Container]?
   var shapesToBeRemovedNextTick = List[createjs.Shape]()
-
-  addBotImages()
   
   // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
   // point in time.
   val animations = HashMap[Int, HashMap[Long, Animation]]()
 
-  // Fast forward the board, so we can begin animating. See the documentation for animateMove,
-  // section (2) for an explanation.
-  0 until config.viz.lookAheadCycles foreach { _ => cycle() }
-
-  // There are three cycle counters:
-  //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
-  //       single instruction. The bot cycle counter resets to zero after an instruction is
-  //       executed.
-  //   (2) The board has another cycle counter, board.cycleNum, which increments after every call to
-  //       cycle().
-  //   (3) Yet another cycle counter is animationCycleNum, which is the cycle counter equal to the
-  //       board.cycleNum we are currently animating. animationCycleNum != board.cycleNum
-  //       because the animation lags behind the board simulation. See the documentation for
-  //       animateMove, section (2) for an explanation.
   var animationCycleNum = 0
 
-  stage.update()
+  def init(): Unit = {
+
+    addBotImages()
+    // Fast forward the board, so we can begin animating. See the documentation for animateMove,
+    // section (2) for an explanation.
+    0 until config.viz.lookAheadCycles foreach { _ => cycle() }
+
+    // There are three cycle counters:
+    //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
+    //       single instruction. The bot cycle counter resets to zero after an instruction is
+    //       executed.
+    //   (2) The board has another cycle counter, board.cycleNum, which increments after every call to
+    //       cycle().
+    //   (3) Yet another cycle counter is animationCycleNum, which is the cycle counter equal to the
+    //       board.cycleNum we are currently animating. animationCycleNum != board.cycleNum
+    //       because the animation lags behind the board simulation. See the documentation for
+    //       animateMove, section (2) for an explanation.
+    animationCycleNum = 0
+
+    stage.update()
+  }
 
   /** End initialization **************************************************************************/
 
