@@ -251,8 +251,20 @@ object CompilerTest extends TestSuite {
 
     "parseParams"-{
       "success"-{
-        val result = parseParams("turn", TokenLine(Array("turn", "#1"), 0), ReadableParamType)
-        result ==> Right(Seq(RegisterParam(0)))
+        {
+          val result = parseParams("turn", TokenLine(Array("turn", "#1"), 0), ReadableParamType)
+          result ==> Right(Seq(RegisterParam(0)))
+        }
+        {
+          val result = parseParams("set", TokenLine(Array("set", "#active", ",", "#2"), 0),
+            WriteableParamType, ReadableParamType)
+          result ==> Right(Seq(ActiveKeyword(true), RegisterParam(1)))
+        }
+        {
+          val result = parseParams("create", TokenLine(Array("create", "1", ",", "#5", ",",
+            "$banks"), 0), ReadableParamType, ReadableParamType, ReadableParamType)
+          result ==> Right(Seq(IntegerParam(1), RegisterParam(4), BanksKeyword(true)))
+        }
       }
       "fail"-{
 
