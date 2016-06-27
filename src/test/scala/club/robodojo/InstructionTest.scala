@@ -56,7 +56,7 @@ object InstructionTest extends TestSuite {
 
         bot.direction = Direction.Up
 
-        val turnInstruction = TurnInstruction(Direction.Left)
+        val turnInstruction = TurnInstruction(IntegerParam(0))
 
         turnInstruction.execute(bot)
         bot.direction ==> Direction.Left
@@ -76,7 +76,7 @@ object InstructionTest extends TestSuite {
 
         bot.direction = Direction.Up
 
-        val turnInstruction = TurnInstruction(Direction.Right)
+        val turnInstruction = TurnInstruction(IntegerParam(1))
 
         turnInstruction.execute(bot)
         bot.direction ==> Direction.Right

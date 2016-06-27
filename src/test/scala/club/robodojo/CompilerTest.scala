@@ -495,6 +495,7 @@ object CompilerTest extends TestSuite {
     "getErrorWrongParamType"-{
       val result = getErrorWrongParamType(
         "create",
+        "foo",
         1,
         3,
         Array(ReadableParamType, ReadableParamType, ReadableParamType))
@@ -502,7 +503,7 @@ object CompilerTest extends TestSuite {
       val expectedMessage = "<b>Wrong parameter type</b>: the <tt>create</tt> instruction must " + 
         "be of the form: <tt>create a, b, c</tt>, where <tt>a</tt> is a <i>readable " + 
         "parameter</i>, and <tt>b</tt> is a <i>readable parameter</i>, and <tt>c</tt> is a " +
-        "<i>readable parameter</i>. Your second parameter, <tt>b</tt>, is not a readable " +
+        "<i>readable parameter</i>. Your second parameter, <tt>foo</tt>, is not a readable " +
         "parameter."
 
       result ==> ErrorMessage(ErrorCode.WrongParamType, 3, expectedMessage)
@@ -597,19 +598,19 @@ object CompilerTest extends TestSuite {
       // TODO: move down
       "turn"-{
         "success 1"-{
-          testInstruction("turn 1", Right(TurnInstruction(Direction.Right)))
+          testInstruction("turn 1", Right(TurnInstruction(IntegerParam(1))))
         }
         "success 2"-{
-          testInstruction("turn 2", Right(TurnInstruction(Direction.Right)))
+          testInstruction("turn 2", Right(TurnInstruction(IntegerParam(2))))
         }
         "success -1"-{
-          testInstruction("turn -1", Right(TurnInstruction(Direction.Right)))
+          testInstruction("turn -1", Right(TurnInstruction(IntegerParam(-1))))
         }
         "fail turn left"-{
           testInstruction("turn left", Left(ErrorCode.WrongParamType))
         }
         "fail turn 1 foo"-{
-          testInstruction("turn 1 foo", Left(ErrorCode.TooManyParams))
+          testInstruction("turn 1 foo", Left(ErrorCode.MalformedInstruction))
         }
       }
 
