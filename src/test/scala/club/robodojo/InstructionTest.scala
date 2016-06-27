@@ -145,7 +145,7 @@ object InstructionTest extends TestSuite {
       val board = new Board()
       val bot = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
 
-      "required cycles"-{
+      "getRequiredCycles"-{
 
         SetInstruction(RegisterParam(0), RegisterParam(0)).getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet
