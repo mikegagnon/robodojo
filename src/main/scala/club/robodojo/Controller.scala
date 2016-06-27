@@ -10,7 +10,6 @@ class Controller(val viz: Viz)(implicit val config: Config) {
 
   addHtml()
 
-  // TODO: editor isn't used here
   val editor = new Editor(this, viz)
 
   /** End initialization **************************************************************************/
