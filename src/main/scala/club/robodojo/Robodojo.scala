@@ -91,7 +91,8 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
   
   val viz = new Viz(preload, board)
 
-  viz.init()
-
   val controller = new Controller(viz)
+
+  viz.init(controller)
+
 }

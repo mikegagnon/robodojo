@@ -69,9 +69,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   var animationCycleNum = 0
 
-  def init(): Unit = {
+  var controller: Controller = null
+
+  def init(control: Controller): Unit = {
+
+    controller = control
 
     addBotImages()
+
     // Fast forward the board, so we can begin animating. See the documentation for animateMove,
     // section (2) for an explanation.
     0 until config.viz.lookAheadCycles foreach { _ => cycle() }
