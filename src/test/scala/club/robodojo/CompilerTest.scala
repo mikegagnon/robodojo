@@ -765,9 +765,10 @@ object CompilerTest extends TestSuite {
       "compileSet"-{
         "fail"-{
           testProgramFail(s"set #${config.sim.maxNumVariables + 1}, %mobile", ErrorCode.WrongParamType)
-          testProgramFail(s"set #-1, %mobile", ErrorCode.WrongParamType)
-          testProgramFail(s"set #0, foo", ErrorCode.WrongParamType)
-          testProgramFail(s"set #0 #1", ErrorCode.MalformedInstruction)
+          testProgramFail("set #-1, %mobile", ErrorCode.WrongParamType)
+          testProgramFail("set #0, foo", ErrorCode.WrongParamType)
+          testProgramFail("set #0 #1", ErrorCode.MalformedInstruction)
+          testProgramFail("set $banks, #1", ErrorCode.WrongParamType)
         }
         "succeed"-{
           testInstruction("set #2, 5",

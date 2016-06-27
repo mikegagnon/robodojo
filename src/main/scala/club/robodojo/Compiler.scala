@@ -516,7 +516,6 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TODO: refactor
   def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] =
@@ -532,7 +531,7 @@ object Compiler {
     val instruction = SetInstruction(destination, source)
 
     CompileLineResult(Some(instruction), None)
-    }
+  }
 
   // TESTED
   // We need playerColor because of run-time errors. Specifically, some instructions (such as the
