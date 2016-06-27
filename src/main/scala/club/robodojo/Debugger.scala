@@ -37,6 +37,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def onBotClick(botId: Long): Unit = {
     println("controller.onBotClick: " + botId)
+    setupDebugger(botId: Long)
   }
 
   // TODO: factor our common code between Debugger and Editor
@@ -50,6 +51,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
         cmEditor
       case _=> throw new IllegalStateException("Could not find textarea for debugger")
     }
+  }
+
+  def setupDebugger(botId: Long) {
+    cmEditor.getDoc().setValue("Foo")
+
   }
 
 }
