@@ -242,6 +242,13 @@ case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Conf
         Direction.rotateRight(currentDir)
       }
 
+    def toDirection(bot: Bot): Direction.EnumVal =
+      if (leftOrRight.read(bot) == 0) {
+        Direction.Left
+      } else {
+        Direction.Right
+      }
+
     def execute(bot: Bot): Option[Animation] = {
       val oldDirection = bot.direction
       bot.direction = getNewDirection(bot.direction, bot)
@@ -249,7 +256,7 @@ case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Conf
     }
 
     def progress(bot: Bot, cycleNum: Int): Option[Animation] =
-      Some(TurnAnimationProgress(bot.id, cycleNum, bot.direction, leftOrRight))
+      Some(TurnAnimationProgress(bot.id, cycleNum, bot.direction, toDirection(bot)))
 }
 
 // TODO: Prevent FAT hack
