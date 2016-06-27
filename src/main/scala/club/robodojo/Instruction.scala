@@ -338,7 +338,6 @@ case class CreateInstruction(
         s"The ${bot.playerColor} bot has tapped out because it attempted to " +
         s"execute a <tt>create</tt> instruction with "
 
-    // TODO: factor out common code and strings
     if (childInstructionSetValue < 0 || childInstructionSetValue > 1) {
 
       val message = messageHeader + s"<tt>childInstructionSet</tt> equal to " +
