@@ -138,6 +138,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val stage = new createjs.Stage(config.viz.canvas.canvasId)
     stage.regX = -0.5
     stage.regY = -0.5
+    stage.enableMouseOver()
     return stage
   }
 
@@ -258,6 +259,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       return false
     }
 
+    container.cursor = "pointer"
     container.on("click", onBotClick _)
 
     twinBotImages += (botId -> twinContainer)
