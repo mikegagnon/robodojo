@@ -47,7 +47,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     // flooded.
     // TODO: put output in popup.
     val html = s"""
-      <div class = "editor">
+      <div class = "window">
 
           <div class = "editor-console">
 
