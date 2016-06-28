@@ -54,9 +54,15 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   }
 
   def getProgramText(botId: Long): String = {
-    return "Bar"
+
+    val bot: Bot = viz.board.getBot(botId).get
+
+
+
+    return bot.toString
   }
 
+  // TODO: pause
   def setupDebugger(botId: Long): Unit = {
     val programText = getProgramText(botId)
     cmEditor.getDoc().setValue(programText)
