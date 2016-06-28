@@ -20,7 +20,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     // TODO: factor out common html between Debugger and Editor
     val html = s"""
-      <div class="debugger">
+      <div class="window">
         <div class="dark-border light-background">
           <div class="code-mirror-div">
             <textarea id='${config.debugger.textAreaId}'></textarea>

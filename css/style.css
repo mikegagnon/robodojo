@@ -3,14 +3,8 @@
     margin: 10px;
 }
 
-.debugger {
-    background-color: #ccc;
-    border-radius: 8px;
-    padding: 10px;
+.window {
     margin-bottom: 10px;
-}
-
-.editor {
     background-color: #ccc;
     border-radius: 8px;
     padding: 10px
@@ -59,9 +53,3 @@
     font-weight: bold;
 }
 
-.board-wrapper {
-    margin-bottom: 10px;
-    background-color: #ccc;
-    border-radius: 8px;
-    padding: 10px;
-}
