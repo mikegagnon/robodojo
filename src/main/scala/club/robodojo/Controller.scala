@@ -45,9 +45,15 @@ class Controller(val viz: Viz)(implicit val config: Config) {
     viz.step = false
     if (createjs.Ticker.paused) {
       createjs.Ticker.paused = false
+      viz.botImages.foreach { case (_, botImage) =>
+        botImage.mouseEnabled = false;
+      }
       drawPause()
     } else {
       createjs.Ticker.paused = true
+      viz.botImages.foreach { case (i, botImage) =>
+        botImage.mouseEnabled = true;
+      }
       drawPlay()
     }
   }
