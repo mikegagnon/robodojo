@@ -7,6 +7,8 @@ object InstructionTest extends TestSuite {
 
   implicit val config = Config.default
 
+  val defaultSourceMap = SourceMapInstruction(0, 0)
+
   def tests = TestSuite {
 
     "MoveInstruction.execute"-{
@@ -15,7 +17,7 @@ object InstructionTest extends TestSuite {
         val bot = Bot(board, PlayerColor.Blue, 0, 0)
         bot.direction = Direction.Right
 
-        val moveInstruction = MoveInstruction()
+        val moveInstruction = MoveInstruction(defaultSourceMap)
 
         moveInstruction.execute(bot)
 
@@ -36,7 +38,7 @@ object InstructionTest extends TestSuite {
 
         bot1.direction = Direction.Right
 
-        val moveInstruction = MoveInstruction()
+        val moveInstruction = MoveInstruction(defaultSourceMap)
 
         moveInstruction.execute(bot1)
 
@@ -56,7 +58,7 @@ object InstructionTest extends TestSuite {
 
         bot.direction = Direction.Up
 
-        val turnInstruction = TurnInstruction(IntegerParam(0))
+        val turnInstruction = TurnInstruction(defaultSourceMap, IntegerParam(0))
 
         turnInstruction.execute(bot)
         bot.direction ==> Direction.Left
@@ -76,7 +78,7 @@ object InstructionTest extends TestSuite {
 
         bot.direction = Direction.Up
 
-        val turnInstruction = TurnInstruction(IntegerParam(1))
+        val turnInstruction = TurnInstruction(defaultSourceMap, IntegerParam(1))
 
         turnInstruction.execute(bot)
         bot.direction ==> Direction.Right
@@ -106,7 +108,7 @@ object InstructionTest extends TestSuite {
         val banks = IntegerParam(numBanks.toShort)
         val mob = if (mobile) IntegerParam(1) else IntegerParam(0)
         val bot = Bot(board, color, 0, 0, Direction.Right)
-        val instruction = CreateInstruction(iSet, banks, mob, 0, PlayerColor.Blue)
+        val instruction = CreateInstruction(defaultSourceMap, iSet, banks, mob, 0, PlayerColor.Blue)
         instruction.execute(bot)
         return board.matrix(0)(1)
       }
@@ -147,16 +149,19 @@ object InstructionTest extends TestSuite {
 
       "getRequiredCycles"-{
 
-        SetInstruction(RegisterParam(0), RegisterParam(0)).getRequiredCycles(bot) ==>
-          config.sim.cycleCount.durSet
+        SetInstruction(defaultSourceMap, RegisterParam(0), RegisterParam(0))
+          .getRequiredCycles(bot) ==> config.sim.cycleCount.durSet
 
-        SetInstruction(ActiveKeyword(false), RegisterParam(0)).getRequiredCycles(bot) ==>
+        SetInstruction(defaultSourceMap, ActiveKeyword(false), RegisterParam(0))
+          .getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost
 
-        SetInstruction(ActiveKeyword(true), BanksKeyword(false)).getRequiredCycles(bot) ==>
+        SetInstruction(defaultSourceMap, ActiveKeyword(true), BanksKeyword(false))
+          .getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost
 
-        SetInstruction(ActiveKeyword(false), BanksKeyword(false)).getRequiredCycles(bot) ==>
+        SetInstruction(defaultSourceMap, ActiveKeyword(false), BanksKeyword(false))
+          .getRequiredCycles(bot) ==>
           config.sim.cycleCount.durSet + config.sim.cycleCount.durRemoteAccessCost * 2
 
       }
@@ -164,7 +169,7 @@ object InstructionTest extends TestSuite {
       "destination params"-{
 
         def testDestinationParam(destination: WriteableParam, source: Short)(test: (Bot => Unit)): Unit = {
-          val instruction = SetInstruction(destination, IntegerParam(source))
+          val instruction = SetInstruction(defaultSourceMap, destination, IntegerParam(source))
           val board = new Board()
           val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
           board.addBot(bot1)
@@ -187,7 +192,7 @@ object InstructionTest extends TestSuite {
 
         def testSourceParam(source: ReadableParam, expectedValue: Short)
             (setup: ((Bot, Bot) => Unit)): Unit = {
-          val instruction = SetInstruction(RegisterParam(0), source)
+          val instruction = SetInstruction(defaultSourceMap, RegisterParam(0), source)
           val board = new Board()
           val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
           board.addBot(bot1)
