@@ -9,6 +9,8 @@ object CompilerTest extends TestSuite {
 
   import Compiler._
 
+  val defaultSourceMap = SourceMapInstruction(0, 0)
+
   val tests = this {
 
     implicit val config = new Config
@@ -240,54 +242,57 @@ object CompilerTest extends TestSuite {
     }
 
     "foundCommas"-{
-      foundCommas(0, TokenLine(Array("move"), 1)) ==> true
-      foundCommas(1, TokenLine(Array("turn", "0"), 1)) ==> true
-      foundCommas(2, TokenLine(Array("set", "#1", ",", "#2"), 1)) ==> true
-      foundCommas(2, TokenLine(Array("set", "#1", "x", "#2"), 1)) ==> false
-      foundCommas(3, TokenLine(Array("create", "1", ",", "2", ",", "3"), 1)) ==> true
-      foundCommas(3, TokenLine(Array("create", "1", "x", "2", ",", "3"), 1)) ==> false
-      foundCommas(3, TokenLine(Array("create", "1", ",", "2", "x", "3"), 1)) ==> false
-      foundCommas(3, TokenLine(Array("create", "1", "x", "2", "x", "3"), 1)) ==> false
+      foundCommas(0, TokenLine(Array("move"), "move", 1)) ==> true
+      foundCommas(1, TokenLine(Array("turn", "0"), "turn 0", 1)) ==> true
+      foundCommas(2, TokenLine(Array("set", "#1", ",", "#2"), "set #1, #2", 1)) ==> true
+      foundCommas(2, TokenLine(Array("set", "#1", "x", "#2"), "set #1 x #2", 1)) ==> false
+      foundCommas(3, TokenLine(Array("create", "1", ",", "2", ",", "3"), "create 1,2,3", 1)) ==> true
+      foundCommas(3, TokenLine(Array("create", "1", "x", "2", ",", "3"), "create 1 x 2,3", 1)) ==> false
+      foundCommas(3, TokenLine(Array("create", "1", ",", "2", "x", "3"), "create 1,2 x3", 1)) ==> false
+      foundCommas(3, TokenLine(Array("create", "1", "x", "2", "x", "3"), "create 1 x 2 x 3", 1)) ==> false
     }
 
     "parseParams"-{
       "success"-{
         {
-          val result = parseParams("turn", TokenLine(Array("turn", "#1"), 0), ReadableParamType)
+          val result = parseParams("turn", TokenLine(Array("turn", "#1"), "turn #1", 0),
+            ReadableParamType)
           result ==> Right(Seq(RegisterParam(0)))
         }
         {
-          val result = parseParams("set", TokenLine(Array("set", "#active", ",", "#2"), 0),
+          val result = parseParams("set", TokenLine(Array("set", "#active", ",", "#2"),
+            "set #active, #2", 0),
             WriteableParamType, ReadableParamType)
           result ==> Right(Seq(ActiveKeyword(true), RegisterParam(1)))
         }
         {
           val result = parseParams("create", TokenLine(Array("create", "1", ",", "#5", ",",
-            "$banks"), 0), ReadableParamType, ReadableParamType, ReadableParamType)
+            "$banks"), "create 1, #5, $banks", 0), ReadableParamType, ReadableParamType,
+            ReadableParamType)
           result ==> Right(Seq(IntegerParam(1), RegisterParam(4), BanksKeyword(true)))
         }
       }
       "fail"-{
         {
-          val result = parseParams("turn", TokenLine(Array("foo", "$fields"), 0),
+          val result = parseParams("turn", TokenLine(Array("foo", "$fields"), "foo $fields", 0),
             WriteableParamType)
           result match {
-            case Left(error) => error.errorCode ==> ErrorCode.WrongParamType
+            case Left(error: ErrorMessage) => error.errorCode ==> ErrorCode.WrongParamType
             case Right(_) => assert(false)
           }
         }
         {
-          val result = parseParams("turn", TokenLine(Array("foo"), 0), WriteableParamType)
+          val result = parseParams("turn", TokenLine(Array("foo"), "foo", 0), WriteableParamType)
           result match {
-            case Left(error) => error.errorCode ==> ErrorCode.MalformedInstruction
+            case Left(error: ErrorMessage) => error.errorCode ==> ErrorCode.MalformedInstruction
             case Right(_) => assert(false)
           }
         }
         {
-          val result = parseParams("set", TokenLine(Array("foo", "#1", "#2", ","), 0),
+          val result = parseParams("set", TokenLine(Array("foo", "#1", "#2", ","), "foo #1, #2", 0),
             WriteableParamType, WriteableParamType)
           result match {
-            case Left(error) => error.errorCode ==> ErrorCode.MalformedInstruction
+            case Left(error: ErrorMessage) => error.errorCode ==> ErrorCode.MalformedInstruction
             case Right(_) => assert(false)
           }
         }
@@ -297,22 +302,22 @@ object CompilerTest extends TestSuite {
     "TokenLine.equals"-{
       "simple case"-{
         "equals"-{
-          val a = TokenLine(Array(), 0)
-          val b = TokenLine(Array(), 0)
+          val a = TokenLine(Array(), "", 0)
+          val b = TokenLine(Array(), "", 0)
           a ==> b
           a.hashCode ==> b.hashCode
         }
 
         "unequal lineNumbers"-{
-          val a = TokenLine(Array(), 0)
-          val b = TokenLine(Array(), 1)
+          val a = TokenLine(Array(), "", 0)
+          val b = TokenLine(Array(), "", 1)
           assert(a != b)
           assert(a.hashCode != b.hashCode)
         }
 
         "unequal token array"-{
-          val a = TokenLine(Array(), 0)
-          val b = TokenLine(Array("a"), 0)
+          val a = TokenLine(Array(), "", 0)
+          val b = TokenLine(Array("a"), "a", 0)
           assert(a != b)
           assert(a.hashCode != b.hashCode)
         }
@@ -320,27 +325,27 @@ object CompilerTest extends TestSuite {
 
       "one token"-{
         "equals"-{
-          val a = TokenLine(Array("a"), 1)
-          val b = TokenLine(Array("a"), 1)
+          val a = TokenLine(Array("a"), "a", 1)
+          val b = TokenLine(Array("a"), "a", 1)
           a ==> b
         }
 
         "unequal token array"-{
-          val a = TokenLine(Array("b"), 0)
-          val b = TokenLine(Array("a"), 0)
+          val a = TokenLine(Array("b"), "b", 0)
+          val b = TokenLine(Array("a"), "a", 0)
           assert(a != b)
         }
       }
 
       "two tokens"-{
         "equals"-{
-          val a = TokenLine(Array("a", "b"), 2)
-          val b = TokenLine(Array("a", "b"), 2)
+          val a = TokenLine(Array("a", "b"), "a b", 2)
+          val b = TokenLine(Array("a", "b"), "a b", 2)
           a ==> b
         }
         "not equals"-{
-          val a = TokenLine(Array("a", "b"), 2)
-          val b = TokenLine(Array("a", "c"), 2)
+          val a = TokenLine(Array("a", "b"), "a b", 2)
+          val b = TokenLine(Array("a", "c"), "a c", 2)
           assert(a != b)
         }
       }
@@ -361,7 +366,7 @@ object CompilerTest extends TestSuite {
         "one line"-{
           val text = "1"
           val result = Compiler.tokenize(text)
-          val expectedResult = Array(TokenLine(Array("1"), 0))
+          val expectedResult = Array(TokenLine(Array("1"), text, 0))
           assert(result.sameElements(expectedResult))
         }
 
@@ -373,9 +378,9 @@ object CompilerTest extends TestSuite {
           val result = Compiler.tokenize(text)
           val expectedResult =
             Array(
-              TokenLine(Array("1"), 0),
-              TokenLine(Array("2"), 1),
-              TokenLine(Array("3"), 2))
+              TokenLine(Array("1"), "1", 0),
+              TokenLine(Array("2"), "2", 1),
+              TokenLine(Array("3"), "3", 2))
 
           assert(result.sameElements(expectedResult))
         }
@@ -386,7 +391,7 @@ object CompilerTest extends TestSuite {
         def testSlice(maxLineLength: Int, text: String, expectedSliced: String): Unit = {
           val config = new Config(Map("compiler.maxLineLength" -> maxLineLength))
           val result = Compiler.tokenize(text)(config)
-          val expectedResult = Array(TokenLine(Array(expectedSliced), 0))
+          val expectedResult = Array(TokenLine(Array(expectedSliced), expectedSliced, 0))
           assert(result.sameElements(expectedResult))
         }
 
@@ -401,13 +406,13 @@ object CompilerTest extends TestSuite {
       "remove comments"-{
         "commented out text"-{
           val text = "a b c ; x y z"
-          val expectedResult = Array(TokenLine(Array("a", "b", "c"), 0))
+          val expectedResult = Array(TokenLine(Array("a", "b", "c"), text, 0))
           val result = Compiler.tokenize(text)
           assert(result.sameElements(expectedResult))
         }
         "trailing semicolon"-{
           val text = "a b c;"
-          val expectedResult = Array(TokenLine(Array("a", "b", "c"), 0))
+          val expectedResult = Array(TokenLine(Array("a", "b", "c"), text, 0))
           val result = Compiler.tokenize(text)
           assert(result.sameElements(expectedResult))
         }
@@ -420,14 +425,14 @@ object CompilerTest extends TestSuite {
 
       "Replace ',' with ' , '"-{
         val text = "1,2,3"
-        val expectedResult = Array(TokenLine(Array("1", ",", "2", ",", "3"), 0))
+        val expectedResult = Array(TokenLine(Array("1", ",", "2", ",", "3"), "1,2,3", 0))
         val result = Compiler.tokenize(text)
         assert(result.sameElements(expectedResult))
       }
 
       "To lower case"-{
         val text = "ABC xYz"
-        val expectedResult = Array(TokenLine(Array("abc", "xyz"), 0))
+        val expectedResult = Array(TokenLine(Array("abc", "xyz"), "ABC xYz", 0))
         val result = Compiler.tokenize(text)
         assert(result.sameElements(expectedResult))
       }
@@ -440,9 +445,9 @@ object CompilerTest extends TestSuite {
           val result = Compiler.tokenize(text)
           val expectedResult =
             Array(
-              TokenLine(Array("1"), 0),
-              TokenLine(Array("2"), 1),
-              TokenLine(Array("3"), 2))
+              TokenLine(Array("1"), "1", 0),
+              TokenLine(Array("2"), "2", 1),
+              TokenLine(Array("3"), "3", 2))
 
           assert(result.sameElements(expectedResult))
       }
@@ -462,9 +467,9 @@ object CompilerTest extends TestSuite {
         val result = Compiler.tokenize(text)
         val expectedResult =
           Array(
-            TokenLine(Array("1"), 2),
-            TokenLine(Array("2"), 4),
-            TokenLine(Array("3"), 6))
+            TokenLine(Array("1"), "1", 2),
+            TokenLine(Array("2"), "2", 4),
+            TokenLine(Array("3"), "3", 6))
         assert(result.sameElements(expectedResult))
       }
 
@@ -484,10 +489,10 @@ object CompilerTest extends TestSuite {
         val result = Compiler.tokenize(text)
         val expectedResult =
           Array(
-            TokenLine(Array("1"), 1),
-            TokenLine(Array("2"), 4),
-            TokenLine(Array("3"), 6),
-            TokenLine(Array("4"), 9))
+            TokenLine(Array("1"), "1", 1),
+            TokenLine(Array("2"), "2", 4),
+            TokenLine(Array("3"), "3", 6),
+            TokenLine(Array("4"), "4", 9))
 
           assert(result.sameElements(expectedResult))
       }
@@ -515,7 +520,7 @@ object CompilerTest extends TestSuite {
       "success"-{
         val result = parseParams(
           "create",
-          TokenLine(Array("create", "1", ",", "2", ",", "3"), 5),
+          TokenLine(Array("create", "1", ",", "2", ",", "3"), "create 1,2,3", 5),
           ReadableParamType, ReadableParamType, ReadableParamType)
         val expectedResult = Right(Seq(IntegerParam(1), IntegerParam(2), IntegerParam(3)))
         result ==> expectedResult
@@ -589,7 +594,7 @@ object CompilerTest extends TestSuite {
       // TODO: move downs
       "move"-{
         "success"-{
-          testInstruction("move", Right(MoveInstruction()))
+          testInstruction("move", Right(MoveInstruction(defaultSourceMap)))
         }
         "fail"-{
           testInstruction("move foo", Left(ErrorCode.TooManyParams))
@@ -599,19 +604,20 @@ object CompilerTest extends TestSuite {
       // TODO: move down
       "turn"-{
         "success 1"-{
-          testInstruction("turn 1", Right(TurnInstruction(IntegerParam(1))))
+          testInstruction("turn 1", Right(TurnInstruction(defaultSourceMap, IntegerParam(1))))
         }
         "success 2"-{
-          testInstruction("turn 2", Right(TurnInstruction(IntegerParam(2))))
+          testInstruction("turn 2", Right(TurnInstruction(defaultSourceMap, IntegerParam(2))))
         }
         "success -1"-{
-          testInstruction("turn -1", Right(TurnInstruction(IntegerParam(-1))))
+          testInstruction("turn -1", Right(TurnInstruction(defaultSourceMap, IntegerParam(-1))))
         }
         "success #2"-{
-          testInstruction("turn #2", Right(TurnInstruction(RegisterParam(1))))
+          testInstruction("turn #2", Right(TurnInstruction(defaultSourceMap, RegisterParam(1))))
         }
         "success %banks"-{
-          testInstruction("turn %banks", Right(TurnInstruction(BanksKeyword(false))))
+          testInstruction("turn %banks",
+            Right(TurnInstruction(defaultSourceMap, BanksKeyword(false))))
         }
         "fail turn left"-{
           testInstruction("turn left", Left(ErrorCode.WrongParamType))
@@ -652,31 +658,35 @@ object CompilerTest extends TestSuite {
         }
         "success 1 instruction"-{
           val text = "bank Main\nmove"
-          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction()))))
+          val expectedProgram = Program(
+            Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap)))))
           testProgram(text, expectedProgram)
         }
         "success 2 instructions"-{
           val text = "bank Main\nmove\nmove"
-          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction(),
-                                                                 MoveInstruction()))))
+          val expectedProgram = Program(
+              Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap),
+                                        MoveInstruction(defaultSourceMap)))))
           testProgram(text, expectedProgram)
         }
         "success 2 banks"-{
           val text = "bank Main\nmove\nbank foo"
-          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction())),
-                                            1 -> Bank(ArrayBuffer())))
+          val expectedProgram = Program(
+            Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap))),
+                1 -> Bank(ArrayBuffer())))
           testProgram(text, expectedProgram)
         }
         "success 3 banks"-{
           val text = "bank Main\nmove\nbank foo \nbank foo"
-          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction())),
-                                            1 -> Bank(ArrayBuffer()),
-                                            2 -> Bank(ArrayBuffer())))
+          val expectedProgram = Program(
+            Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap))),
+                1 -> Bank(ArrayBuffer()),
+                2 -> Bank(ArrayBuffer())))
           testProgram(text, expectedProgram)
         }
         "success 3 non-empty banks"-{
           val text = "bank Main\nmove\nbank foo\nmove\nmove\nbank foo\nmove"
-          val move = MoveInstruction()
+          val move = MoveInstruction(defaultSourceMap)
           val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(move)),
                                             1 -> Bank(ArrayBuffer(move, move)),
                                             2 -> Bank(ArrayBuffer(move))))
@@ -744,15 +754,16 @@ object CompilerTest extends TestSuite {
         "succeed"-{
           "instructionSet == 0"-{
             testInstruction("create 0, 1, 1",
-              Right(CreateInstruction(IntegerParam(0), IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue)))
+              Right(CreateInstruction(defaultSourceMap, IntegerParam(0), IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue)))
           }
           "instructionSet == 1"-{
             testInstruction("create 1, 1, 1",
-              Right(CreateInstruction(IntegerParam(1), IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue)))
+              Right(CreateInstruction(defaultSourceMap, IntegerParam(1), IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue)))
           }
           "numBanks == max"-{
             testInstruction(s"create 1, ${config.sim.maxBanks} , 1",
               Right(CreateInstruction(
+                defaultSourceMap,
                 IntegerParam(1),
                 IntegerParam(config.sim.maxBanks.toShort),
                 IntegerParam(1),
@@ -761,11 +772,11 @@ object CompilerTest extends TestSuite {
           }
           "mobile = false"-{
             testInstruction("create 1, 1, 0",
-              Right(CreateInstruction(IntegerParam(1), IntegerParam(1), IntegerParam(0), 1, PlayerColor.Blue)))
+              Right(CreateInstruction(defaultSourceMap, IntegerParam(1), IntegerParam(1), IntegerParam(0), 1, PlayerColor.Blue)))
           }
           "register params"-{
             testInstruction("create #1, #2, #3",
-              Right(CreateInstruction(RegisterParam(0), RegisterParam(1), RegisterParam(2), 1, PlayerColor.Blue)))
+              Right(CreateInstruction(defaultSourceMap, RegisterParam(0), RegisterParam(1), RegisterParam(2), 1, PlayerColor.Blue)))
           }
         }
       }
@@ -780,13 +791,13 @@ object CompilerTest extends TestSuite {
         }
         "succeed"-{
           testInstruction("set #2, 5",
-            Right(SetInstruction(RegisterParam(1), IntegerParam(5))))
+            Right(SetInstruction(defaultSourceMap, RegisterParam(1), IntegerParam(5))))
           testInstruction(s"set #${config.sim.maxNumVariables}, %mobile",
-            Right(SetInstruction(RegisterParam(config.sim.maxNumVariables - 1), MobileKeyword(false))))
+            Right(SetInstruction(defaultSourceMap, RegisterParam(config.sim.maxNumVariables - 1), MobileKeyword(false))))
           testInstruction("set #Active, %banks",
-            Right(SetInstruction(ActiveKeyword(true), BanksKeyword(false))))
+            Right(SetInstruction(defaultSourceMap, ActiveKeyword(true), BanksKeyword(false))))
           testInstruction("set %ACTIVE, $fields",
-            Right(SetInstruction(ActiveKeyword(false), FieldsKeyword())))
+            Right(SetInstruction(defaultSourceMap, ActiveKeyword(false), FieldsKeyword())))
         }
       }
 
@@ -854,7 +865,7 @@ object CompilerTest extends TestSuite {
         }
       }
 
-      // TODO: implement
+      // TODO: TODO: implement
       "parseParams"-{
         "success"-{
 
@@ -906,7 +917,7 @@ object CompilerTest extends TestSuite {
 
           def testDestParam(param: String, keyword: WriteableParam): Unit =
             testInstruction("set " + param + ", 1",
-              Right(SetInstruction(keyword, IntegerParam(1))))
+              Right(SetInstruction(defaultSourceMap, keyword, IntegerParam(1))))
 
           testDestParam("#1", RegisterParam(0))
           testDestParam("#2", RegisterParam(1))
@@ -917,7 +928,7 @@ object CompilerTest extends TestSuite {
 
           def testSourceParam(param: String, keyword: ReadableParam): Unit =
             testInstruction("set #1, " + param,
-              Right(SetInstruction(RegisterParam(0), keyword)))
+              Right(SetInstruction(defaultSourceMap, RegisterParam(0), keyword)))
 
           testSourceParam("5", IntegerParam(5))
           testSourceParam("#Active", ActiveKeyword(true))

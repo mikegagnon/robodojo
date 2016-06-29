@@ -2,7 +2,7 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: lineIndex
+// TODO: put originalLine into equation
 case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int) {
 
   // TESTED
