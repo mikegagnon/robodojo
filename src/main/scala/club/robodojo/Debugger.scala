@@ -62,14 +62,14 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
         .map { i =>
           val bank = banks(i)
           val sourceMap = bank.sourceMap.get
-          sourceMap.text.length
+          sourceMap.text.length + 1
         }
         .sum
 
     val instruction = banks(bankIndex).instructions(instructionIndex)
     val lineIndex = instruction.sourceMapInstruction.lineIndex
 
-    previousBanksLength + lineIndex
+    previousBanksLength + lineIndex + 1
   }
 
   def getProgramText(botId: Long): String = {
@@ -83,6 +83,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
         val bank = banks(bankIndex)
         val sourceMap = bank.sourceMap.get
         val playerColor = sourceMap.playerColor
+        val origBankIndex = sourceMap.bankIndex
+        s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n" +
         sourceMap.text.mkString("\n")
       }
       .mkString("\n")
@@ -95,7 +97,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot: Bot = viz.board.getBot(botId).get
 
-    val lineIndex = getLineIndex(bot, 1, 1)
+    val lineIndex = getLineIndex(bot, 1, 2)
 
     println(lineIndex)
 

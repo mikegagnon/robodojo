@@ -521,7 +521,7 @@ object Compiler {
 
       if (tokens.length > 0 && tokens(0) == "bank") {
         if (bankIndex >= 0) {
-          val sourceMap = SourceMap(playerColor, bankLines)
+          val sourceMap = SourceMap(playerColor, bankIndex, bankLines)
           banks(bankIndex).sourceMap = Some(sourceMap)
         }
 
@@ -533,7 +533,7 @@ object Compiler {
 
     // The last bank
     if (bankIndex >= 0) {
-      val sourceMap = SourceMap(playerColor, bankLines)
+      val sourceMap = SourceMap(playerColor, bankIndex, bankLines)
       banks(bankIndex).sourceMap = Some(sourceMap)
     }
   }
