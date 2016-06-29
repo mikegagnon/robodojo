@@ -6,7 +6,6 @@ class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
-  // TODO: add Map from botId to bot
   var bots = new ArrayBuffer[Bot]()
 
   var cycleNum = 0
@@ -50,6 +49,7 @@ class Board(implicit val config: Config) {
     bots.flatMap{ (bot: Bot) => bot.cycle() }
   }
 
+  // NOTE: this is a linear operation, but it's not in the hotpath
   def getBot(botId: Long): Option[Bot] = {
     bots.find { bot: Bot => bot.id == botId }
   }

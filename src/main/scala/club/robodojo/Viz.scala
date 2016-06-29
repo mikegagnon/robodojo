@@ -262,6 +262,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     container.cursor = "pointer"
     container.on("click", onBotClick _)
 
+    if (createjs.Ticker.paused) {
+      container.mouseEnabled = true
+    } else {
+      container.mouseEnabled = false
+    }
+
     twinBotImages += (botId -> twinContainer)
     birthBotImages += (botId -> birthContainer)
     botImages += (botId -> container)
