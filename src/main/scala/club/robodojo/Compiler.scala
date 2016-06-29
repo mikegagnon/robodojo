@@ -3,7 +3,7 @@ package club.robodojo
 import scala.collection.mutable.ArrayBuffer
 
 // TODO: lineIndex
-case class TokenLine(tokens: Array[String], originalLine: String,lineNumber: Int) {
+case class TokenLine(tokens: Array[String], originalLine: String, lineNumber: Int) {
 
   // TESTED
   override def equals(that: Any): Boolean =
