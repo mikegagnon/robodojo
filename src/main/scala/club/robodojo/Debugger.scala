@@ -1,10 +1,11 @@
 package club.robodojo
 
 import org.denigma.codemirror.extensions.EditorConfig
-import org.denigma.codemirror.{CodeMirror, EditorConfiguration}
+import org.denigma.codemirror.{CodeMirror, EditorConfiguration, Position}
 import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLTextAreaElement
 import org.scalajs.jquery.jQuery
+import scala.scalajs.js
 
 class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Config) {
 
@@ -99,12 +100,17 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot: Bot = viz.board.getBot(botId).get
 
-    val lineIndex = getLineIndex(bot, 1, 2)
+    val lineIndex = getLineIndex(bot, 1, 0)
 
     println(lineIndex)
 
     val handle = cmEditor.getDoc().getLineHandle(lineIndex)
     cmEditor.addLineClass(handle, "background", "line-highlight")
+
+    // TODO: this is just a demo
+    val pos = js.Dynamic.literal(line = lineIndex + 5, ch = 0).asInstanceOf[Position]
+
+    cmEditor.getDoc().setCursor(pos)
   }
 
 }
