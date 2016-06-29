@@ -8,6 +8,8 @@ object BotTest extends TestSuite {
 
   implicit val config = Config.default
 
+  val defaultSourceMap = SourceMapInstruction(0, 0)
+
   val tests = this {
 
     // TODO: factor out common code
@@ -38,7 +40,7 @@ object BotTest extends TestSuite {
       }
 
       "one move instruction"-{
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(MoveInstruction()))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(MoveInstruction(defaultSourceMap)))
 
         bot.board.matrix(0)(0) ==> Some(bot)
         for ( _ <- 0 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
@@ -49,7 +51,8 @@ object BotTest extends TestSuite {
       }
 
       "one turn instruction"-{
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(IntegerParam(0))))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(defaultSourceMap,
+          IntegerParam(0))))
 
         bot.direction ==> Direction.Right
         for ( _ <- 0 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
@@ -59,7 +62,8 @@ object BotTest extends TestSuite {
       }
 
       "turn instruction followed by move instruction"-{
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(IntegerParam(1)), MoveInstruction()))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(defaultSourceMap,
+          IntegerParam(1)), MoveInstruction(defaultSourceMap)))
 
         // Turn instruction
         bot.direction ==> Direction.Right
@@ -79,7 +83,8 @@ object BotTest extends TestSuite {
 
       "turn instruction followed by move instruction, and then repeat"-{
 
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(IntegerParam(1)), MoveInstruction()))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(defaultSourceMap,
+          IntegerParam(1)), MoveInstruction(defaultSourceMap)))
 
         // Turn instruction
         bot.direction ==> Direction.Right
