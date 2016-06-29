@@ -4,6 +4,7 @@ import utest._
 
 import scala.collection.mutable.{ArrayBuffer, WrappedArray}
 
+// TODO: change to lineIndex
 object CompilerTest extends TestSuite {
 
   import Compiler._
