@@ -20,7 +20,8 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
     return x * (lineIndex.hashCode + 13)
   }
 
-  override def toString(): String = s"TokenLine([${tokens.mkString(",")}], ${lineIndex})"
+  override def toString(): String = s"TokenLine([${tokens.mkString(",")}], '${originalLine}', " +
+    s"${lineIndex})"
 }
 
 object ErrorCode {
