@@ -419,7 +419,8 @@ object CompilerTest extends TestSuite {
         "line containing only semicolon"-{
           val text = " ; "
           val result = Compiler.tokenize(text)
-          result.length ==> 0
+          val expectedResult = Array(TokenLine(Array[String](), text, 0))
+          assert(result.sameElements(expectedResult))
         }
       }
 
