@@ -193,7 +193,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
     val html = header +
         errors.map { error: ErrorMessage =>
-          s"""<p><span class="line-error">Line ${error.lineNumber + 1}</span>. ${error.message}</p>"""
+          s"""<p><span class="line-error">Line ${error.lineIndex + 1}</span>. ${error.message}</p>"""
         }
         .mkString("\n")
 

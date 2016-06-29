@@ -3,12 +3,12 @@ package club.robodojo
 import scala.collection.mutable.ArrayBuffer
 
 // TODO: lineIndex
-case class TokenLine(tokens: Array[String], originalLine: String, lineNumber: Int) {
+case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int) {
 
   // TESTED
   override def equals(that: Any): Boolean =
     that match {
-      case tl: TokenLine => tokens.sameElements(tl.tokens) && lineNumber == tl.lineNumber
+      case tl: TokenLine => tokens.sameElements(tl.tokens) && lineIndex == tl.lineIndex
       case _ => false
     }
   
@@ -17,10 +17,10 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineNumber: In
     var x = 13
     tokens.foreach { str: String => x *= (str.hashCode + 13)}
 
-    return x * (lineNumber.hashCode + 13)
+    return x * (lineIndex.hashCode + 13)
   }
 
-  override def toString(): String = s"TokenLine([${tokens.mkString(",")}], ${lineNumber})"
+  override def toString(): String = s"TokenLine([${tokens.mkString(",")}], ${lineIndex})"
 }
 
 object ErrorCode {
@@ -46,7 +46,7 @@ object ErrorCode {
 
 // TODO: underline the offensive text in the program text?
 // TODO: hyperlink error messages?
-case class ErrorMessage(errorCode: ErrorCode.EnumVal, lineNumber: Int, message: String)
+case class ErrorMessage(errorCode: ErrorCode.EnumVal, lineIndex: Int, message: String)
 
 case class CompileLineResult(
   instruction: Option[Instruction],
@@ -112,7 +112,7 @@ object Compiler {
       instructionName: String,
       token: String,
       badParameterIndex: Int,
-      lineNumber: Int,
+      lineIndex: Int,
       types: Seq[ParamType]): ErrorMessage = {
 
     val paramNumber: String = getParamNumber(badParameterIndex)
@@ -124,12 +124,12 @@ object Compiler {
 
     val errorCode = ErrorCode.WrongParamType
     
-    return ErrorMessage(errorCode, lineNumber, message)
+    return ErrorMessage(errorCode, lineIndex, message)
   }
 
   def getErrorMalformedInstruction(
       instructionName: String,
-      lineNumber: Int,
+      lineIndex: Int,
       types: Seq[ParamType]): ErrorMessage = {
 
       val form: String = getInstructionForm(types.length)
@@ -142,7 +142,7 @@ object Compiler {
 
       val errorCode = ErrorCode.MalformedInstruction
 
-      return ErrorMessage(errorCode, lineNumber, message)
+      return ErrorMessage(errorCode, lineIndex, message)
 
   }
 
@@ -222,7 +222,7 @@ object Compiler {
   def getParam(
       instructionName: String,
       parameterIndex: Int,
-      lineNumber: Int,
+      lineIndex: Int,
       types: Seq[ParamType],
       token: String)(implicit config: Config): Either[ErrorMessage, Param] = {
 
@@ -233,13 +233,13 @@ object Compiler {
           Right(getReadable(token))
         } catch {
           case _: IllegalArgumentException =>
-            Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineNumber, types))
+            Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineIndex, types))
         }
       case WriteableParamType => try {
           Right(getWriteable(token))
         } catch {
           case _: IllegalArgumentException =>
-            Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineNumber, types))
+            Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineIndex, types))
         }
     }
   }
@@ -269,7 +269,7 @@ object Compiler {
 
     if (tl.tokens.length != paramTypes.length * 2 ||
         !foundCommas(paramTypes.length, tl)) {
-      return Left(getErrorMalformedInstruction(instructionName, tl.lineNumber, paramTypes))
+      return Left(getErrorMalformedInstruction(instructionName, tl.lineIndex, paramTypes))
     } else {
 
       val paramsAndErrors: Seq[Either[ErrorMessage, Param]] =
@@ -277,7 +277,7 @@ object Compiler {
           .zipWithIndex
           .map { case (paramType: ParamType, index: Int) =>
             val token = tl.tokens(index * 2 + 1)
-            getParam(instructionName, index, tl.lineNumber, paramTypes, token)
+            getParam(instructionName, index, tl.lineIndex, paramTypes, token)
           }
 
       val errorMessage: Option[ErrorMessage] =
@@ -335,8 +335,8 @@ object Compiler {
       }
       // Pair lines with line numbers
       .zipWithIndex
-      .map { case ((tokens: Array[String], originalLine: String), lineNumber: Int) =>
-        TokenLine(tokens, originalLine, lineNumber)
+      .map { case ((tokens: Array[String], originalLine: String), lineIndex: Int) =>
+        TokenLine(tokens, originalLine, lineIndex)
       }
 
   val readableKeywords = Set("#active", "%active", "$banks", "%banks", "$instrset", "%instrset",
@@ -361,7 +361,7 @@ object Compiler {
 
   def unrecognizedInstruction(tl: TokenLine) = {
     val message = s"Unrecognized instruction: <tt>${tl.tokens(0)}</tt>."
-    val errorMessage = ErrorMessage(ErrorCode.UnrecognizedInstruction, tl.lineNumber, message)
+    val errorMessage = ErrorMessage(ErrorCode.UnrecognizedInstruction, tl.lineIndex, message)
     CompileLineResult(None, Some(errorMessage))
   }
 
@@ -369,11 +369,11 @@ object Compiler {
   def compileBank(tl: TokenLine): CompileLineResult =
     if (tl.tokens.length > 2) {
       val message = "Too many parameters: the <tt>bank</tt> directive requires exactly one parameter."
-      val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
+      val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineIndex, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length < 2) {
       val message = "Missing parameter: the <tt>bank</tt> directive requires exactly one parameter."
-      val errorMessage = ErrorMessage(ErrorCode.MissingParams, tl.lineNumber, message)
+      val errorMessage = ErrorMessage(ErrorCode.MissingParams, tl.lineIndex, message)
       CompileLineResult(None, Some(errorMessage))
     } else {
       CompileLineResult(None, None)
@@ -386,7 +386,7 @@ object Compiler {
     if (tl.tokens.length > 1) {
       val message = "Too many parameters: the <tt>move</tt> instruction does not take any " +
         "parameters."
-      val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
+      val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineIndex, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length == 1) {
       val instruction = MoveInstruction(sourceMapInstruction)
@@ -459,21 +459,21 @@ object Compiler {
           "instruction, the instruction-set parameter, can only be 0 (signifying the " +
           "<i>Basic</i> instruction set) or 1 (signifying the <i>Extended</i> instruction set)."
         val errorCode = ErrorCode.BadInstructionSetParam
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+        val errorMessage = ErrorMessage(errorCode, tl.lineIndex, message)
         return CompileLineResult(None, Some(errorMessage))
       } else if (numBanksInt < 1 || numBanksInt > config.sim.maxBanks) {
         val message = "Bad numBanks parameter: the second parameter to the <tt>create</tt> " +
           "instruction, the numBanks parameter, must be greater (or equal to) 1 and less than " +
           s"(or equal to) ${config.sim.maxBanks}"
         val errorCode = ErrorCode.BadNumBanksParam
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+        val errorMessage = ErrorMessage(errorCode, tl.lineIndex, message)
         return CompileLineResult(None, Some(errorMessage))
       } else if (mobileInt < 0 || mobileInt > 1) {
         val message = "Bad mobile parameter: the third parameter to the <tt>create</tt> " +
           "instruction, the mobile parameter, can only be 0 (signifying immobility) or 1 " +
           "(signifying mobility)."
         val errorCode = ErrorCode.BadMobileParam
-        val errorMessage = ErrorMessage(errorCode, tl.lineNumber, message)
+        val errorMessage = ErrorMessage(errorCode, tl.lineIndex, message)
         return CompileLineResult(None, Some(errorMessage))
       }
     }
@@ -483,7 +483,7 @@ object Compiler {
       instructionSet,
       numBanks,
       mobile,
-      tl.lineNumber,
+      tl.lineIndex,
       playerColor)
 
     CompileLineResult(Some(instruction), None)
@@ -517,7 +517,7 @@ object Compiler {
     var bankLines = ArrayBuffer[String]()
     var bankIndex = -1
 
-    lines.foreach { case TokenLine(tokens, originalLine, lineNumber) =>
+    lines.foreach { case TokenLine(tokens, originalLine, lineIndex) =>
 
       if (tokens.length > 0 && tokens(0) == "bank") {
         if (bankIndex >= 0) {
@@ -564,7 +564,7 @@ object Compiler {
         val result: CompileLineResult = tl.tokens(0) match {
           case "bank" => {
             if (bankNumber == config.sim.maxBanks - 1) {
-                val errorMessage = ErrorMessage(ErrorCode.MaxBanksExceeded, tl.lineNumber,
+                val errorMessage = ErrorMessage(ErrorCode.MaxBanksExceeded, tl.lineIndex,
                   s"Too many banks: programs may only have ${config.sim.maxBanks} banks.")
                 CompileLineResult(None, Some(errorMessage))
             } else {
@@ -594,7 +594,7 @@ object Compiler {
             if (bankNumber >= 0) {
               banks(bankNumber).instructions += instruction
             } else {
-              errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineNumber, "Undeclared " +
+              errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineIndex, "Undeclared " +
                 "bank: you must place a <tt>bank</tt> directive before you place any instructions.")
             }
           }
