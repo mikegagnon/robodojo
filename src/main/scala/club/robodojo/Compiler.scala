@@ -528,8 +528,13 @@ object Compiler {
         bankIndex += 1
         bankLines = ArrayBuffer[String]()
       }
-
       bankLines :+= originalLine
+    }
+
+    // The last bank
+    if (bankIndex >= 0) {
+      val sourceMap = SourceMap(playerColor, bankLines)
+      banks(bankIndex).sourceMap = Some(sourceMap)
     }
   }
 
@@ -605,6 +610,11 @@ object Compiler {
     } else if (banks.isEmpty) {
       Left(ArrayBuffer(ErrorMessage(ErrorCode.EmptyBanks, 0, "Your program is empty.")))
     } else {
+      getSourceMaps(lines, playerColor, banks)
+
+      println(banks)
+
+
       Right(Program(banks))
     }
   }
