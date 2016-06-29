@@ -14,6 +14,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   val cmEditor: org.denigma.codemirror.Editor = getCmEditor()
 
+  jQuery(".CodeMirror").css("font-size", "12px")
+
   /** End initialization **************************************************************************/
 
   def addHtml(): Unit = {
