@@ -276,7 +276,7 @@ case class CreateInstruction(
     childInstructionSet: ReadableParam,
     numBanks: ReadableParam,
     mobile: ReadableParam,
-    lineNumber: Int,
+    lineIndex: Int,
     // Whose program did this instruction come from originally?
     // Note this is different than bot.playerColor, which is the color of the bot.
     // For example, if a blue bot infects a red bot with a bank that has as bad create instruction,
@@ -346,7 +346,7 @@ case class CreateInstruction(
 
     val errorCode = ErrorCode.InvalidParameter
 
-    val messageHeader = s"<p><span class='display-failure'>Error at line ${lineNumber + 1} of " +
+    val messageHeader = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
         s"The ${bot.playerColor} bot has tapped out because it attempted to " +
@@ -357,7 +357,7 @@ case class CreateInstruction(
       val message = messageHeader + s"<tt>childInstructionSet</tt> equal to " +
         s"${childInstructionSetValue}. <tt>childInstructionSet</tt> must be either 0 (signifying " +
         s"the Basic instruction set) or 1 (signifying the Extended instruction set).</p>"
-      val errorMessage = ErrorMessage(errorCode, lineNumber, message)
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
 
     } else if (numBanksValue <= 0 || numBanksValue > config.sim.maxBanks) {
@@ -365,7 +365,7 @@ case class CreateInstruction(
       val message = messageHeader + s"<tt>numBanks</tt> equal to ${numBanksValue}. "+
         s"<tt>numBanks</tt> must be greater than 0 and less than (or equal to) " +
         s"${config.sim.maxBanks}.</p>"
-      val errorMessage = ErrorMessage(errorCode, lineNumber, message)
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
 
     } else if (mobileValue < 0 || mobileValue > 1) {
@@ -373,7 +373,7 @@ case class CreateInstruction(
       val message = messageHeader + s"<tt>mobile</tt> equal to " +
         s"${mobileValue}. <tt>mobile</tt> must be either 0 (signifying " +
         s"immobility) or 1 (signifying mobility).</p>"
-      val errorMessage = ErrorMessage(errorCode, lineNumber, message)
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
 
     } else {
