@@ -28,13 +28,18 @@ object InstructionSet {
     } else {
       throw new IllegalArgumentException("Bad value: " + value)
   }
-
-
 }
+
+// TODO: where to put this? SourceMap.scala?
+// TODO: Document
+// TODO: is bankIndex really needed?
+case class SourceMapInstruction(lineIndex: Int, bankIndex: Int)
 
 // Instruction instances must be stateless, so multiple bots can execute the same instruction
 // at the same time.
 sealed abstract class Instruction {
+
+  val sourceMapInstruction: SourceMapInstruction
 
   val instructionSet: InstructionSet.EnumVal
 
@@ -191,7 +196,8 @@ final case class RegisterParam(registerIndex: Int)(implicit config: Config)
 
 /* Begin instructions *****************************************************************************/
 
-case class MoveInstruction(implicit val config: Config) extends Instruction {
+case class MoveInstruction(sourceMapInstruction: SourceMapInstruction)
+    (implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
 
@@ -228,7 +234,7 @@ case class MoveInstruction(implicit val config: Config) extends Instruction {
   }
 }
 
-case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Config) extends Instruction {
+case class TurnInstruction(sourceMapInstruction: SourceMapInstruction, leftOrRight: ReadableParam)(implicit val config: Config) extends Instruction {
 
     val instructionSet = InstructionSet.Basic
 
@@ -266,6 +272,7 @@ case class TurnInstruction(leftOrRight: ReadableParam)(implicit val config: Conf
 // TODO: Prevent FAT hack
 // TODO: make compliant with Robocom standard: generation, maxGeneration, and maxNumBots?
 case class CreateInstruction(
+    sourceMapInstruction: SourceMapInstruction,
     childInstructionSet: ReadableParam,
     numBanks: ReadableParam,
     mobile: ReadableParam,
@@ -444,6 +451,7 @@ case class CreateInstruction(
 }
 
 case class SetInstruction(
+  sourceMapInstruction: SourceMapInstruction,
   destination: WriteableParam,
   source: ReadableParam)(implicit val config: Config) extends Instruction {
 

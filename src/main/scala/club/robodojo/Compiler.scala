@@ -380,21 +380,23 @@ object Compiler {
     }
 
   // TESTED
-  def compileMove(tl: TokenLine)(implicit config: Config): CompileLineResult =
+  def compileMove(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
+      (implicit config: Config): CompileLineResult =
+
     if (tl.tokens.length > 1) {
       val message = "Too many parameters: the <tt>move</tt> instruction does not take any " +
         "parameters."
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineNumber, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length == 1) {
-      val instruction = MoveInstruction()
+      val instruction = MoveInstruction(sourceMapInstruction)
       CompileLineResult(Some(instruction), None)
     } else {
       throw new IllegalStateException("This code shouldn't be reachable")
     }
 
   // TESTED
-  def compileTurn(tl: TokenLine)(implicit config: Config): CompileLineResult = {
+  def compileTurn(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)(implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] = parseParams("turn", tl, ReadableParamType)
 
@@ -405,13 +407,14 @@ object Compiler {
 
     val direction = params(0).asInstanceOf[ReadableParam]
 
-    val instruction = TurnInstruction(direction)
+    val instruction = TurnInstruction(sourceMapInstruction, direction)
 
     CompileLineResult(Some(instruction), None)
   }
 
   // TESTED
   def compileCreate(
+      sourceMapInstruction: SourceMapInstruction, 
       tl: TokenLine,
       playerColor: PlayerColor.EnumVal)(implicit config: Config): CompileLineResult = {
 
@@ -476,6 +479,7 @@ object Compiler {
     }
 
     val instruction = CreateInstruction(
+      sourceMapInstruction,
       instructionSet,
       numBanks,
       mobile,
@@ -486,7 +490,8 @@ object Compiler {
   }
 
   // TESTED
-  def compileSet(tl: TokenLine)(implicit config: Config): CompileLineResult = {
+  def compileSet(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
+      (implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] =
       parseParams("set", tl, WriteableParamType, ReadableParamType)
@@ -498,7 +503,7 @@ object Compiler {
 
     val destination = params(0).asInstanceOf[WriteableParam]
     val source = params(1).asInstanceOf[ReadableParam]
-    val instruction = SetInstruction(destination, source)
+    val instruction = SetInstruction(sourceMapInstruction, destination, source)
 
     CompileLineResult(Some(instruction), None)
   }
@@ -542,9 +547,14 @@ object Compiler {
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
 
+    // TODO: document
+    var bankLineIndex = 0
+
     lines.foreach { case (tl: TokenLine) =>
 
       if (tl.tokens.length > 0) {
+
+        val sourceMapInstruction = SourceMapInstruction(bankLineIndex, bankNumber)
 
         val result: CompileLineResult = tl.tokens(0) match {
           case "bank" => {
@@ -554,14 +564,15 @@ object Compiler {
                 CompileLineResult(None, Some(errorMessage))
             } else {
               bankNumber += 1
+              bankLineIndex = 0
               banks += (bankNumber -> new Bank)
               compileBank(tl)
             }
           }
-          case "move" => compileMove(tl)
-          case "turn" => compileTurn(tl)
-          case "create" => compileCreate(tl, playerColor)
-          case "set" => compileSet(tl)
+          case "move" => compileMove(sourceMapInstruction, tl)
+          case "turn" => compileTurn(sourceMapInstruction, tl)
+          case "create" => compileCreate(sourceMapInstruction, tl, playerColor)
+          case "set" => compileSet(sourceMapInstruction, tl)
           case _ => unrecognizedInstruction(tl)
         }
 
@@ -584,6 +595,8 @@ object Compiler {
           }
         }
       }
+
+      bankLineIndex += 1
 
     }
 
