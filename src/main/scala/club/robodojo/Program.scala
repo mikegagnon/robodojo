@@ -2,7 +2,12 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
-case class Bank(var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction]())
+// TODO: document
+case class SourceMap(playerColor: PlayerColor.EnumVal, text: ArrayBuffer[String])
+
+case class Bank(
+  var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
+  var sourceMap: Option[SourceMap] = None)
 
 object Program {
 
