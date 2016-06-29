@@ -18,7 +18,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def addHtml(): Unit = {
 
-    // TODO: factor out common html between Debugger and Editor
     val html = s"""
       <div class="window">
         <div class="dark-border light-background">
