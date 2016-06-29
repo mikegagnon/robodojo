@@ -447,8 +447,9 @@ object CompilerTest extends TestSuite {
           val expectedResult =
             Array(
               TokenLine(Array("1"), "1", 0),
-              TokenLine(Array("2"), "2", 1),
-              TokenLine(Array("3"), "3", 2))
+              TokenLine(Array("2"), "          2", 1),
+              TokenLine(Array("3"), "          3", 2),
+              TokenLine(Array(), "          ", 3))
 
           assert(result.sameElements(expectedResult))
       }
