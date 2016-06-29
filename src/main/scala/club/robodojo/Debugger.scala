@@ -57,9 +57,16 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot: Bot = viz.board.getBot(botId).get
 
+    val banks = bot.program.banks
 
-
-    return bot.toString
+    (0 until banks.size)
+      .map { bankIndex =>
+        val bank = banks(bankIndex)
+        val sourceMap = bank.sourceMap.get
+        val playerColor = sourceMap.playerColor
+        sourceMap.text.mkString("\n")
+      }
+      .mkString("\n")
   }
 
   // TODO: pause
