@@ -1,9 +1,5 @@
 package club.robodojo
 
-import org.denigma.codemirror.extensions.EditorConfig
-import org.denigma.codemirror.{CodeMirror, EditorConfiguration}
-import org.scalajs.dom
-import org.scalajs.dom.raw.HTMLTextAreaElement
 import org.scalajs.jquery.jQuery
 
 class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Config) {
@@ -12,7 +8,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   addHtml()
 
-  val cmEditor: org.denigma.codemirror.Editor = getCmEditor()
+  val cmEditor = CodeMirrorDojo.getCmEditor(true, config.debugger.textAreaId)
 
   /** End initialization **************************************************************************/
 
@@ -35,25 +31,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   }
 
   def onBotClick(botId: Long): Unit = {
-    println("controller.onBotClick: " + botId)
     setupDebugger(botId: Long)
   }
 
-  // TODO: factor our common code between Debugger and Editor
-  def getCmEditor(): org.denigma.codemirror.Editor = {
-    val mode = "clike"
-    val params: EditorConfiguration = EditorConfig.mode(mode).lineNumbers(true).readOnly(true)
-
-    dom.document.getElementById(config.debugger.textAreaId) match {
-      case el:HTMLTextAreaElement =>
-        val cmEditor = CodeMirror.fromTextArea(el,params)
-        cmEditor
-      case _=> throw new IllegalStateException("Could not find textarea for debugger")
-    }
-  }
-
   def setupDebugger(botId: Long): Unit = {
-    cmEditor.getDoc().setValue("Foo")
+    cmEditor.getDoc().setValue(botId.toString)
   }
 
 }
