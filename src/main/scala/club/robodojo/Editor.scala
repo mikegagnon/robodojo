@@ -37,7 +37,9 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   addHtml()
 
-  val cmEditor: org.denigma.codemirror.Editor = getCmEditor()
+  val cmEditor = CodeMirrorDojo.getCmEditor(false, config.editor.textAreaId)
+
+  cmEditor.getDoc().setValue(files(currentPlayerColor))
 
   /** End initialization **************************************************************************/
 
@@ -88,20 +90,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
     jQuery("#" + config.id).append(html)
   }
-
-  def getCmEditor(): org.denigma.codemirror.Editor = {
-    val mode = "clike"
-    val params: EditorConfiguration = EditorConfig.mode(mode).lineNumbers(true)
-
-    dom.document.getElementById(config.editor.textAreaId) match {
-      case el:HTMLTextAreaElement =>
-        val cmEditor = CodeMirror.fromTextArea(el,params)
-        cmEditor.getDoc().setValue(files(currentPlayerColor))
-        cmEditor
-      case _=> throw new IllegalStateException("Could not find textarea for editor")
-    }
-  }
-
 
   // playerColor is the color that has been selected from the dropdown
   def clickSelectBotDropdown(playerColor: PlayerColor.EnumVal): Unit = {

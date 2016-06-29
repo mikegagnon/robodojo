@@ -12,9 +12,7 @@ object CodeMirrorDojo {
     val params: EditorConfiguration = EditorConfig.mode(mode).lineNumbers(true).readOnly(readOnly)
 
     dom.document.getElementById(textAreaId) match {
-      case el:HTMLTextAreaElement =>
-        val cmEditor = CodeMirror.fromTextArea(el,params)
-        cmEditor
+      case el:HTMLTextAreaElement => CodeMirror.fromTextArea(el,params)
       case _=> throw new IllegalStateException("Could not find textarea for " + textAreaId)
     }
   }
