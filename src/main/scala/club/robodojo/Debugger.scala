@@ -15,6 +15,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   val cmEditor: org.denigma.codemirror.Editor = getCmEditor()
 
+  // TODO: configify and only modify css for this cmEditor instance
   jQuery(".CodeMirror").css("font-size", "12px")
 
   /** End initialization **************************************************************************/
@@ -47,6 +48,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   def getCmEditor(): org.denigma.codemirror.Editor = {
     val mode = "clike"
     val params: EditorConfiguration = EditorConfig.mode(mode).lineNumbers(true).readOnly(true)
+      // TODO: set cursorHeight for Editor in addition to Debugger
+      .cursorHeight(0.85)
 
     dom.document.getElementById(config.debugger.textAreaId) match {
       case el:HTMLTextAreaElement =>
