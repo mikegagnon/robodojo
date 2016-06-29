@@ -53,6 +53,25 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     }
   }
 
+  // TODO: factor out common code?
+  def getLineIndex(bot: Bot, bankIndex: Int, instructionIndex: Int): Int = {
+    val banks = bot.program.banks
+
+    val previousBanksLength =
+      (0 until bankIndex)
+        .map { i =>
+          val bank = banks(i)
+          val sourceMap = bank.sourceMap.get
+          sourceMap.text.length
+        }
+        .sum
+
+    val instruction = banks(bankIndex).instructions(instructionIndex)
+    val lineIndex = instruction.sourceMapInstruction.lineIndex
+
+    previousBanksLength + lineIndex
+  }
+
   def getProgramText(botId: Long): String = {
 
     val bot: Bot = viz.board.getBot(botId).get
@@ -73,6 +92,15 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   def setupDebugger(botId: Long): Unit = {
     val programText = getProgramText(botId)
     cmEditor.getDoc().setValue(programText)
+
+    val bot: Bot = viz.board.getBot(botId).get
+
+    val lineIndex = getLineIndex(bot, 1, 1)
+
+    println(lineIndex)
+
+    val handle = cmEditor.getDoc().getLineHandle(lineIndex)
+    cmEditor.addLineClass(handle, "background", "line-highlight")
   }
 
 }
