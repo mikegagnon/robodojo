@@ -507,7 +507,9 @@ object CompilerTest extends TestSuite {
               }
             }
           case Right(compiledInstruction) => {
-            val expectedProgram = Program(Map(0-> Bank(ArrayBuffer(compiledInstruction))))
+            val expectedProgram = Program(Map(0->
+              Bank(ArrayBuffer(compiledInstruction),
+              Some(SourceMap(PlayerColor.Blue, 0, ArrayBuffer("bank Main", instruction))))))
             compiledResult match {
               case Left(_) => assert(false)
               case Right(program) => (program ==> expectedProgram)
@@ -551,7 +553,7 @@ object CompilerTest extends TestSuite {
       // TODO: move downs
       "move"-{
         "success"-{
-          testInstruction("move", Right(MoveInstruction(defaultSourceMap)))
+          testInstruction("move", Right(MoveInstruction(SourceMapInstruction(1, 0))))
         }
         "fail"-{
           testInstruction("move foo", Left(ErrorCode.TooManyParams))
