@@ -41,7 +41,10 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // What line does instruction X appear in the debugger window? Where X is
   // the instruction from instructionIndex, within bank bankIndex
   // TODO: Deal with empty banks
-  def getLineIndex(bot: Bot, bankIndex: Int, instructionIndex: Int): Int = {
+  def getLineIndex(bot: Bot): Int = {
+
+    val bankIndex = bot.bankIndex
+    val instructionIndex = bot.instructionIndex
     val banks = bot.program.banks
 
     val previousBanksLength =
@@ -97,7 +100,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     val bot = getBot(botId)
 
     // TODO: deal with this temporary hack
-    val lineIndex = getLineIndex(bot, bot.bankIndex, bot.instructionIndex)
+    val lineIndex = getLineIndex(bot)
 
     val handle = cmEditor.getDoc().getLineHandle(lineIndex)
     cmEditor.addLineClass(handle, "background", "line-highlight")
