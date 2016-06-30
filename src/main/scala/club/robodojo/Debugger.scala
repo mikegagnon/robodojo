@@ -38,7 +38,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     setupDebugger(botId: Long)
   }
 
-  // TODO: factor out common code?
+  // What line does instruction X appear in the debugger window? Where X is
+  // the instruction from instructionIndex, within bank bankIndex
   def getLineIndex(bot: Bot, bankIndex: Int, instructionIndex: Int): Int = {
     val banks = bot.program.banks
 
