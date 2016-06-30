@@ -22,8 +22,7 @@ object BotTest extends TestSuite {
         val bot = Bot(board, PlayerColor.Blue, row, col)
         bot.direction = dir
         board.addBot(bot)
-        val bank0 = new Bank()
-        bank0.instructions = instr
+        val bank0 = new Bank(instr)
         bot.program.banks += (0 -> bank0)
         bot
       }

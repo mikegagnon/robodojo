@@ -10,11 +10,10 @@ case class BankBuilder(
   def build() = Bank(instructions.toIndexedSeq, sourceMap)
 }
 
-
 case class Bank(
   // TODO: instructions is immutable?
-  val instructions: IndexedSeq[Instruction],
-  val sourceMap: Option[SourceMap])
+  val instructions: IndexedSeq[Instruction] = IndexedSeq(),
+  val sourceMap: Option[SourceMap] = None)
 
 object Program {
 
