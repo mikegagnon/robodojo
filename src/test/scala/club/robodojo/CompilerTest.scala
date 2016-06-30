@@ -636,9 +636,6 @@ object CompilerTest extends TestSuite {
                 1 -> Bank(ArrayBuffer(), Some(SourceMap(PlayerColor.Blue, 1, ArrayBuffer("bank foo"))))))
           testProgram(text, expectedProgram)
         }
-
-
-
         "success 3 banks"-{
           val text = "bank Main\nmove\nbank foo \nbank foo"
           val expectedProgram = Program(
@@ -649,10 +646,9 @@ object CompilerTest extends TestSuite {
         }
         "success 3 non-empty banks"-{
           val text = "bank Main\nmove\nbank foo\nmove\nmove\nbank foo\nmove"
-          val move = MoveInstruction(defaultSourceMap)
-          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(move)),
-                                            1 -> Bank(ArrayBuffer(move, move)),
-                                            2 -> Bank(ArrayBuffer(move))))
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap)), Some(SourceMap(PlayerColor.Blue, 0, ArrayBuffer("bank Main", "move")))),
+                                            1 -> Bank(ArrayBuffer(MoveInstruction(SourceMapInstruction(1, 1)), MoveInstruction(SourceMapInstruction(2, 1))), Some(SourceMap(PlayerColor.Blue, 1, ArrayBuffer("bank foo", "move", "move")))),
+                                            2 -> Bank(ArrayBuffer(MoveInstruction(SourceMapInstruction(1, 2))), Some(SourceMap(PlayerColor.Blue, 2, ArrayBuffer("bank foo", "move"))) )))
           testProgram(text, expectedProgram)
         }
       }
