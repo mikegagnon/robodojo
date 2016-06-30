@@ -67,11 +67,21 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     (0 until banks.size)
       .map { bankIndex =>
         val bank = banks(bankIndex)
-        val sourceMap = bank.sourceMap.get
-        val playerColor = sourceMap.playerColor
-        val origBankIndex = sourceMap.bankIndex
-        s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n" +
-        sourceMap.text.mkString("\n")
+        bank.sourceMap match {
+          case None => {
+            if (bank.instructions.length != 0) {
+              throw new IllegalStateException("If sourceMap is none, then instructions should be " +
+                "empty")
+            }
+            s"; Bank #${bankIndex + 1} = empty bank"
+          }
+          case Some(sourceMap) => {
+            val playerColor = sourceMap.playerColor
+            val origBankIndex = sourceMap.bankIndex
+            s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n" +
+            sourceMap.text.mkString("\n")
+          }
+        }
       }
       .mkString("\n")
   }
