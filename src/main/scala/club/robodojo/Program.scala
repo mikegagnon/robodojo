@@ -4,11 +4,7 @@ import scala.collection.mutable.ArrayBuffer
 
 case class BankBuilder(
     var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
-    var sourceMap: Option[SourceMap] = None) {
-  
-  // TODO: use sourceMap builder
-  def build() = Bank(instructions.toIndexedSeq, sourceMap)
-}
+    var sourceMap: Option[SourceMap] = None)
 
 case class Bank(
   // TODO: instructions is immutable?
