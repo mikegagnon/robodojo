@@ -30,11 +30,6 @@ object InstructionSet {
   }
 }
 
-// TODO: where to put this? SourceMap.scala?
-// TODO: Document
-// TODO: is bankIndex really needed?
-case class SourceMapInstruction(lineIndex: Int, bankIndex: Int)
-
 // Instruction instances must be stateless, so multiple bots can execute the same instruction
 // at the same time.
 sealed abstract class Instruction {

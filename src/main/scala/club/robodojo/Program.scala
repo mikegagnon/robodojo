@@ -2,10 +2,6 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: document
-// TODO: bankIndex
-case class SourceMap(playerColor: PlayerColor.EnumVal, bankIndex: Int, text: ArrayBuffer[String])
-
 // TODO: builder pattern?
 case class Bank(
   var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
