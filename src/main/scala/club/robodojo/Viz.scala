@@ -67,6 +67,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // point in time.
   val animations = HashMap[Int, HashMap[Long, Animation]]()
 
+  // boards(cycleNum) == b, where b is a deep copy of board when board.cycleNum == cycleNum
+  // Used for the Debugger
   val boards = HashMap[Int, Board]()
 
   var animationCycleNum = 0
