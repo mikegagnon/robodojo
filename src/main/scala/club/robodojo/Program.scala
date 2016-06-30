@@ -2,7 +2,6 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: builder pattern?
 case class Bank(
   var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
   var sourceMap: Option[SourceMap] = None)
