@@ -1,6 +1,7 @@
 package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.IndexedSeq
 
 // These classes facilitate debugging by storing source code information.
 

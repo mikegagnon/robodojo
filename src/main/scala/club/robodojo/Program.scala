@@ -1,6 +1,7 @@
 package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.IndexedSeq
 
 case class BankBuilder(
   var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
