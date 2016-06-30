@@ -59,10 +59,12 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     previousBanksLength + lineIndex + 1
   }
 
+  // get the bot at animationCycleNum point in time
+  def getBot(botId: Long) = viz.boards(viz.animationCycleNum).getBot(botId).get
+
   def getProgramText(botId: Long): String = {
 
-    // TODO: factor out common code
-    val bot: Bot = viz.boards(viz.animationCycleNum).getBot(botId).get
+    val bot = getBot(botId)
 
     val banks = bot.program.banks
 
@@ -92,7 +94,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     val programText = getProgramText(botId)
     cmEditor.getDoc().setValue(programText)
 
-    val bot: Bot = viz.boards(viz.animationCycleNum).getBot(botId).get
+    val bot = getBot(botId)
 
     // TODO: deal with this temporary hack
     val lineIndex = getLineIndex(bot, bot.bankIndex, bot.instructionIndex)
