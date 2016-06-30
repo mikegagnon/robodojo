@@ -453,51 +453,6 @@ object CompilerTest extends TestSuite {
 
           assert(result.sameElements(expectedResult))
       }
-
-      "Drop empty lines"-{
-        val text = """
-
-        1
-
-        2
-
-        3
-
-
-        """
-
-        val result = Compiler.tokenize(text)
-        val expectedResult =
-          Array(
-            TokenLine(Array("1"), "1", 2),
-            TokenLine(Array("2"), "2", 4),
-            TokenLine(Array("3"), "3", 6))
-        assert(result.sameElements(expectedResult))
-      }
-
-      "Filter out Name, Author, Country"-{
-        val text = """
-          1
-          Name Foo Bar
-          Name
-          2
-          Author Mufaso Max
-          3
-          Country The Moon
-          Country
-          4
-          """
-
-        val result = Compiler.tokenize(text)
-        val expectedResult =
-          Array(
-            TokenLine(Array("1"), "1", 1),
-            TokenLine(Array("2"), "2", 4),
-            TokenLine(Array("3"), "3", 6),
-            TokenLine(Array("4"), "4", 9))
-
-          assert(result.sameElements(expectedResult))
-      }
     }
 
     "getErrorWrongParamType"-{
