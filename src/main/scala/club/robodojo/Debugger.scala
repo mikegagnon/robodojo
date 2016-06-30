@@ -82,9 +82,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot: Bot = viz.board.getBot(botId).get
 
+    // TODO: deal with this temporary hack
     val lineIndex = getLineIndex(bot, 0, 3)
-
-    println(lineIndex)
 
     val handle = cmEditor.getDoc().getLineHandle(lineIndex)
     cmEditor.addLineClass(handle, "background", "line-highlight")
