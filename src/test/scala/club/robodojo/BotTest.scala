@@ -43,7 +43,7 @@ object BotTest extends TestSuite {
         val bot = getBot(0, 0, Direction.Right, ArrayBuffer(MoveInstruction(defaultSourceMap)))
 
         bot.board.matrix(0)(0) ==> Some(bot)
-        for ( _ <- 0 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
         bot.board.matrix(0)(0) ==> Some(bot)
         bot.cycle()
         bot.board.matrix(0)(0) ==> None
@@ -55,7 +55,7 @@ object BotTest extends TestSuite {
           IntegerParam(0))))
 
         bot.direction ==> Direction.Right
-        for ( _ <- 0 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
         bot.direction ==> Direction.Right
         bot.cycle()
         bot.direction ==> Direction.Up
@@ -67,14 +67,14 @@ object BotTest extends TestSuite {
 
         // Turn instruction
         bot.direction ==> Direction.Right
-        for ( _ <- 0 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
         bot.direction ==> Direction.Right
         bot.cycle()
         bot.direction ==> Direction.Down
 
         // Move instruction
         bot.board.matrix(0)(0) ==> Some(bot)
-        for ( _ <- 0 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
         bot.board.matrix(0)(0) ==> Some(bot)
         bot.cycle()
         bot.board.matrix(0)(0) ==> None
@@ -88,14 +88,14 @@ object BotTest extends TestSuite {
 
         // Turn instruction
         bot.direction ==> Direction.Right
-        for ( _ <- 0 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
         bot.direction ==> Direction.Right
         bot.cycle()
         bot.direction ==> Direction.Down
 
         // Move instruction
         bot.board.matrix(0)(0) ==> Some(bot)
-        for ( _ <- 0 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
         bot.board.matrix(0)(0) ==> Some(bot)
         bot.cycle()
         bot.board.matrix(0)(0) ==> None
@@ -103,14 +103,14 @@ object BotTest extends TestSuite {
 
         // Turn instruction
         bot.direction ==> Direction.Down
-        for ( _ <- 0 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durTurn - 1) { bot.cycle() }
         bot.direction ==> Direction.Down
         bot.cycle()
         bot.direction ==> Direction.Left
 
         // Move instruction
         bot.board.matrix(1)(0) ==> Some(bot)
-        for ( _ <- 0 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
+        for ( _ <- 1 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
         bot.board.matrix(1)(0) ==> Some(bot)
         bot.cycle()
         bot.board.matrix(1)(0) ==> None
