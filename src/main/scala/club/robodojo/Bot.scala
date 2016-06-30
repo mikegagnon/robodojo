@@ -62,7 +62,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var instructionIndex = 0
 
-  var cycleNum = 0
+  var cycleNum = 1
 
   // The number of cycles that must be executed before executing the current instruction
   var requiredCycles = 0
@@ -111,12 +111,17 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
       if (cycleNum >= requiredCycles) {
 
-        cycleNum = 0
+        cycleNum = 1
         instructionIndex += 1
 
         if (instructionIndex == bank.instructions.length) {
           instructionIndex = 0
         }
+
+        val newInstruction = program.banks(bankIndex).instructions(instructionIndex)
+
+        requiredCycles = newInstruction.getRequiredCycles(this)
+
       } else {
         cycleNum += 1
       }

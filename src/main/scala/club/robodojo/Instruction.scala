@@ -44,7 +44,7 @@ sealed abstract class Instruction {
   // TODO: document FAT hack and this work around
   def cycle(bot: Bot, cycleNum: Int): Option[Animation] = {
 
-    if (cycleNum == 0 || cycleNum >= bot.requiredCycles) {
+    if (cycleNum >= bot.requiredCycles) {
       bot.requiredCycles = getRequiredCycles(bot)
     }
 
