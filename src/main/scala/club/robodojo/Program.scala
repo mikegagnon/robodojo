@@ -2,6 +2,9 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
+// NOTE: Although instructions and sourceMap are var, they never get modified after compilation.
+// So they are safe to shallow copy in Program.deepCopy.
+// TODO: BankBuilder?
 case class Bank(
   var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
   var sourceMap: Option[SourceMap] = None)
@@ -24,4 +27,10 @@ object Program {
 
 case class Program(var banks: Map[Int, Bank]) {
   def isEmpty(): Boolean = banks.isEmpty
+
+  def deepCopy(): Program = {
+    val newBanks = banks.map{ case (k, v) => (k, v) }
+    return Program(newBanks)
+  }
+
 }

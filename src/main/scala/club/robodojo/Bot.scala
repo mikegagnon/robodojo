@@ -75,7 +75,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
     newBot.row = row
     newBot.col = col
     newBot.direction = direction
-    newBot.program = null //...
+    newBot.program = program.deepCopy()
     newBot.instructionSet = instructionSet
     newBot.mobile = mobile
     newBot.active = active
