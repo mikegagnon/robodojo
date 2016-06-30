@@ -25,7 +25,7 @@ object Program {
 
     var banks = Map[Int, Bank]()
     0 until numBanks foreach { bankNum =>
-      banks += bankNum -> Bank(ArrayBuffer[Instruction]())
+      banks += bankNum -> Bank(IndexedSeq[Instruction](), None)
     }
 
     return Program(banks)
