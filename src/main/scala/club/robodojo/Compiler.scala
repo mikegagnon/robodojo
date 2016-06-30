@@ -517,11 +517,16 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // Assumes the compilation was successful, this is a second pass
-  // TODO: document
   // TODO: Bank builder class?
-  def getSourceMaps(lines: Array[TokenLine], playerColor: PlayerColor.EnumVal, banks: Map[Int, Bank]):
-      Unit = {
+  // To facilitate the debugger, instructions and banks keep track of source code information.
+  // Regarding banks, each bank has a sourceMap field that stores the original source code for the
+  // bank. This function generates those sourceMap fields. This function assumes the compilation was
+  // successful; this is a second pass.
+  def getSourceMaps(
+      // All lines from the original source code program
+      lines: Array[TokenLine],
+      playerColor: PlayerColor.EnumVal,
+      banks: Map[Int, Bank]): Unit = {
 
     var bankLines = ArrayBuffer[String]()
     var bankIndex = -1
