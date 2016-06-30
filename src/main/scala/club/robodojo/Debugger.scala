@@ -113,7 +113,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       .mkString("\n")
   }
 
-  // TODO: memoize values
   def setupDebugger(botId: Long): Unit = {
 
     botIdDebugged = Some(botId)
