@@ -2,6 +2,7 @@ package club.robodojo
 
 import utest._
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.IndexedSeq
 
 object InstructionTest extends TestSuite {
 
@@ -223,16 +224,16 @@ object InstructionTest extends TestSuite {
         // $banks
         testSourceParam(BanksKeyword(true), 2) { (bot1, _) =>
             bot1.program.banks = Map[Int, Bank](
-              0 -> Bank(ArrayBuffer()),
-              1 -> Bank(ArrayBuffer()))
+              0 -> Bank(IndexedSeq()),
+              1 -> Bank(IndexedSeq()))
         }
 
         // %banks with remote bot
         testSourceParam(BanksKeyword(false), 3) { (_, bot2) =>
             bot2.program.banks = Map[Int, Bank](
-              0 -> Bank(ArrayBuffer()),
-              1 -> Bank(ArrayBuffer()),
-              2 -> Bank(ArrayBuffer()))
+              0 -> Bank(IndexedSeq()),
+              1 -> Bank(IndexedSeq()),
+              2 -> Bank(IndexedSeq()))
         }
 
         // %banks without remote bot

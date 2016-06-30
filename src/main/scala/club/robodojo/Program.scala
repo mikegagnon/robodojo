@@ -1,13 +1,16 @@
 package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.IndexedSeq
 
-// NOTE: Although instructions and sourceMap are var, they never get modified after compilation.
-// So they are safe to shallow copy in Program.deepCopy.
-// TODO: BankBuilder?
-case class Bank(
+case class BankBuilder(
   var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
   var sourceMap: Option[SourceMap] = None)
+
+case class Bank(
+  // TODO: instructions is immutable?
+  val instructions: IndexedSeq[Instruction] = IndexedSeq(),
+  val sourceMap: Option[SourceMap] = None)
 
 object Program {
 
@@ -18,7 +21,7 @@ object Program {
 
     var banks = Map[Int, Bank]()
     0 until numBanks foreach { bankNum =>
-      banks += bankNum -> Bank(ArrayBuffer[Instruction]())
+      banks += bankNum -> Bank(IndexedSeq[Instruction](), None)
     }
 
     return Program(banks)

@@ -3,6 +3,7 @@ package club.robodojo
 import utest._
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.IndexedSeq
 
 object BotTest extends TestSuite {
 
@@ -22,8 +23,7 @@ object BotTest extends TestSuite {
         val bot = Bot(board, PlayerColor.Blue, row, col)
         bot.direction = dir
         board.addBot(bot)
-        val bank0 = new Bank()
-        bank0.instructions = instr
+        val bank0 = new Bank(instr.toIndexedSeq)
         bot.program.banks += (0 -> bank0)
         bot
       }
