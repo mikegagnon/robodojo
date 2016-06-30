@@ -2,13 +2,14 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
-// TODO: put originalLine into equation
 case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int) {
 
   // TESTED
   override def equals(that: Any): Boolean =
     that match {
-      case tl: TokenLine => tokens.sameElements(tl.tokens) && lineIndex == tl.lineIndex
+      case tl: TokenLine => tokens.sameElements(tl.tokens) &&
+        lineIndex == tl.lineIndex &&
+        originalLine == tl.originalLine
       case _ => false
     }
   
@@ -17,7 +18,7 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
     var x = 13
     tokens.foreach { str: String => x *= (str.hashCode + 13)}
 
-    return x * (lineIndex.hashCode + 13)
+    return x * (lineIndex.hashCode + 13) * (originalLine.hashCode + 11)
   }
 
   override def toString(): String = s"TokenLine([${tokens.mkString(",")}], '${originalLine}', " +
