@@ -2,6 +2,8 @@ package club.robodojo
 
 import utest._
 
+import scala.collection.immutable.IndexedSeq
+
 object BoardTest extends TestSuite {
 
   implicit val config = Config.default
@@ -71,6 +73,59 @@ object BoardTest extends TestSuite {
       board.matrix(1)(1) ==> None
       board.bots.length ==> 1
       board.bots(0).id ==> bot2.id
+    }
+
+    "board.deepCopy"-{
+      val board = new Board()
+
+      val color = PlayerColor.Blue
+      val bank0 = Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(0, 0))), Some(SourceMap(color, 0, IndexedSeq("move"))))
+      val bank1 = Bank(IndexedSeq(TurnInstruction(SourceMapInstruction(0, 1), IntegerParam(0))), Some(SourceMap(color, 1, IndexedSeq("turn 0"))))
+      val program = Program(Map(0 ->  bank0, 1 -> bank1))
+
+      val bot = Bot(board, color, 1, 1, Direction.Right, program, InstructionSet.Extended, true, 5)
+      bot.registers(1) = 5
+      board.addBot(bot)
+
+      val newBoard = board.deepCopy()
+      newBoard.cycleNum ==> board.cycleNum
+      val newBot = newBoard.matrix(1)(1).get
+
+      // TODO: factor out common code
+      assert(newBot != bot)
+      newBot.board ==> newBoard
+      newBot.id ==> bot.id
+      newBot.row ==> bot.row
+      newBot.col ==> bot.col
+      newBot.direction ==> bot.direction
+
+      // Make sure program are distinct objects
+      newBot.program.banks -= 0
+      assert(newBot.program != bot.program)
+
+      newBot.program.banks += 0 -> bank0
+      newBot.program ==> bot.program
+
+      newBot.instructionSet ==> bot.instructionSet
+      newBot.mobile ==> bot.mobile
+      newBot.active ==> bot.active
+      newBot.bankIndex ==> bot.bankIndex
+      newBot.instructionIndex ==> bot.instructionIndex
+      newBot.cycleNum ==> bot.cycleNum
+      newBot.requiredCycles ==> bot.requiredCycles
+
+      // Make sure registers are distinct objects
+      newBot.registers(1) = 7
+      assert(newBot.registers != bot.registers)
+
+      newBot.registers(1) = 5
+      newBot.registers ==> bot.registers
+
+      newBoard.bots.length ==> 1
+
+      assert(newBoard.bots(0) != bot)
+      newBoard.bots(0) ==> newBot
+
     }
   }
 }

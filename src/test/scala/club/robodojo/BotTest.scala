@@ -166,6 +166,8 @@ object BotTest extends TestSuite {
 
       val newBoard = new Board()
       val newBot = bot.deepCopy(newBoard)
+
+      // TODO: factor out common code
       assert(newBot != bot)
       newBot.board ==> newBoard
       newBot.id ==> bot.id
