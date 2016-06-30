@@ -67,6 +67,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // point in time.
   val animations = HashMap[Int, HashMap[Long, Animation]]()
 
+  val boards = HashMap[Int, Board]()
+
   var animationCycleNum = 0
 
   var controller: Controller = null
@@ -285,7 +287,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   /** End initialization functions ****************************************************************/
 
-  /** Begin miscfunctions  ************************************************************************/
+  /** Begin misc functions  ***********************************************************************/
 
   def newBoard(newBoard: Board): Unit = {
     board = newBoard
@@ -308,6 +310,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       animations -= cycleNum
     }
 
+    boards.keys.foreach { cycleNum =>
+      boards -= cycleNum
+    }
+
     stage.removeAllChildren()
 
     botVisualFeatures = HashMap[Long, BotVisualFeatures]()
@@ -326,13 +332,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
   // one. Perhaps monoids?
   def cycle(): Unit = {
+
+    // boards(x) == board, where board.cycleNum = x
+    boards(board.cycleNum) = board.deepCopy()
+
     // TODO: this might be empty
     val animationList = board.cycle()
 
     animations(board.cycleNum - 1) = HashMap[Long, Animation]()
 
     // Remove obsolete animations to avoid memory leak
-    animations -= board.cycleNum - config.viz.lookAheadCycles - 1 - config.viz.maxCyclesPerTick
+    val staleCycle = board.cycleNum - config.viz.lookAheadCycles - 1 - config.viz.maxCyclesPerTick
+    animations -= staleCycle
+
+    // Remove obsolete boards
+    boards -= staleCycle
 
     animationList.foreach { animation: Animation =>
       animations(board.cycleNum - 1)(animation.botId) = animation
