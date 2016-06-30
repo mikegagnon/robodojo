@@ -3,8 +3,8 @@ package club.robodojo
 import scala.collection.mutable.ArrayBuffer
 
 case class BankBuilder(
-    var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
-    var sourceMap: Option[SourceMap] = None)
+  var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
+  var sourceMap: Option[SourceMap] = None)
 
 case class Bank(
   // TODO: instructions is immutable?
