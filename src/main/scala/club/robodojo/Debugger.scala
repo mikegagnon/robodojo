@@ -14,6 +14,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   jQuery(s"#${config.debugger.divId} .CodeMirror").css("font-size", config.debugger.fontSize)
 
+  // the bot that is being scrutinized
+  var botIdDebugged: Option[Long]= None
+
   /** End initialization **************************************************************************/
 
   def addHtml(): Unit = {
@@ -36,6 +39,13 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def onBotClick(botId: Long): Unit = {
     setupDebugger(botId: Long)
+  }
+
+  // TODO: only update the debugger window if the debugger is open
+  def tick(): Unit = {
+    botIdDebugged.map { botId =>
+      setupDebugger(botId)
+    }
   }
 
   // What line does instruction X appear in the debugger window? Where X is
@@ -66,7 +76,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   def getBot(botId: Long) = viz.boards(viz.animationCycleNum).getBot(botId).get
 
   def getProgramText(botId: Long): String = {
-
     val bot = getBot(botId)
 
     val banks = bot.program.banks
@@ -93,7 +102,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       .mkString("\n")
   }
 
+  // TODO: memoize values
   def setupDebugger(botId: Long): Unit = {
+
+    botIdDebugged = Some(botId)
+
     val programText = getProgramText(botId)
     cmEditor.getDoc().setValue(programText)
 

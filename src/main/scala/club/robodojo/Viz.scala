@@ -410,6 +410,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animate(numCyclesThisTick)
 
     stage.update()
+
+    controller.debugger.tick()
   }
 
   /** End misc functions  *************************************************************************/
