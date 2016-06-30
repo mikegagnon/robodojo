@@ -58,9 +58,9 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var active: Short = 0
 
-  var bankNum = 0
+  var bankIndex = 0
 
-  var instructionNum = 0
+  var instructionIndex = 0
 
   var cycleNum = 0
 
@@ -82,21 +82,21 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
       return None
     }
 
-    var bank = program.banks(bankNum)
+    var bank = program.banks(bankIndex)
 
     if (bank.instructions.length > 0) {
 
-      val instruction = bank.instructions(instructionNum)
+      val instruction = bank.instructions(instructionIndex)
 
       val animation: Option[Animation] = instruction.cycle(this, cycleNum)
 
       if (cycleNum >= requiredCycles) {
 
         cycleNum = 0
-        instructionNum += 1
+        instructionIndex += 1
 
-        if (instructionNum == bank.instructions.length) {
-          instructionNum = 0
+        if (instructionIndex == bank.instructions.length) {
+          instructionIndex = 0
         }
       } else {
         cycleNum += 1
@@ -109,7 +109,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
       val message = s"<p><span class='display-failure'>Error in ${playerColor}'s bot' " +
         s"located at row ${row + 1}, column ${col + 1}</span>: " +
         s"The ${playerColor} bot has tapped out because it attempted to " +
-        s"execute an empty bank (bank ${bankNum + 1})."
+        s"execute an empty bank (bank ${bankIndex + 1})."
 
       val errorMessage = ErrorMessage(errorCode, 0, message)
 
