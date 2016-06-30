@@ -522,7 +522,7 @@ object Compiler {
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
   // successful; this is a second pass.
-  def getSourceMaps(
+  def setSourceMaps(
       // All lines from the original source code program
       lines: Array[TokenLine],
       playerColor: PlayerColor.EnumVal,
@@ -566,7 +566,8 @@ object Compiler {
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
 
-    // TODO: document
+    // Like lineIndex, but relative to the current bank. For example, if we are at the 5th line
+    // of bank N, then bankLineIndex == 4
     var bankLineIndex = 0
 
     lines.foreach { case (tl: TokenLine) =>
@@ -624,7 +625,7 @@ object Compiler {
     } else if (banks.isEmpty) {
       Left(ArrayBuffer(ErrorMessage(ErrorCode.EmptyBanks, 0, "Your program is empty.")))
     } else {
-      getSourceMaps(lines, playerColor, banks)
+      setSourceMaps(lines, playerColor, banks)
       Right(Program(banks))
     }
   }
