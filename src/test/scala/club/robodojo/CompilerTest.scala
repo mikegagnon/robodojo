@@ -608,11 +608,11 @@ object CompilerTest extends TestSuite {
 
           // Exactly at the limit
           val text = "bank 1\nbank 2\nbank 3\nbank 4\nbank 5"
-          val expectedProgram = Program(Map(0 -> Bank(),
-                                            1 -> Bank(),
-                                            2 -> Bank(),
-                                            3 -> Bank(),
-                                            4 -> Bank()))
+          val expectedProgram = Program(Map(0 -> Bank(ArrayBuffer[Instruction](), Some(SourceMap(PlayerColor.Blue, 0, ArrayBuffer("bank 1")))),
+                                            1 -> Bank(ArrayBuffer[Instruction](), Some(SourceMap(PlayerColor.Blue, 1, ArrayBuffer("bank 2")))),
+                                            2 -> Bank(ArrayBuffer[Instruction](), Some(SourceMap(PlayerColor.Blue, 2, ArrayBuffer("bank 3")))),
+                                            3 -> Bank(ArrayBuffer[Instruction](), Some(SourceMap(PlayerColor.Blue, 3, ArrayBuffer("bank 4")))),
+                                            4 -> Bank(ArrayBuffer[Instruction](), Some(SourceMap(PlayerColor.Blue, 4, ArrayBuffer("bank 5"))))))
           testProgram(text , expectedProgram)(config)
         }
         "success 1 instruction"-{
