@@ -12,15 +12,14 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   val cmEditor = CodeMirrorDojo.getCmEditor(true, config.debugger.textAreaId)
 
-  // TODO: configify and only modify css for this cmEditor instance
-  jQuery(".CodeMirror").css("font-size", "12px")
+  jQuery(s"#${config.debugger.divId} .CodeMirror").css("font-size", config.debugger.fontSize)
 
   /** End initialization **************************************************************************/
 
   def addHtml(): Unit = {
 
     val html = s"""
-      <div class="window">
+      <div class="window" id="${config.debugger.divId}">
         <div class="dark-border light-background">
           <div class="code-mirror-div">
             <textarea id='${config.debugger.textAreaId}'></textarea>
