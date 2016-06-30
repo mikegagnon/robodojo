@@ -625,10 +625,6 @@ object Compiler {
       Left(ArrayBuffer(ErrorMessage(ErrorCode.EmptyBanks, 0, "Your program is empty.")))
     } else {
       getSourceMaps(lines, playerColor, banks)
-
-      println(banks)
-
-
       Right(Program(banks))
     }
   }
