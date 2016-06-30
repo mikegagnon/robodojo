@@ -143,5 +143,44 @@ object BotTest extends TestSuite {
         bot1.getRemote() ==> None
       }
     }
+
+    "bot deepCopy"-{
+      val board = new Board()
+      val color = PlayerColor.Blue
+      val bot = new Bot(board, color)
+      bot.id = 5
+      bot.row = 2
+      bot.col = 3
+      bot.direction = Direction.Right
+      val bank0 = Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(0, 0))), Some(SourceMap(color, 0, IndexedSeq("move"))))
+      val bank1 = Bank(IndexedSeq(TurnInstruction(SourceMapInstruction(0, 1), IntegerParam(0))), Some(SourceMap(color, 1, IndexedSeq("turn 0"))))
+      bot.program = Program(Map(0 ->  bank0, 1 -> bank1))
+      bot.instructionSet = InstructionSet.Basic
+      bot.mobile = true
+      bot.active = 1
+      bot.bankIndex = 1
+      bot.instructionIndex = 0
+      bot.cycleNum = 2
+      bot.requiredCycles = 8
+      bot.registers(0) = 5
+
+      val newBoard = new Board()
+      val newBot = bot.deepCopy(newBoard)
+      assert(newBot != bot)
+      newBot.board ==> newBoard
+      newBot.id ==> bot.id
+      newBot.row ==> bot.row
+      newBot.col ==> bot.col
+      newBot.direction ==> bot.direction
+
+      // Make sure program are distinct objects
+      newBot.program.banks -= 0
+      assert(newBot.program != bot.program)
+
+      newBot.program.banks += 0 -> bank0
+      newBot.program ==> bot.program
+
+      // TODO: finish
+    }
   }
 }
