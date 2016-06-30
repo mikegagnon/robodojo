@@ -39,6 +39,8 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   val cmEditor = CodeMirrorDojo.getCmEditor(false, config.editor.textAreaId)
 
+  jQuery(s"#${config.editor.divId} .CodeMirror").css("font-size", config.editor.fontSize)
+
   cmEditor.getDoc().setValue(files(currentPlayerColor))
 
   /** End initialization **************************************************************************/
@@ -49,7 +51,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     // flooded.
     // TODO: put output in popup.
     val html = s"""
-      <div class = "window">
+      <div class = "window" id="${config.editor.divId}">
 
           <div class = "editor-console">
 

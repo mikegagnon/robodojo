@@ -50,7 +50,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val divId = id + "-debugger-div"
     val textAreaId = divId + "-textArea"
     val outputId = divId + "-output"
-    val fontSize = params.getOrElse("debugger.fontSize", "13px").asInstanceOf[String]
+    val fontSize = params.getOrElse("debugger.fontSize", "14px").asInstanceOf[String]
   }
 
   object editor {
@@ -59,6 +59,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val consoleDivId = divId + "-console-div"
     val outputId = divId + "-output"
     val selectBotButtonId = consoleDivId + "-select-bot-button"
+    val fontSize = params.getOrElse("editor.fontSize", "14px").asInstanceOf[String]
 
     val defaultPrograms = Map(
       0 -> "bank Main\ncreate 1,1,1\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",
