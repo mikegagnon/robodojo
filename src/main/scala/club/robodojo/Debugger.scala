@@ -90,6 +90,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     // TODO: this is just a demo
     // TODO: instead of 5, do half of num-lines-in-cmeditor-window
+    // Scroll down to the highlighted line
     val pos = js.Dynamic.literal(line = lineIndex + 5, ch = 0).asInstanceOf[Position]
 
     cmEditor.getDoc().setCursor(pos)
