@@ -40,7 +40,7 @@ object Bot {
 // TODO: bots can only move if they are mobile
 class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val config: Config) {
 
-  val id = Bot.getNextId
+  var id = Bot.getNextId
 
   override def toString: String = "Bot" + id
 
@@ -68,6 +68,25 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   var requiredCycles = 0
 
   var registers = ArrayBuffer.fill(config.sim.maxNumVariables)(0.toShort)
+
+  def deepCopy(newBoard: Board): Bot = {
+    val newBot = new Bot(newBoard, playerColor)
+    newBot.id = id
+    newBot.row = row
+    newBot.col = col
+    newBot.direction = direction
+    newBot.program = null //...
+    newBot.instructionSet = instructionSet
+    newBot.mobile = mobile
+    newBot.active = active
+    newBot.bankIndex = bankIndex
+    newBot.instructionIndex = instructionIndex
+    newBot.cycleNum = cycleNum
+    newBot.requiredCycles = requiredCycles
+    newBot.registers = null //...
+
+    return newBot
+  }
 
   def getRemote(): Option[Bot] = {
     val RowCol(remoteRow, remoteCol) = Direction.dirRowCol(direction, row, col)

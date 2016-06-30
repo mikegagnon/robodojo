@@ -10,6 +10,18 @@ class Board(implicit val config: Config) {
 
   var cycleNum = 0
 
+  def deepCopy(): Board = {
+    val newBoard = new Board()
+    newBoard.cycleNum = cycleNum
+
+    bots.foreach { bot =>
+      val newBot = bot.deepCopy(newBoard)
+      newBoard.addBot(newBot)
+    }
+
+    return newBoard
+  }
+
   // TESTED
   def addBot(bot: Bot): Unit =
     matrix(bot.row)(bot.col) match {
