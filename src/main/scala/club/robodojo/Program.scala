@@ -8,7 +8,6 @@ case class BankBuilder(
   var sourceMap: Option[SourceMap] = None)
 
 case class Bank(
-  // TODO: instructions is immutable?
   val instructions: IndexedSeq[Instruction] = IndexedSeq(),
   val sourceMap: Option[SourceMap] = None)
 
