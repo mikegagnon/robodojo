@@ -2,9 +2,19 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
+case class BankBuilder(
+    var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
+    var sourceMap: Option[SourceMap] = None) {
+  
+  // TODO: use sourceMap builder
+  def build() = Bank(instructions.toIndexedSeq, sourceMap)
+}
+
+
 case class Bank(
-  var instructions: ArrayBuffer[Instruction] = ArrayBuffer[Instruction](),
-  var sourceMap: Option[SourceMap] = None)
+  // TODO: instructions is immutable?
+  val instructions: IndexedSeq[Instruction],
+  val sourceMap: Option[SourceMap])
 
 object Program {
 

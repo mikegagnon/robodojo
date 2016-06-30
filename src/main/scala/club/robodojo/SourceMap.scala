@@ -8,6 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 //    playerColor: the color of the program this bank originally came from
 //    bankIndex: relative to the original program
 //    text: the entire source code for the bank
+// TODO: SourceMapBuilder
 case class SourceMap(playerColor: PlayerColor.EnumVal, bankIndex: Int, text: ArrayBuffer[String])
 
 // Every instruction stores a SourceMapInstruction instance.
