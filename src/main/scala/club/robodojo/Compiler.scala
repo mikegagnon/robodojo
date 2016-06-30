@@ -316,7 +316,6 @@ object Compiler {
 
   // TESTED
   // TODO: deal with name, author country
-  // TODO: wrap at 100 chars
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
     text
       .split("\n")
@@ -326,11 +325,19 @@ object Compiler {
         (slice, slice)
       }
       // Remove comments
-      .map { case (line: String, originalLine: String) => (line.replaceAll(";.*", ""), originalLine) }
-      .map { case (line: String, originalLine: String) => (line.replaceAll(",", " , "), originalLine) }
-      .map { case (line: String, originalLine: String) => (line.toLowerCase, originalLine) }
+      .map { case (line: String, originalLine: String) =>
+        (line.replaceAll(";.*", ""), originalLine)
+      }
+      .map { case (line: String, originalLine: String) =>
+        (line.replaceAll(",", " , "), originalLine)
+      }
+      .map { case (line: String, originalLine: String) =>
+        (line.toLowerCase, originalLine)
+      }
       // Separate into tokens
-      .map { case (line: String, originalLine: String) => (line.split("""\s+"""), originalLine) }
+      .map { case (line: String, originalLine: String) =>
+        (line.split("""\s+"""), originalLine)
+      }
       // Drop empty tokens
       .map { case (tokens: Array[String], originalLine: String) =>
         (tokens.filter { _ != "" }, originalLine)
