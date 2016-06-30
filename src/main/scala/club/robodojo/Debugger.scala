@@ -75,7 +75,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // get the bot at animationCycleNum point in time
   def getBot(botId: Long) = viz.boards(viz.animationCycleNum).getBot(botId).get
 
-  def getProgramText(bot: Bot): String = {
+  def getProgramText(bot: Bot, lineIndex: Int): String = {
 
     val banks = bot.program.banks
 
@@ -93,8 +93,20 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
           case Some(sourceMap) => {
             val playerColor = sourceMap.playerColor
             val origBankIndex = sourceMap.bankIndex
-            s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n" +
-            sourceMap.text.mkString("\n")
+            val header = s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n"
+            val body = sourceMap
+              .text
+              .zipWithIndex
+              .map { case (line: String, index: Int) =>
+                if (index + 1 == lineIndex) {
+                  line + s" ; cycle ${bot.cycleNum} / ${bot.requiredCycles}"
+                } else {
+                  line
+                }
+              }
+              .mkString("\n")
+
+            header + body
           }
         }
       }
@@ -108,10 +120,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot = getBot(botId)
 
-    // TODO: deal with this temporary hack
     val lineIndex = getLineIndex(bot)
 
-    val programText = getProgramText(bot)
+    val programText = getProgramText(bot, lineIndex)
     cmEditor.getDoc().setValue(programText)
 
     val handle = cmEditor.getDoc().getLineHandle(lineIndex)
