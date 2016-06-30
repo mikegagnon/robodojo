@@ -522,21 +522,23 @@ object Compiler {
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
   // successful; this is a second pass.
-  def setSourceMaps(
+  def getSourceMaps(
       // All lines from the original source code program
       lines: Array[TokenLine],
       playerColor: PlayerColor.EnumVal,
-      banks: Map[Int, Bank]): Unit = {
+      bankBuilders: Map[Int, BankBuilder]): Map[Int, Bank] = {
 
     var bankLines = ArrayBuffer[String]()
     var bankIndex = -1
+    var newBanks = Map[Int, Bank]()
 
     lines.foreach { case TokenLine(tokens, originalLine, lineIndex) =>
 
       if (tokens.length > 0 && tokens(0) == "bank") {
         if (bankIndex >= 0) {
-          val sourceMap = SourceMap(playerColor, bankIndex, bankLines)
-          banks(bankIndex).sourceMap = Some(sourceMap)
+          val sourceMap = Some(SourceMap(playerColor, bankIndex, bankLines))
+          val oldBank = bankBuilders(bankIndex)
+          newBanks += bankIndex -> Bank(oldBank.instructions, sourceMap)
         }
 
         bankIndex += 1
@@ -547,9 +549,12 @@ object Compiler {
 
     // The last bank
     if (bankIndex >= 0) {
-      val sourceMap = SourceMap(playerColor, bankIndex, bankLines)
-      banks(bankIndex).sourceMap = Some(sourceMap)
+      val sourceMap = Some(SourceMap(playerColor, bankIndex, bankLines))
+      val oldBank = bankBuilders(bankIndex)
+      newBanks += bankIndex -> Bank(oldBank.instructions, sourceMap)
     }
+
+    newBanks
   }
 
   // TESTED
@@ -562,7 +567,7 @@ object Compiler {
       Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)
-    var banks = Map[Int, Bank]()
+    var bankBuilders = Map[Int, BankBuilder]()
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
 
@@ -585,7 +590,7 @@ object Compiler {
             } else {
               bankNumber += 1
               bankLineIndex = 0
-              banks += (bankNumber -> new Bank)
+              bankBuilders += (bankNumber -> new BankBuilder)
               compileBank(tl)
             }
           }
@@ -598,7 +603,7 @@ object Compiler {
 
         result.errorMessage match {
           case Some(errorMessage) => {
-            banks = Map[Int, Bank]()
+            bankBuilders = Map[Int, BankBuilder]()
             errors += errorMessage
           }
           case None => ()
@@ -607,7 +612,7 @@ object Compiler {
         if (errors.isEmpty) {
           result.instruction.foreach { instruction: Instruction =>
             if (bankNumber >= 0) {
-              banks(bankNumber).instructions += instruction
+              bankBuilders(bankNumber).instructions += instruction
             } else {
               errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineIndex, "Undeclared " +
                 "bank: you must place a <tt>bank</tt> directive before you place any instructions.")
@@ -622,10 +627,10 @@ object Compiler {
 
     if (errors.nonEmpty) {
       Left(errors)
-    } else if (banks.isEmpty) {
+    } else if (bankBuilders.isEmpty) {
       Left(ArrayBuffer(ErrorMessage(ErrorCode.EmptyBanks, 0, "Your program is empty.")))
     } else {
-      setSourceMaps(lines, playerColor, banks)
+      val banks = getSourceMaps(lines, playerColor, bankBuilders)
       Right(Program(banks))
     }
   }
