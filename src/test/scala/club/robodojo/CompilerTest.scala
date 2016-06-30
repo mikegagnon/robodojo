@@ -9,7 +9,7 @@ object CompilerTest extends TestSuite {
 
   import Compiler._
 
-  val defaultSourceMap = SourceMapInstruction(0, 0)
+  val defaultSourceMap = SourceMapInstruction(1, 0)
 
   val tests = this {
 
@@ -553,7 +553,7 @@ object CompilerTest extends TestSuite {
       // TODO: move downs
       "move"-{
         "success"-{
-          testInstruction("move", Right(MoveInstruction(SourceMapInstruction(1, 0))))
+          testInstruction("move", Right(MoveInstruction(defaultSourceMap)))
         }
         "fail"-{
           testInstruction("move foo", Left(ErrorCode.TooManyParams))
