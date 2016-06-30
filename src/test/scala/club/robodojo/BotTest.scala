@@ -180,7 +180,20 @@ object BotTest extends TestSuite {
       newBot.program.banks += 0 -> bank0
       newBot.program ==> bot.program
 
-      // TODO: finish
+      newBot.instructionSet ==> bot.instructionSet
+      newBot.mobile ==> bot.mobile
+      newBot.active ==> bot.active
+      newBot.bankIndex ==> bot.bankIndex
+      newBot.instructionIndex ==> bot.instructionIndex
+      newBot.cycleNum ==> bot.cycleNum
+      newBot.requiredCycles ==> bot.requiredCycles
+
+      // Make sure registers are distinct objects
+      newBot.registers(0) = 7
+      assert(newBot.registers != bot.registers)
+
+      newBot.registers(0) = 5
+      newBot.registers ==> bot.registers
     }
   }
 }
