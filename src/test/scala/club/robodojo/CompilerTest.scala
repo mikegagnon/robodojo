@@ -632,8 +632,8 @@ object CompilerTest extends TestSuite {
         "success 2 banks"-{
           val text = "bank Main\nmove\nbank foo"
           val expectedProgram = Program(
-            Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap))),
-                1 -> Bank(ArrayBuffer())))
+            Map(0 -> Bank(ArrayBuffer(MoveInstruction(defaultSourceMap)), Some(SourceMap(PlayerColor.Blue, 0, ArrayBuffer("bank Main", "move")))),
+                1 -> Bank(ArrayBuffer(), Some(SourceMap(PlayerColor.Blue, 1, ArrayBuffer("bank foo"))))))
           testProgram(text, expectedProgram)
         }
         "success 3 banks"-{
