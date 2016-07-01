@@ -61,6 +61,10 @@ class Controller(val viz: Viz)(implicit val config: Config) {
     jQuery("#" + config.viz.playPauseSpanId).attr("class", "glyphicon glyphicon-play")
   }
 
+  def hideTooltip(): Unit = {
+    js.Dynamic.global.`$`("[data-toggle='tooltip']").tooltip("hide")
+  }
+
   def clickPlayPause(): Unit = {
     viz.step = false
     if (createjs.Ticker.paused) {
@@ -76,15 +80,20 @@ class Controller(val viz: Viz)(implicit val config: Config) {
       }
       drawPlay()
     }
+
+    hideTooltip()
   }
 
-  def clickStep(): Unit =
+  def clickStep(): Unit = {
     if (createjs.Ticker.paused) {
       viz.step = true
       createjs.Ticker.paused = false
     } else {
       clickPlayPause()
     }
+
+    hideTooltip()
+  }
 
   def clickDebug(): Unit = {
 
@@ -101,6 +110,8 @@ class Controller(val viz: Viz)(implicit val config: Config) {
         debugger.setupDebugger(botId)
       }
     }
+
+    hideTooltip()
   }
 
   def clickEditor(): Unit = {
@@ -114,5 +125,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
     } else {
       handle.css("display", "block")
     }
+
+    hideTooltip()
   }
 }
