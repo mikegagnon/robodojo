@@ -76,9 +76,17 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     // TODO: shouldn't this (and more) go into object controller, outside of viz
     def consoleDivId = id + "-console"
+
+    def playPauseButtonId = consoleDivId + "-playPauseButton"
     def playPauseSpanId = consoleDivId + "-playPause"
+
+    def stepButtonId = consoleDivId + "stepButton"
     def stepSpanId = consoleDivId + "-step"
+
+    def debugButtonId = consoleDivId + "-debugButton"
     def debugSpanId = consoleDivId + "-debug"
+
+    def editorButtonId = consoleDivId + "-editorButton"
     def editorSpanId = consoleDivId + "-editor"
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]

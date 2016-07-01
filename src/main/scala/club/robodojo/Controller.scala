@@ -16,21 +16,40 @@ class Controller(val viz: Viz)(implicit val config: Config) {
 
   /** End initialization **************************************************************************/
 
-  def buttonHtml(functionName: String, glyph: String, spanId: String): String =
+  def buttonHtml(
+      buttonId: String,
+      tooltip: String,
+      functionName: String,
+      glyph: String,
+      spanId: String): String =
+
     s"""
-      <button class="btn btn-default dark-border" onclick='club.robodojo.App().${functionName}("${config.id}")'>
+      <button id=${buttonId}
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="${tooltip}"
+              class="btn btn-default dark-border"
+              onclick='club.robodojo.App().${functionName}("${config.id}")'>
         <span id=${spanId} class='glyphicon glyphicon-${glyph}'></span>
       </button>"""
 
   def addHtml(): Unit = {
     val html = s"""
       <div id='${config.viz.consoleDivId}'>
-        ${buttonHtml("clickPlayPause", "play", config.viz.playPauseSpanId)}
-        ${buttonHtml("clickStep", "step-forward", config.viz.stepSpanId)}
-        ${buttonHtml("clickDebug", "eye-open", config.viz.debugSpanId)}
-        ${buttonHtml("clickEditor", "pencil", config.viz.editorSpanId)}
+        ${buttonHtml(config.viz.playPauseButtonId, "Run game", "clickPlayPause", "play", config.viz.playPauseSpanId)}
+        ${buttonHtml(config.viz.stepButtonId, "Step one cycle", "clickStep", "step-forward", config.viz.stepSpanId)}
+        ${buttonHtml(config.viz.debugButtonId, "Open debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
+        ${buttonHtml(config.viz.editorButtonId, "Close editor", "clickEditor", "pencil", config.viz.editorSpanId)}
       </div>
+      
+      <!-- activate tooltips -->
+      <script>
+      $$(function () {
+        $$('[data-toggle="tooltip"]').tooltip()
+      })
+      </script>
       """
+
     jQuery("#" + config.viz.boardWrapperDivId).append(html)
   }
 
