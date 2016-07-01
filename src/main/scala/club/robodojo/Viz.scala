@@ -341,7 +341,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // TODO: this might be empty
     val animationList = board.cycle()
 
-    animations(board.cycleNum - 1) = HashMap[Long, Animation]()
+    animations(board.cycleNum) = HashMap[Long, Animation]()
 
     // Remove obsolete animations to avoid memory leak
     val staleCycle = board.cycleNum - config.viz.lookAheadCycles - 1 - config.viz.maxCyclesPerTick
@@ -351,7 +351,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     boards -= staleCycle
 
     animationList.foreach { animation: Animation =>
-      animations(board.cycleNum - 1)(animation.botId) = animation
+      animations(board.cycleNum)(animation.botId) = animation
     }
 
     animationCycleNum += 1
