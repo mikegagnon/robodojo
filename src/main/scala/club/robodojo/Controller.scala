@@ -28,6 +28,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
         ${buttonHtml("clickPlayPause", "play", config.viz.playPauseSpanId)}
         ${buttonHtml("clickStep", "step-forward", config.viz.stepSpanId)}
         ${buttonHtml("clickDebug", "eye-open", config.viz.debugSpanId)}
+        ${buttonHtml("clickEditor", "pencil", config.viz.editorSpanId)}
       </div>
       """
     jQuery("#" + config.viz.boardWrapperDivId).append(html)
@@ -81,6 +82,18 @@ class Controller(val viz: Viz)(implicit val config: Config) {
         debugger.setupDebugger(botId)
       }
     }
+  }
 
+  def clickEditor(): Unit = {
+
+    val handle = jQuery("#" + config.editor.divId)
+
+    val style: String = handle.css("display")
+
+    if (style == "block") {
+      handle.css("display", "none")
+    } else {
+      handle.css("display", "block")
+    }
   }
 }

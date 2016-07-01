@@ -52,6 +52,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     // TODO: put output in popup.
     val html = s"""
       <div class = "window" id="${config.editor.divId}">
+        <span class="window-name">Editor</span>
 
           <div class = "editor-console">
 
