@@ -58,7 +58,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // What line does instruction X appear in the debugger window? Where X is
   // the instruction from instructionIndex, within bank bankIndex
   // TODO: Deal with empty banks
-  def getLineIndex(bot: Bot): Int = {
+  def getLineIndex(bot: Bot): Option[Int] = {
+
+    if (bot.program.banks(bot.bankIndex).instructions.length == 0) {
+      return None
+    }
 
     val bankIndex = bot.bankIndex
     val instructionIndex = bot.instructionIndex
@@ -76,7 +80,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     val instruction = banks(bankIndex).instructions(instructionIndex)
     val lineIndex = instruction.sourceMapInstruction.lineIndex
 
-    previousBanksLength + lineIndex + 1
+    Some(previousBanksLength + lineIndex + 1)
   }
 
   // get the bot at animationCycleNum point in time
@@ -115,7 +119,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val requiredCycles =
       // bot.requiredCycles == 0 indicates the simulation hasn't begun
-      if (bot.requiredCycles == 0) {
+      if (bot.program.banks(0).instructions.length == 0) {
+        0
+      } else if (bot.requiredCycles == 0) {
         bot.program.banks(0).instructions(0).getRequiredCycles(bot)
       } else {
         bot.requiredCycles
@@ -169,21 +175,18 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     botIdDebugged = Some(botId)
 
     val bot = getBot(botId)
-
-    val lineIndex = getLineIndex(bot)
-
-    val programText = getProgramText(bot, lineIndex)
+    val lineIndex: Option[Int] = getLineIndex(bot)
+    val programText = getProgramText(bot, lineIndex.getOrElse(0))
     cmEditor.getDoc().setValue(programText)
+    println(lineIndex)
 
-    val handle = cmEditor.getDoc().getLineHandle(lineIndex)
-    cmEditor.addLineClass(handle, "background", "line-highlight")
+    lineIndex.foreach { l: Int =>
+      val handle = cmEditor.getDoc().getLineHandle(l)
+      cmEditor.addLineClass(handle, "background", "line-highlight")
 
-    // TODO: this is just a demo
-    // TODO: instead of 5, do half of num-lines-in-cmeditor-window
-    // Scroll down to the highlighted line
-    val pos = js.Dynamic.literal(line = lineIndex + 5, ch = 0).asInstanceOf[Position]
-
-    cmEditor.getDoc().setCursor(pos)
+      val pos = js.Dynamic.literal(line = l + 5, ch = 0).asInstanceOf[Position]
+      cmEditor.getDoc().setCursor(pos)
+    }
 
     setupMicroscope(bot)
   }
