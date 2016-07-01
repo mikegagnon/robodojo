@@ -99,8 +99,16 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
               .text
               .zipWithIndex
               .map { case (line: String, index: Int) =>
+
+                val requiredCycles =
+                  if (bot.requiredCycles == 0) {
+                    bot.program.banks(0).instructions(0).getRequiredCycles(bot)
+                  } else {
+                    bot.requiredCycles
+                  }
+
                 if (index + 1 == lineIndex) {
-                  line + s" ; cycle ${bot.cycleNum} / ${bot.requiredCycles}"
+                  line + s" ; cycle ${bot.cycleNum} / ${requiredCycles}"
                 } else {
                   line
                 }
