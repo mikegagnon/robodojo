@@ -74,6 +74,13 @@ object App extends JSApp {
   }
 
   @JSExport
+  def clickEditor(id: String): Unit = {
+    activeInstanceId = Some(id)
+    val robodojo = instances(id)
+    robodojo.controller.clickEditor()
+  }
+
+  @JSExport
   def clickSelectBotDropdown(playerNum: Int, id: String): Unit = {
     activeInstanceId = Some(id)
     val robodojo = instances(id)
