@@ -101,25 +101,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
             val playerColor = sourceMap.playerColor
             val origBankIndex = sourceMap.bankIndex
             val header = s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n"
-            val body = sourceMap
-              .text
-              .zipWithIndex
-              .map { case (line: String, index: Int) =>
-
-                val requiredCycles =
-                  if (bot.requiredCycles == 0) {
-                    bot.program.banks(0).instructions(0).getRequiredCycles(bot)
-                  } else {
-                    bot.requiredCycles
-                  }
-
-                if (index + 1 == lineIndex) {
-                  line + s" ; cycle ${bot.cycleNum} / ${requiredCycles}"
-                } else {
-                  line
-                }
-              }
-              .mkString("\n")
+            val body = sourceMap.text.mkString("\n")
 
             header + body
           }
@@ -130,6 +112,19 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   // TODO: better styling?
   def setupMicroscope(bot: Bot): Unit = {
+
+    val requiredCycles =
+      // bot.requiredCycles == 0 indicates the simulation hasn't begun
+      if (bot.requiredCycles == 0) {
+        bot.program.banks(0).instructions(0).getRequiredCycles(bot)
+      } else {
+        bot.requiredCycles
+      }
+
+    val cycleCountHtml = s"""
+      <div class='microscope-header'>Cycle counter</div>
+      <span class='microscope-element'><span class='microscope-name'>Cycle</span> ${bot.cycleNum} / ${requiredCycles}</span>
+      """
 
     val registersHtml = s"""
       <div class='microscope-header'>Registers</div>
@@ -164,7 +159,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       }
       .mkString("\n")
 
-    val html = registersHtml + specialParamsHtml
+    val html = cycleCountHtml + registersHtml + specialParamsHtml
 
     jQuery("#" + config.debugger.outputId).html(html)
   }
