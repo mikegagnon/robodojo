@@ -122,20 +122,29 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       .registers
       .zipWithIndex
       .map { case (regiserValue, registerIndex) =>
-        s"<span class='microscope-element'>#${registerIndex +1} = ${regiserValue}</span>"
+        s"<span class='microscope-element'><span class='microscope-name'>#${registerIndex +1}</span> = ${regiserValue}</span>"
       }
       .mkString("\n")
 
+    val remoteBot = bot.getRemote
+
     val specialParams = List(
         ("#active", bot.active),
-        ("%active", bot.getRemote.map{ _.active }.getOrElse(0))
+        ("%active", remoteBot.map{ _.active }.getOrElse(0)),
+        ("$banks", bot.program.banks.size),
+        ("%banks", remoteBot.map{ _.program.banks.size }.getOrElse(0)),
+        ("$instrset", bot.instructionSet.value),
+        ("%instrset", remoteBot.map{ _.instructionSet.value }.getOrElse(0)),
+        ("$mobile", if (bot.mobile) 1 else 0 ),
+        ("%mobile", if (remoteBot.map{ _.mobile }.getOrElse(false)) 1 else 0 ),
+        ("$fields", config.sim.numRows.toShort)
       )
 
     val specialParamsHtml =
 
       "<div class='microscope-header'>Special values</div>" +
       specialParams.map{ case (name: String, value: Short) =>
-        s"""<span class='microscope-element'>${name} = ${value}</span>"""
+        s"""<span class='microscope-element'><span class='microscope-name'>${name}</span> = ${value}</span>"""
       }
       .mkString("\n")
 

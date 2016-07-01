@@ -62,6 +62,10 @@
     margin-bottom: 4px;
 }
 
+.microscope-name {
+    color: purple;
+}
+
 .microscope-element {
     border: 1px solid #888;
     border-radius: 4px;
