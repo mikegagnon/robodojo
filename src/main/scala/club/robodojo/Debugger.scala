@@ -31,6 +31,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val html = s"""
       <div class="window" id="${config.debugger.divId}" style="display: none">
+        <span class="window-name">Inspector</span>
         <div class="dark-border light-background">
           <div class="code-mirror-div">
             <textarea id='${config.debugger.textAreaId}'></textarea>
