@@ -67,6 +67,20 @@ class Controller(val viz: Viz)(implicit val config: Config) {
     }
 
   def clickDebug(): Unit = {
-    jQuery("#" + config.debugger.divId).css("display", "block")
+
+    val handle = jQuery("#" + config.debugger.divId)
+
+    val style: String = handle.css("display")
+
+    if (style == "block") {
+      handle.css("display", "none")
+    } else {
+      handle.css("display", "block")
+
+      debugger.botIdDebugged.foreach { botId: Long =>
+        debugger.setupDebugger(botId)
+      }
+    }
+
   }
 }

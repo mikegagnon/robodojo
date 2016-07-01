@@ -4,6 +4,7 @@ import org.denigma.codemirror.Position
 import org.scalajs.jquery.jQuery
 import scala.scalajs.js
 
+// TODO: disable pointer mouse property when debug window is minimized
 class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
