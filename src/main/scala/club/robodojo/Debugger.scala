@@ -13,6 +13,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   val cmEditor = CodeMirrorDojo.getCmEditor(true, config.debugger.textAreaId)
 
   jQuery(s"#${config.debugger.divId} .CodeMirror").css("font-size", config.debugger.fontSize)
+  jQuery(s"#${config.debugger.outputId}").css("font-size", config.debugger.fontSize)
 
   // the bot that is being scrutinized
   var botIdDebugged: Option[Long]= None
@@ -113,6 +114,42 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       .mkString("\n")
   }
 
+  // TODO: cleanup
+  def setupMicroscope(bot: Bot): Unit = {
+
+    // TODO: better styling for registers?
+    val registers = bot
+      .registers
+      .zipWithIndex
+      .map { case (regiserValue, registerIndex) =>
+        s"<span class='microscope-element'>#${registerIndex +1} = ${regiserValue}</span>"
+      }
+      .mkString("\n")
+
+    val specialParams = List(
+        ("#active", bot.active),
+        ("%active", bot.getRemote.map{ _.active }.getOrElse(0))
+      )
+
+    val specialParamsHtml =
+
+      "<div class='microscope-header'>Special values</div>" +
+      specialParams.map{ case (name: String, value: Short) =>
+        s"""<span class='microscope-element'>${name} = ${value}</span>"""
+      }
+      .mkString("\n")
+
+    val html = s"""
+    <div class='microscope-header'>Registers</div>
+    ${registers}
+    """ +
+    specialParamsHtml
+
+
+
+    jQuery("#" + config.debugger.outputId).html(html)
+  }
+
   def setupDebugger(botId: Long): Unit = {
 
     botIdDebugged = Some(botId)
@@ -133,5 +170,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     val pos = js.Dynamic.literal(line = lineIndex + 5, ch = 0).asInstanceOf[Position]
 
     cmEditor.getDoc().setCursor(pos)
+
+    setupMicroscope(bot)
   }
 }

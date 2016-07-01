@@ -57,3 +57,18 @@
     background: yellow;
 }
 
+.microscope-header {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.microscope-element {
+    border: 1px solid #888;
+    border-radius: 4px;
+    background: #eee;
+    font-family: monospace;
+    display: inline-block;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-bottom: 2px;
+}

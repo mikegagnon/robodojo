@@ -50,7 +50,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val divId = id + "-debugger-div"
     val textAreaId = divId + "-textArea"
     val outputId = divId + "-output"
-    val fontSize = params.getOrElse("debugger.fontSize", "14px").asInstanceOf[String]
+    val fontSize = params.getOrElse("debugger.fontSize", "11px").asInstanceOf[String]
   }
 
   object editor {
