@@ -20,6 +20,12 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   /** End initialization **************************************************************************/
 
+  def reset(): Unit = {
+    botIdDebugged = None
+    cmEditor.getDoc().setValue("")
+    jQuery("#" + config.debugger.outputId).html("")
+  }
+
   def addHtml(): Unit = {
 
     val html = s"""
