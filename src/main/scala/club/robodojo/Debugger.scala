@@ -114,17 +114,19 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       .mkString("\n")
   }
 
-  // TODO: cleanup
+  // TODO: better styling?
   def setupMicroscope(bot: Bot): Unit = {
 
-    // TODO: better styling for registers?
-    val registers = bot
-      .registers
-      .zipWithIndex
-      .map { case (regiserValue, registerIndex) =>
-        s"<span class='microscope-element'><span class='microscope-name'>#${registerIndex +1}</span> = ${regiserValue}</span>"
-      }
-      .mkString("\n")
+    val registersHtml = s"""
+      <div class='microscope-header'>Registers</div>
+      """ +
+      bot
+        .registers
+        .zipWithIndex
+        .map { case (regiserValue, registerIndex) =>
+          s"<span class='microscope-element'><span class='microscope-name'>#${registerIndex +1}</span> = ${regiserValue}</span>"
+        }
+        .mkString("\n")
 
     val remoteBot = bot.getRemote
 
@@ -148,13 +150,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       }
       .mkString("\n")
 
-    val html = s"""
-    <div class='microscope-header'>Registers</div>
-    ${registers}
-    """ +
-    specialParamsHtml
-
-
+    val html = registersHtml + specialParamsHtml
 
     jQuery("#" + config.debugger.outputId).html(html)
   }
