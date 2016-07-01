@@ -36,10 +36,10 @@ class Controller(val viz: Viz)(implicit val config: Config) {
   def addHtml(): Unit = {
     val html = s"""
       <div id='${config.viz.consoleDivId}'>
-        ${buttonHtml(config.viz.playPauseButtonId, "Run game", "clickPlayPause", "play", config.viz.playPauseSpanId)}
+        ${buttonHtml(config.viz.playPauseButtonId, "Run / pause game", "clickPlayPause", "play", config.viz.playPauseSpanId)}
         ${buttonHtml(config.viz.stepButtonId, "Step one cycle", "clickStep", "step-forward", config.viz.stepSpanId)}
-        ${buttonHtml(config.viz.debugButtonId, "Open debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
-        ${buttonHtml(config.viz.editorButtonId, "Close editor", "clickEditor", "pencil", config.viz.editorSpanId)}
+        ${buttonHtml(config.viz.debugButtonId, "Open / close the debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
+        ${buttonHtml(config.viz.editorButtonId, "Open / close the editor", "clickEditor", "pencil", config.viz.editorSpanId)}
       </div>
       
       <!-- activate tooltips -->
