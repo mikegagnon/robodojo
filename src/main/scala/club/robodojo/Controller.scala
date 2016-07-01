@@ -27,6 +27,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
       <div id='${config.viz.consoleDivId}'>
         ${buttonHtml("clickPlayPause", "play", config.viz.playPauseSpanId)}
         ${buttonHtml("clickStep", "step-forward", config.viz.stepSpanId)}
+        ${buttonHtml("clickDebug", "eye-open", config.viz.debugSpanId)}
       </div>
       """
     jQuery("#" + config.viz.boardWrapperDivId).append(html)
@@ -65,4 +66,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
       clickPlayPause()
     }
 
+  def clickDebug(): Unit = {
+    jQuery("#" + config.debugger.divId).css("display", "block")
+  }
 }

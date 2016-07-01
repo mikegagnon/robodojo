@@ -78,6 +78,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     def consoleDivId = id + "-console"
     def playPauseSpanId = consoleDivId + "-playPause"
     def stepSpanId = consoleDivId + "-step"
+    def debugSpanId = consoleDivId + "-debug"
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 30).asInstanceOf[Int]
