@@ -36,7 +36,7 @@ object CodeMirrorDojo {
 
   def makeMarker(): HTMLElement = {
     var marker = dom.document.createElement("div").asInstanceOf[HTMLElement] 
-    marker.style.color = "#822"
+    marker.style.color = "#00F"
     marker.innerHTML = "●"
     return marker
   }
