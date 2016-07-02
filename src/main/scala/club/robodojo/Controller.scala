@@ -24,7 +24,8 @@ class Controller(val viz: Viz)(implicit val config: Config) {
       spanId: String): String =
 
     s"""
-      <button id=${buttonId}
+      <button onmouseleave="$$('[data-toggle=\\'tooltip\\']').tooltip('hide')"
+              id=${buttonId}
               data-toggle="tooltip"
               data-placement="bottom"
               title="${tooltip}"
