@@ -15,6 +15,12 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   jQuery(s"#${config.debugger.divId} .CodeMirror").css("font-size", config.debugger.fontSize)
   jQuery(s"#${config.debugger.outputId}").css("font-size", config.debugger.fontSize)
 
+  // If we set display:none in addHtml, then the line gutter doesn't appear.
+  // Perhaps, it inherits the display:none from the debugger.divId-window.
+  // Either way, the problem goes away by configuring the debugger window, and then
+  // setting display:none
+  jQuery("#" + config.debugger.divId).css("display", "none")
+
   // the bot that is being scrutinized
   var botIdDebugged: Option[Long]= None
 
@@ -29,7 +35,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   def addHtml(): Unit = {
 
     val html = s"""
-      <div class="window" id="${config.debugger.divId}" style="display: none">
+      <div class="window" id="${config.debugger.divId}">
         <span class="window-name">Debugger</span>
         <div class="dark-border light-background">
           <div class="code-mirror-div">
