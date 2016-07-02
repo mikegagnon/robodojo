@@ -80,3 +80,10 @@
 .window-name {
     font-weight: bold;
 }
+
+/**
+ * http://stackoverflow.com/questions/23333231/bootstrap-button-shows-blue-outline-when-clicked
+ */
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
+    outline: 0;
+}
