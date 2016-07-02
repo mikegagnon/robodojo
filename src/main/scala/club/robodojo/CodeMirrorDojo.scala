@@ -27,8 +27,7 @@ object CodeMirrorDojo {
     editor.on("gutterClick", (cm: codemirror.Editor, n: Int) => {
       val info = cm.lineInfo(n)
       val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
-      val gutterMarkersOpt = gutterMarkers.toOption
-      cm.setGutterMarker(n, "breakpoints", if (gutterMarkers.nonEmpty) null else makeMarker()) //if (info.gutterMarkers.nonEmpty) null else makeMarker())
+      cm.setGutterMarker(n, "breakpoints", if (gutterMarkers.nonEmpty) null else makeMarker())
       ()
     })
 
