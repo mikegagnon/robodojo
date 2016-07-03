@@ -10,26 +10,39 @@ import scala.scalajs.js
 
 object CodeMirrorDojo {
 
-  def getCmEditor(readOnly: Boolean, textAreaId: String): codemirror.Editor = {
+  def getCmEditor(
+      readOnly: Boolean,
+      breakpoints: Boolean,
+      textAreaId: String): codemirror.Editor = {
+
     val mode = "clike"
+
+    val gutters = if (breakpoints) {
+        js.Array("CodeMirror-linenumbers", "breakpoints")
+      } else {
+        js.Array("CodeMirror-linenumbers")
+      }
+
     val params: EditorConfiguration = EditorConfig
       .mode(mode)
       .lineNumbers(true)
       .readOnly(readOnly)
-      .gutters(js.Array("CodeMirror-linenumbers", "breakpoints"))
+      .gutters(gutters)
 
     val editor = dom.document.getElementById(textAreaId) match {
       case el:HTMLTextAreaElement => CodeMirror.fromTextArea(el,params)
       case _=> throw new IllegalStateException("Could not find textarea for " + textAreaId)
     }
 
-    // https://codemirror.net/demo/marker.html
-    editor.on("gutterClick", (cm: codemirror.Editor, n: Int) => {
-      val info = cm.lineInfo(n)
-      val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
-      cm.setGutterMarker(n, "breakpoints", if (gutterMarkers.nonEmpty) null else makeMarker())
-      ()
-    })
+    if (breakpoints) {
+      // https://codemirror.net/demo/marker.html
+      editor.on("gutterClick", (cm: codemirror.Editor, n: Int) => {
+        val info = cm.lineInfo(n)
+        val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
+        cm.setGutterMarker(n, "breakpoints", if (gutterMarkers.nonEmpty) null else makeMarker())
+        ()
+      })
+    }
 
     editor
   }
