@@ -196,6 +196,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       addBot(bot.id, bot.playerColor, bot.row, bot.col, bot.direction, bot.active)
     }
 
+  def updateBotHighlight(botId: Long, highlight: Boolean): Unit = {
+    val botContainer = botImages(botId)
+    botContainer.getChildByName("highlighter").visible = highlight
+  }
+
   def newBotContainer(
       botId: Long,
       playerColor: PlayerColor.EnumVal,
@@ -236,16 +241,15 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val y = retina(0)
     val w = retina(config.viz.cellSize)
     val h = retina(config.viz.cellSize)
-    // TODO: configify
-    val htmlColor = "#0FF"
-    highlightCell.graphics.beginFill(htmlColor).drawRect(x, y, w, h)
 
+    // TODO: configify
+    val htmlColor = "yellow"
+    highlightCell.graphics.beginFill(htmlColor).drawRect(x, y, w, h)
+    highlightCell.visible = false
     val container = new createjs.Container()
 
     container.addChild(highlightCell)
     container.addChild(bitmap)
-
-    container.getChildByName("highlighter").visible = false
 
     // Set the "registration point" for the image to the center of image. This way, we can rotate
     // around the center. As a consequnce of having a centered registration point, when we move

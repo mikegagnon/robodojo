@@ -183,13 +183,22 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def setupDebugger(botId: Long): Unit = {
 
+    // Unhighlight the old highlighted bot
+    botIdDebugged.foreach { oldBotId =>
+      viz.updateBotHighlight(oldBotId, false)
+    }
+
+    // Highlight the current bot that is being debugged
+    viz.updateBotHighlight(botId, true)
+
+    viz.stage.update()
+
     botIdDebugged = Some(botId)
 
     val bot = getBot(botId)
     val lineIndex: Option[Int] = getLineIndex(bot)
     val programText = getProgramText(bot, lineIndex.getOrElse(0))
     cmEditor.getDoc().setValue(programText)
-    println(lineIndex)
 
     lineIndex.foreach { l: Int =>
       val handle = cmEditor.getDoc().getLineHandle(l)
