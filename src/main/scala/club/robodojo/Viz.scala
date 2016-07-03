@@ -228,9 +228,24 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
     bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
 
+    // Highlighter
+    val highlightCell = new createjs.Shape()
+    highlightCell.name = "highlighter"
+
+    val x = retina(0)
+    val y = retina(0)
+    val w = retina(config.viz.cellSize)
+    val h = retina(config.viz.cellSize)
+    // TODO: configify
+    val htmlColor = "#0FF"
+    highlightCell.graphics.beginFill(htmlColor).drawRect(x, y, w, h)
+
     val container = new createjs.Container()
 
+    container.addChild(highlightCell)
     container.addChild(bitmap)
+
+    container.getChildByName("highlighter").visible = false
 
     // Set the "registration point" for the image to the center of image. This way, we can rotate
     // around the center. As a consequnce of having a centered registration point, when we move
