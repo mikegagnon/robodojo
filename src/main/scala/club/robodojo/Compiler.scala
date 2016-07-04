@@ -2,6 +2,11 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
+// A TokenLine instance represents a line from the source code for a bot
+// tokens is an array of "tokens", where each token is lower case, and trimmed of whitespace, etc.
+//    (See tokenize(...)).
+// originalLine is the original line from the source code
+// lineIndex specifies the line number of the line, but starting at zero instead of one.
 case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int) {
 
   // TESTED
@@ -14,6 +19,7 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
     }
   
   // TESTED
+  // TODO: Lookup hashCode best practice. I just hacked this together.
   override def hashCode: Int = {
     var x = 13
     tokens.foreach { str: String => x *= (str.hashCode + 13)}
