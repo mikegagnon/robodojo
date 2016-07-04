@@ -53,6 +53,16 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def onBotClick(botId: Long): Unit = {
 
+    // Unhighlight the old highlighted bot
+    botIdDebugged.foreach { oldBotId =>
+      viz.updateBotHighlight(oldBotId, false)
+    }
+
+    // Highlight the current bot that is being debugged
+    viz.updateBotHighlight(botId, true)
+
+    viz.stage.update()
+
     // Show the debugger
     jQuery("#" + config.debugger.divId).css("display", "block")
 
@@ -182,16 +192,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   }
 
   def setupDebugger(botId: Long): Unit = {
-
-    // Unhighlight the old highlighted bot
-    botIdDebugged.foreach { oldBotId =>
-      viz.updateBotHighlight(oldBotId, false)
-    }
-
-    // Highlight the current bot that is being debugged
-    viz.updateBotHighlight(botId, true)
-
-    viz.stage.update()
 
     botIdDebugged = Some(botId)
 
