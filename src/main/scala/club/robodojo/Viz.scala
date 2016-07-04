@@ -246,6 +246,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val fillColor = config.debugger.highlightColor
     highlightCell.graphics.beginStroke(borderColor).beginFill(fillColor).drawRect(x, y, w, h)
     highlightCell.visible = false
+    highlightCell.alpha = 0.5
     val container = new createjs.Container()
 
     container.addChild(highlightCell)
