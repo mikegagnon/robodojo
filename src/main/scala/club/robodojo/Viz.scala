@@ -196,6 +196,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       addBot(bot.id, bot.playerColor, bot.row, bot.col, bot.direction, bot.active)
     }
 
+  // Either highlight or de-highlight the specified bot
   def updateBotHighlight(botId: Long, highlight: Boolean): Unit = {
     val botContainer = botImages(botId)
     botContainer.getChildByName("highlighter").visible = highlight
@@ -208,6 +209,29 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       col: Int,
       direction: Direction.EnumVal): createjs.Container = {
 
+    // The bot is drawn as multiple layers
+    // container holds all those layers
+    val container = new createjs.Container()
+
+    // Whenever a bot is being debugged, the debugged bot is highlighted by drawing
+    // a colorful square underneath the bot. This is that colorful square.
+    val highlightCell = new createjs.Shape()
+    highlightCell.name = "highlighter"
+
+    val x = retina(0)
+    val y = retina(0)
+    val w = retina(config.viz.cellSize)
+    val h = retina(config.viz.cellSize)
+
+    val borderColor = config.debugger.highlightBorderColor
+    val fillColor = config.debugger.highlightColor
+    highlightCell.graphics.beginStroke(borderColor).beginFill(fillColor).drawRect(x, y, w, h)
+    highlightCell.visible = false
+    highlightCell.alpha = 0.5
+
+    container.addChild(highlightCell)
+
+    // Draw the bot
     val botColor = playerColor match {
       case PlayerColor.Blue => config.viz.preload.blueBotId
       case PlayerColor.Red => config.viz.preload.redBotId
@@ -233,23 +257,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     bitmap.scaleX = cellPhysicalSize / widthHeight.toDouble
     bitmap.scaleY = cellPhysicalSize / widthHeight.toDouble
 
-    // Highlighter
-    val highlightCell = new createjs.Shape()
-    highlightCell.name = "highlighter"
-
-    val x = retina(0)
-    val y = retina(0)
-    val w = retina(config.viz.cellSize)
-    val h = retina(config.viz.cellSize)
-
-    val borderColor = config.debugger.highlightBorderColor
-    val fillColor = config.debugger.highlightColor
-    highlightCell.graphics.beginStroke(borderColor).beginFill(fillColor).drawRect(x, y, w, h)
-    highlightCell.visible = false
-    highlightCell.alpha = 0.5
-    val container = new createjs.Container()
-
-    container.addChild(highlightCell)
     container.addChild(bitmap)
 
     // Set the "registration point" for the image to the center of image. This way, we can rotate

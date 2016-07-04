@@ -10,6 +10,7 @@ import scala.scalajs.js
 
 object CodeMirrorDojo {
 
+  // Generates an instance of a CodeMirror Editor
   def getCmEditor(
       readOnly: Boolean,
       breakpoints: Boolean,
@@ -17,6 +18,7 @@ object CodeMirrorDojo {
 
     val mode = "clike"
 
+    // gutters is an array of CSS class names that are applied to the gutter of this editor
     val gutters = if (breakpoints) {
         js.Array("CodeMirror-linenumbers", "breakpoints")
       } else {
@@ -48,7 +50,7 @@ object CodeMirrorDojo {
   }
 
   def makeMarker(): HTMLElement = {
-    var marker = dom.document.createElement("div").asInstanceOf[HTMLElement] 
+    var marker = dom.document.createElement("div").asInstanceOf[HTMLElement]
     marker.style.color = "#00F"
     marker.innerHTML = "●"
     return marker
