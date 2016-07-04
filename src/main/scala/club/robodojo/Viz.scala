@@ -242,8 +242,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val w = retina(config.viz.cellSize)
     val h = retina(config.viz.cellSize)
 
-    val htmlColor = config.debugger.highlightColor
-    highlightCell.graphics.beginFill(htmlColor).drawRect(x, y, w, h)
+    val borderColor = config.debugger.highlightBorderColor
+    val fillColor = config.debugger.highlightColor
+    highlightCell.graphics.beginStroke(borderColor).beginFill(fillColor).drawRect(x, y, w, h)
     highlightCell.visible = false
     val container = new createjs.Container()
 
