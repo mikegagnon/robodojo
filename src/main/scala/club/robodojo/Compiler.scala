@@ -523,7 +523,6 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TODO: Bank builder class?
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
