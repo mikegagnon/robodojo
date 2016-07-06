@@ -82,7 +82,12 @@
 }
 
 /**
+ * LICENSE: cc by-sa 3.0 with attribution require
+ *          https://creativecommons.org/licenses/by-sa/3.0/
+ * AUTHOR:  barburakka, http://stackoverflow.com/users/4958369/barburakka
  * http://stackoverflow.com/questions/23333231/bootstrap-button-shows-blue-outline-when-clicked
+ *
+ * On Chrome, bootstrap outlines buttons after click. This CSS disables that.
  */
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus {
     outline: 0;

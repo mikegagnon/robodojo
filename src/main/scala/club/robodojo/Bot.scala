@@ -83,7 +83,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
     newBot.instructionIndex = instructionIndex
     newBot.cycleNum = cycleNum
     newBot.requiredCycles = requiredCycles
-    newBot.registers = registers.map { x => x}
+    newBot.registers = registers.map { x => x }
 
     return newBot
   }

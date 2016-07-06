@@ -2,6 +2,11 @@ package club.robodojo
 
 import scala.collection.mutable.ArrayBuffer
 
+// A TokenLine instance represents a line from the source code for a bot
+// tokens is an array of "tokens", where each token is lower case, and trimmed of whitespace, etc.
+//    (See tokenize(...)).
+// originalLine is the original line from the source code
+// lineIndex specifies the line number of the line, but starting at zero instead of one.
 case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int) {
 
   // TESTED
@@ -14,6 +19,7 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
     }
   
   // TESTED
+  // TODO: Lookup hashCode best practice. I just hacked this together.
   override def hashCode: Int = {
     var x = 13
     tokens.foreach { str: String => x *= (str.hashCode + 13)}
@@ -517,7 +523,6 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TODO: Bank builder class?
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
