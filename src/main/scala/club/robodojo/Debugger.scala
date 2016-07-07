@@ -42,7 +42,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     println("Add " + lineIndex)
 
     cm.setGutterMarker(lineIndex, "breakpoints", null)
-    //if (gutterMarkers.isEmpty || gutterMarkers == null) makeMarker() else null)
   }
 
   def makeMarker(): HTMLElement = {
@@ -59,7 +58,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     println("Remove " + lineIndex)
 
     cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
-    //if (gutterMarkers.isEmpty || gutterMarkers == null) makeMarker() else null)
 
   }
 
