@@ -38,10 +38,11 @@ object CodeMirrorDojo {
 
     if (breakpoints) {
       // https://codemirror.net/demo/marker.html
-      editor.on("gutterClick", (cm: codemirror.Editor, n: Int) => {
-        val info = cm.lineInfo(n)
+      editor.on("gutterClick", (cm: codemirror.Editor, lineIndex: Int) => {
+        val info = cm.lineInfo(lineIndex)
         val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
-        cm.setGutterMarker(n, "breakpoints", if (gutterMarkers.nonEmpty) null else makeMarker())
+        cm.setGutterMarker(lineIndex, "breakpoints",
+          if (gutterMarkers.isEmpty || gutterMarkers == null) makeMarker() else null)
         ()
       })
     }
