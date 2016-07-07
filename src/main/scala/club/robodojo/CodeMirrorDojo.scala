@@ -12,15 +12,13 @@ object CodeMirrorDojo {
 
   // Generates an instance of a CodeMirror Editor
   def getCmEditor(
-      readOnly: Boolean,
-      breakpoints: Boolean,
       textAreaId: String,
       debugger: Option[Debugger]): codemirror.Editor = {
 
     val mode = "clike"
 
     // gutters is an array of CSS class names that are applied to the gutter of this editor
-    val gutters = if (breakpoints) {
+    val gutters = if (debugger.nonEmpty) {
         js.Array("CodeMirror-linenumbers", "breakpoints")
       } else {
         js.Array("CodeMirror-linenumbers")
@@ -29,7 +27,7 @@ object CodeMirrorDojo {
     val params: EditorConfiguration = EditorConfig
       .mode(mode)
       .lineNumbers(true)
-      .readOnly(readOnly)
+      .readOnly(debugger.nonEmpty)
       .gutters(gutters)
 
     val editor = dom.document.getElementById(textAreaId) match {
@@ -37,7 +35,7 @@ object CodeMirrorDojo {
       case _=> throw new IllegalStateException("Could not find textarea for " + textAreaId)
     }
 
-    if (breakpoints) {
+    if (debugger.nonEmpty) {
       // https://codemirror.net/demo/marker.html
       editor.on("gutterClick", (cm: codemirror.Editor, lineIndex: Int) => {
         val info: LineInfo = cm.lineInfo(lineIndex)

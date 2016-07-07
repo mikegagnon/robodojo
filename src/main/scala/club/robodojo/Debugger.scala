@@ -17,7 +17,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   addHtml()
 
-  val cmEditor = CodeMirrorDojo.getCmEditor(true, true, config.debugger.textAreaId, Some(this))
+  val cmEditor = CodeMirrorDojo.getCmEditor(config.debugger.textAreaId, Some(this))
 
   jQuery(s"#${config.debugger.divId} .CodeMirror").css("font-size", config.debugger.fontSize)
   jQuery(s"#${config.debugger.outputId}").css("font-size", config.debugger.fontSize)
