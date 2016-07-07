@@ -3,6 +3,13 @@ package club.robodojo
 import org.denigma.codemirror.Position
 import org.scalajs.jquery.jQuery
 import scala.scalajs.js
+import org.denigma.codemirror
+import org.scalajs.dom.raw.HTMLElement
+import org.scalajs.dom
+
+
+
+case class Breakpoint(instructionIndex: Int, bankIndex: Int)
 
 class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Config) {
 
@@ -10,7 +17,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   addHtml()
 
-  val cmEditor = CodeMirrorDojo.getCmEditor(true, true, config.debugger.textAreaId)
+  val cmEditor = CodeMirrorDojo.getCmEditor(true, true, config.debugger.textAreaId, Some(this))
 
   jQuery(s"#${config.debugger.divId} .CodeMirror").css("font-size", config.debugger.fontSize)
   jQuery(s"#${config.debugger.outputId}").css("font-size", config.debugger.fontSize)
@@ -24,7 +31,37 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // the bot that is being scrutinized
   var botIdDebugged: Option[Long]= None
 
+  var breakpoints: Set[Breakpoint] = Set()
+
   /** End initialization **************************************************************************/
+
+  def removeBreakpoint(
+      lineIndex: Int,
+      gutterMarkers: js.UndefOr[js.Array[String]],
+      cm: codemirror.Editor): Unit = {
+    println("Add " + lineIndex)
+
+    cm.setGutterMarker(lineIndex, "breakpoints", null)
+    //if (gutterMarkers.isEmpty || gutterMarkers == null) makeMarker() else null)
+  }
+
+  def makeMarker(): HTMLElement = {
+    var marker = dom.document.createElement("div").asInstanceOf[HTMLElement]
+    marker.style.color = "#00F"
+    marker.innerHTML = "●"
+    return marker
+  }
+
+  def addBreakpoint(
+      lineIndex: Int,
+      gutterMarkers: js.UndefOr[js.Array[String]],
+      cm: codemirror.Editor): Unit = {
+    println("Remove " + lineIndex)
+
+    cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
+    //if (gutterMarkers.isEmpty || gutterMarkers == null) makeMarker() else null)
+
+  }
 
   def reset(): Unit = {
     botIdDebugged = None

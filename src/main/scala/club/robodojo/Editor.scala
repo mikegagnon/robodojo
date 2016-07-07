@@ -37,7 +37,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   addHtml()
 
-  val cmEditor = CodeMirrorDojo.getCmEditor(false, false, config.editor.textAreaId)
+  val cmEditor = CodeMirrorDojo.getCmEditor(false, false, config.editor.textAreaId, None)
 
   jQuery(s"#${config.editor.divId} .CodeMirror").css("font-size", config.editor.fontSize)
 

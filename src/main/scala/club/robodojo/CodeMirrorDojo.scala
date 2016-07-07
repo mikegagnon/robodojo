@@ -2,7 +2,7 @@ package club.robodojo
 
 import org.denigma.codemirror.extensions.EditorConfig
 import org.denigma.codemirror
-import org.denigma.codemirror.{CodeMirror, EditorConfiguration}
+import org.denigma.codemirror.{CodeMirror, EditorConfiguration, LineInfo}
 import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.raw.HTMLTextAreaElement
@@ -14,7 +14,8 @@ object CodeMirrorDojo {
   def getCmEditor(
       readOnly: Boolean,
       breakpoints: Boolean,
-      textAreaId: String): codemirror.Editor = {
+      textAreaId: String,
+      debugger: Option[Debugger]): codemirror.Editor = {
 
     val mode = "clike"
 
@@ -39,10 +40,14 @@ object CodeMirrorDojo {
     if (breakpoints) {
       // https://codemirror.net/demo/marker.html
       editor.on("gutterClick", (cm: codemirror.Editor, lineIndex: Int) => {
-        val info = cm.lineInfo(lineIndex)
+        val info: LineInfo = cm.lineInfo(lineIndex)
         val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
-        cm.setGutterMarker(lineIndex, "breakpoints",
-          if (gutterMarkers.isEmpty || gutterMarkers == null) makeMarker() else null)
+ 
+        if (gutterMarkers.isEmpty || gutterMarkers == null) {
+          debugger.get.addBreakpoint(lineIndex, gutterMarkers, cm)
+        } else {
+          debugger.get.removeBreakpoint(lineIndex, gutterMarkers, cm)
+        }
         ()
       })
     }
@@ -50,10 +55,4 @@ object CodeMirrorDojo {
     editor
   }
 
-  def makeMarker(): HTMLElement = {
-    var marker = dom.document.createElement("div").asInstanceOf[HTMLElement]
-    marker.style.color = "#00F"
-    marker.innerHTML = "●"
-    return marker
-  }
 }
