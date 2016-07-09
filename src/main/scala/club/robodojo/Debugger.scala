@@ -6,6 +6,7 @@ import scala.scalajs.js
 import org.denigma.codemirror
 import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom
+import scala.collection.mutable
 
 
 
@@ -32,10 +33,10 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   var botIdDebugged: Option[Long]= None
 
   // breakpoints(lineIndex) == the breakpoint associated with that lineIndex
-  var breakpoints = Map[Int, Breakpoint]()
+  var breakpoints = mutable.Map[Int, Breakpoint]()
 
   // TODO: document
-  var potentialBreakpoints = Map[Int, Breakpoint]()
+  var potentialBreakpoints = mutable.Map[Int, Breakpoint]()
 
   /** End initialization **************************************************************************/
 
@@ -44,8 +45,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
 
-    if (potentialBreakpoints.contains(lineIndex)) {
-      println("Remove " + lineIndex)
+    if (breakpoints.contains(lineIndex)) {
+      breakpoints.remove(lineIndex)
+      println(breakpoints)
       cm.setGutterMarker(lineIndex, "breakpoints", null)
     }
   }
@@ -63,7 +65,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       cm: codemirror.Editor): Unit = {
 
     if (potentialBreakpoints.contains(lineIndex)) {
-      println("Add " + lineIndex)
+      breakpoints(lineIndex) = potentialBreakpoints(lineIndex)
+      println(breakpoints)
       cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
     }
   }
@@ -80,7 +83,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   // TODO: refactor with getLineIndex
   // Returns lineIndexToInstruction
-  def getPotentialBreakpoints(bot: Bot): Map[Int, Breakpoint] = {
+  def getPotentialBreakpoints(bot: Bot): mutable.Map[Int, Breakpoint] = {
 
     val banks = bot.program.banks
 
@@ -92,7 +95,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     //    x == the lineIndex relative to the entire program as displayed in the debugger
     //    a == the bankIndex corresponding to x
     //    b == the instructionIndex in bank a corresponding to x
-    var potentialBreakpoints = Map[Int, Breakpoint]()
+    var potentialBreakpoints = mutable.Map[Int, Breakpoint]()
 
     0 until banks.size foreach { bankIndex: Int =>
       val bank = banks(bankIndex)
