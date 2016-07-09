@@ -39,7 +39,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       lineIndex: Int,
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
-    println("Add " + lineIndex)
+    println("Remove " + lineIndex)
 
     cm.setGutterMarker(lineIndex, "breakpoints", null)
   }
@@ -55,11 +55,60 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       lineIndex: Int,
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
-    println("Remove " + lineIndex)
-
+    println("Add " + lineIndex)
     cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
+  }
+
+  // If the user clicks on the Xth breakpoint gutter, what instruction does that correspond to?
+  // For exampe, say the the first three lines of the program are comments, and the fourth
+  // line of the program is "bank foo," and the fifth line of the program is an instruction,
+  // then if the user clicks the breakpoint gutter between lines 0 and 4 (inclusive), it will
+  // map to 4, since the lines preceding lineIndex 4 are not instructions.
+  def getLineIndexBreakpointMapping(bot: Bot): Map[Int, Int] = {
+    Map[Int, Int]()
+  }
+
+  // TODO: refactor with getLineIndex
+  // TODO: better function name
+  def getLineIndices(bot: Bot): Map[Int, (Int, Int)]= {
+
+    val banks = bot.program.banks
+
+    // Relative to the entire program
+    var lineIndex = 0
+
+    // textLineIndexToInstructionIndex(x) == (a, b), where:
+    //    x == the lineIndex relative to the entire program as displayed in the debugger
+    //    a == the bankIndex corresponding to x
+    //    b == the instructionIndex in bank a corresponding to x
+    var textLineIndexToInstructionIndex = Map[Int, (Int, Int)]()
+
+    0 until banks.size foreach { bankIndex: Int =>
+      val bank = banks(bankIndex)
+
+      lineIndex += 1
+
+      0 until bank.instructions.length foreach { instructionIndex: Int =>
+        val instruction = bank.instructions(instructionIndex)
+
+        // Relative to the current bank
+        val localLineIndex = instruction.sourceMapInstruction.lineIndex
+
+        textLineIndexToInstructionIndex += lineIndex + localLineIndex -> (bankIndex, instructionIndex)
+
+      }
+
+      // TODO: what about missing sourceMap
+      lineIndex += bank.sourceMap.get.text.length
+
+    }
+
+    println(textLineIndexToInstructionIndex.toList.sorted)
+
+    textLineIndexToInstructionIndex
 
   }
+
 
   def reset(): Unit = {
     botIdDebugged = None
@@ -231,6 +280,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     botIdDebugged = Some(botId)
 
     val bot = getBot(botId)
+
+    getLineIndices(bot)
+
     val lineIndex: Option[Int] = getLineIndex(bot)
     val programText = getProgramText(bot, lineIndex.getOrElse(0))
     cmEditor.getDoc().setValue(programText)

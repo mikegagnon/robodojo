@@ -5,6 +5,8 @@ import scala.collection.immutable.IndexedSeq
 
 // These classes facilitate debugging by storing source code information.
 
+
+// TODO: change bankIndex to origBankIndex
 // Every bank stores a SourceMap instance.
 //    playerColor: the color of the program this bank originally came from
 //    bankIndex: relative to the original program
