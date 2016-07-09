@@ -31,12 +31,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // the bot that is being scrutinized
   var botIdDebugged: Option[Long]= None
 
-  var breakpoints: Set[Breakpoint] = Set()
+  // breakpoints(lineIndex) == the breakpoint associated with that lineIndex
+  var breakpoints = Map[Int, Breakpoint]()
 
-  // Map[x, (y, z)] where x is a lineIndex where there is an instruction, and
-  // y == the bankIndex for that instruction, and z == the instructionIndex (relative to the bank)
-  // for that instruction.
-  var lineIndexToInstruction = Map[Int, (Int, Int)]()
+  // TODO: document
+  var potentialBreakpoints = Map[Int, Breakpoint]()
 
   /** End initialization **************************************************************************/
 
@@ -45,7 +44,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
 
-    if (lineIndexToInstruction.contains(lineIndex)) {
+    if (potentialBreakpoints.contains(lineIndex)) {
       println("Remove " + lineIndex)
       cm.setGutterMarker(lineIndex, "breakpoints", null)
     }
@@ -63,12 +62,13 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
 
-    if (lineIndexToInstruction.contains(lineIndex)) {
+    if (potentialBreakpoints.contains(lineIndex)) {
       println("Add " + lineIndex)
       cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
     }
   }
 
+  // TODO: rm?
   // If the user clicks on the Xth breakpoint gutter, what instruction does that correspond to?
   // For exampe, say the the first three lines of the program are comments, and the fourth
   // line of the program is "bank foo," and the fifth line of the program is an instruction,
@@ -80,18 +80,19 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   // TODO: refactor with getLineIndex
   // Returns lineIndexToInstruction
-  def getLineIndexToInstructionMap(bot: Bot): Map[Int, (Int, Int)] = {
+  def getPotentialBreakpoints(bot: Bot): Map[Int, Breakpoint] = {
 
     val banks = bot.program.banks
 
     // Relative to the entire program
     var lineIndex = 0
 
+    // TODO: update documentation
     // textLineIndexToInstructionIndex(x) == (a, b), where:
     //    x == the lineIndex relative to the entire program as displayed in the debugger
     //    a == the bankIndex corresponding to x
     //    b == the instructionIndex in bank a corresponding to x
-    var textLineIndexToInstructionIndex = Map[Int, (Int, Int)]()
+    var potentialBreakpoints = Map[Int, Breakpoint]()
 
     0 until banks.size foreach { bankIndex: Int =>
       val bank = banks(bankIndex)
@@ -104,7 +105,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
         // Relative to the current bank
         val localLineIndex = instruction.sourceMapInstruction.lineIndex
 
-        textLineIndexToInstructionIndex += lineIndex + localLineIndex -> (bankIndex, instructionIndex)
+        potentialBreakpoints +=
+          lineIndex + localLineIndex -> Breakpoint(instructionIndex, bankIndex)
 
       }
 
@@ -113,9 +115,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     }
 
-    println(textLineIndexToInstructionIndex.toList.sorted)
+    println(potentialBreakpoints.toList)
 
-    textLineIndexToInstructionIndex
+    potentialBreakpoints
 
   }
 
@@ -291,7 +293,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot = getBot(botId)
 
-    lineIndexToInstruction = getLineIndexToInstructionMap(bot)
+    potentialBreakpoints = getPotentialBreakpoints(bot)
 
     val lineIndex: Option[Int] = getLineIndex(bot)
     val programText = getProgramText(bot, lineIndex.getOrElse(0))
