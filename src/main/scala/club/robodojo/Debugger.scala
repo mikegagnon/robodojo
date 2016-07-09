@@ -33,15 +33,22 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   var breakpoints: Set[Breakpoint] = Set()
 
+  // Map[x, (y, z)] where x is a lineIndex where there is an instruction, and
+  // y == the bankIndex for that instruction, and z == the instructionIndex (relative to the bank)
+  // for that instruction.
+  var lineIndexToInstruction = Map[Int, (Int, Int)]()
+
   /** End initialization **************************************************************************/
 
   def removeBreakpoint(
       lineIndex: Int,
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
-    println("Remove " + lineIndex)
 
-    cm.setGutterMarker(lineIndex, "breakpoints", null)
+    if (lineIndexToInstruction.contains(lineIndex)) {
+      println("Remove " + lineIndex)
+      cm.setGutterMarker(lineIndex, "breakpoints", null)
+    }
   }
 
   def makeMarker(): HTMLElement = {
@@ -55,8 +62,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       lineIndex: Int,
       gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
-    println("Add " + lineIndex)
-    cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
+
+    if (lineIndexToInstruction.contains(lineIndex)) {
+      println("Add " + lineIndex)
+      cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
+    }
   }
 
   // If the user clicks on the Xth breakpoint gutter, what instruction does that correspond to?
@@ -69,8 +79,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   }
 
   // TODO: refactor with getLineIndex
-  // TODO: better function name
-  def getLineIndices(bot: Bot): Map[Int, (Int, Int)]= {
+  // Returns lineIndexToInstruction
+  def getLineIndexToInstructionMap(bot: Bot): Map[Int, (Int, Int)] = {
 
     val banks = bot.program.banks
 
@@ -281,7 +291,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     val bot = getBot(botId)
 
-    getLineIndices(bot)
+    lineIndexToInstruction = getLineIndexToInstructionMap(bot)
 
     val lineIndex: Option[Int] = getLineIndex(bot)
     val programText = getProgramText(bot, lineIndex.getOrElse(0))
