@@ -298,6 +298,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     potentialBreakpoints = getPotentialBreakpoints(bot)
 
+    println("Breakpoints: " + breakpoints)
+
     val lineIndex: Option[Int] = getLineIndex(bot)
     val programText = getProgramText(bot, lineIndex.getOrElse(0))
     cmEditor.getDoc().setValue(programText)

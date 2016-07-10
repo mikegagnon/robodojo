@@ -61,7 +61,7 @@ class Board(implicit val config: Config) {
     bots.flatMap{ (bot: Bot) => bot.cycle() }
   }
 
-  // NOTE: this is a linear operation, but it's not in the hotpath
+  // TODO: use different data structure for constant performance?
   def getBot(botId: Long): Option[Bot] = {
     bots.find { bot: Bot => bot.id == botId }
   }

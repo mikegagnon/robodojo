@@ -87,7 +87,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     // Fast forward the board, so we can begin animating. See the documentation for animateMove,
     // section (2) for an explanation.
-    0 until config.viz.lookAheadCycles foreach { _ => cycle() }
+    0 until config.viz.lookAheadCycles foreach { _ => cycle(true) }
 
     // There are three cycle counters:
     //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
@@ -353,14 +353,51 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     stage.update()
 
-    0 until config.viz.lookAheadCycles foreach { _ => cycle() }
+    0 until config.viz.lookAheadCycles foreach { _ => cycle(true) }
 
     animationCycleNum = 0
   }
 
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
   // one. Perhaps monoids?
-  def cycle(): Unit = {
+  // Returns true if we have hit a breakpoint; false otherwise.
+  def cycle(disableBreakpoint: Boolean): Boolean = {
+
+
+    val breakpointHit =
+      controller
+        .debugger
+        .botIdDebugged
+        .flatMap { botId: Long =>
+          boards(animationCycleNum).getBot(botId)
+        }
+        .map { bot: Bot =>
+
+          //println(bot.id)
+          val bankIndex = bot.bankIndex
+          val instructionIndex = bot.instructionIndex
+          val breakpoint = Breakpoint(instructionIndex, bankIndex)
+
+          //println(breakpoint)
+          //println(bot.cycleNum)
+          //println(controller.debugger.breakpoints.values.toList)
+          //println(controller.debugger.breakpoints.values.toList.contains(breakpoint))
+
+          // TODO: add different data structure to Debugger for more efficient
+          // querying for breakpoint?
+          bot.cycleNum == 1 && controller.debugger.breakpoints.values.toList.contains(breakpoint)
+        }
+        .getOrElse(false)
+
+    if (breakpointHit && !disableBreakpoint) {
+      println("BREAK")
+      return true
+    }
+
+
+
+
+
 
     // boards(x) == board, where board.cycleNum = x
     boards(board.cycleNum) = board.deepCopy()
@@ -382,6 +419,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     animationCycleNum += 1
+
+    return false
   }
 
   def tickStep(): Int = {
@@ -426,7 +465,28 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
-    0 until numCyclesThisTick foreach { _ => cycle() }
+
+    // TODO: do takeWhile instead of break boolean
+    var break = false
+
+    // TODO: refactor
+    var actualNumCyclesThisTick = 0
+
+    0 until numCyclesThisTick foreach { cycleNum => 
+
+      if (!break) {
+        val breakpointHit = cycle(cycleNum == 0)
+        if (breakpointHit) {
+          println("HITTT")
+          break = true 
+          createjs.Ticker.paused = false
+          controller.clickPlayPause()
+        } else {
+          actualNumCyclesThisTick += 1
+        }
+      }
+
+    }
 
     shapesToBeRemovedNextTick.foreach { shape: createjs.Shape =>
       stage.removeChild(shape)
@@ -527,11 +587,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case _: AnimationProgressFail => false
       case _: FatalErrorAnimation => false
       case _ => {
-        println(animationCycleNum)
-        println(animation.requiredCycles)
-        println(animation.cycleNum)
-        println("+++ ==> " + endCycleNum)
-        println(futureAnimation)
+        //println(animationCycleNum)
+        //println(animation.requiredCycles)
+        //println(animation.cycleNum)
+        //println("+++ ==> " + endCycleNum)
+        //println(futureAnimation)
         throw new IllegalStateException("This code shouldn't be reachable")
       }
     }
