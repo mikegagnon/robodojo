@@ -361,6 +361,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
   // one. Perhaps monoids?
   // Returns true if we have hit a breakpoint; false otherwise.
+  // Setting disableBreakpoint to true disables stopping at breakpoints
   def cycle(disableBreakpoint: Boolean): Boolean = {
 
     val breakpointHit =
@@ -372,15 +373,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         }
         .map { bot: Bot =>
 
-          //println(bot.id)
           val bankIndex = bot.bankIndex
           val instructionIndex = bot.instructionIndex
           val breakpoint = Breakpoint(instructionIndex, bankIndex)
-
-          //println(breakpoint)
-          //println(bot.cycleNum)
-          //println(controller.debugger.breakpoints.values.toList)
-          //println(controller.debugger.breakpoints.values.toList.contains(breakpoint))
 
           // TODO: add different data structure to Debugger for more efficient
           // querying for breakpoint?
