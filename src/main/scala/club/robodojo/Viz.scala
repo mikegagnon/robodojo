@@ -390,7 +390,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         .getOrElse(false)
 
     if (breakpointHit && !disableBreakpoint) {
-      println("BREAK")
       return true
     }
 
@@ -477,7 +476,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       if (!break) {
         val breakpointHit = cycle(cycleNum == 0)
         if (breakpointHit) {
-          println("HITTT")
           break = true 
           createjs.Ticker.paused = false
           controller.clickPlayPause()

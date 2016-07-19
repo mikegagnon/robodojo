@@ -47,7 +47,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     if (breakpoints.contains(lineIndex)) {
       breakpoints.remove(lineIndex)
-      println(breakpoints)
       cm.setGutterMarker(lineIndex, "breakpoints", null)
     }
   }
@@ -66,7 +65,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
     if (potentialBreakpoints.contains(lineIndex)) {
       breakpoints(lineIndex) = potentialBreakpoints(lineIndex)
-      println(breakpoints)
       cm.setGutterMarker(lineIndex, "breakpoints", makeMarker())
     }
   }
@@ -117,8 +115,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       lineIndex += bank.sourceMap.get.text.length
 
     }
-
-    println(potentialBreakpoints.toList)
 
     potentialBreakpoints
 
@@ -304,8 +300,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     val bot = getBot(botId)
 
     potentialBreakpoints = getPotentialBreakpoints(bot)
-
-    println("Breakpoints: " + breakpoints)
 
     val lineIndex: Option[Int] = getLineIndex(bot)
     val programText = getProgramText(bot, lineIndex.getOrElse(0))
