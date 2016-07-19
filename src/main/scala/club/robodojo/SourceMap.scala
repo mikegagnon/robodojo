@@ -5,13 +5,11 @@ import scala.collection.immutable.IndexedSeq
 
 // These classes facilitate debugging by storing source code information.
 
-
-// TODO: change bankIndex to origBankIndex
 // Every bank stores a SourceMap instance.
 //    playerColor: the color of the program this bank originally came from
-//    bankIndex: relative to the original program
+//    origBankIndex: relative to the original program
 //    text: the entire source code for the bank
-case class SourceMap(playerColor: PlayerColor.EnumVal, bankIndex: Int, text: IndexedSeq[String])
+case class SourceMap(playerColor: PlayerColor.EnumVal, origBankIndex: Int, text: IndexedSeq[String])
 
 // Every instruction stores a SourceMapInstruction instance.
 //    lineIndex: the source code line index, relative to the bank it belongs to

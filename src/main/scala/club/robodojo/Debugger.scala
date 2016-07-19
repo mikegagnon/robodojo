@@ -209,7 +209,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
           }
           case Some(sourceMap) => {
             val playerColor = sourceMap.playerColor
-            val origBankIndex = sourceMap.bankIndex
+            val origBankIndex = sourceMap.origBankIndex
             val header = s"; Bank #${bankIndex + 1} = ${playerColor} Bank #${origBankIndex + 1}\n"
             val body = sourceMap.text.mkString("\n")
 
