@@ -69,16 +69,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     }
   }
 
-  // TODO: rm?
-  // If the user clicks on the Xth breakpoint gutter, what instruction does that correspond to?
-  // For exampe, say the the first three lines of the program are comments, and the fourth
-  // line of the program is "bank foo," and the fifth line of the program is an instruction,
-  // then if the user clicks the breakpoint gutter between lines 0 and 4 (inclusive), it will
-  // map to 4, since the lines preceding lineIndex 4 are not instructions.
-  def getLineIndexBreakpointMapping(bot: Bot): Map[Int, Int] = {
-    Map[Int, Int]()
-  }
-
   // TODO: refactor with getLineIndex
   // Returns lineIndexToInstruction
   def getPotentialBreakpoints(bot: Bot): mutable.Map[Int, Breakpoint] = {
