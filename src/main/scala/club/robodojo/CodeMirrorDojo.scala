@@ -40,7 +40,7 @@ object CodeMirrorDojo {
       editor.on("gutterClick", (cm: codemirror.Editor, lineIndex: Int) => {
         val info: LineInfo = cm.lineInfo(lineIndex)
         val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
- 
+
         if (gutterMarkers.isEmpty || gutterMarkers == null) {
           debugger.get.addBreakpoint(lineIndex, gutterMarkers, cm)
         } else {

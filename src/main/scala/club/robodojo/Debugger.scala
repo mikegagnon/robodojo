@@ -8,8 +8,6 @@ import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom
 import scala.collection.mutable
 
-
-
 case class Breakpoint(instructionIndex: Int, bankIndex: Int)
 
 class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Config) {
@@ -32,10 +30,12 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // the bot that is being scrutinized
   var botIdDebugged: Option[Long]= None
 
-  // breakpoints(lineIndex) == the breakpoint associated with that lineIndex
+  // breakpoints(lineIndex) == the breakpoint associated with that lineIndex, where the breakpoint
+  // has actually been selected (i.e. activated)
   var breakpoints = mutable.Map[Int, Breakpoint]()
 
-  // TODO: document
+  // potentialBreakpoints(lineIndex) == a breakpoint, iff lineIndex contains an instruction that
+  // can hold a breakpoint
   var potentialBreakpoints = mutable.Map[Int, Breakpoint]()
 
   /** End initialization **************************************************************************/
