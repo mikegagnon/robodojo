@@ -460,12 +460,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     // TODO: refactor
     var actualNumCyclesThisTick = 0
 
-    0 until numCyclesThisTick foreach { cycleNum => 
+    0 until numCyclesThisTick foreach { cycleNum =>
 
       if (!break) {
         val breakpointHit = cycle(cycleNum == 0)
         if (breakpointHit) {
-          break = true 
+          break = true
           createjs.Ticker.paused = false
           controller.clickPlayPause()
         } else {
