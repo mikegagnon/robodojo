@@ -34,6 +34,9 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       val durCreate4 = params.getOrElse("sim.cycleCount.durCreate4", 40).asInstanceOf[Int]
       val durCreate5 = params.getOrElse("sim.cycleCount.durCreate5", 100).asInstanceOf[Int]
       val maxCreateDur = params.getOrElse("sim.cycleCount.maxCreateDur", 1500).asInstanceOf[Int]
+
+      val durTrans1 = params.getOrElse("sim.cycleCount.durTrans1", 14).asInstanceOf[Int]
+      val durTrans2 = params.getOrElse("sim.cycleCount.durTrans2", 1).asInstanceOf[Int]
     }
 
     val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
