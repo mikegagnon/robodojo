@@ -453,7 +453,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
-
     // TODO: do takeWhile instead of break boolean
     var break = false
 
@@ -574,11 +573,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       case _: AnimationProgressFail => false
       case _: FatalErrorAnimation => false
       case _ => {
-        //println(animationCycleNum)
-        //println(animation.requiredCycles)
-        //println(animation.cycleNum)
-        //println("+++ ==> " + endCycleNum)
-        //println(futureAnimation)
+        println(animationCycleNum)
+        println(animation.requiredCycles)
+        println(animation.cycleNum)
+        println("+++ ==> " + endCycleNum)
+        println(futureAnimation)
         throw new IllegalStateException("This code shouldn't be reachable")
       }
     }
