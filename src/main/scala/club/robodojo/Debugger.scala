@@ -290,6 +290,13 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     jQuery("#" + config.debugger.outputId).html(html)
   }
 
+  def drawBreakpoints(): Unit =
+    breakpoints
+      .keys
+      .foreach { lineIndex =>
+          cmEditor.setGutterMarker(lineIndex, "breakpoints", makeMarker())
+      }
+
   def setupDebugger(botId: Long): Unit = {
 
     botIdDebugged = Some(botId)
@@ -313,5 +320,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     }
 
     setupMicroscope(bot)
+
+    drawBreakpoints()
   }
 }
