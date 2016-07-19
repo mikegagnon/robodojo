@@ -523,6 +523,26 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+  // TODO: test
+  def compileTrans(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
+      (implicit config: Config): CompileLineResult = {
+
+    val parsed: Either[ErrorMessage, Seq[Param]] =
+      parseParams("trans", tl, ReadableParamType, ReadableParamType)
+
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
+    }
+
+    val sourceBank = params(0).asInstanceOf[ReadableParam]
+    val destBank = params(1).asInstanceOf[ReadableParam]
+
+    val instruction = TransInstruction(sourceMapInstruction, sourceBank, destBank)
+
+    CompileLineResult(Some(instruction), None)
+  }
+
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
@@ -603,6 +623,7 @@ object Compiler {
           case "turn" => compileTurn(sourceMapInstruction, tl)
           case "create" => compileCreate(sourceMapInstruction, tl, playerColor)
           case "set" => compileSet(sourceMapInstruction, tl)
+          case "trans" => compileTrans(sourceMapInstruction, tl)
           case _ => unrecognizedInstruction(tl)
         }
 

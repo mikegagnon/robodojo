@@ -466,10 +466,10 @@ case class SetInstruction(
   }
 
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
-
+}
 
 // TODO: test
-case class Trans(
+case class TransInstruction(
   sourceMapInstruction: SourceMapInstruction,
   sourceBank: ReadableParam,
   destBank: ReadableParam)(implicit val config: Config) extends Instruction {
@@ -521,5 +521,3 @@ case class Trans(
 }
 
 /* End instructions *******************************************************************************/
-
-}
