@@ -61,7 +61,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val consoleDivId = divId + "-console-div"
     val outputId = divId + "-output"
     val selectBotButtonId = consoleDivId + "-select-bot-button"
-    val fontSize = params.getOrElse("editor.fontSize", "14px").asInstanceOf[String]
+    val fontSize = params.getOrElse("editor.fontSize", "11px").asInstanceOf[String]
 
     val defaultPrograms = Map(
       0 -> "bank Main\ncreate 1,1,1\nmove\nmove\nturn 1\nmove\nmove\nmove\nturn 0",

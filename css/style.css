@@ -81,6 +81,10 @@
     font-weight: bold;
 }
 
+.btn {
+  font-size:11px
+}
+
 /**
  * LICENSE: cc by-sa 3.0 with attribution
  *          https://creativecommons.org/licenses/by-sa/3.0/
