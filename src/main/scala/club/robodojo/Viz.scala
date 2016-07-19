@@ -363,7 +363,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // Returns true if we have hit a breakpoint; false otherwise.
   def cycle(disableBreakpoint: Boolean): Boolean = {
 
-
     val breakpointHit =
       controller
         .debugger
@@ -392,11 +391,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     if (breakpointHit && !disableBreakpoint) {
       return true
     }
-
-
-
-
-
 
     // boards(x) == board, where board.cycleNum = x
     boards(board.cycleNum) = board.deepCopy()
