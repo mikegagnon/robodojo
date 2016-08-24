@@ -466,7 +466,58 @@ case class SetInstruction(
   }
 
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
+}
+
+// TODO: test
+case class TransInstruction(
+  sourceMapInstruction: SourceMapInstruction,
+  sourceBank: ReadableParam,
+  destBank: ReadableParam)(implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteReadCostSrc = if (sourceBank.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteReadCostDest = if (destBank.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    // TODO: deal with OOB
+    val numInstructions =
+      bot
+        .program
+        .banks(sourceBank.read(bot))
+        .instructions
+        .size
+
+    return config.sim.cycleCount.durTrans1 + config.sim.cycleCount.durTrans2 * numInstructions +
+           remoteReadCostSrc + remoteReadCostDest
+
+  }
+
+  def execute(bot: Bot): Option[Animation] = {
+
+    val sourceBankIndex = sourceBank.read(bot)
+
+    // TODO: deal with OOB
+    val bank = bot.program.banks(sourceBankIndex)
+
+    // TODO: what if the remote bot is executing bank-destBankIndex?
+    bot
+      .getRemote
+      .map { remoteBot: Bot =>
+        val destBankIndex = destBank.read(bot).toInt
+        if (remoteBot.program.banks.contains(destBankIndex)) {
+          remoteBot.program.banks += destBankIndex -> bank
+        }
+      }
+
+    // TODO
+    None
+
+  }
+
+  // TODO
+  def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
+}
 
 /* End instructions *******************************************************************************/
-
-}
