@@ -62,16 +62,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // shapesToBeRemovedNextTick contains the shapes that should be removed after the next tick.
   // TODO: change to List[createjs.Container]?
   var shapesToBeRemovedNextTick = List[createjs.Shape]()
-  
+
   // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
   // point in time.
-  val animations = HashMap[Int, HashMap[Long, Animation]]()
-
-  // boards(cycleNum) == b, where b is a deep copy of board when board.cycleNum == cycleNum
-  // Used for the Debugger
-  val boards = HashMap[Int, Board]()
-
-  var animationCycleNum = 0
+  var animations = HashMap[Int, HashMap[Long, Animation]]()
 
   var controller: Controller = null
 
@@ -84,22 +78,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     controller = control
 
     addBotImages()
-
-    // Fast forward the board, so we can begin animating. See the documentation for animateMove,
-    // section (2) for an explanation.
-    0 until config.viz.lookAheadCycles foreach { _ => cycle(true) }
-
-    // There are three cycle counters:
-    //   (1) Bots maintain their own cycle counter, which counts the number of cycles relative to a
-    //       single instruction. The bot cycle counter resets to zero after an instruction is
-    //       executed.
-    //   (2) The board has another cycle counter, board.cycleNum, which increments after every call to
-    //       cycle().
-    //   (3) Yet another cycle counter is animationCycleNum, which is the cycle counter equal to the
-    //       board.cycleNum we are currently animating. animationCycleNum != board.cycleNum
-    //       because the animation lags behind the board simulation. See the documentation for
-    //       animateMove, section (2) for an explanation.
-    animationCycleNum = 0
 
     stage.update()
   }
@@ -335,14 +313,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       birthBotImages -= id
     }
 
-    animations.keys.foreach { cycleNum =>
-      animations -= cycleNum
-    }
-
-    boards.keys.foreach { cycleNum =>
-      boards -= cycleNum
-    }
-
     stage.removeAllChildren()
 
     botVisualFeatures = HashMap[Long, BotVisualFeatures]()
@@ -353,9 +323,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     stage.update()
 
-    0 until config.viz.lookAheadCycles foreach { _ => cycle(true) }
-
-    animationCycleNum = 0
   }
 
   // TODO: do something fancier to aggregate all the animations, rather than just taking the last
@@ -369,7 +336,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         .debugger
         .botIdDebugged
         .flatMap { botId: Long =>
-          boards(animationCycleNum).getBot(botId)
+          board.getBot(botId)
         }
         .map { bot: Bot =>
 
@@ -387,26 +354,14 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       return true
     }
 
-    // boards(x) == board, where board.cycleNum = x
-    boards(board.cycleNum) = board.deepCopy()
-
-    // TODO: this might be empty
+    // TODO: what to do with this?
     val animationList = board.cycle()
 
     animations(board.cycleNum) = HashMap[Long, Animation]()
 
-    // Remove obsolete animations to avoid memory leak
-    val staleCycle = board.cycleNum - config.viz.lookAheadCycles - 1 - config.viz.maxCyclesPerTick
-    animations -= staleCycle
-
-    // Remove obsolete boards
-    boards -= staleCycle
-
     animationList.foreach { animation: Animation =>
       animations(board.cycleNum)(animation.botId) = animation
     }
-
-    animationCycleNum += 1
 
     return false
   }
@@ -450,6 +405,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       } else {
         tickMultiStep(event)
       }
+
+    animations = HashMap[Int, HashMap[Long, Animation]]()
 
     val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
@@ -496,8 +453,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // Returns a collection containing every mandatory animation that was produced over the last
   // N cycles, where N == numCyclesThisTick
   def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
-    val firstCycleThatGotSkippedOver = animationCycleNum - numCyclesThisTick + 1
-    val lastCycleThatGotSkippedOver = animationCycleNum - 1
+    val firstCycleThatGotSkippedOver = board.cycleNum - numCyclesThisTick + 1
+    val lastCycleThatGotSkippedOver = board.cycleNum - 1
 
     val allAnimations =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
@@ -528,7 +485,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val mandatoryAnimations = getMandatoryAnimations(numCyclesThisTick)
 
     // The animations that were produced in the last tick of this step
-    val currentAnimations: HashMap[Long, Animation] = animations(animationCycleNum)
+    val currentAnimations: HashMap[Long, Animation] = animations(board.cycleNum)
 
     return mandatoryAnimations ++ currentAnimations.values
   }
@@ -541,10 +498,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     getAnimationsForThisTick(numCyclesThisTick).foreach { animation =>
       animation match {
-        case moveAnimation: MoveAnimationProgress => animateMoveProgress(moveAnimation)
+        case moveAnimation: MoveAnimationProgress => ()
         case moveAnimation: MoveAnimationSucceed => animateMoveSucceed(moveAnimation)
         case moveAnimation: MoveAnimationFail => ()
-        case birthAnimation: BirthAnimationProgress => animateBirthProgress(birthAnimation)
+        case birthAnimation: BirthAnimationProgress => ()
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
         case birthAnimation: BirthAnimationFail => ()
         case turnAnimation: TurnAnimationProgress => animateTurnProgress(turnAnimation)
@@ -555,159 +512,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       }
     }
   }
-
-  // See Documentation for AnimationProgress
-  def animateBotImageProgress(
-      animation: AnimationProgress,
-      primaryImages: HashMap[Long, createjs.Container]): Unit = {
-
-    // This is where we look into the future to see if the move is successful or not
-    val endCycleNum = animationCycleNum + animation.requiredCycles - animation.cycleNum
-
-    // futureAnimation == the animation for when this bot finishes executing its create instruction
-    val futureAnimation = animations(endCycleNum)(animation.botId)
-
-    // success == true iff the new bot successfully moves into its birth cell
-    val success = futureAnimation match {
-      case m: AnimationProgressSucceed => true
-      case _: AnimationProgressFail => false
-      case _: FatalErrorAnimation => false
-      case _ => {
-        println(animationCycleNum)
-        println(animation.requiredCycles)
-        println(animation.cycleNum)
-        println("+++ ==> " + endCycleNum)
-        println(futureAnimation)
-        throw new IllegalStateException("This code shouldn't be reachable")
-      }
-    }
-
-    val twinImage = twinBotImages(animation.botId)
-    val primaryImage = primaryImages(animation.botId)
-
-    // TODO: maybe animate the bot moving forward a half cell, then moving backward a half cell?
-    if (!success) {
-      twinImage.x = retina(halfCell - cellSize)
-      twinImage.y = retina(halfCell - cellSize)
-      return
-    }
-
-    // The amount the bot has moved towards its new cell (as a proportion)
-    val proportionCompleted: Double =
-      animation.cycleNum.toDouble / animation.requiredCycles.toDouble
-
-    val oldRow = animation.oldRow
-    val oldCol = animation.oldCol
-    val newRow = animation.newRow
-    val newCol = animation.newCol
-
-    val (twinRow: Double, twinCol: Double) =
-      // if the bot has finished its movement, then move the twin off screen
-      if (animation.cycleNum == animation.requiredCycles) {
-        throw new IllegalStateException("This code shouldn't be reachable")
-      }
-      // if the bot is moving up, towards off the screen
-      else if (newRow - oldRow > 1) {
-        (newRow + 1.0 - proportionCompleted, newCol)
-      }
-      // if the bot is moving down, towards off the screen
-      else if (oldRow - newRow > 1) {
-        (newRow - 1.0 + proportionCompleted, newCol)
-      }
-      // if the bot is moving left, towards off the screen
-      else if (newCol - oldCol > 1) {
-        (newRow, newCol + 1.0 - proportionCompleted)
-      }
-      // if the bot is moving right, towards off the screen
-      else if (oldCol - newCol > 1) {
-        (newRow, newCol - 1.0 + proportionCompleted)
-      }
-      // if the bot isn't wrapping around the screen
-      else  {
-        (-1.0, -1.0)
-      }
-
-    val (primaryRow: Double, primaryCol: Double) =
-      // if the bot has finished its movement, then move the bot to its new home
-      if (animation.cycleNum == animation.requiredCycles) {
-        throw new IllegalStateException("This code shouldn't be reachable")
-      }
-      // if the bot is moving up, towards off the screen
-      else if (newRow - oldRow > 1) {
-        (oldRow - proportionCompleted, oldCol)
-      }
-      // if the bot is moving down, towards off the screen
-      else if (oldRow - newRow > 1) {
-        (oldRow + proportionCompleted, oldCol)
-      }
-      // if the bot is moving left, towards off the screen
-      else if (newCol - oldCol > 1) {
-        (oldRow, oldCol - proportionCompleted)
-      }
-      // if the bot is moving right, towards off the screen
-      else if (oldCol - newCol > 1) {
-        (oldRow, oldCol + proportionCompleted)
-      }
-      // the bot is moving up
-      else if (newRow < oldRow) {
-        (oldRow - proportionCompleted, oldCol)
-      }
-      // the bot is moving down
-      else if (newRow > oldRow) {
-        (oldRow + proportionCompleted, oldCol)
-      }
-      // the bot is moving left
-      else if (newCol < oldCol) {
-        (oldRow, oldCol - proportionCompleted)
-      }
-      // the bot is moving right
-      else if (newCol > oldCol) {
-        (oldRow, oldCol + proportionCompleted)
-      } else {
-        throw new IllegalStateException("This code shouldn't be reachable")
-      }
-
-
-    twinImage.x = retina(halfCell + cellSize * twinCol)
-    twinImage.y = retina(halfCell + cellSize * twinRow)
-    twinImage.rotation = Direction.toAngle(animation.direction)
-
-    primaryImage.x = retina(halfCell + cellSize * primaryCol)
-    primaryImage.y = retina(halfCell + cellSize * primaryRow)
-    primaryImage.rotation = Direction.toAngle(animation.direction)
-
-  }
-
-  // animateMove is a bit complex. There are three aspects that are worth documenting:
-  //    (1) Animating the typical case
-  //    (2) Peeking into the future (or the past, depending on your perspective)
-  //    (3) Drawing the movement when the bot goes off screen, and wraps around torus style
-  //
-  // (1) Animating the typical case. First, we peek into the future (see (2)), to determine whether
-  //     or not the move will succed (i.e. the bot will move from one cell to another cell). Recall
-  //     from MoveInstruction, bots can only move into another cell if the new cell is empty at the
-  //     time when the move instruction executes its last cycle. If the move fails, then the bot
-  //     is drawn at its current location. If the move succeeds, then we calculate
-  //     proportionCompleted, which measures how far along the move instruction has progressed. Then
-  //     we calculate (row, col) as a double based on proportionCompleted. For example if the bot is
-  //     moving from (0, 0) to (0, 1) and the move instruction is half-way done executing, then
-  //     (row, col) == (0, 0.5). Then we draw the bot at (row, col). A similar approach is used in
-  //     animateTurnProgress.
-  // (2) Peeking into the future. We do not want to animate a bot move if the move fails.
-  //     Unfortunately, we cannot know whether or not the move will succeed or fail until
-  //     config.sim.moveCycles cycles have been executed. So, the way we get around is is by
-  //     running the animation several cycles behind the board simulator. This way, the animation
-  //     can peek into the future, to see if the move will fail or succeed.
-  // (3) Drawing the movement when the bot goes off screen, and wraps around torus style. How do
-  //     we do it? We use "twin images." A twin image is a duplicate image of a bot. The twin image
-  //     is normally kept off screen, at (-1, -1). When a bot wraps around the board, we have the
-  //     primary image of the bot move off screen. Then, we have the twin image move on screen.
-  //     Once the movement is complete, we move the image off screen again.
-  def animateMoveProgress(animation: MoveAnimationProgress): Unit =
-    animateBotImageProgress(animation, botImages)
-
-  def animateBirthProgress(animation: BirthAnimationProgress): Unit =
-    animateBotImageProgress(animation, birthBotImages)
 
   def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
 

@@ -119,8 +119,6 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       val stroke = params.getOrElse("viz.grid.stroke", "#ccc").asInstanceOf[String]
     }
 
-    // TODO: update this to be the max of all max instruction durations
-    val lookAheadCycles = sim.cycleCount.maxCreateDur
   }
 
 }

@@ -190,7 +190,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   }
 
   // get the bot at animationCycleNum point in time
-  def getBot(botId: Long) = viz.boards(viz.animationCycleNum).getBot(botId).get
+  def getBot(botId: Long) = viz.board.getBot(botId).get
 
   def getProgramText(bot: Bot, lineIndex: Int): String = {
 
