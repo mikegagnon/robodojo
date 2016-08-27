@@ -63,15 +63,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // TODO: change to List[createjs.Container]?
   var shapesToBeRemovedNextTick = List[createjs.Shape]()
 
-  // TODO: update comments
-  // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
-  // point in time.
-  //var animations = HashMap[Int, HashMap[Long, Animation]]()
-  // TODO: is this var necessary?
-  // TODO: SortedSet?
+  // The set of all mandatory animations for a given tick
+  // Set[(cycleNum, animation)]
   var mandatoryAnimations = Set[(Int, Animation)]()
 
-  // TODO: comment
+  // All the animations from the last step in a tick
   var animationsLastStep = IndexedSeq[Animation]()
 
   var controller: Controller = null
@@ -361,7 +357,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       return true
     }
 
-    // TODO: what to do with this?
     animationsLastStep = board.cycle()
 
     // Update mandatoryAnimations
@@ -371,19 +366,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       .foreach { animation: Animation =>
         mandatoryAnimations += ((board.cycleNum, animation))
       }
-
-
-    // TODO: rm
-    // animations(board.cycleNum) = HashMap[Long, Animation]()
-
-    // TODO: rm
-    /*
-    animationList.foreach { animation: Animation =>
-      // Commenting this line out results in no jank at 1000 CPS
-      animations(board.cycleNum)(animation.botId) = animation
-    }
-    */
-
 
     return false
   }
@@ -429,7 +411,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       }
 
     mandatoryAnimations = Set[(Int, Animation)]()
-    //animations = HashMap[Int, HashMap[Long, Animation]]()
 
     val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
@@ -472,51 +453,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   /** Begin animation functions  ******************************************************************/
 
 
-  // See Documentation for Animation.mandatory
-  // Returns a collection containing every mandatory animation that was produced over the last
-  // N cycles, where N == numCyclesThisTick
-  // TODO: rm
-  /*def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
-    val firstCycleThatGotSkippedOver = board.cycleNum - numCyclesThisTick + 1
-    val lastCycleThatGotSkippedOver = board.cycleNum - 1
-
-    val allAnimations: IndexedSeq[Animation] =
-      firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
-
-        // Sort animations by botId
-        // TODO: rm comment HashMap[Int, HashMap[Long, Animation]]()
-        // animations(board cycleNum)(botId)
-        animations(cycleNum)
-          .toList
-          // Commenting out sortBy saves 20% CPU and allows 475 CPS with only limited jank
-          //.sortBy { _._1 }
-          .map { _._2 }
-      }
-
-    val mandatoryAnimations =
-      allAnimations.filter { animation: Animation =>
-        animation.mandatory
-      }
-
-    return mandatoryAnimations
-  }*/
-
   // Returns a collection containing every animation that should be drawn for this step
   def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
 
     if (numCyclesThisTick < 1) {
       throw new IllegalStateException("numCyclesThisTick < 1")
     }
-
-    // val mandatoryAnimations = getMandatoryAnimations(numCyclesThisTick)
-
-    // The animations that were produced in the last step of this tick
-    //val currentAnimations: HashMap[Long, Animation] = animations(board.cycleNum)
-
-    // TODO: sort mandatoryAnimations
-
-    // TODO: rm
-    //println(mandatoryAnimations.toList.sortBy { _._1 }.map{ _._2})
 
     val mandatory = mandatoryAnimations
       .filter { case (cycleNum, _) =>
@@ -528,7 +470,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       .toList
       // sort by cycleNum
       .sortBy { _._1 }
-      .map{ _._2} 
+      .map{ _._2}
 
     return mandatory ++ animationsLastStep
   }
