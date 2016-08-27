@@ -63,9 +63,16 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // TODO: change to List[createjs.Container]?
   var shapesToBeRemovedNextTick = List[createjs.Shape]()
 
+  // TODO: update comments
   // animations(board cycleNum)(botId) == the animation for bot (with id == botId) at board cycleNum
   // point in time.
-  var animations = HashMap[Int, HashMap[Long, Animation]]()
+  //var animations = HashMap[Int, HashMap[Long, Animation]]()
+  // TODO: is this var necessary?
+  // TODO: SortedSet?
+  var mandatoryAnimations = Set[(Int, Animation)]()
+
+  // TODO: comment
+  var animationsLastStep = IndexedSeq[Animation]()
 
   var controller: Controller = null
 
@@ -355,14 +362,28 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     // TODO: what to do with this?
-    val animationList = board.cycle()
+    animationsLastStep = board.cycle()
 
-    animations(board.cycleNum) = HashMap[Long, Animation]()
+    // Update mandatoryAnimations
+    animationsLastStep.filter { animation: Animation =>
+        animation.mandatory
+      }
+      .foreach { animation: Animation =>
+        mandatoryAnimations += ((board.cycleNum, animation))
+      }
 
+
+    // TODO: rm
+    // animations(board.cycleNum) = HashMap[Long, Animation]()
+
+    // TODO: rm
+    /*
     animationList.foreach { animation: Animation =>
       // Commenting this line out results in no jank at 1000 CPS
       animations(board.cycleNum)(animation.botId) = animation
     }
+    */
+
 
     return false
   }
@@ -407,7 +428,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         tickMultiStep(event)
       }
 
-    animations = HashMap[Int, HashMap[Long, Animation]]()
+    mandatoryAnimations = Set[(Int, Animation)]()
+    //animations = HashMap[Int, HashMap[Long, Animation]]()
 
     val numCyclesThisTick = Math.min(config.viz.maxCyclesPerTick, calculatedCycles)
 
@@ -453,7 +475,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // See Documentation for Animation.mandatory
   // Returns a collection containing every mandatory animation that was produced over the last
   // N cycles, where N == numCyclesThisTick
-  def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
+  // TODO: rm
+  /*def getMandatoryAnimations(numCyclesThisTick: Int): IndexedSeq[Animation] = {
     val firstCycleThatGotSkippedOver = board.cycleNum - numCyclesThisTick + 1
     val lastCycleThatGotSkippedOver = board.cycleNum - 1
 
@@ -476,7 +499,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       }
 
     return mandatoryAnimations
-  }
+  }*/
 
   // Returns a collection containing every animation that should be drawn for this step
   def getAnimationsForThisTick(numCyclesThisTick: Int): Iterable[Animation] = {
@@ -485,12 +508,29 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       throw new IllegalStateException("numCyclesThisTick < 1")
     }
 
-    val mandatoryAnimations = getMandatoryAnimations(numCyclesThisTick)
+    // val mandatoryAnimations = getMandatoryAnimations(numCyclesThisTick)
 
     // The animations that were produced in the last step of this tick
-    val currentAnimations: HashMap[Long, Animation] = animations(board.cycleNum)
+    //val currentAnimations: HashMap[Long, Animation] = animations(board.cycleNum)
 
-    return mandatoryAnimations ++ currentAnimations.values
+    // TODO: sort mandatoryAnimations
+
+    // TODO: rm
+    //println(mandatoryAnimations.toList.sortBy { _._1 }.map{ _._2})
+
+    val mandatory = mandatoryAnimations
+      .filter { case (cycleNum, _) =>
+
+        // Drop animations for board.cylceNum because animationsLastStep convers those, and we
+        // don't want them done twice.
+        cycleNum != board.cycleNum
+      }
+      .toList
+      // sort by cycleNum
+      .sortBy { _._1 }
+      .map{ _._2} 
+
+    return mandatory ++ animationsLastStep
   }
 
   def animate(numCyclesThisTick: Int): Unit = {
