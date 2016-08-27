@@ -360,6 +360,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     animations(board.cycleNum) = HashMap[Long, Animation]()
 
     animationList.foreach { animation: Animation =>
+      // Commenting this line out results in no jank at 1000 CPS
       animations(board.cycleNum)(animation.botId) = animation
     }
 
@@ -486,7 +487,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val mandatoryAnimations = getMandatoryAnimations(numCyclesThisTick)
 
-    // The animations that were produced in the last tick of this step
+    // The animations that were produced in the last step of this tick
     val currentAnimations: HashMap[Long, Animation] = animations(board.cycleNum)
 
     return mandatoryAnimations ++ currentAnimations.values
