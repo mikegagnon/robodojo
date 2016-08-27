@@ -456,15 +456,17 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val firstCycleThatGotSkippedOver = board.cycleNum - numCyclesThisTick + 1
     val lastCycleThatGotSkippedOver = board.cycleNum - 1
 
-    val allAnimations =
+    val allAnimations: IndexedSeq[Animation] =
       firstCycleThatGotSkippedOver to lastCycleThatGotSkippedOver flatMap { cycleNum: Int =>
 
         // Sort animations by botId
+        // TODO: rm comment HashMap[Int, HashMap[Long, Animation]]()
+        // animations(board cycleNum)(botId)
         animations(cycleNum)
           .toList
-          .sortBy { _._1 }
+          // Commenting out sortBy saves 20% CPU
+          //.sortBy { _._1 }
           .map { _._2 }
-
       }
 
     val mandatoryAnimations =
@@ -504,7 +506,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case birthAnimation: BirthAnimationProgress => ()
         case birthAnimation: BirthAnimationSucceed => animateBirthSucceed(birthAnimation)
         case birthAnimation: BirthAnimationFail => ()
-        case turnAnimation: TurnAnimationProgress => animateTurnProgress(turnAnimation)
+        case turnAnimation: TurnAnimationProgress => ()
         case turnAnimation: TurnAnimationFinish => animateTurnFinish(turnAnimation)
         case deactivateAnimation: DeactivateAnimation => animateDeactivate(deactivateAnimation)
         case activateAnimation: ActivateAnimation => animateActivate(activateAnimation)
