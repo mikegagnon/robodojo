@@ -464,7 +464,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         // animations(board cycleNum)(botId)
         animations(cycleNum)
           .toList
-          // Commenting out sortBy saves 20% CPU
+          // Commenting out sortBy saves 20% CPU and allows 475 CPS with only limited jank
           //.sortBy { _._1 }
           .map { _._2 }
       }
