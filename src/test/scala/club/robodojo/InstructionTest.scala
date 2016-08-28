@@ -296,5 +296,46 @@ object InstructionTest extends TestSuite {
 
       }
     }
+
+    // TODO: test getRequiredCycles
+    "TransInstruction.execute"-{
+
+      // TODO: better name
+      "test1"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile("""
+          bank zero
+            trans 0, 0
+            set #1, 1
+            move
+
+          bank one
+            set %active, 1
+            turn 1
+
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+
+        val program2: Program = Compiler.compile("""
+          bank zero:
+            move
+          """, PlayerColor.Blue).right.get
+
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right, program2)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        assert(bot2.program.banks(0) != bot1.program.banks(0))
+
+        instruction.execute(bot1)
+
+        bot2.program.banks(0) ==> bot1.program.banks(0)
+      }
+    }
   }
 }
