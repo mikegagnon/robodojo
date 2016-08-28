@@ -523,7 +523,6 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TODO: test
   def compileTrans(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
       (implicit config: Config): CompileLineResult = {
 
