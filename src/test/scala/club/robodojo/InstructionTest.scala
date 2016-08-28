@@ -299,23 +299,23 @@ object InstructionTest extends TestSuite {
 
     // TODO: test getRequiredCycles
     // TODO Test cases:
-    //  successful transfer (0 -> 0, 0 -> 1, 1->0, 1->1)
+    //  successful transfer (1 -> 1, 1 -> 2, 2->1, 2->2)
     //  successful transfer, and bot is currently executing overwritten bank
     //  attempt transfer, but there is no origination bank
     //  attempt transfer, but there is no receiving bank
     //  attempt transfer, but there is no receiving bot
     "TransInstruction.execute"-{
 
-      "transfer 1 to 1"-{
+      def successTransTest(sourceBank: Int, destBank: Int): Unit = {
         val board = new Board()
 
-        val program1: Program = Compiler.compile("""
-          bank zero
-            trans 1, 1
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans ${sourceBank}, ${destBank}
             set #1, 1
             move
 
-          bank one
+          bank two
             set %active, 1
             turn 1
 
@@ -324,7 +324,10 @@ object InstructionTest extends TestSuite {
         val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
 
         val program2: Program = Compiler.compile("""
-          bank zero:
+          bank one
+            move
+
+          bank two
             move
           """, PlayerColor.Blue).right.get
 
@@ -335,11 +338,18 @@ object InstructionTest extends TestSuite {
 
         val instruction: Instruction = bot1.program.banks(0).instructions(0)
 
-        assert(bot2.program.banks(0) != bot1.program.banks(0))
+        assert(bot2.program.banks(destBank - 1) != bot1.program.banks(sourceBank - 1))
 
         instruction.execute(bot1)
 
-        bot2.program.banks(0) ==> bot1.program.banks(0)
+        bot2.program.banks(destBank - 1) ==> bot1.program.banks(sourceBank - 1)
+      }
+
+      "successful transfers"-{
+        successTransTest(1, 1)
+        successTransTest(1, 2)
+        successTransTest(2, 1)
+        successTransTest(2, 2)
       }
     }
   }
