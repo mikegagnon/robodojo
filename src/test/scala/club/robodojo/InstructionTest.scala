@@ -298,15 +298,20 @@ object InstructionTest extends TestSuite {
     }
 
     // TODO: test getRequiredCycles
+    // TODO Test cases:
+    //  successful transfer (0 -> 0, 0 -> 1, 1->0, 1->1)
+    //  successful transfer, and bot is currently executing overwritten bank
+    //  attempt transfer, but there is no origination bank
+    //  attempt transfer, but there is no receiving bank
+    //  attempt transfer, but there is no receiving bot
     "TransInstruction.execute"-{
 
-      // TODO: better name
-      "test1"-{
+      "transfer 1 to 1"-{
         val board = new Board()
 
         val program1: Program = Compiler.compile("""
           bank zero
-            trans 0, 0
+            trans 1, 1
             set #1, 1
             move
 

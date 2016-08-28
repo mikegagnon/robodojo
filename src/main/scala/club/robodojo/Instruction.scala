@@ -485,7 +485,7 @@ case class TransInstruction(
     val numInstructions =
       bot
         .program
-        .banks(sourceBank.read(bot))
+        .banks(sourceBank.read(bot) - 1)
         .instructions
         .size
 
@@ -496,7 +496,7 @@ case class TransInstruction(
 
   def execute(bot: Bot): Option[Animation] = {
 
-    val sourceBankIndex = sourceBank.read(bot)
+    val sourceBankIndex = sourceBank.read(bot) - 1
 
     // TODO: deal with OOB
     val bank = bot.program.banks(sourceBankIndex)
@@ -505,7 +505,7 @@ case class TransInstruction(
     bot
       .getRemote
       .map { remoteBot: Bot =>
-        val destBankIndex = destBank.read(bot).toInt
+        val destBankIndex = destBank.read(bot).toInt - 1
         if (remoteBot.program.banks.contains(destBankIndex)) {
           remoteBot.program.banks += destBankIndex -> bank
         }
