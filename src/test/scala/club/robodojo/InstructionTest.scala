@@ -116,6 +116,7 @@ object InstructionTest extends TestSuite {
         val banks = IntegerParam(numBanks.toShort)
         val mob = if (mobile) IntegerParam(1) else IntegerParam(0)
         val bot = Bot(board, color, 0, 0, Direction.Right)
+        bot.instructionSet = InstructionSet.Super
         val instruction = CreateInstruction(defaultSourceMap, iSet, banks, mob, 0, PlayerColor.Blue)
         instruction.execute(bot)
         return board.matrix(0)(1)
@@ -149,13 +150,22 @@ object InstructionTest extends TestSuite {
       }
 
       "unsuccessfully"-{
-        val board = new Board()
-        val bot = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
-        board.addBot(bot)
-        val newBot = testCase(board,PlayerColor.Red, InstructionSet.Basic, 5, false).get
-        newBot.playerColor ==> PlayerColor.Blue
-      }
+        "space occupied"-{
+          val board = new Board()
+          val bot = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+          board.addBot(bot)
+          val newBot = testCase(board,PlayerColor.Red, InstructionSet.Basic, 5, false).get
+          newBot.playerColor ==> PlayerColor.Blue
+        }
+        "bad insufficient instruction set"-{
 
+          //val board = new Board()
+          //val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+
+          // TODO
+          //val newBot = testCase(board, PlayerColor.Blue, Instruction.Basic, 1, true, InstructionSet.Basic)
+        }
+      }
     }
 
     "SetInstruction.execute"-{
