@@ -83,7 +83,7 @@ object BoardTest extends TestSuite {
       val bank1 = Bank(IndexedSeq(TurnInstruction(SourceMapInstruction(0, 1), IntegerParam(0))), Some(SourceMap(color, 1, IndexedSeq("turn 0"))))
       val program = Program(Map(0 ->  bank0, 1 -> bank1))
 
-      val bot = Bot(board, color, 1, 1, Direction.Right, program, InstructionSet.Extended, true, 5)
+      val bot = Bot(board, color, 1, 1, Direction.Right, program, InstructionSet.Advanced, true, 5)
       bot.registers(1) = 5
       board.addBot(bot)
 

@@ -56,7 +56,7 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
     move
   */
 
-  val instructionSet = InstructionSet.Extended
+  val instructionSet = InstructionSet.Advanced
   val mobile = true
   val active: Short = 1
 

@@ -123,11 +123,11 @@ object InstructionTest extends TestSuite {
           newBot.program.banks.size ==> 5
           newBot.mobile ==> false
         }
-        "red, extended, 3, true"-{
+        "red, advanced, 3, true"-{
           val board = new Board()
-          val newBot = testCase(board, PlayerColor.Red, InstructionSet.Extended, 3, true).get
+          val newBot = testCase(board, PlayerColor.Red, InstructionSet.Advanced, 3, true).get
           newBot.playerColor ==> PlayerColor.Red
-          newBot.instructionSet ==> InstructionSet.Extended
+          newBot.instructionSet ==> InstructionSet.Advanced
           newBot.program.banks.size ==> 3
           newBot.mobile ==> true
         }
@@ -246,9 +246,9 @@ object InstructionTest extends TestSuite {
           bot1.instructionSet = InstructionSet.Basic
         }
 
-        // $InstrSet extended
+        // $InstrSet advanced
         testSourceParam(InstrSetKeyword(true), 1) { (bot1, _) =>
-          bot1.instructionSet = InstructionSet.Extended
+          bot1.instructionSet = InstructionSet.Advanced
         }
 
         // %InstrSet with remote basic
@@ -256,9 +256,9 @@ object InstructionTest extends TestSuite {
           bot2.instructionSet = InstructionSet.Basic
         }
 
-        // %InstrSet with remote extended
+        // %InstrSet with remote Advanced
         testSourceParam(InstrSetKeyword(false), 1) { (_, bot2) =>
-          bot2.instructionSet = InstructionSet.Extended
+          bot2.instructionSet = InstructionSet.Advanced
         }
 
         // %InstrSet without remote

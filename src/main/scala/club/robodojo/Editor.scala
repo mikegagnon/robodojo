@@ -138,7 +138,8 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       case Right(program) => program
     }
 
-    val instructionSet = InstructionSet.Extended
+    // TODO: should this be redone?
+    val instructionSet = InstructionSet.Advanced
     val mobile = true
     val active: Short = 1
 

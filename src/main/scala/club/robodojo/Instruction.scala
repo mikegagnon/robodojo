@@ -16,7 +16,7 @@ object InstructionSet {
     val value: Short = 0
   }
 
-  case object Extended extends EnumVal {
+  case object Advanced extends EnumVal {
     val value: Short = 1
   }
 
@@ -24,7 +24,7 @@ object InstructionSet {
     if (value == 0) {
       InstructionSet.Basic
     } else if (value == 1) {
-      InstructionSet.Extended
+      InstructionSet.Advanced
     } else {
       throw new IllegalArgumentException("Bad value: " + value)
   }
@@ -308,7 +308,7 @@ case class CreateInstruction(
 
     val instructionSetCostBasic = childInstructionSetValue match {
       case InstructionSet.Basic.value => durCreate4
-      case InstructionSet.Extended.value => 0
+      case InstructionSet.Advanced.value => 0
       case _ => 0
     }
 
