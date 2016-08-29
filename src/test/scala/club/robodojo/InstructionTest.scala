@@ -353,6 +353,7 @@ object InstructionTest extends TestSuite {
     //  attempt transfer, but there is no origination bank
     //  attempt transfer, but there is no receiving bank
     //  attempt transfer, but there is no receiving bot
+    //  attempt transfer, but bot has Basic instruction set
     "TransInstruction.execute"-{
 
       def successTransTest(sourceBank: Int, destBank: Int): Unit = {
@@ -494,6 +495,33 @@ object InstructionTest extends TestSuite {
         val result: Option[Animation] = instruction.execute(bot1)
 
         result ==> None
+      }
+
+      "insufficient instruction set"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans 1, 1
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        bot1.instructionSet = InstructionSet.Basic
+
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Animation = instruction.execute(bot1).get
+
+        result match {
+          case error: FatalErrorAnimation =>
+            error.errorMessage.errorCode ==> ErrorCode.InsufficientInstructionSet
+          case _ => assert(false)
+        }
       }
     }
   }
