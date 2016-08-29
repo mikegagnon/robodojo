@@ -420,6 +420,27 @@ object InstructionTest extends TestSuite {
 
         result ==> None
       }
+
+      "no receiving bank"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans 1, -1
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Option[Animation] = instruction.execute(bot1)
+
+        result ==> None
+      }
     }
   }
 }
