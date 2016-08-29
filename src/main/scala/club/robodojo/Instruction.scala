@@ -313,23 +313,21 @@ case class CreateInstruction(
     val secondaryMobilityCost = if (mobileValue > 0) durCreate3a else 0
 
     // TODO: what about super?
-    val instructionSetCostBasic = childInstructionSetValue match {
-      case InstructionSet.Basic.value => durCreate4
-      case InstructionSet.Advanced.value => 0
+    val instructionSetCostAdvanced = childInstructionSetValue match {
+      case InstructionSet.Advanced.value => durCreate4
       case _ => 0
     }
-    val instructionSetCostExtended = childInstructionSetValue match {
-      case 0 => 0
-      case 1 => durCreate5
-      // TODO: what to do here?
+
+    val instructionSetCostSuper = childInstructionSetValue match {
+      case InstructionSet.Super.value => durCreate5
       case _ => 0
     }
 
     val calculatedCost =
       primary * mobilityCost +
       secondaryMobilityCost +
-      instructionSetCostBasic +
-      instructionSetCostExtended +
+      instructionSetCostAdvanced +
+      instructionSetCostSuper +
       remoteCost1 +
       remoteCost2 +
       remoteCost3
@@ -357,7 +355,8 @@ case class CreateInstruction(
 
       val message = messageHeader + s"<tt>childInstructionSet</tt> equal to " +
         s"${childInstructionSetValue}. <tt>childInstructionSet</tt> must be either 0 (signifying " +
-        s"the Basic instruction set) or 1 (signifying the Extended instruction set).</p>"
+        s"the Basic instruction set) or 1 (signifying the Advanced instruction set) or 2 " +
+        s"(signifying the Super instruction set).</p>"
       val errorMessage = ErrorMessage(errorCode, lineIndex, message)
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
 
