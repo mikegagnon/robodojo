@@ -312,7 +312,6 @@ case class CreateInstruction(
     val mobilityCost = if (mobileValue > 0) durCreate3 else 1
     val secondaryMobilityCost = if (mobileValue > 0) durCreate3a else 0
 
-    // TODO: what about super?
     val instructionSetCostAdvanced = childInstructionSetValue match {
       case InstructionSet.Advanced.value => durCreate4
       case _ => 0
