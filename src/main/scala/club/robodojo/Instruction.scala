@@ -540,7 +540,6 @@ case class TransInstruction(
       return error
     }
 
-    // TODO: deal with OOB
     val bank = bot.program.banks(sourceBankIndex)
 
     bot
