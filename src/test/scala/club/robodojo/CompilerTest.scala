@@ -911,10 +911,10 @@ object CompilerTest extends TestSuite {
           testProgramFail("trans foo, 0", ErrorCode.WrongParamType)
         }
         "succeed"-{
-          testInstruction("trans 0, 0", Right(
-            TransInstruction(defaultSourceMap, IntegerParam(0), IntegerParam(0))))
+          testInstruction("trans 1, 1", Right(
+            TransInstruction(defaultSourceMap, IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue )))
           testInstruction("trans 2, %active", Right(
-            TransInstruction(defaultSourceMap, IntegerParam(2), ActiveKeyword(false))))
+            TransInstruction(defaultSourceMap, IntegerParam(2), ActiveKeyword(false), 1, PlayerColor.Blue)))
         }
       }
 

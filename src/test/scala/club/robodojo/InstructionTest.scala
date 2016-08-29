@@ -364,6 +364,40 @@ object InstructionTest extends TestSuite {
         successTransTest(2, 1)
         successTransTest(2, 2)
       }
+
+      "no source bank"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans 0, 1
+            set #1, 1
+            move
+
+          bank two
+            set %active, 1
+            turn 1
+
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Animation = instruction.execute(bot1).get
+
+        result match {
+          case error: FatalErrorAnimation =>
+            error.errorMessage.errorCode ==> ErrorCode.InvalidParameter
+          case _ => assert(false)
+        }
+
+
+      }
     }
   }
 }

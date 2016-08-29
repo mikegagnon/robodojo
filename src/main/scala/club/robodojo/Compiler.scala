@@ -523,7 +523,10 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  def compileTrans(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
+  def compileTrans(
+      sourceMapInstruction: SourceMapInstruction,
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)
       (implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] =
@@ -537,7 +540,12 @@ object Compiler {
     val sourceBank = params(0).asInstanceOf[ReadableParam]
     val destBank = params(1).asInstanceOf[ReadableParam]
 
-    val instruction = TransInstruction(sourceMapInstruction, sourceBank, destBank)
+    val instruction = TransInstruction(
+      sourceMapInstruction,
+      sourceBank,
+      destBank,
+      tl.lineIndex,
+      playerColor)
 
     CompileLineResult(Some(instruction), None)
   }
@@ -622,7 +630,7 @@ object Compiler {
           case "turn" => compileTurn(sourceMapInstruction, tl)
           case "create" => compileCreate(sourceMapInstruction, tl, playerColor)
           case "set" => compileSet(sourceMapInstruction, tl)
-          case "trans" => compileTrans(sourceMapInstruction, tl)
+          case "trans" => compileTrans(sourceMapInstruction, tl, playerColor)
           case _ => unrecognizedInstruction(tl)
         }
 
