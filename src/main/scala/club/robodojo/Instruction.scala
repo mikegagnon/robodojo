@@ -468,11 +468,13 @@ case class SetInstruction(
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 
-// TODO: test
 case class TransInstruction(
   sourceMapInstruction: SourceMapInstruction,
   sourceBank: ReadableParam,
-  destBank: ReadableParam)(implicit val config: Config) extends Instruction {
+  destBank: ReadableParam,
+  lineIndex: Int,
+  // Whose program did this instruction come from originally?
+  playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
 
@@ -481,42 +483,79 @@ case class TransInstruction(
     val remoteReadCostSrc = if (sourceBank.local) 0 else config.sim.cycleCount.durRemoteAccessCost
     val remoteReadCostDest = if (destBank.local) 0 else config.sim.cycleCount.durRemoteAccessCost
 
-    // TODO: deal with OOB
+    val sourceBankIndex = sourceBank.read(bot) - 1
+
     val numInstructions =
-      bot
-        .program
-        .banks(sourceBank.read(bot))
-        .instructions
-        .size
+      if (sourceBankIndex < 0 || sourceBankIndex >= bot.program.banks.size) {
+        1
+      } else {
+        bot
+          .program
+          .banks(sourceBankIndex)
+          .instructions
+          .size
+      }
 
     return config.sim.cycleCount.durTrans1 + config.sim.cycleCount.durTrans2 * numInstructions +
            remoteReadCostSrc + remoteReadCostDest
 
   }
 
+  def errorCheck(
+      bot: Bot,
+      sourceBankIndex: Int): Option[Animation] = {
+
+    if (sourceBankIndex < 0 || sourceBankIndex >= bot.program.banks.size) {
+
+      val errorCode = ErrorCode.InvalidParameter
+
+      val message = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
+        s"execute a <tt>trans</tt> instruction with sourceBank == ${sourceBankIndex + 1}, but " +
+        s"sourceBank must be >= 1 and <= ${bot.program.banks.size}"
+
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
+
+      return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+    } else {
+      return None
+    }
+  }
+
   def execute(bot: Bot): Option[Animation] = {
 
-    val sourceBankIndex = sourceBank.read(bot)
+    val sourceBankIndex = sourceBank.read(bot) - 1
 
-    // TODO: deal with OOB
+    val error: Option[Animation] = errorCheck(
+      bot,
+      sourceBankIndex)
+
+    if (error.nonEmpty) {
+      bot.board.removeBot(bot)
+      return error
+    }
+
     val bank = bot.program.banks(sourceBankIndex)
 
-    // TODO: what if the remote bot is executing bank-destBankIndex?
     bot
       .getRemote
       .map { remoteBot: Bot =>
-        val destBankIndex = destBank.read(bot).toInt
+        val destBankIndex = destBank.read(bot).toInt - 1
         if (remoteBot.program.banks.contains(destBankIndex)) {
           remoteBot.program.banks += destBankIndex -> bank
+          if (remoteBot.bankIndex == destBankIndex) {
+            remoteBot.instructionIndex = 0
+            remoteBot.cycleNum = 1
+          }
         }
       }
 
-    // TODO
     None
 
   }
 
-  // TODO
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 

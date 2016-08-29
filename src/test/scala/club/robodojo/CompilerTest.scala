@@ -902,6 +902,22 @@ object CompilerTest extends TestSuite {
           testSourceParam("$Fields", FieldsKeyword())
         }
       }
+
+      "trans instruction"-{
+        "fail"-{
+          testProgramFail("trans foo", ErrorCode.MalformedInstruction)
+          testProgramFail("trans 0", ErrorCode.MalformedInstruction)
+          testProgramFail("trans 0, foo", ErrorCode.WrongParamType)
+          testProgramFail("trans foo, 0", ErrorCode.WrongParamType)
+        }
+        "succeed"-{
+          testInstruction("trans 1, 1", Right(
+            TransInstruction(defaultSourceMap, IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue )))
+          testInstruction("trans 2, %active", Right(
+            TransInstruction(defaultSourceMap, IntegerParam(2), ActiveKeyword(false), 1, PlayerColor.Blue)))
+        }
+      }
+
     }
   }
 }

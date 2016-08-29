@@ -296,5 +296,151 @@ object InstructionTest extends TestSuite {
 
       }
     }
+
+    // TODO: test getRequiredCycles
+    // Test cases:
+    //  successful transfer (1 -> 1, 1 -> 2, 2->1, 2->2)
+    //  successful transfer, and bot is currently executing overwritten bank
+    //  attempt transfer, but there is no origination bank
+    //  attempt transfer, but there is no receiving bank
+    //  attempt transfer, but there is no receiving bot
+    "TransInstruction.execute"-{
+
+      def successTransTest(sourceBank: Int, destBank: Int): Unit = {
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans ${sourceBank}, ${destBank}
+            set #1, 1
+            move
+
+          bank two
+            set %active, 1
+            turn 1
+
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+
+        val program2: Program = Compiler.compile("""
+          bank one
+            move
+            move
+
+          bank two
+            move
+            move
+          """, PlayerColor.Blue).right.get
+
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right, program2)
+        bot2.bankIndex = 1
+        bot2.instructionIndex = 1
+        bot2.cycleNum = 5
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        assert(bot2.program.banks(destBank - 1) != bot1.program.banks(sourceBank - 1))
+
+        instruction.execute(bot1)
+
+        bot2.program.banks(destBank - 1) ==> bot1.program.banks(sourceBank - 1)
+
+        if (destBank - 1 == bot2.bankIndex) {
+          bot2.instructionIndex ==> 0
+          bot2.cycleNum ==> 1
+        } else {
+          bot2.instructionIndex ==> 1
+          bot2.cycleNum ==> 5
+        }
+      }
+
+      "successful transfers"-{
+        successTransTest(1, 1)
+        successTransTest(1, 2)
+        successTransTest(2, 1)
+        successTransTest(2, 2)
+      }
+
+      def failTransTest(sourceBank: Int): Unit = {
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans ${sourceBank}, 1
+            set #1, 1
+            move
+
+          bank two
+            set %active, 1
+            turn 1
+
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Animation = instruction.execute(bot1).get
+
+        result match {
+          case error: FatalErrorAnimation =>
+            error.errorMessage.errorCode ==> ErrorCode.InvalidParameter
+          case _ => assert(false)
+        }
+      }
+
+      "no source bank"-{
+        failTransTest(0)
+        failTransTest(3)
+      }
+
+      "no receiving bot"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans 1, 1
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+
+        board.addBot(bot1)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Option[Animation] = instruction.execute(bot1)
+
+        result ==> None
+      }
+
+      "no receiving bank"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans 1, -1
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
+
+        board.addBot(bot1)
+        board.addBot(bot2)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Option[Animation] = instruction.execute(bot1)
+
+        result ==> None
+      }
+    }
   }
 }
