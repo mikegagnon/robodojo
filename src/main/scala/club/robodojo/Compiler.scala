@@ -50,6 +50,8 @@ object ErrorCode {
 
   case object InvalidParameter extends RunTimeError
   case object DataHunger extends RunTimeError
+
+  case object InsufficientInstructionSet extends RunTimeError
 }
 
 // TODO: underline the offensive text in the program text?

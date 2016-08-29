@@ -10,18 +10,22 @@ object InstructionSet {
 
   sealed trait EnumVal {
     val value: Short
+    val str: String
   }
 
   case object Basic extends EnumVal {
     val value: Short = 0
+    val str: String = "Basic"
   }
 
   case object Advanced extends EnumVal {
     val value: Short = 1
+    val str: String = "Advanced"
   }
 
   case object Super extends EnumVal {
     val value: Short = 2
+    val str: String = "Super"
   }
 
   def fromInt(value: Int): InstructionSet.EnumVal =
@@ -58,6 +62,28 @@ sealed abstract class Instruction {
       return execute(bot)
     } else {
       return progress(bot, cycleNum)
+    }
+
+  }
+
+  def checkInstructionSet(bot: Bot, instructionName: String, lineIndex: Int, playerColor: PlayerColor.EnumVal): Option[Animation] = {
+
+    if (bot.instructionSet.value < instructionSet.value) {
+
+      val message = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it only has the " +
+        s"<tt>${bot.instructionSet.str}</tt> instruction set, but it needs the " +
+        s"<tt>${instructionSet.str}</tt> instruction set to execute the " +
+        s"<tt>${instructionName}</tt> instruction."
+
+      val errorCode = ErrorCode.InsufficientInstructionSet
+
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
+      Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+    } else {
+      None
     }
 
   }
@@ -336,14 +362,18 @@ case class CreateInstruction(
     return Math.max(Math.min(calculatedCost, maxCreateDur), 1)
   }
 
+  // TODO: cleanup
   def errorCheck(
       bot: Bot,
       childInstructionSetValue: Short,
       numBanksValue: Short,
       mobileValue: Short): Option[Animation] = {
 
+    val insufficientInstructionSet = checkInstructionSet(bot, "create", lineIndex, playerColor)
+
     val errorCode = ErrorCode.InvalidParameter
 
+    // TODO: factor out common code
     val messageHeader = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
@@ -375,6 +405,8 @@ case class CreateInstruction(
       val errorMessage = ErrorMessage(errorCode, lineIndex, message)
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
 
+    } else if (insufficientInstructionSet.nonEmpty) {
+      insufficientInstructionSet
     } else {
       None
     }
