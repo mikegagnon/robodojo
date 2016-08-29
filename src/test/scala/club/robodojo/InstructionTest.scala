@@ -173,7 +173,8 @@ object InstructionTest extends TestSuite {
           val result: Option[Animation] = instruction.execute(bot)
 
           result match {
-            case Some(FatalErrorAnimation(_, _, _, _, ErrorMessage(ErrorCode.InsufficientInstructionSet, _, _))) => assert(true)
+            case Some(FatalErrorAnimation(_, _, _, _,
+                ErrorMessage(ErrorCode.InsufficientInstructionSet, _, _))) => assert(true)
             case _ => assert(false)
           }
 
@@ -370,6 +371,7 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        bot1.instructionSet = InstructionSet.Advanced
 
         val program2: Program = Compiler.compile("""
           bank one
@@ -429,6 +431,7 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        bot1.instructionSet = InstructionSet.Advanced
         val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
 
         board.addBot(bot1)
@@ -459,6 +462,7 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        bot1.instructionSet = InstructionSet.Advanced
 
         board.addBot(bot1)
 
@@ -478,6 +482,8 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+        bot1.instructionSet = InstructionSet.Advanced
+
         val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right)
 
         board.addBot(bot1)

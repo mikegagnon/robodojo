@@ -540,6 +540,8 @@ case class TransInstruction(
       bot: Bot,
       sourceBankIndex: Int): Option[Animation] = {
 
+    val insufficientInstructionSet = checkInstructionSet(bot, "trans", lineIndex, playerColor)
+
     if (sourceBankIndex < 0 || sourceBankIndex >= bot.program.banks.size) {
 
       val errorCode = ErrorCode.InvalidParameter
@@ -554,6 +556,8 @@ case class TransInstruction(
       val errorMessage = ErrorMessage(errorCode, lineIndex, message)
 
       return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+    } else if (insufficientInstructionSet.nonEmpty) {
+      insufficientInstructionSet
     } else {
       return None
     }
