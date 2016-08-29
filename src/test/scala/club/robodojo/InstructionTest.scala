@@ -298,7 +298,7 @@ object InstructionTest extends TestSuite {
     }
 
     // TODO: test getRequiredCycles
-    // TODO Test cases:
+    // Test cases:
     //  successful transfer (1 -> 1, 1 -> 2, 2->1, 2->2)
     //  successful transfer, and bot is currently executing overwritten bank
     //  attempt transfer, but there is no origination bank
@@ -326,12 +326,17 @@ object InstructionTest extends TestSuite {
         val program2: Program = Compiler.compile("""
           bank one
             move
+            move
 
           bank two
+            move
             move
           """, PlayerColor.Blue).right.get
 
         val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right, program2)
+        bot2.bankIndex = 1
+        bot2.instructionIndex = 1
+        bot2.cycleNum = 5
 
         board.addBot(bot1)
         board.addBot(bot2)
@@ -343,6 +348,14 @@ object InstructionTest extends TestSuite {
         instruction.execute(bot1)
 
         bot2.program.banks(destBank - 1) ==> bot1.program.banks(sourceBank - 1)
+
+        if (destBank - 1 == bot2.bankIndex) {
+          bot2.instructionIndex ==> 0
+          bot2.cycleNum ==> 1
+        } else {
+          bot2.instructionIndex ==> 1
+          bot2.cycleNum ==> 5
+        }
       }
 
       "successful transfers"-{

@@ -501,13 +501,16 @@ case class TransInstruction(
     // TODO: deal with OOB
     val bank = bot.program.banks(sourceBankIndex)
 
-    // TODO: what if the remote bot is executing bank-destBankIndex?
     bot
       .getRemote
       .map { remoteBot: Bot =>
         val destBankIndex = destBank.read(bot).toInt - 1
         if (remoteBot.program.banks.contains(destBankIndex)) {
           remoteBot.program.banks += destBankIndex -> bank
+          if (remoteBot.bankIndex == destBankIndex) {
+            remoteBot.instructionIndex = 0
+            remoteBot.cycleNum = 1
+          }
         }
       }
 
