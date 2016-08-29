@@ -401,6 +401,25 @@ object InstructionTest extends TestSuite {
         failTransTest(0)
         failTransTest(3)
       }
+
+      "no receiving bot"-{
+        val board = new Board()
+
+        val program1: Program = Compiler.compile(s"""
+          bank one
+            trans 1, 1
+          """, PlayerColor.Blue).right.get
+
+        val bot1 = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program1)
+
+        board.addBot(bot1)
+
+        val instruction: Instruction = bot1.program.banks(0).instructions(0)
+
+        val result: Option[Animation] = instruction.execute(bot1)
+
+        result ==> None
+      }
     }
   }
 }
