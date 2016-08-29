@@ -468,7 +468,6 @@ case class SetInstruction(
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 
-// TODO: test
 case class TransInstruction(
   sourceMapInstruction: SourceMapInstruction,
   sourceBank: ReadableParam,
@@ -483,8 +482,6 @@ case class TransInstruction(
 
     val remoteReadCostSrc = if (sourceBank.local) 0 else config.sim.cycleCount.durRemoteAccessCost
     val remoteReadCostDest = if (destBank.local) 0 else config.sim.cycleCount.durRemoteAccessCost
-
-    // TODO: deal with OOB
 
     val sourceBankIndex = sourceBank.read(bot) - 1
 
@@ -555,12 +552,10 @@ case class TransInstruction(
         }
       }
 
-    // TODO
     None
 
   }
 
-  // TODO
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 
