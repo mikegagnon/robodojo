@@ -159,11 +159,24 @@ object InstructionTest extends TestSuite {
         }
         "bad insufficient instruction set"-{
 
-          //val board = new Board()
-          //val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+          val board = new Board()
+          val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right)
+          bot.instructionSet = InstructionSet.Advanced
+          board.addBot(bot)
 
-          // TODO
-          //val newBot = testCase(board, PlayerColor.Blue, Instruction.Basic, 1, true, InstructionSet.Basic)
+          val iSet = IntegerParam(0)
+          val banks = IntegerParam(1)
+          val mob = IntegerParam(1)
+
+          val instruction = CreateInstruction(defaultSourceMap, iSet, banks, mob, 0, PlayerColor.Blue)
+
+          val result: Option[Animation] = instruction.execute(bot)
+
+          result match {
+            case Some(FatalErrorAnimation(_, _, _, _, ErrorMessage(ErrorCode.InsufficientInstructionSet, _, _))) => assert(true)
+            case _ => assert(false)
+          }
+
         }
       }
     }
