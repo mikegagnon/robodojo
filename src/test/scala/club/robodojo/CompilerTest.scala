@@ -690,8 +690,8 @@ object CompilerTest extends TestSuite {
             val text = "create -1, 1, 1"
             testProgramFail(text, ErrorCode.BadInstructionSetParam)(config)
           }
-          "instruction set invalid 2"-{
-            val text = "create 2, 1, 1"
+          "instruction set invalid 3"-{
+            val text = "create 3, 1, 1"
             testProgramFail(text, ErrorCode.BadInstructionSetParam)(config)
           }
           "numBanks invalid 1"-{
@@ -719,6 +719,10 @@ object CompilerTest extends TestSuite {
           "instructionSet == 1"-{
             testInstruction("create 1, 1, 1",
               Right(CreateInstruction(defaultSourceMap, IntegerParam(1), IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue)))
+          }
+          "instructionSet == 2"-{
+            testInstruction("create 2, 1, 1",
+              Right(CreateInstruction(defaultSourceMap, IntegerParam(2), IntegerParam(1), IntegerParam(1), 1, PlayerColor.Blue)))
           }
           "numBanks == max"-{
             testInstruction(s"create 1, ${config.sim.maxBanks} , 1",

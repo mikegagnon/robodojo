@@ -469,7 +469,7 @@ object Compiler {
         case _ => 0
       }
 
-      if (instructionSetInt < 0 || instructionSetInt > 1) {
+      if (instructionSetInt < 0 || instructionSetInt > 2) {
         val message = "Bad instruction-set parameter: the first parameter to the <tt>create</tt> " +
           "instruction, the instruction-set parameter, can only be 0 (signifying the " +
           "<i>Basic</i> instruction set) or 1 (signifying the <i>Extended</i> instruction set)."

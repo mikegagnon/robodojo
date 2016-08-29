@@ -105,7 +105,14 @@ object InstructionTest extends TestSuite {
           numBanks: Int,
           mobile: Boolean): Option[Bot] = {
 
-        val iSet = if(instructionSet == InstructionSet.Basic) IntegerParam(0) else IntegerParam(1)
+        val iSet =
+          if(instructionSet == InstructionSet.Basic) {
+            IntegerParam(0)
+          } else if (instructionSet == InstructionSet.Advanced) {
+            IntegerParam(1)
+          } else {
+            IntegerParam(2)
+          }
         val banks = IntegerParam(numBanks.toShort)
         val mob = if (mobile) IntegerParam(1) else IntegerParam(0)
         val bot = Bot(board, color, 0, 0, Direction.Right)
@@ -128,6 +135,14 @@ object InstructionTest extends TestSuite {
           val newBot = testCase(board, PlayerColor.Red, InstructionSet.Advanced, 3, true).get
           newBot.playerColor ==> PlayerColor.Red
           newBot.instructionSet ==> InstructionSet.Advanced
+          newBot.program.banks.size ==> 3
+          newBot.mobile ==> true
+        }
+        "red, super, 3, true"-{
+          val board = new Board()
+          val newBot = testCase(board, PlayerColor.Red, InstructionSet.Super, 3, true).get
+          newBot.playerColor ==> PlayerColor.Red
+          newBot.instructionSet ==> InstructionSet.Super
           newBot.program.banks.size ==> 3
           newBot.mobile ==> true
         }
@@ -251,6 +266,11 @@ object InstructionTest extends TestSuite {
           bot1.instructionSet = InstructionSet.Advanced
         }
 
+        // $InstrSet super
+        testSourceParam(InstrSetKeyword(true), 2) { (bot1, _) =>
+          bot1.instructionSet = InstructionSet.Super
+        }
+
         // %InstrSet with remote basic
         testSourceParam(InstrSetKeyword(false), 0) { (_, bot2) =>
           bot2.instructionSet = InstructionSet.Basic
@@ -259,6 +279,11 @@ object InstructionTest extends TestSuite {
         // %InstrSet with remote Advanced
         testSourceParam(InstrSetKeyword(false), 1) { (_, bot2) =>
           bot2.instructionSet = InstructionSet.Advanced
+        }
+
+        // %InstrSet with remote Advanced
+        testSourceParam(InstrSetKeyword(false), 2) { (_, bot2) =>
+          bot2.instructionSet = InstructionSet.Super
         }
 
         // %InstrSet without remote

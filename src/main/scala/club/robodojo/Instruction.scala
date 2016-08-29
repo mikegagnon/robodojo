@@ -20,14 +20,20 @@ object InstructionSet {
     val value: Short = 1
   }
 
+  case object Super extends EnumVal {
+    val value: Short = 2
+  }
+
   def fromInt(value: Int): InstructionSet.EnumVal =
     if (value == 0) {
       InstructionSet.Basic
     } else if (value == 1) {
       InstructionSet.Advanced
+    } else if (value == 2) {
+      InstructionSet.Super
     } else {
       throw new IllegalArgumentException("Bad value: " + value)
-  }
+    }
 }
 
 // Instruction instances must be stateless, so multiple bots can execute the same instruction
@@ -278,7 +284,7 @@ case class CreateInstruction(
     // then bot.playerColor == red and playerColor, here, == blue.
     playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
-  val instructionSet = InstructionSet.Basic
+  val instructionSet = InstructionSet.Super
 
   def getRequiredCycles(bot: Bot): Int = {
 
@@ -306,12 +312,12 @@ case class CreateInstruction(
     val mobilityCost = if (mobileValue > 0) durCreate3 else 1
     val secondaryMobilityCost = if (mobileValue > 0) durCreate3a else 0
 
+    // TODO: what about super?
     val instructionSetCostBasic = childInstructionSetValue match {
       case InstructionSet.Basic.value => durCreate4
       case InstructionSet.Advanced.value => 0
       case _ => 0
     }
-
     val instructionSetCostExtended = childInstructionSetValue match {
       case 0 => 0
       case 1 => durCreate5
@@ -347,7 +353,7 @@ case class CreateInstruction(
         s"The ${bot.playerColor} bot has tapped out because it attempted to " +
         s"execute a <tt>create</tt> instruction with "
 
-    if (childInstructionSetValue < 0 || childInstructionSetValue > 1) {
+    if (childInstructionSetValue < 0 || childInstructionSetValue > 2) {
 
       val message = messageHeader + s"<tt>childInstructionSet</tt> equal to " +
         s"${childInstructionSetValue}. <tt>childInstructionSet</tt> must be either 0 (signifying " +
@@ -411,7 +417,6 @@ case class CreateInstruction(
           col,
           bot.direction,
           emptyProgram,
-          // TODO: is childInstructionSetValue safe?
           InstructionSet.fromInt(childInstructionSetValue),
           Mobile.fromInt(mobileValue),
           active)
@@ -476,7 +481,7 @@ case class TransInstruction(
   // Whose program did this instruction come from originally?
   playerColor: PlayerColor.EnumVal)(implicit val config: Config) extends Instruction {
 
-  val instructionSet = InstructionSet.Basic
+  val instructionSet = InstructionSet.Advanced
 
   def getRequiredCycles(bot: Bot): Int = {
 
