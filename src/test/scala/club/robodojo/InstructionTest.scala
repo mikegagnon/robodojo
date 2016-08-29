@@ -365,12 +365,12 @@ object InstructionTest extends TestSuite {
         successTransTest(2, 2)
       }
 
-      "no source bank"-{
+      def failTransTest(sourceBank: Int): Unit = {
         val board = new Board()
 
         val program1: Program = Compiler.compile(s"""
           bank one
-            trans 0, 1
+            trans ${sourceBank}, 1
             set #1, 1
             move
 
@@ -395,8 +395,11 @@ object InstructionTest extends TestSuite {
             error.errorMessage.errorCode ==> ErrorCode.InvalidParameter
           case _ => assert(false)
         }
+      }
 
-
+      "no source bank"-{
+        failTransTest(0)
+        failTransTest(3)
       }
     }
   }
