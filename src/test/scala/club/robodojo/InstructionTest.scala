@@ -559,9 +559,6 @@ object InstructionTest extends TestSuite {
 
         val instruction = bot.program.banks(0).instructions(1)
 
-        println("FOOO")
-        println(bot.program.banks(0))
-
         bot.instructionIndex = 1
 
         instruction.execute(bot)
@@ -573,6 +570,35 @@ object InstructionTest extends TestSuite {
         testSuccess(-1, -1)
         testSuccess(0, 0)
         testSuccess(1, 1)
+      }
+
+      def testSuccessJumpLast(jump: Int, jumpTo: Int): Unit = {
+        val board = new Board()
+
+        val program: Program = Compiler.compile(s"""
+            bank main
+              move
+              move
+              jump ${jump}
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val instruction = bot.program.banks(0).instructions(2)
+
+        bot.instructionIndex = 2
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.instructionIndex ==> jumpTo
+      }
+
+      "success with jump as last instruction"-{
+        testSuccessJumpLast(-2, 0)
+        testSuccessJumpLast(-1, 1)
+        testSuccessJumpLast(0, 2)
       }
     }
   }

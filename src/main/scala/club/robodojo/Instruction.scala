@@ -634,6 +634,9 @@ case class JumpInstruction(
 
   def execute(bot: Bot): Option[Animation] = {
 
+    // NOTE: The -1 here is due to the fact that bot.cycle executes the instruction
+    // first, then increments the instructionIndex. So, we need to subtract by 1 to account for
+    // that.
     val newInstructionIndex = bot.instructionIndex + jump.read(bot) - 1
 
     val oobIndex = bot.program.banks(bot.bankIndex).instructions.length
