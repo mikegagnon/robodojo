@@ -660,7 +660,6 @@ object Compiler {
 
     val labelStrings = mutable.Set[String]()
 
-    // TODO: refactor Label taking out bankIndex and labelString?
     // labels(bankIndex)(labelString) == instruction Index for that label
     var labels = mutable.Map[Int, mutable.Map[String, Int]]()
 
@@ -763,8 +762,6 @@ object Compiler {
       bankLineIndex += 1
 
     }
-
-    println(labels)
 
     // TODO: replace each LabeledJumpInstruction with JumpInstruction
 
