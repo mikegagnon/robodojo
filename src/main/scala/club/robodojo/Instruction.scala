@@ -619,4 +619,37 @@ case class TransInstruction(
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 
+// TODO: deal with exceptions
+case class JumpInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    jump: ReadableParam,
+    lineIndex: Int,
+    // Whose program did this instruction come from originally?
+    playerColor: PlayerColor.EnumVal)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durJump
+
+  def execute(bot: Bot): Option[Animation] = {
+
+    val newInstructionIndex = bot.instructionIndex + jump.read(bot) - 1
+
+    println(newInstructionIndex)
+
+    val oobIndex = bot.program.banks(bot.bankIndex).instructions.length
+
+    if ((newInstructionIndex + 1) < 0 || (newInstructionIndex + 1) >= oobIndex) {
+      // exception todo
+    } else {
+      bot.instructionIndex = newInstructionIndex
+    }
+
+    return None
+  }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
 /* End instructions *******************************************************************************/

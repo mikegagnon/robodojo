@@ -555,6 +555,32 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+  // TODO: labels
+  def compileJump(
+      sourceMapInstruction: SourceMapInstruction,
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)
+      (implicit config: Config): CompileLineResult = {
+
+    val parsed: Either[ErrorMessage, Seq[Param]] =
+      parseParams("jump", tl, ReadableParamType)
+
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
+    }
+
+    val jump = params(0).asInstanceOf[ReadableParam]
+
+    val instruction = JumpInstruction(
+      sourceMapInstruction,
+      jump,
+      tl.lineIndex,
+      playerColor)
+
+    CompileLineResult(Some(instruction), None)
+  }
+
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
@@ -636,6 +662,7 @@ object Compiler {
           case "create" => compileCreate(sourceMapInstruction, tl, playerColor)
           case "set" => compileSet(sourceMapInstruction, tl)
           case "trans" => compileTrans(sourceMapInstruction, tl, playerColor)
+          case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
           case _ => unrecognizedInstruction(tl)
         }
 
