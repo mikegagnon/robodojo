@@ -938,6 +938,18 @@ object CompilerTest extends TestSuite {
             JumpInstruction(defaultSourceMap, IntegerParam(1), 1, PlayerColor.Blue)))
           testInstruction("jump %active", Right(
             JumpInstruction(defaultSourceMap, ActiveKeyword(false), 1, PlayerColor.Blue)))
+
+          val result = compileJump(
+            defaultSourceMap,
+            TokenLine(Array("jump", "@foo"), "jump @foo", 1), PlayerColor.Blue)
+
+          val expectedResult = CompileLineResult(
+            Some(LabeledJumpInstruction(
+              defaultSourceMap,
+              "@foo",
+              1,
+              PlayerColor.Blue)), None)
+
         }
 
       }
