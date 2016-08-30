@@ -343,7 +343,7 @@ object Compiler {
         (line.replaceAll(",", " , "), originalLine)
       }
       .map { case (line: String, originalLine: String) =>
-        (line.replaceAll("^@", "@ "), originalLine)
+        (line.replaceAll("""^\s*@""", "@ "), originalLine)
       }
       .map { case (line: String, originalLine: String) =>
         (line.toLowerCase, originalLine)

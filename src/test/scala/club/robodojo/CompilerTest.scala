@@ -454,6 +454,16 @@ object CompilerTest extends TestSuite {
 
           assert(result.sameElements(expectedResult))
       }
+
+      "Separate ^@ from label"-{
+
+        val text = """ @foo ; bar"""
+
+        val result = Compiler.tokenize(text)
+        val expectedResult = Array(TokenLine(Array("@", "foo"), " @foo ; bar", 0))
+
+          assert(result.sameElements(expectedResult))
+      }
     }
 
     "getErrorWrongParamType"-{
