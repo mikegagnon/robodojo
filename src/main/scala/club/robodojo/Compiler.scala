@@ -561,6 +561,7 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+  // TODO: better error messages. Right now error message make no mention of labels
   def compileJump(
       sourceMapInstruction: SourceMapInstruction,
       tl: TokenLine,
@@ -573,7 +574,7 @@ object Compiler {
     val params: Seq[Param] = parsed match {
       case Left(errorMessage) => {
 
-        if (tl.tokens.length > 1 && tl.tokens(1)(0) == '@'
+        if (tl.tokens.length == 2 && tl.tokens(1)(0) == '@'
           && tl.tokens(1).length > 1) {
           val labelId = tl.tokens(1)
           val instruction = LabeledJumpInstruction(
