@@ -619,6 +619,23 @@ case class TransInstruction(
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 
+// TODO: rm extraneous fields?
+case class LabeledJumpInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    labelId: String,
+    lineIndex: Int,
+    playerColor: PlayerColor.EnumVal)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  def getRequiredCycles(bot: Bot): Int = 0
+
+  def execute(bot: Bot): Option[Animation] = None
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
 // TODO: deal with exceptions
 case class JumpInstruction(
     sourceMapInstruction: SourceMapInstruction,

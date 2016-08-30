@@ -569,11 +569,27 @@ object Compiler {
       playerColor: PlayerColor.EnumVal)
       (implicit config: Config): CompileLineResult = {
 
+    println(tl)
+
     val parsed: Either[ErrorMessage, Seq[Param]] =
       parseParams("jump", tl, ReadableParamType)
 
     val params: Seq[Param] = parsed match {
-      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Left(errorMessage) => {
+
+        if (tl.tokens.length > 1 && tl.tokens(1)(0) == '@'
+          && tl.tokens(1).length > 1) {
+          val labelId = tl.tokens(1)
+          val instruction = LabeledJumpInstruction(
+            sourceMapInstruction,
+            labelId,
+            tl.lineIndex,
+            playerColor)
+          return CompileLineResult(Some(instruction), None)
+        }
+
+        return CompileLineResult(None, Some(errorMessage))
+      }
       case Right(params) => params
     }
 
@@ -653,16 +669,6 @@ object Compiler {
     // of bank N, then bankLineIndex == 4
     var bankLineIndex = 0
 
-    // First pass: initialize labels
-    /*lines.foreach { case (tl: TokenLine) =>
-      val firstToken = tl.tokens(0)
-      if (firstToken(0) == '@') {
-        // TODO: error checking
-        preLabels.append(PreLabel(firstToken, tl.lineIndex))
-      }
-    }*/
-
-    // Second pass: initialize bankBuilders
     lines.foreach { case (tl: TokenLine) =>
 
       if (tl.tokens.length > 0) {
