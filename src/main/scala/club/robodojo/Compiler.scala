@@ -615,7 +615,7 @@ object Compiler {
       // All lines from the original source code program
       lines: Array[TokenLine],
       playerColor: PlayerColor.EnumVal,
-      bankBuilders: Map[Int, BankBuilder]): Map[Int, Bank] = {
+      bankBuilders: mutable.Map[Int, BankBuilder]): Map[Int, Bank] = {
 
     var bankLines = ArrayBuffer[String]()
     var bankIndex = -1
@@ -656,15 +656,17 @@ object Compiler {
       Either[ArrayBuffer[ErrorMessage], Program] = {
 
     val lines: Array[TokenLine] = tokenize(text)
-    var bankBuilders = Map[Int, BankBuilder]()
+    var bankBuilders = mutable.Map[Int, BankBuilder]()
 
     // TODO: change to bankIndex?
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
 
+    // TODO: rm?
     val preLabels = ArrayBuffer[PreLabel]()
 
     // TODO: make sure every label is unique
+    // TODO: rm?
     val labelStrings = Set[String]()
 
     // TODO: refactor Label taking out bankIndex and labelString?
@@ -705,7 +707,7 @@ object Compiler {
           case "@" => {
             println("BAZ")
             // TOOD: check label tokens for correctness
-            currentLabelId = Some(tl.tokens(1))
+            currentLabelId = Some("@" + tl.tokens(1))
             CompileLineResult(None, None)
           }
           case "move" => compileMove(sourceMapInstruction, tl, playerColor)
@@ -719,7 +721,7 @@ object Compiler {
 
         result.errorMessage match {
           case Some(errorMessage) => {
-            bankBuilders = Map[Int, BankBuilder]()
+            bankBuilders = mutable.Map[Int, BankBuilder]()
             errors += errorMessage
           }
           case None => ()
@@ -790,6 +792,8 @@ object Compiler {
                 IntegerParam(jump),
                 lineIndex,
                 playerColor)
+
+            bankBuilders(bankIndex).instructions(instructionIndex) = jumpInstruction
             }
             case _ =>
           }
