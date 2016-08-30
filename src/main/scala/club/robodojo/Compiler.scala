@@ -31,6 +31,10 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
     s"${lineIndex})"
 }
 
+case class PreLabel(id:String, lineIndex: Int)
+// TODO: rm?
+case class Label(id: String, bankIndex: Int, instructionIndex: Int)
+
 object ErrorCode {
   sealed trait EnumVal
   sealed trait CompileTimeError extends EnumVal
@@ -340,6 +344,9 @@ object Compiler {
         (line.replaceAll(",", " , "), originalLine)
       }
       .map { case (line: String, originalLine: String) =>
+        (line.replaceAll("^@", "@ "), originalLine)
+      }
+      .map { case (line: String, originalLine: String) =>
         (line.toLowerCase, originalLine)
       }
       // Separate into tokens
@@ -631,13 +638,31 @@ object Compiler {
 
     val lines: Array[TokenLine] = tokenize(text)
     var bankBuilders = Map[Int, BankBuilder]()
+
+    // TODO: change to bankIndex?
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
+
+    val preLabels = ArrayBuffer[PreLabel]()
+    // TODO: rm?
+    val labels = ArrayBuffer[Label]()
+
+    var currentLabelId: Option[String] = None
 
     // Like lineIndex, but relative to the current bank. For example, if we are at the 5th line
     // of bank N, then bankLineIndex == 4
     var bankLineIndex = 0
 
+    // First pass: initialize labels
+    /*lines.foreach { case (tl: TokenLine) =>
+      val firstToken = tl.tokens(0)
+      if (firstToken(0) == '@') {
+        // TODO: error checking
+        preLabels.append(PreLabel(firstToken, tl.lineIndex))
+      }
+    }*/
+
+    // Second pass: initialize bankBuilders
     lines.foreach { case (tl: TokenLine) =>
 
       if (tl.tokens.length > 0) {
@@ -656,6 +681,18 @@ object Compiler {
               bankBuilders += (bankNumber -> new BankBuilder)
               compileBank(tl)
             }
+          }
+          // TODO: compileLabel(tl)
+          // TODO: rm?
+          // TODO: if a label appears at the very end, it's not included. Inclduing
+          //       it would be nice for error checking. Low priority.
+          // TODO: support multiple labels for the same instruction
+          // TODO: check for label collisions
+          case "@" => {
+            println("BAZ")
+            // TOOD: check label tokens for correctness
+            currentLabelId = Some(tl.tokens(1))
+            CompileLineResult(None, None)
           }
           case "move" => compileMove(sourceMapInstruction, tl, playerColor)
           case "turn" => compileTurn(sourceMapInstruction, tl)
@@ -678,6 +715,14 @@ object Compiler {
           result.instruction.foreach { instruction: Instruction =>
             if (bankNumber >= 0) {
               bankBuilders(bankNumber).instructions += instruction
+
+              currentLabelId.foreach { id: String =>
+                val instructionIndex = bankBuilders(bankNumber).instructions.length - 1
+                val label = Label(id, bankNumber, instructionIndex)
+                labels.append(label)
+                currentLabelId = None
+              }
+
             } else {
               errors += ErrorMessage(ErrorCode.UndeclaredBank, tl.lineIndex, "Undeclared " +
                 "bank: you must place a <tt>bank</tt> directive before you place any instructions.")
@@ -689,6 +734,8 @@ object Compiler {
       bankLineIndex += 1
 
     }
+
+    println(labels)
 
     if (errors.nonEmpty) {
       Left(errors)
