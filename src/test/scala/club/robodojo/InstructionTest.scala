@@ -542,6 +542,7 @@ object InstructionTest extends TestSuite {
       }
     }
 
+    // TODO: Test jump out of bounds
     "jump instruction execute"-{
 
       def testSuccess(jump: Int, jumpTo: Int): Unit = {
