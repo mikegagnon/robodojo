@@ -34,10 +34,6 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
     s"${lineIndex})"
 }
 
-case class PreLabel(id:String, lineIndex: Int)
-// TODO: rm?
-case class Label(id: String, bankIndex: Int, instructionIndex: Int)
-
 object ErrorCode {
   sealed trait EnumVal
   sealed trait CompileTimeError extends EnumVal
@@ -661,9 +657,6 @@ object Compiler {
     // TODO: change to bankIndex?
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
-
-    // TODO: rm?
-    val preLabels = ArrayBuffer[PreLabel]()
 
     // TODO: make sure every label is unique
     // TODO: rm?
