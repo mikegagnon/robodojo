@@ -101,8 +101,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
       }
 
-      // TODO: what about missing sourceMap
-      lineIndex += bank.sourceMap.get.text.length
+      if (bank.sourceMap.isEmpty) {
+        return mutable.Map[Int, Breakpoint]()
+      } else {
+        lineIndex += bank.sourceMap.get.text.length
+      }
 
     }
 
@@ -151,13 +154,19 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     // Show the debugger
     jQuery("#" + config.debugger.divId).css("display", "block")
 
-    setupDebugger(botId: Long)
+    setupDebugger(botId)
   }
 
   // TODO: only update the debugger window if the debugger is open
   def tick(): Unit = {
     botIdDebugged.map { botId =>
-      setupDebugger(botId)
+
+      if (viz.board.getBot(botId).nonEmpty) {
+        setupDebugger(botId)
+      } else {
+        botIdDebugged = None
+        eraseDebugger()
+      }
     }
   }
 
@@ -189,7 +198,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     Some(previousBanksLength + lineIndex + 1)
   }
 
-  // get the bot at animationCycleNum point in time
   def getBot(botId: Long) = viz.board.getBot(botId).get
 
   def getProgramText(bot: Bot, lineIndex: Int): String = {
@@ -306,5 +314,10 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     setupMicroscope(bot)
 
     drawBreakpoints()
+  }
+
+  def eraseDebugger(): Unit = {
+    cmEditor.getDoc().setValue("")
+    jQuery("#" + config.debugger.outputId).html("")
   }
 }
