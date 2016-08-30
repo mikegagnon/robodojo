@@ -658,8 +658,6 @@ object Compiler {
     var bankNumber = -1
     var errors = ArrayBuffer[ErrorMessage]()
 
-    // TODO: make sure every label is unique
-    // TODO: rm?
     val labelStrings = mutable.Set[String]()
 
     // TODO: refactor Label taking out bankIndex and labelString?
