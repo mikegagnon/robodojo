@@ -736,7 +736,7 @@ object Compiler {
                 }
 
                 if (labels(bankNumber).contains(id)) {
-                  // TODO: proper error handling
+                  throw new IllegalStateException("duplicate labels not caught by labelStrings")
                 } else {
                   labels(bankNumber)(id) = instructionIndex
                 }
