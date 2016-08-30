@@ -619,7 +619,6 @@ case class TransInstruction(
   def progress(bot: Bot, cycleNum: Int) : Option[Animation] = None
 }
 
-// TODO: rm extraneous fields?
 case class LabeledJumpInstruction(
     sourceMapInstruction: SourceMapInstruction,
     labelId: String,
