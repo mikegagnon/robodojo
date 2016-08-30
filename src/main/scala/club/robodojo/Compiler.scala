@@ -561,14 +561,11 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TODO: labels
   def compileJump(
       sourceMapInstruction: SourceMapInstruction,
       tl: TokenLine,
       playerColor: PlayerColor.EnumVal)
       (implicit config: Config): CompileLineResult = {
-
-    println(tl)
 
     val parsed: Either[ErrorMessage, Seq[Param]] =
       parseParams("jump", tl, ReadableParamType)
