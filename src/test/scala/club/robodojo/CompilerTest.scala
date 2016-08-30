@@ -938,6 +938,9 @@ object CompilerTest extends TestSuite {
             JumpInstruction(defaultSourceMap, IntegerParam(1), 1, PlayerColor.Blue)))
           testInstruction("jump %active", Right(
             JumpInstruction(defaultSourceMap, ActiveKeyword(false), 1, PlayerColor.Blue)))
+        }
+
+        "labeled jump"-{
 
           val result = compileJump(
             defaultSourceMap,
@@ -949,7 +952,10 @@ object CompilerTest extends TestSuite {
               "@foo",
               1,
               PlayerColor.Blue)), None)
+        }
 
+        "duplicate labels failure"-{
+          testProgramFail("@foo\n@foo", ErrorCode.DuplicateLabels)
         }
 
       }

@@ -50,11 +50,13 @@ object ErrorCode {
   case object BadInstructionSetParam extends CompileTimeError
   case object BadNumBanksParam extends CompileTimeError
   case object BadMobileParam extends CompileTimeError
+  case object DuplicateLabels extends CompileTimeError
 
   case object InvalidParameter extends RunTimeError
   case object DataHunger extends RunTimeError
   case object InsufficientInstructionSet extends RunTimeError
   case object CannotMoveImmobile extends RunTimeError
+
 }
 
 // TODO: underline the offensive text in the program text?
@@ -658,7 +660,7 @@ object Compiler {
 
     // TODO: make sure every label is unique
     // TODO: rm?
-    val labelStrings = Set[String]()
+    val labelStrings = mutable.Set[String]()
 
     // TODO: refactor Label taking out bankIndex and labelString?
     // labels(bankIndex)(labelString) == instruction Index for that label
@@ -697,8 +699,19 @@ object Compiler {
           // TODO: check for label collisions
           case "@" => {
             // TOOD: check label tokens for correctness
-            currentLabelId = Some("@" + tl.tokens(1))
-            CompileLineResult(None, None)
+
+            val labelId = "@" + tl.tokens(1)
+
+            if (labelStrings.contains(labelId)) {
+              val errorMessage = ErrorMessage(ErrorCode.DuplicateLabels, tl.lineIndex,
+                s"""Duplicate labels: The label <tt>${labelId}</tt> appears multiple
+                times in your program.""")
+              CompileLineResult(None, Some(errorMessage))
+            } else {
+              labelStrings.add(labelId)
+              currentLabelId = Some(labelId)
+              CompileLineResult(None, None)
+            }
           }
           case "move" => compileMove(sourceMapInstruction, tl, playerColor)
           case "turn" => compileTurn(sourceMapInstruction, tl)
