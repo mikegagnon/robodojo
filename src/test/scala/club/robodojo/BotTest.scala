@@ -40,7 +40,7 @@ object BotTest extends TestSuite {
       }
 
       "one move instruction"-{
-        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(MoveInstruction(defaultSourceMap)))
+        val bot = getBot(0, 0, Direction.Right, ArrayBuffer(MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)))
 
         bot.board.matrix(0)(0) ==> Some(bot)
         for ( _ <- 1 to config.sim.cycleCount.durMove - 1) { bot.cycle() }
@@ -63,7 +63,7 @@ object BotTest extends TestSuite {
 
       "turn instruction followed by move instruction"-{
         val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(defaultSourceMap,
-          IntegerParam(1)), MoveInstruction(defaultSourceMap)))
+          IntegerParam(1)), MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)))
 
         // Turn instruction
         bot.direction ==> Direction.Right
@@ -84,7 +84,7 @@ object BotTest extends TestSuite {
       "turn instruction followed by move instruction, and then repeat"-{
 
         val bot = getBot(0, 0, Direction.Right, ArrayBuffer(TurnInstruction(defaultSourceMap,
-          IntegerParam(1)), MoveInstruction(defaultSourceMap)))
+          IntegerParam(1)), MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)))
 
         // Turn instruction
         bot.direction ==> Direction.Right
@@ -152,7 +152,7 @@ object BotTest extends TestSuite {
       bot.row = 2
       bot.col = 3
       bot.direction = Direction.Right
-      val bank0 = Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(0, 0))), Some(SourceMap(color, 0, IndexedSeq("move"))))
+      val bank0 = Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(0, 0), 0, PlayerColor.Blue)), Some(SourceMap(color, 0, IndexedSeq("move"))))
       val bank1 = Bank(IndexedSeq(TurnInstruction(SourceMapInstruction(0, 1), IntegerParam(0))), Some(SourceMap(color, 1, IndexedSeq("turn 0"))))
       bot.program = Program(Map(0 ->  bank0, 1 -> bank1))
       bot.instructionSet = InstructionSet.Basic

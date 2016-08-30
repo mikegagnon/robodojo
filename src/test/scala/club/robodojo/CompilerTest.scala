@@ -554,7 +554,7 @@ object CompilerTest extends TestSuite {
       // TODO: move downs
       "move"-{
         "success"-{
-          testInstruction("move", Right(MoveInstruction(defaultSourceMap)))
+          testInstruction("move", Right(MoveInstruction(defaultSourceMap, 1, PlayerColor.Blue)))
         }
         "fail"-{
           testInstruction("move foo", Left(ErrorCode.TooManyParams))
@@ -619,37 +619,37 @@ object CompilerTest extends TestSuite {
         "success 1 instruction"-{
           val text = "bank Main\nmove"
           val expectedProgram = Program(
-            Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move"))))))
+            Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap, 1, PlayerColor.Blue)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move"))))))
           testProgram(text, expectedProgram)
         }
         "success 2 instructions"-{
           val text = "bank Main\nmove\nmove"
           val expectedProgram = Program(
-              Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap),
-                                        MoveInstruction(SourceMapInstruction(2, 0))),
+              Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap, 1, PlayerColor.Blue),
+                                        MoveInstruction(SourceMapInstruction(2, 0), 2, PlayerColor.Blue)),
                             Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move", "move"))))))
           testProgram(text, expectedProgram)
         }
         "success 2 banks"-{
           val text = "bank Main\nmove\nbank foo"
           val expectedProgram = Program(
-            Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move")))),
+            Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap, 1, PlayerColor.Blue)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move")))),
                 1 -> Bank(IndexedSeq(), Some(SourceMap(PlayerColor.Blue, 1, IndexedSeq("bank foo"))))))
           testProgram(text, expectedProgram)
         }
         "success 3 banks"-{
           val text = "bank Main\nmove\nbank foo \nbank foo"
           val expectedProgram = Program(
-            Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move")))),
+            Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap, 1, PlayerColor.Blue)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move")))),
                 1 -> Bank(IndexedSeq(), Some(SourceMap(PlayerColor.Blue, 1, IndexedSeq("bank foo ")))),
                 2 -> Bank(IndexedSeq(), Some(SourceMap(PlayerColor.Blue, 2, IndexedSeq("bank foo"))))))
           testProgram(text, expectedProgram)
         }
         "success 3 non-empty banks"-{
           val text = "bank Main\nmove\nbank foo\nmove\nmove\nbank foo\nmove"
-          val expectedProgram = Program(Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move")))),
-                                            1 -> Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(1, 1)), MoveInstruction(SourceMapInstruction(2, 1))), Some(SourceMap(PlayerColor.Blue, 1, IndexedSeq("bank foo", "move", "move")))),
-                                            2 -> Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(1, 2))), Some(SourceMap(PlayerColor.Blue, 2, IndexedSeq("bank foo", "move"))) )))
+          val expectedProgram = Program(Map(0 -> Bank(IndexedSeq(MoveInstruction(defaultSourceMap, 1, PlayerColor.Blue)), Some(SourceMap(PlayerColor.Blue, 0, IndexedSeq("bank Main", "move")))),
+                                            1 -> Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(1, 1), 3, PlayerColor.Blue), MoveInstruction(SourceMapInstruction(2, 1), 4, PlayerColor.Blue)), Some(SourceMap(PlayerColor.Blue, 1, IndexedSeq("bank foo", "move", "move")))),
+                                            2 -> Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(1, 2), 6, PlayerColor.Blue)), Some(SourceMap(PlayerColor.Blue, 2, IndexedSeq("bank foo", "move"))) )))
           testProgram(text, expectedProgram)
         }
       }

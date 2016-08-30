@@ -223,7 +223,12 @@ final case class RegisterParam(registerIndex: Int)(implicit config: Config)
 
 /* Begin instructions *****************************************************************************/
 
-case class MoveInstruction(sourceMapInstruction: SourceMapInstruction)
+
+case class MoveInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    lineIndex: Int,
+    // Whose program did this instruction come from originally?
+    playerColor: PlayerColor.EnumVal)
     (implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Basic
@@ -232,6 +237,22 @@ case class MoveInstruction(sourceMapInstruction: SourceMapInstruction)
 
   // TESTED
   def execute(bot: Bot): Option[Animation] = {
+
+    if (!bot.mobile) {
+        val message = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it tried to move, but it is an " +
+        s"immobile bot."
+
+      val errorCode = ErrorCode.CannotMoveImmobile
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
+      
+      bot.board.removeBot(bot)
+
+      return Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+    }
+
 
     val RowCol(row, col) = Direction.dirRowCol(bot.direction, bot.row, bot.col)
     val oldRow = bot.row

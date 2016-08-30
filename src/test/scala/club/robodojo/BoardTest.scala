@@ -79,7 +79,7 @@ object BoardTest extends TestSuite {
       val board = new Board()
 
       val color = PlayerColor.Blue
-      val bank0 = Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(0, 0))), Some(SourceMap(color, 0, IndexedSeq("move"))))
+      val bank0 = Bank(IndexedSeq(MoveInstruction(SourceMapInstruction(0, 0), 0, PlayerColor.Blue )), Some(SourceMap(color, 0, IndexedSeq("move"))))
       val bank1 = Bank(IndexedSeq(TurnInstruction(SourceMapInstruction(0, 1), IntegerParam(0))), Some(SourceMap(color, 1, IndexedSeq("turn 0"))))
       val program = Program(Map(0 ->  bank0, 1 -> bank1))
 

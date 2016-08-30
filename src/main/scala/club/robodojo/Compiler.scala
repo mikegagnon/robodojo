@@ -50,8 +50,8 @@ object ErrorCode {
 
   case object InvalidParameter extends RunTimeError
   case object DataHunger extends RunTimeError
-
   case object InsufficientInstructionSet extends RunTimeError
+  case object CannotMoveImmobile extends RunTimeError
 }
 
 // TODO: underline the offensive text in the program text?
@@ -397,7 +397,10 @@ object Compiler {
     }
 
   // TESTED
-  def compileMove(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
+  def compileMove(
+      sourceMapInstruction: SourceMapInstruction,
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)
       (implicit config: Config): CompileLineResult =
 
     if (tl.tokens.length > 1) {
@@ -406,7 +409,7 @@ object Compiler {
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineIndex, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length == 1) {
-      val instruction = MoveInstruction(sourceMapInstruction)
+      val instruction = MoveInstruction(sourceMapInstruction, tl.lineIndex, playerColor)
       CompileLineResult(Some(instruction), None)
     } else {
       throw new IllegalStateException("This code shouldn't be reachable")
@@ -628,7 +631,7 @@ object Compiler {
               compileBank(tl)
             }
           }
-          case "move" => compileMove(sourceMapInstruction, tl)
+          case "move" => compileMove(sourceMapInstruction, tl, playerColor)
           case "turn" => compileTurn(sourceMapInstruction, tl)
           case "create" => compileCreate(sourceMapInstruction, tl, playerColor)
           case "set" => compileSet(sourceMapInstruction, tl)

@@ -18,7 +18,7 @@ object InstructionTest extends TestSuite {
         val bot = Bot(board, PlayerColor.Blue, 0, 0)
         bot.direction = Direction.Right
 
-        val moveInstruction = MoveInstruction(defaultSourceMap)
+        val moveInstruction = MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)
 
         moveInstruction.execute(bot)
 
@@ -39,7 +39,7 @@ object InstructionTest extends TestSuite {
 
         bot1.direction = Direction.Right
 
-        val moveInstruction = MoveInstruction(defaultSourceMap)
+        val moveInstruction = MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)
 
         moveInstruction.execute(bot1)
 
@@ -47,6 +47,23 @@ object InstructionTest extends TestSuite {
         board.matrix(0)(1) ==> Some(bot2)
         bot1.row ==> 0
         bot1.col ==> 0
+      }
+
+      "immobile"-{
+        val board = new Board()
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0)
+        bot.mobile = false
+
+        val moveInstruction = MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)
+
+        val result = moveInstruction.execute(bot).get
+
+        result match {
+          case error: FatalErrorAnimation =>
+            error.errorMessage.errorCode ==> ErrorCode.CannotMoveImmobile
+          case _ => assert(false)
+        }
       }
     }
 
