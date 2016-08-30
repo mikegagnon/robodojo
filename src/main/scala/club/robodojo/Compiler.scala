@@ -1,6 +1,9 @@
 package club.robodojo
 
+// TODO: rm
 import scala.collection.mutable.ArrayBuffer
+
+import scala.collection.mutable
 
 // A TokenLine instance represents a line from the source code for a bot
 // tokens is an array of "tokens", where each token is lower case, and trimmed of whitespace, etc.
@@ -660,8 +663,13 @@ object Compiler {
     var errors = ArrayBuffer[ErrorMessage]()
 
     val preLabels = ArrayBuffer[PreLabel]()
-    // TODO: rm?
-    val labels = ArrayBuffer[Label]()
+
+    // TODO: make sure every label is unique
+    val labelStrings = Set[String]()
+
+    // TODO: refactor Label taking out bankIndex and labelString?
+    // labels(bankIndex)(labelString) == instruction Index for that label
+    var labels = mutable.Map[Int, mutable.Map[String, Int]]()
 
     var currentLabelId: Option[String] = None
 
@@ -724,8 +732,20 @@ object Compiler {
 
               currentLabelId.foreach { id: String =>
                 val instructionIndex = bankBuilders(bankNumber).instructions.length - 1
-                val label = Label(id, bankNumber, instructionIndex)
-                labels.append(label)
+                
+                // TODO: rm
+                //    val labels = Map[Int, Map[String, Int]]()
+
+                if (!labels.contains(bankNumber)) {
+                  labels(bankNumber) = mutable.Map[String, Int]()
+                }
+
+                if (labels(bankNumber).contains(id)) {
+                  // TODO: proper error handling
+                } else {
+                  labels(bankNumber)(id) = instructionIndex
+                }
+
                 currentLabelId = None
               }
 
@@ -742,6 +762,39 @@ object Compiler {
     }
 
     println(labels)
+
+    // TODO: replace each LabeledJumpInstruction with JumpInstruction
+
+    // Replace each LabeledJumpInstruction with a JumpInstruction
+    bankBuilders.foreach { case (bankIndex: Int, builder: BankBuilder) =>
+      builder
+        .instructions
+        .zipWithIndex
+        .foreach { case (instruction: Instruction, instructionIndex: Int) =>
+          instruction match {
+            case LabeledJumpInstruction(
+                sourceMapInstruction,
+                labelId,
+                lineIndex,
+                playerColor) => {
+
+              // TODO: proper error checking
+
+              // The destination instructionIndex for the jump
+              val jumpTo: Int = labels(bankIndex)(labelId)
+
+              val jump = (jumpTo - instructionIndex).toShort
+
+              val jumpInstruction = JumpInstruction(
+                sourceMapInstruction,
+                IntegerParam(jump),
+                lineIndex,
+                playerColor)
+            }
+            case _ =>
+          }
+        }
+    }
 
     if (errors.nonEmpty) {
       Left(errors)
