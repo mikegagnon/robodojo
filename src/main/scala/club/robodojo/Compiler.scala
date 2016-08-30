@@ -696,7 +696,6 @@ object Compiler {
           // TODO: support multiple labels for the same instruction
           // TODO: check for label collisions
           case "@" => {
-            println("BAZ")
             // TOOD: check label tokens for correctness
             currentLabelId = Some("@" + tl.tokens(1))
             CompileLineResult(None, None)
