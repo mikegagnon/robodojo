@@ -636,8 +636,6 @@ case class JumpInstruction(
 
     val newInstructionIndex = bot.instructionIndex + jump.read(bot) - 1
 
-    println(newInstructionIndex)
-
     val oobIndex = bot.program.banks(bot.bankIndex).instructions.length
 
     if ((newInstructionIndex + 1) < 0 || (newInstructionIndex + 1) >= oobIndex) {

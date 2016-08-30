@@ -541,5 +541,39 @@ object InstructionTest extends TestSuite {
         }
       }
     }
+
+    "jump instruction execute"-{
+
+      def testSuccess(jump: Int, jumpTo: Int): Unit = {
+        val board = new Board()
+
+        val program: Program = Compiler.compile(s"""
+            bank main
+              move
+              jump ${jump}
+              move
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val instruction = bot.program.banks(0).instructions(1)
+
+        println("FOOO")
+        println(bot.program.banks(0))
+
+        bot.instructionIndex = 1
+
+        instruction.execute(bot)
+
+        bot.instructionIndex ==> jumpTo
+      }
+
+      "success"-{
+        testSuccess(-1, -1)
+        testSuccess(0, 0)
+        testSuccess(1, 1)
+      }
+    }
   }
 }

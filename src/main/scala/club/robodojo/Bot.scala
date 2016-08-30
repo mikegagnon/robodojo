@@ -114,6 +114,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
         cycleNum = 1
         instructionIndex += 1
 
+        // TODO: proper auto reboot & watchout or jump corner cases
         if (instructionIndex == bank.instructions.length) {
           instructionIndex = 0
         }
