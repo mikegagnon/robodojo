@@ -922,6 +922,17 @@ object CompilerTest extends TestSuite {
         }
       }
 
+      "jump instruction"-{
+        "success"-{
+          testInstruction("jump 1", Right(
+            JumpInstruction(defaultSourceMap, IntegerParam(1), 1, PlayerColor.Blue)))
+          testInstruction("jump %active", Right(
+            JumpInstruction(defaultSourceMap, ActiveKeyword(false), 1, PlayerColor.Blue)))
+
+        }
+
+      }
+
     }
   }
 }
