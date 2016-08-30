@@ -958,6 +958,10 @@ object CompilerTest extends TestSuite {
           testProgramFail("@foo\n@foo", ErrorCode.DuplicateLabels)
         }
 
+        "missing label failure"-{
+          testProgramFail("bank one\njump @foo", ErrorCode.MissingLabel)
+        }
+
       }
 
     }

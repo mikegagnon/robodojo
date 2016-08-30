@@ -51,6 +51,7 @@ object ErrorCode {
   case object BadNumBanksParam extends CompileTimeError
   case object BadMobileParam extends CompileTimeError
   case object DuplicateLabels extends CompileTimeError
+  case object MissingLabel extends CompileTimeError
 
   case object InvalidParameter extends RunTimeError
   case object DataHunger extends RunTimeError
@@ -688,12 +689,7 @@ object Compiler {
               compileBank(tl)
             }
           }
-          // TODO: compileLabel(tl)
-          // TODO: rm?
-          // TODO: if a label appears at the very end, it's not included. Inclduing
-          //       it would be nice for error checking. Low priority.
-          // TODO: support multiple labels for the same instruction
-          // TODO: check for label collisions
+
           case "@" => {
             // TOOD: check label tokens for correctness
 
@@ -734,9 +730,6 @@ object Compiler {
 
               currentLabelId.foreach { id: String =>
                 val instructionIndex = bankBuilders(bankNumber).instructions.length - 1
-                
-                // TODO: rm
-                //    val labels = Map[Int, Map[String, Int]]()
 
                 if (!labels.contains(bankNumber)) {
                   labels(bankNumber) = mutable.Map[String, Int]()
@@ -763,9 +756,6 @@ object Compiler {
 
     }
 
-    // TODO: replace each LabeledJumpInstruction with JumpInstruction
-
-    // Replace each LabeledJumpInstruction with a JumpInstruction
     bankBuilders.foreach { case (bankIndex: Int, builder: BankBuilder) =>
       builder
         .instructions
@@ -778,20 +768,27 @@ object Compiler {
                 lineIndex,
                 playerColor) => {
 
-              // TODO: proper error checking
+              if (labels.contains(bankIndex) && labels(bankIndex).contains(labelId)) {
 
-              // The destination instructionIndex for the jump
-              val jumpTo: Int = labels(bankIndex)(labelId)
+                // The destination instructionIndex for the jump
+                val jumpTo: Int = labels(bankIndex)(labelId)
 
-              val jump = (jumpTo - instructionIndex).toShort
+                val jump = (jumpTo - instructionIndex).toShort
 
-              val jumpInstruction = JumpInstruction(
-                sourceMapInstruction,
-                IntegerParam(jump),
-                lineIndex,
-                playerColor)
+                val jumpInstruction = JumpInstruction(
+                  sourceMapInstruction,
+                  IntegerParam(jump),
+                  lineIndex,
+                  playerColor)
 
-            bankBuilders(bankIndex).instructions(instructionIndex) = jumpInstruction
+                bankBuilders(bankIndex).instructions(instructionIndex) = jumpInstruction
+              } else {
+                errors += ErrorMessage(ErrorCode.MissingLabel, lineIndex, s"""
+                  You cannot jump to ${labelId} because the label ${labelId} does not appear in
+                  your program (or there are no instructions after label ${labelId}).
+                  """)
+              }
+
             }
             case _ =>
           }
