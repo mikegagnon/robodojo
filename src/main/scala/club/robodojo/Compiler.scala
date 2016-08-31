@@ -734,6 +734,9 @@ object Compiler {
     // labels(bankIndex)(labelString) == instruction Index for that label
     var labels = mutable.Map[Int, mutable.Map[String, Int]]()
 
+    // labelsByLabel(labelString) = instruction Index for that label (relative to its bank)
+    var labelsByLabel = mutable.Map[String, Int]()
+
     var currentLabelId: Option[String] = None
 
     // Like lineIndex, but relative to the current bank. For example, if we are at the 5th line
@@ -810,6 +813,7 @@ object Compiler {
                   throw new IllegalStateException("duplicate labels not caught by labelStrings")
                 } else {
                   labels(bankNumber)(id) = instructionIndex
+                  labelsByLabel(id) = instructionIndex
                 }
 
                 currentLabelId = None
@@ -827,6 +831,7 @@ object Compiler {
 
     }
 
+    // Convert jump @label instructions into executable jump instructions
     bankBuilders.foreach { case (bankIndex: Int, builder: BankBuilder) =>
       builder
         .instructions
@@ -860,6 +865,33 @@ object Compiler {
                   """)
               }
 
+            }
+            case LabeledBjumpInstruction(
+                sourceMapInstruction,
+                bankNumber,
+                labelId,
+                lineIndex,
+                playerColor) => {
+
+              if (labelsByLabel.contains(labelId)) {
+
+                // The destination instructionIndex for the jump
+                val jumpToNumber = labelsByLabel(labelId)  + 1
+
+                val bjumpInstruction = BjumpInstruction(
+                  sourceMapInstruction,
+                  bankNumber,
+                  IntegerParam(jumpToNumber.toShort),
+                  lineIndex,
+                  playerColor)
+
+                bankBuilders(bankIndex).instructions(instructionIndex) = bjumpInstruction
+              } else {
+                errors += ErrorMessage(ErrorCode.MissingLabel, lineIndex, s"""
+                  You cannot bjump to ${labelId} because the label ${labelId} does not appear in
+                  the destination bank (or there are no instructions after label ${labelId}).
+                  """)
+              }
             }
             case _ =>
           }
