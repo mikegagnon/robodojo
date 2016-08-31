@@ -78,6 +78,10 @@ case object WriteableParamType extends ParamType {
   override val toString = "writeable parameter"
 }
 
+case object LabelParamType extends ParamType {
+  override val toString = "label parameter"
+}
+
 object Compiler {
 
   /* Begin: ErrorMessage production ***************************************************************/
@@ -234,6 +238,13 @@ object Compiler {
       throw new IllegalArgumentException("Bad token: " + token)
     }
 
+  def getLabel(token: String)(implicit config: Config): LabelParam =
+    if (token(0) == '@') {
+      LabelParam(token)
+    } else {
+      throw new IllegalArgumentException("Not a label: " + token)
+    }
+
   // TESTED
   def getParam(
       instructionName: String,
@@ -256,6 +267,12 @@ object Compiler {
         } catch {
           case _: IllegalArgumentException =>
             Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineIndex, types))
+        }
+      case LabelParamType => try {
+          Right(getLabel(token))
+        } catch {
+          case _: IllegalArgumentException =>
+          Left(getErrorWrongParamType(instructionName, token, parameterIndex, lineIndex, types))
         }
     }
   }
@@ -604,6 +621,59 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+    // TODO: better error messages. Right now error message make no mention of labels
+  def compileBjump(
+      sourceMapInstruction: SourceMapInstruction,
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)
+      (implicit config: Config): CompileLineResult = {
+
+    val parsed1: Either[ErrorMessage, Seq[Param]] =
+      parseParams("bjump", tl, ReadableParamType, ReadableParamType)
+
+    val parsed2: Either[ErrorMessage, Seq[Param]] =
+      parseParams("bjump", tl, ReadableParamType, LabelParamType)
+
+    val (params: Seq[Param], label: Boolean) = parsed1 match {
+      case Left(errorMessage) => {
+        parsed2 match {
+          case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+          case Right(params) => (params, true)
+        }
+      }
+      case Right(params) => (params, false)
+    }
+
+    val bankNumber = params(0).asInstanceOf[ReadableParam]
+
+    val instruction: Instruction =
+      if (label) {
+
+        val labelId: String = params(1).asInstanceOf[LabelParam].label
+
+        LabeledBjumpInstruction(
+            sourceMapInstruction,
+            bankNumber,
+            labelId,
+            tl.lineIndex,
+            playerColor)
+
+      } else {
+
+        val instructionNumber = params(1).asInstanceOf[ReadableParam]
+
+        BjumpInstruction(
+          sourceMapInstruction,
+          bankNumber,
+          instructionNumber,
+          tl.lineIndex,
+          playerColor)
+      }
+
+
+    CompileLineResult(Some(instruction), None)
+  }
+
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
@@ -712,6 +782,7 @@ object Compiler {
           case "set" => compileSet(sourceMapInstruction, tl)
           case "trans" => compileTrans(sourceMapInstruction, tl, playerColor)
           case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
+          case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
           case _ => unrecognizedInstruction(tl)
         }
 

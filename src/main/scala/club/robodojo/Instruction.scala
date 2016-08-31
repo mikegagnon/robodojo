@@ -110,6 +110,9 @@ sealed trait WriteableParam extends Param {
   def write(bot: Bot, value: Short): Option[Animation]
 }
 
+// includes @ prefix
+final case class LabelParam(label: String) extends Param
+
 /* Begin KeywordParam values **********************************************************************/
 
 // Encompasses #Active, %Active, $Banks, ... Anything with a keyword parameter name.
@@ -668,6 +671,23 @@ case class JumpInstruction(
 
     return None
   }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
+case class LabeledBjumpInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    bankNumber: ReadableParam,
+    labelId: String,
+    lineIndex: Int,
+    playerColor: PlayerColor.EnumVal)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  def getRequiredCycles(bot: Bot): Int = 0
+
+  def execute(bot: Bot): Option[Animation] = None
 
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
