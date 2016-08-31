@@ -670,7 +670,6 @@ object Compiler {
           playerColor)
       }
 
-
     CompileLineResult(Some(instruction), None)
   }
 

@@ -638,6 +638,7 @@ case class LabeledJumpInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
+// TODO: refactor Bjump and Jump together
 case class JumpInstruction(
     sourceMapInstruction: SourceMapInstruction,
     jump: ReadableParam,
@@ -722,11 +723,11 @@ case class BjumpInstruction(
     // first, then increments the instructionIndex. So, we need to subtract by 1 to account for
     // that, then subtract by 1 again since instructionNumber starts at 1 and instructionIndex
     // starts at 0.
-    val newInstructionIndex = instructionNumber.read(bot) - 2
+    val newInstructionIndex = instructionNumber.read(bot) - 1
 
     val oobIndex = bot.program.banks(newBankIndex).instructions.length
 
-    if ((newInstructionIndex + 1) < 0 || (newInstructionIndex + 1) >= oobIndex) {
+    if (newInstructionIndex < 0 || newInstructionIndex >= oobIndex) {
       // TODO: What if bankIndex-0, instructionIndex-0 is empty?
       // AUTOREBOOT
       bot.bankIndex = 0
@@ -734,7 +735,7 @@ case class BjumpInstruction(
       return None
     } else {
       bot.bankIndex = newBankIndex
-      bot.instructionIndex = newInstructionIndex
+      bot.instructionIndex = newInstructionIndex - 1
       return None
     }
   }
