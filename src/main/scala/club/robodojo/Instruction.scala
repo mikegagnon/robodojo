@@ -645,6 +645,7 @@ case class JumpInstruction(
 
   val instructionSet = InstructionSet.Basic
 
+  // TODO: take into account remote access
   def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durJump
 
   def execute(bot: Bot): Option[Animation] = {
@@ -666,6 +667,56 @@ case class JumpInstruction(
     }
 
     return None
+  }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
+case class BjumpInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    bankNumber: ReadableParam,
+    instructionNumber: ReadableParam,
+    lineIndex: Int,
+    // Whose program did this instruction come from originally?
+    playerColor: PlayerColor.EnumVal)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  // TODO: take into account remote access
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durBJump
+
+  def execute(bot: Bot): Option[Animation] = {
+
+    val newBankIndex = bankNumber.read(bot) - 1
+
+    if (newBankIndex < 0 || newBankIndex >= bot.program.banks.size) {
+      // TODO: What if bankIndex-0, instructionIndex-0 is empty?
+      // AUTOREBOOT
+      bot.bankIndex = 0
+      bot.instructionIndex = -1
+      return None
+    }
+
+    // NOTE: The -2 here is due to the fact that bot.cycle executes the instruction
+    // first, then increments the instructionIndex. So, we need to subtract by 1 to account for
+    // that, then subtract by 1 again since instructionNumber starts at 1 and instructionIndex
+    // starts at 0.
+    val newInstructionIndex = instructionNumber.read(bot) - 2
+
+    val oobIndex = bot.program.banks(newBankIndex).instructions.length
+
+    if ((newInstructionIndex + 1) < 0 || (newInstructionIndex + 1) >= oobIndex) {
+      // TODO: What if bankIndex-0, instructionIndex-0 is empty?
+      // AUTOREBOOT
+      bot.bankIndex = 0
+      bot.instructionIndex = -1
+      return None
+    } else {
+      bot.bankIndex = newBankIndex
+      bot.instructionIndex = newInstructionIndex
+      return None
+    }
   }
 
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
