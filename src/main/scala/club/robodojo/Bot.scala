@@ -109,6 +109,8 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
       val animation: Option[Animation] = instruction.cycle(this, cycleNum)
 
+      bank = program.banks(bankIndex)
+
       if (cycleNum >= requiredCycles) {
 
         cycleNum = 1
