@@ -635,7 +635,6 @@ case class LabeledJumpInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
-// TODO: deal with exceptions
 case class JumpInstruction(
     sourceMapInstruction: SourceMapInstruction,
     jump: ReadableParam,
