@@ -542,7 +542,6 @@ object InstructionTest extends TestSuite {
       }
     }
 
-    // TODO: Test jump to label
     "jump instruction execute"-{
 
       def testSuccess(jump: Int, jumpTo: Int): Unit = {
@@ -638,6 +637,42 @@ object InstructionTest extends TestSuite {
         testAutoReboot(3, 0, 0)
         testAutoReboot(-1, 1, 0)
         testAutoReboot(-2, 0, 0)
+      }
+
+      def testJumpToLabel(jump: String, jumpTo: Int): Unit = {
+        val board = new Board()
+
+        val program: Program = Compiler.compile(s"""
+            bank main
+              @a
+              move
+              @b
+              jump ${jump}
+              @c
+              move
+              @d
+              move
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val instruction = bot.program.banks(0).instructions(1)
+
+        bot.instructionIndex = 1
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.instructionIndex ==> jumpTo
+      }
+
+      "jump to label"-{
+       testJumpToLabel("@a", 0)
+       testJumpToLabel("@b", 1)
+       testJumpToLabel("@c", 2)
+       testJumpToLabel("@d", 3)
+
       }
     }
   }
