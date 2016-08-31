@@ -785,7 +785,7 @@ object Compiler {
               } else {
                 errors += ErrorMessage(ErrorCode.MissingLabel, lineIndex, s"""
                   You cannot jump to ${labelId} because the label ${labelId} does not appear in
-                  your program (or there are no instructions after label ${labelId}).
+                  your bank (or there are no instructions after label ${labelId}).
                   """)
               }
 
