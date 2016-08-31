@@ -602,6 +602,44 @@ object InstructionTest extends TestSuite {
         testSuccessJumpLast(-1, 1)
         testSuccessJumpLast(0, 2)
       }
+
+      def testAutoReboot(jump: Int, jumpToBank: Int, jumpToInstruction: Int): Unit = {
+        val board = new Board()
+
+        val program: Program = Compiler.compile(s"""
+            bank main
+              move
+              move
+
+            bank two
+              move
+              jump ${jump}
+              move
+              move
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val instruction = bot.program.banks(1).instructions(1)
+
+        bot.bankIndex = 1
+        bot.instructionIndex = 1
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.bankIndex ==> jumpToBank
+        bot.instructionIndex ==> jumpToInstruction
+      }
+
+      "jump out of bounds causes autoreboot"-{
+        testAutoReboot(10, 0, 0)
+        testAutoReboot(2, 1, 3)
+        testAutoReboot(3, 0, 0)
+        testAutoReboot(-1, 1, 0)
+        testAutoReboot(-2, 0, 0)
+      }
     }
   }
 }

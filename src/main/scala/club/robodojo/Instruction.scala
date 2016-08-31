@@ -658,7 +658,10 @@ case class JumpInstruction(
     val oobIndex = bot.program.banks(bot.bankIndex).instructions.length
 
     if ((newInstructionIndex + 1) < 0 || (newInstructionIndex + 1) >= oobIndex) {
-      // exception todo
+      // TODO: What if bankIndex-0, instructionIndex-0 is empty?
+      // AUTOREBOOT
+      bot.bankIndex = 0
+      bot.instructionIndex = -1
     } else {
       bot.instructionIndex = newInstructionIndex
     }
