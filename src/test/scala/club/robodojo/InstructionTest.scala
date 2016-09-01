@@ -793,9 +793,65 @@ object InstructionTest extends TestSuite {
           1, 0,
           0, 0,
           Some(ErrorCode.DataHunger))
+      }
 
+      "bjump with labels"-{
+        bjumpTest(
+          """
+          bank main
+            bjump 2, @a
+            move
+            move
 
+          bank foo
+            @a
+            move
+            @b
+            move
+            @c
+            move
+          """,
+          0, 0,
+          1, 0,
+          None)
 
+        bjumpTest(
+          """
+          bank main
+            bjump 2, @b
+            move
+            move
+
+          bank foo
+            @a
+            move
+            @b
+            move
+            @c
+            move
+          """,
+          0, 0,
+          1, 1,
+          None)
+
+        bjumpTest(
+          """
+          bank main
+            bjump 2, @c
+            move
+            move
+
+          bank foo
+            @a
+            move
+            @b
+            move
+            @c
+            move
+          """,
+          0, 0,
+          1, 2,
+          None)
       }
     }
   }
