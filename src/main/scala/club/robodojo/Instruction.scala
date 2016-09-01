@@ -773,5 +773,31 @@ case class TapoutInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
+case class ScanInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    dest: WriteableParam)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Advanced
+
+  // TODO: take into account remote access
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durScan
+
+  def execute(bot: Bot): Option[Animation] =
+    
+    bot.getRemote() match {
+      case None => dest.write(bot, 0)
+      case Some(remote) => {
+        if (remote.playerColor == bot.playerColor) {
+          dest.write(bot, 2)
+        } else {
+          dest.write(bot, 1)
+        }
+      }
+    }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
 
 /* End instructions *******************************************************************************/

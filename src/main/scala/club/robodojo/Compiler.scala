@@ -692,6 +692,23 @@ object Compiler {
       throw new IllegalStateException("This code shouldn't be reachable")
     }
 
+  def compileScan(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)(implicit config: Config): CompileLineResult = {
+
+    val parsed: Either[ErrorMessage, Seq[Param]] = parseParams("scan", tl, WriteableParamType)
+
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
+    }
+
+    val dest = params(0).asInstanceOf[WriteableParam]
+
+    val instruction = ScanInstruction(sourceMapInstruction, dest)
+
+    CompileLineResult(Some(instruction), None)
+  }
+
+
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
@@ -805,6 +822,7 @@ object Compiler {
           case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
           case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
           case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
+          case "scan" => compileScan(sourceMapInstruction, tl)
           case _ => unrecognizedInstruction(tl)
         }
 
