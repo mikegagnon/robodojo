@@ -731,6 +731,24 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+  def compileAdd(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)(implicit config: Config): CompileLineResult = {
+
+    val parsed: Either[ErrorMessage, Seq[Param]] =
+      parseParams("add", tl, WriteableParamType, ReadableParamType)
+
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
+    }
+
+    val first = params(0).asInstanceOf[WriteableParam]
+    val second = params(1).asInstanceOf[ReadableParam]
+
+    val instruction = AddInstruction(sourceMapInstruction, first, second)
+
+    CompileLineResult(Some(instruction), None)
+  }
+
 
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
@@ -847,6 +865,7 @@ object Compiler {
           case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
           case "scan" => compileScan(sourceMapInstruction, tl, playerColor)
           case "comp" => compileComp(sourceMapInstruction, tl)
+          case "add" => compileAdd(sourceMapInstruction, tl)
           case _ => unrecognizedInstruction(tl)
         }
 

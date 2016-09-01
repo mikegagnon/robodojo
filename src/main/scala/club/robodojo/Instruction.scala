@@ -105,7 +105,7 @@ sealed trait ReadableParam extends Param {
   def read(bot: Bot): Short
 }
 
-sealed trait WriteableParam extends Param {
+sealed trait WriteableParam extends ReadableParam {
   def local: Boolean
   def write(bot: Bot, value: Short): Option[Animation]
 }
@@ -827,6 +827,29 @@ case class CompInstruction(
     if (firstValue == secondValue) {
       bot.instructionIndex += 1
     }
+
+    return None
+  }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
+case class AddInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    first: WriteableParam,
+    second: ReadableParam)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  // TODO: take into account remote access
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durAdd
+
+  def execute(bot: Bot): Option[Animation] = {
+    val firstValue: Short = first.read(bot)
+    val secondValue: Short = second.read(bot)
+
+    first.write(bot, (firstValue + secondValue).toShort)
 
     return None
   }

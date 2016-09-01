@@ -881,7 +881,7 @@ object InstructionTest extends TestSuite {
     }
 
     // TODO: test with different instruction set for bot
-    // TODO: factor out common code into function
+    // TODO: factor out common code into functions
     "scan"-{
 
       "empty scan"-{
@@ -1034,6 +1034,27 @@ object InstructionTest extends TestSuite {
         bot.instructionIndex ==> 0
       }
 
+    }
+
+    "add instruction"-{
+      val board = new Board()
+
+      val program: Program = Compiler.compile("""
+        bank main
+          add #2, 5
+        """, PlayerColor.Blue).right.get
+
+      val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+      bot.registers(1) = 6
+      board.addBot(bot)
+
+      val instruction = bot.program.banks(0).instructions(0)
+
+      bot.cycleNum = instruction.getRequiredCycles(bot)
+
+      bot.cycle()
+
+      bot.registers(1) ==> 11
     }
   }
 }
