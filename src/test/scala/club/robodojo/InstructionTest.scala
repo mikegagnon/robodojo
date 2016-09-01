@@ -854,5 +854,31 @@ object InstructionTest extends TestSuite {
           None)
       }
     }
+
+    "tapout"-{
+      val board = new Board()
+
+      val program: Program = Compiler.compile("""
+        bank main
+          tapout
+        """, PlayerColor.Blue).right.get
+
+      val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+      board.addBot(bot)
+
+      val instruction = bot.program.banks(0).instructions(0)
+
+      bot.cycleNum = instruction.getRequiredCycles(bot)
+
+      val animation = bot.cycle().get
+
+      animation match {
+        case e: FatalErrorAnimation => e.errorMessage.errorCode ==> ErrorCode.Tapout
+        case _ => assert(false)
+      }
+
+      board.matrix(0)(0) ==> None
+
+    }
   }
 }
