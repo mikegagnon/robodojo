@@ -675,5 +675,47 @@ object InstructionTest extends TestSuite {
 
       }
     }
+
+    "bjump instruction execute"-{
+
+      def testSuccess(
+          programStr: String,
+          bankIndex: Int,
+          instructionIndex: Int,
+          newBankIndex: Int,
+          newInstructionIndex: Int): Unit = {
+
+        val board = new Board()
+
+        val program: Program = Compiler.compile(programStr, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val instruction = bot.program.banks(bankIndex).instructions(instructionIndex)
+
+        bot.bankIndex = bankIndex
+        bot.instructionIndex = instructionIndex
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.bankIndex ==> newBankIndex
+        bot.instructionIndex ==> newInstructionIndex
+
+      }
+
+      "bank jumping"-{
+        testSuccess(
+          """
+          bank main
+          bjump 1, 3
+          move
+          move
+          """,
+          0, 0,
+          0, 2)
+      }
+    }
   }
 }
