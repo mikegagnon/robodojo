@@ -878,7 +878,81 @@ object InstructionTest extends TestSuite {
       }
 
       board.matrix(0)(0) ==> None
+    }
 
+    "scan"-{
+
+      "empty scan"-{
+        val board = new Board()
+
+        val program: Program = Compiler.compile("""
+          bank main
+            scan #1
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        bot.registers(0) = 5
+
+        val instruction = bot.program.banks(0).instructions(0)
+
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.registers(0) ==> 0
+      }
+
+      "enemy scan"-{
+        val board = new Board()
+
+        val program: Program = Compiler.compile("""
+          bank main
+            scan #1
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val bot2 = Bot(board, PlayerColor.Red, 0, 1, Direction.Right, program)
+        board.addBot(bot2)
+
+        bot.registers(0) = 5
+
+        val instruction = bot.program.banks(0).instructions(0)
+
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.registers(0) ==> 1
+      }
+
+      "friendly scan"-{
+        val board = new Board()
+
+        val program: Program = Compiler.compile("""
+          bank main
+            scan #1
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right, program)
+        board.addBot(bot2)
+
+        bot.registers(0) = 5
+
+        val instruction = bot.program.banks(0).instructions(0)
+
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.registers(0) ==> 2
+      }
     }
   }
 }
