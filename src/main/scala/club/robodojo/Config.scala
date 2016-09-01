@@ -25,6 +25,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       val durSet = params.getOrElse("sim.cycleCount.durSet", 2).asInstanceOf[Int]
       val durJump = params.getOrElse("sim.cycleCount.durJump", 1).asInstanceOf[Int]
       val durBJump = params.getOrElse("sim.cycleCount.durBJump", 2).asInstanceOf[Int]
+      val durTapout = params.getOrElse("sim.cycleCount.durTapout", 1).asInstanceOf[Int]
 
       val durRemoteAccessCost = params.getOrElse("sim.durRemoteAccessCost", 6).asInstanceOf[Int]
 

@@ -57,6 +57,7 @@ object ErrorCode {
   case object DataHunger extends RunTimeError
   case object InsufficientInstructionSet extends RunTimeError
   case object CannotMoveImmobile extends RunTimeError
+  case object Tapout extends RunTimeError
 
 }
 

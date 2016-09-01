@@ -743,4 +743,33 @@ case class BjumpInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
+case class TapoutInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    lineIndex: Int,
+    // Whose program did this instruction come from originally?
+    playerColor: PlayerColor.EnumVal)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  // TODO: take into account remote access
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durTapout
+
+  def execute(bot: Bot): Option[Animation] = {
+      val message = s"<p><span class='display-failure'>Tap out at line ${lineIndex + 1} of " +
+        s"${playerColor}'s program, executed by the " +
+        s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
+        s"The ${bot.playerColor} bot has tapped out because it executed the <tt>tapout</tt> " +
+        s"instruction.</p>"
+
+      val errorCode = ErrorCode.Tapout
+
+      val errorMessage = ErrorMessage(errorCode, lineIndex, message)
+      Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
+  }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
+
 /* End instructions *******************************************************************************/
