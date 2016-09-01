@@ -1006,6 +1006,31 @@ object InstructionTest extends TestSuite {
 
         bot.instructionIndex ==> 1        
       }
+
+      "comp last instruction in bank --> autoreboot"-{
+        val board = new Board()
+
+        val program: Program = Compiler.compile("""
+          bank one
+            move
+
+          bank two
+            comp #1, #2
+          """, PlayerColor.Blue).right.get
+
+        val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        board.addBot(bot)
+
+        val instruction = bot.program.banks(1).instructions(0)
+
+        bot.cycleNum = instruction.getRequiredCycles(bot)
+
+        bot.cycle()
+
+        bot.bankIndex ==> 0
+        bot.instructionIndex ==> 0
+      }
+
     }
   }
 }
