@@ -880,6 +880,7 @@ object Compiler {
           case "trans" => compileTrans(sourceMapInstruction, tl, playerColor)
           case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
           case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
+          case "die" => compileTapout(sourceMapInstruction, tl, playerColor)
           case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
           case "scan" => compileScan(sourceMapInstruction, tl, playerColor)
           case "comp" => compileComp(sourceMapInstruction, tl)
