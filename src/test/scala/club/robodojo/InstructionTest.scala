@@ -880,6 +880,7 @@ object InstructionTest extends TestSuite {
       board.matrix(0)(0) ==> None
     }
 
+    // TODO: test with different instruction set for bot
     "scan"-{
 
       "empty scan"-{

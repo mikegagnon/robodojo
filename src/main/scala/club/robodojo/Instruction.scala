@@ -799,5 +799,29 @@ case class ScanInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
+case class CompInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    first: ReadableParam,
+    second: ReadableParam)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  // TODO: take into account remote access
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durComp
+
+  def execute(bot: Bot): Option[Animation] = {
+    val firstValue = first.read(bot)
+    val secondValue = second.read(bot)
+
+    if (firstValue == secondValue) {
+      bot.instructionIndex += 1
+    }
+
+    return None
+  }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
 
 /* End instructions *******************************************************************************/
