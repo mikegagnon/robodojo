@@ -886,7 +886,12 @@ object Compiler {
           case "comp" => compileComp(sourceMapInstruction, tl)
           case "add" => compileAdd(sourceMapInstruction, tl)
           case "sub" => compileSub(sourceMapInstruction, tl)
-          case _ => unrecognizedInstruction(tl)
+          case _ => if (bankNumber > 0) {
+              unrecognizedInstruction(tl)
+            } else {
+              // Ignore all lines before the first bank declaration
+              CompileLineResult(None, None)
+            }
         }
 
         result.errorMessage match {
