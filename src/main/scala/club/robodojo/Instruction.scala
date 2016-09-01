@@ -776,7 +776,10 @@ case class TapoutInstruction(
 // TODO: check for insufficient instruction set
 case class ScanInstruction(
     sourceMapInstruction: SourceMapInstruction,
-    dest: WriteableParam)
+    dest: WriteableParam,
+    lineIndex: Int,
+    // Whose program did this instruction come from originally?
+    playerColor: PlayerColor.EnumVal)
     (implicit val config: Config) extends Instruction {
 
   val instructionSet = InstructionSet.Advanced
@@ -784,8 +787,13 @@ case class ScanInstruction(
   // TODO: take into account remote access
   def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durScan
 
-  def execute(bot: Bot): Option[Animation] =
+  def execute(bot: Bot): Option[Animation] = {
     
+    checkInstructionSet(bot, "scan", lineIndex, playerColor) match {
+      case Some(error) => return Some(error)
+      case None => ()
+    }
+
     bot.getRemote() match {
       case None => dest.write(bot, 0)
       case Some(remote) => {
@@ -796,6 +804,7 @@ case class ScanInstruction(
         }
       }
     }
+  }
 
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }

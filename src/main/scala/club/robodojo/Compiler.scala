@@ -692,7 +692,11 @@ object Compiler {
       throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-  def compileScan(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)(implicit config: Config): CompileLineResult = {
+  def compileScan(
+      sourceMapInstruction: SourceMapInstruction,
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)
+      (implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] = parseParams("scan", tl, WriteableParamType)
 
@@ -703,7 +707,7 @@ object Compiler {
 
     val dest = params(0).asInstanceOf[WriteableParam]
 
-    val instruction = ScanInstruction(sourceMapInstruction, dest)
+    val instruction = ScanInstruction(sourceMapInstruction, dest, tl.lineIndex, playerColor)
 
     CompileLineResult(Some(instruction), None)
   }
@@ -841,7 +845,7 @@ object Compiler {
           case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
           case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
           case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
-          case "scan" => compileScan(sourceMapInstruction, tl)
+          case "scan" => compileScan(sourceMapInstruction, tl, playerColor)
           case "comp" => compileComp(sourceMapInstruction, tl)
           case _ => unrecognizedInstruction(tl)
         }

@@ -893,6 +893,7 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        bot.instructionSet = InstructionSet.Advanced
         board.addBot(bot)
 
         bot.registers(0) = 5
@@ -915,6 +916,7 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        bot.instructionSet = InstructionSet.Advanced
         board.addBot(bot)
 
         val bot2 = Bot(board, PlayerColor.Red, 0, 1, Direction.Right, program)
@@ -940,6 +942,7 @@ object InstructionTest extends TestSuite {
           """, PlayerColor.Blue).right.get
 
         val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
+        bot.instructionSet = InstructionSet.Advanced
         board.addBot(bot)
 
         val bot2 = Bot(board, PlayerColor.Blue, 0, 1, Direction.Right, program)
