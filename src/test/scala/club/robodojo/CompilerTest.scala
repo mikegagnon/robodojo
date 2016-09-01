@@ -598,13 +598,6 @@ object CompilerTest extends TestSuite {
       }
 
       "bank"-{
-
-        "fail: too many params"-{
-          testBankFail("bank foo bar", ErrorCode.TooManyParams)
-        }
-        "fail: too few params"-{
-          testBankFail("bank", ErrorCode.MissingParams)
-        }
         "fail: undeclared bank"-{
           testBankFail("move", ErrorCode.UndeclaredBank)
         }

@@ -410,20 +410,6 @@ object Compiler {
   }
 
   // TESTED
-  def compileBank(tl: TokenLine): CompileLineResult =
-    if (tl.tokens.length > 2) {
-      val message = "Too many parameters: the <tt>bank</tt> directive requires exactly one parameter."
-      val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineIndex, message)
-      CompileLineResult(None, Some(errorMessage))
-    } else if (tl.tokens.length < 2) {
-      val message = "Missing parameter: the <tt>bank</tt> directive requires exactly one parameter."
-      val errorMessage = ErrorMessage(ErrorCode.MissingParams, tl.lineIndex, message)
-      CompileLineResult(None, Some(errorMessage))
-    } else {
-      CompileLineResult(None, None)
-    }
-
-  // TESTED
   def compileMove(
       sourceMapInstruction: SourceMapInstruction,
       tl: TokenLine,
@@ -853,7 +839,7 @@ object Compiler {
               bankNumber += 1
               bankLineIndex = 0
               bankBuilders += (bankNumber -> new BankBuilder)
-              compileBank(tl)
+              CompileLineResult(None, None)
             }
           }
 
