@@ -773,6 +773,7 @@ case class TapoutInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
+// TODO: check for insufficient instruction set
 case class ScanInstruction(
     sourceMapInstruction: SourceMapInstruction,
     dest: WriteableParam)
