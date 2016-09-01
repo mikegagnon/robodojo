@@ -116,7 +116,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
         cycleNum = 1
         instructionIndex += 1
 
-        if (instructionIndex == bank.instructions.length) {
+        if (instructionIndex >= bank.instructions.length) {
           bankIndex = 0
           instructionIndex = 0
         }
