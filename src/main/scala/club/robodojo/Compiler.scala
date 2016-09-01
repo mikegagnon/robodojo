@@ -709,6 +709,25 @@ object Compiler {
   }
 
 
+  def compileComp(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)(implicit config: Config): CompileLineResult = {
+
+    val parsed: Either[ErrorMessage, Seq[Param]] =
+      parseParams("comp", tl, ReadableParamType, ReadableParamType)
+
+    val params: Seq[Param] = parsed match {
+      case Left(errorMessage) => return CompileLineResult(None, Some(errorMessage))
+      case Right(params) => params
+    }
+
+    val first = params(0).asInstanceOf[ReadableParam]
+    val second = params(1).asInstanceOf[ReadableParam]
+
+    val instruction = CompInstruction(sourceMapInstruction, first, second)
+
+    CompileLineResult(Some(instruction), None)
+  }
+
+
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
@@ -823,6 +842,7 @@ object Compiler {
           case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
           case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
           case "scan" => compileScan(sourceMapInstruction, tl)
+          case "comp" => compileComp(sourceMapInstruction, tl)
           case _ => unrecognizedInstruction(tl)
         }
 
