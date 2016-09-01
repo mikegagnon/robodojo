@@ -116,10 +116,26 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
         cycleNum = 1
         instructionIndex += 1
 
-        // TODO: proper auto reboot
         if (instructionIndex == bank.instructions.length) {
+          bankIndex = 0
           instructionIndex = 0
         }
+
+        // Check for data hunger
+        if (bankIndex == 0 && instructionIndex == 0 && program.banks(0).instructions.length == 0) {
+
+          val message = s"<p><span class='display-failure'>Data Hunger in the ${playerColor} bot " +
+            s"located at row ${row + 1}, column ${col + 1}</span>: The ${playerColor} bot has " +
+            s"tapped out because it performed an autoreboot with its first bank is empty.</p>"
+
+          val errorCode = ErrorCode.DataHunger
+          val errorMessage = ErrorMessage(errorCode, 0, message)
+
+          board.removeBot(this)
+
+          return Some(FatalErrorAnimation(id, playerColor, row, col, errorMessage))
+        }
+
 
         val newInstruction = program.banks(bankIndex).instructions(instructionIndex)
 

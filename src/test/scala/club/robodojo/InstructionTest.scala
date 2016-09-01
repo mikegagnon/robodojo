@@ -678,12 +678,14 @@ object InstructionTest extends TestSuite {
 
     "bjump instruction execute"-{
 
-      def testSuccess(
+      // TODO: rename
+      def bjumpTest(
           programStr: String,
           bankIndex: Int,
           instructionIndex: Int,
           newBankIndex: Int,
-          newInstructionIndex: Int): Unit = {
+          newInstructionIndex: Int,
+          errorCode: Option[ErrorCode.EnumVal]): Unit = {
 
         val board = new Board()
 
@@ -698,15 +700,43 @@ object InstructionTest extends TestSuite {
         bot.instructionIndex = instructionIndex
         bot.cycleNum = instruction.getRequiredCycles(bot)
 
-        bot.cycle()
+        val error: Option[ErrorCode.EnumVal] = bot.cycle().flatMap{ animation: Animation =>
+          animation match {
+            case e: FatalErrorAnimation => Some(e.errorMessage.errorCode)
+            case _ => None
+          }
+        }
 
         bot.bankIndex ==> newBankIndex
         bot.instructionIndex ==> newInstructionIndex
+        error ==> errorCode
 
       }
 
-      "bank jumping"-{
-        testSuccess(
+      "bjump to same bank"-{
+        bjumpTest(
+          """
+          bank main
+          bjump 1, 1
+          move
+          move
+          """,
+          0, 0,
+          0, 0,
+          None)
+
+        bjumpTest(
+          """
+          bank main
+          bjump 1, 2
+          move
+          move
+          """,
+          0, 0,
+          0, 1,
+          None)
+
+        bjumpTest(
           """
           bank main
           bjump 1, 3
@@ -714,7 +744,58 @@ object InstructionTest extends TestSuite {
           move
           """,
           0, 0,
-          0, 2)
+          0, 2,
+          None)
+      }
+
+      "bjump out of bounds"-{
+        bjumpTest(
+          """
+          bank main
+          bjump 1, 4
+          move
+          move
+          """,
+          0, 0,
+          0, 0,
+          None)
+
+        bjumpTest(
+          """
+          bank main
+          bjump 1, -1
+          move
+          move
+          """,
+          0, 0,
+          0, 0,
+          None)
+
+        bjumpTest(
+          """
+          bank main
+          bjump 2, 1
+          move
+          move
+          """,
+          0, 0,
+          0, 0,
+          None)
+
+        bjumpTest(
+          """
+          bank main
+          bank foo
+          bjump 1, 4
+          move
+          move
+          """,
+          1, 0,
+          0, 0,
+          Some(ErrorCode.DataHunger))
+
+
+
       }
     }
   }
