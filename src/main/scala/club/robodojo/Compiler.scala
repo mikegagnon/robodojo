@@ -817,7 +817,7 @@ object Compiler {
     // labelsByLabel(labelString) = instruction Index for that label (relative to its bank)
     var labelsByLabel = mutable.Map[String, Int]()
 
-    var currentLabelId: Option[String] = None
+    var currentLabelId = mutable.Set[String]()
 
     // Like lineIndex, but relative to the current bank. For example, if we are at the 5th line
     // of bank N, then bankLineIndex == 4
@@ -855,7 +855,7 @@ object Compiler {
               CompileLineResult(None, Some(errorMessage))
             } else {
               labelStrings.add(labelId)
-              currentLabelId = Some(labelId)
+              currentLabelId.add(labelId)
               CompileLineResult(None, None)
             }
           }
@@ -907,7 +907,7 @@ object Compiler {
                   labelsByLabel(id) = instructionIndex
                 }
 
-                currentLabelId = None
+                currentLabelId = mutable.Set()
               }
 
             } else {

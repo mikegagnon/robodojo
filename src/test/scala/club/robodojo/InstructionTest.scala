@@ -644,12 +644,15 @@ object InstructionTest extends TestSuite {
 
         val program: Program = Compiler.compile(s"""
             bank main
+              @0
               @a
               move
               @b
               jump ${jump}
               @c
               move
+              @1
+              @2
               @d
               move
           """, PlayerColor.Blue).right.get
@@ -668,9 +671,12 @@ object InstructionTest extends TestSuite {
       }
 
       "jump to label"-{
+       testJumpToLabel("@0", 0)
        testJumpToLabel("@a", 0)
        testJumpToLabel("@b", 1)
        testJumpToLabel("@c", 2)
+       testJumpToLabel("@1", 3)
+       testJumpToLabel("@2", 3)
        testJumpToLabel("@d", 3)
 
       }
