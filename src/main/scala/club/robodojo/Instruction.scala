@@ -857,4 +857,27 @@ case class AddInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
+case class SubInstruction(
+    sourceMapInstruction: SourceMapInstruction,
+    first: WriteableParam,
+    second: ReadableParam)
+    (implicit val config: Config) extends Instruction {
+
+  val instructionSet = InstructionSet.Basic
+
+  // TODO: take into account remote access
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durSub
+
+  def execute(bot: Bot): Option[Animation] = {
+    val firstValue: Short = first.read(bot)
+    val secondValue: Short = second.read(bot)
+
+    first.write(bot, (firstValue - secondValue).toShort)
+
+    return None
+  }
+
+  def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
+}
+
 /* End instructions *******************************************************************************/
