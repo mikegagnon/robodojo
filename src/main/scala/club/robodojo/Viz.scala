@@ -586,11 +586,10 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val features: BotVisualFeatures = botVisualFeatures(recipientBotId)
 
     // If the deactivate visualization has alrady been drawn
-    if (features.inactiveShape.nonEmpty) {
-      throw new IllegalStateException("Bot is already drawn as deactivated")
+    if (features.inactiveShape.isEmpty) {
+      drawInactive(recipientBotId)
     }
 
-    drawInactive(recipientBotId)
   }
 
   def animateActivate(activateAnimation: ActivateAnimation): Unit = {
@@ -599,11 +598,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val features: BotVisualFeatures = botVisualFeatures(recipientBotId)
 
-    if (features.inactiveShape.isEmpty) {
-      throw new IllegalStateException("Bot is already drawn as activated")
+    if (features.inactiveShape.nonEmpty) {
+      drawActive(recipientBotId)
     }
-
-    drawActive(recipientBotId)
   }
 
   def animateFatalError(fatalError: FatalErrorAnimation): Unit = {
