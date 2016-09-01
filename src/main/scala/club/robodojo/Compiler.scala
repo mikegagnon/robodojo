@@ -674,6 +674,24 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
+  def compileTapout(
+      sourceMapInstruction: SourceMapInstruction,
+      tl: TokenLine,
+      playerColor: PlayerColor.EnumVal)
+      (implicit config: Config): CompileLineResult =
+
+    if (tl.tokens.length > 1) {
+      val message = "Too many parameters: the <tt>tapout</tt> instruction does not take any " +
+        "parameters."
+      val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineIndex, message)
+      CompileLineResult(None, Some(errorMessage))
+    } else if (tl.tokens.length == 1) {
+      val instruction = TapoutInstruction(sourceMapInstruction, tl.lineIndex, playerColor)
+      CompileLineResult(Some(instruction), None)
+    } else {
+      throw new IllegalStateException("This code shouldn't be reachable")
+    }
+
   // To facilitate the debugger, instructions and banks keep track of source code information.
   // Regarding banks, each bank has a sourceMap field that stores the original source code for the
   // bank. This function generates those sourceMap fields. This function assumes the compilation was
@@ -786,6 +804,7 @@ object Compiler {
           case "trans" => compileTrans(sourceMapInstruction, tl, playerColor)
           case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
           case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
+          case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
           case _ => unrecognizedInstruction(tl)
         }
 

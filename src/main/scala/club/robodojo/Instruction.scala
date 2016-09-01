@@ -763,8 +763,10 @@ case class TapoutInstruction(
         s"instruction.</p>"
 
       val errorCode = ErrorCode.Tapout
-
       val errorMessage = ErrorMessage(errorCode, lineIndex, message)
+
+      bot.board.removeBot(bot)
+
       Some(FatalErrorAnimation(bot.id, bot.playerColor, bot.row, bot.col, errorMessage))
   }
 
