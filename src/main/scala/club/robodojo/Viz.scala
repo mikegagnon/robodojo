@@ -583,24 +583,28 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val recipientBotId = deactivateAnimation.recipientBotId
 
-    val features: BotVisualFeatures = botVisualFeatures(recipientBotId)
-
-    // If the deactivate visualization has alrady been drawn
-    if (features.inactiveShape.isEmpty) {
-      drawInactive(recipientBotId)
-    }
-
+    botVisualFeatures
+      .get(recipientBotId)
+      .map { features: BotVisualFeatures =>
+        // If the deactivate visualization hasn't alrady been drawn
+        if (features.inactiveShape.isEmpty) {
+          drawInactive(recipientBotId)
+        }
+      }
   }
 
   def animateActivate(activateAnimation: ActivateAnimation): Unit = {
 
     val recipientBotId = activateAnimation.recipientBotId
 
-    val features: BotVisualFeatures = botVisualFeatures(recipientBotId)
-
-    if (features.inactiveShape.nonEmpty) {
+    botVisualFeatures
+      .get(recipientBotId)
+      .map { features: BotVisualFeatures =>
+        // If the deactivate visualization hasn't alrady been drawn
+        if (features.inactiveShape.nonEmpty) {
       drawActive(recipientBotId)
-    }
+        }
+      }
   }
 
   def animateFatalError(fatalError: FatalErrorAnimation): Unit = {
