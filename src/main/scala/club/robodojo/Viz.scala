@@ -647,9 +647,11 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   def addBankColor(botId: Long, playerColor: PlayerColor.EnumVal): Unit = {
     val circle = new createjs.Shape()
 
-    circle.graphics.beginFill("pink").drawCircle(0, 0, retina(cellSize / 6.0))
+    val color = PlayerColor.toHtmlColor(playerColor)
+
+    circle.graphics.beginFill(color).drawCircle(0, 0, retina(cellSize / 5.0))
     circle.x = retina(cellSize / 2.0)
-    circle.y = retina(cellSize / 2.0) + 5
+    circle.y = retina(cellSize / 2.0) + 4
     botImages(botId).addChild(circle)
 
     botVisualFeatures(botId).bankCircle = Some(circle)
