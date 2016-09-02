@@ -138,3 +138,10 @@ case class FatalErrorAnimation(
   errorMessage: ErrorMessage) extends Animation {
   override val mandatory = true
 }
+
+case class BankColorAnimation(
+  botId: Long,
+  // The color of the originator of the bnk
+  playerColor: PlayerColor.EnumVal) extends Animation {
+  override val mandatory = true
+}

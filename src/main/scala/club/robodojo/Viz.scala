@@ -494,6 +494,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case deactivateAnimation: DeactivateAnimation => animateDeactivate(deactivateAnimation)
         case activateAnimation: ActivateAnimation => animateActivate(activateAnimation)
         case fatalError: FatalErrorAnimation => animateFatalError(fatalError)
+        case bankColorAnimation: BankColorAnimation => animateBankColor(bankColorAnimation)
       }
     }
   }
@@ -637,6 +638,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     jQuery("#" + config.editor.outputId).html(fatalError.errorMessage.message)
   }
 
+  def animateBankColor(bankColorAnimation: BankColorAnimation): Unit = {
+
+  }
 
   /** End animation functions  ********************************************************************/
 

@@ -602,20 +602,29 @@ case class TransInstruction(
 
     val bank = bot.program.banks(sourceBankIndex)
 
-    bot
-      .getRemote
-      .map { remoteBot: Bot =>
-        val destBankIndex = destBank.read(bot).toInt - 1
-        if (remoteBot.program.banks.contains(destBankIndex)) {
-          remoteBot.program.banks += destBankIndex -> bank
-          if (remoteBot.bankIndex == destBankIndex) {
-            remoteBot.instructionIndex = 0
-            remoteBot.cycleNum = 1
+    val animation: Option[Animation] =
+      bot
+        .getRemote
+        .flatMap { remoteBot: Bot =>
+          val destBankIndex = destBank.read(bot).toInt - 1
+          if (remoteBot.program.banks.contains(destBankIndex)) {
+            remoteBot.program.banks += destBankIndex -> bank
+            if (remoteBot.bankIndex == destBankIndex) {
+
+              // TODO: should we really reset instruction?
+              remoteBot.instructionIndex = 0
+              remoteBot.cycleNum = 1
+
+              Some(BankColorAnimation(remoteBot.id, bank.sourceMap.get.playerColor))
+            } else {
+              None
+            }
+          } else {
+            None
           }
         }
-      }
 
-    None
+    return animation
 
   }
 
