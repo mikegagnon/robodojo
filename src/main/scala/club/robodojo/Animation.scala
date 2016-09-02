@@ -7,7 +7,7 @@ import com.scalawarrior.scalajs.createjs
 // track of which features have been drawn on a bot. See Viz.animateInactive(...) for an example.
 case class BotVisualFeatures(
   var inactiveShape: Option[createjs.Shape] = None,
-  var bankColor: Option[createjs.Shape] = None)
+  var bankCircle: Option[createjs.Shape] = None)
 
 // The Animation classes provide just information to Viz so that Viz can animate the instruction
 // execution. When an Instruction executes a cycle, it returns an optional Animation object.

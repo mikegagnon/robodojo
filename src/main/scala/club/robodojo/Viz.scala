@@ -638,12 +638,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     jQuery("#" + config.editor.outputId).html(fatalError.errorMessage.message)
   }
 
-  def removeBankColor(recipientBotId: Long): Unit = {
-
+  def removeBankColor(botId: Long): Unit = {
+    val circle = botVisualFeatures(botId).bankCircle.get
+    botImages(botId).removeChild(circle)
+    botVisualFeatures(botId).bankCircle = None
   }
 
-  def addBankColor(recipientBotId: Long, playerColor: PlayerColor.EnumVal): Unit = {
+  def addBankColor(botId: Long, playerColor: PlayerColor.EnumVal): Unit = {
+    val circle = new createjs.Shape()
 
+    circle.graphics.beginFill("pink").drawCircle(0, 0, retina(cellSize / 6.0))
+    circle.x = retina(cellSize / 2.0)
+    circle.y = retina(cellSize / 2.0) + 5
+    botImages(botId).addChild(circle)
+
+    botVisualFeatures(botId).bankCircle = Some(circle)
   }
 
   def animateBankColor(bankColorAnimation: BankColorAnimation): Unit = {
@@ -655,7 +664,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
       .map { features: BotVisualFeatures =>
 
         // First, remove the bankColor if there is one
-        if (features.bankColor.nonEmpty) {
+        if (features.bankCircle.nonEmpty) {
           removeBankColor(recipientBotId)
         } 
 
