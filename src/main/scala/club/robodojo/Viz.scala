@@ -638,8 +638,35 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     jQuery("#" + config.editor.outputId).html(fatalError.errorMessage.message)
   }
 
-  def animateBankColor(bankColorAnimation: BankColorAnimation): Unit = {
+  def removeBankColor(recipientBotId: Long): Unit = {
 
+  }
+
+  def addBankColor(recipientBotId: Long, playerColor: PlayerColor.EnumVal): Unit = {
+
+  }
+
+  def animateBankColor(bankColorAnimation: BankColorAnimation): Unit = {
+    
+    val recipientBotId = bankColorAnimation.botId
+
+    botVisualFeatures
+      .get(recipientBotId)
+      .map { features: BotVisualFeatures =>
+
+        // First, remove the bankColor if there is one
+        if (features.bankColor.nonEmpty) {
+          removeBankColor(recipientBotId)
+        } 
+
+        val recipient = board.getBot(recipientBotId).get
+
+        // Second, maybe draw the bankColor
+        if (recipient.playerColor != bankColorAnimation.playerColor) {
+          addBankColor(recipientBotId, bankColorAnimation.playerColor)
+        }
+
+      }
   }
 
   /** End animation functions  ********************************************************************/
