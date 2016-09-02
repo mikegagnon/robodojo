@@ -94,7 +94,6 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
   }
 
   // TESTED
-  // TODO: do a proper Auto Reboot
   def cycle(): Option[Animation] = {
 
     if (active < 1) {

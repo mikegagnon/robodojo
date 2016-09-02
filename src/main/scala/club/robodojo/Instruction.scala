@@ -725,7 +725,12 @@ case class BjumpInstruction(
       // AUTOREBOOT
       bot.bankIndex = 0
       bot.instructionIndex = -1
-      return None
+
+      bot.program.banks(0).sourceMap match {
+        case Some(sourceMap) => return Some(BankColorAnimation(bot.id, bot.id, sourceMap.playerColor))
+        case None => return Some(BankColorAnimation(bot.id, bot.id, bot.playerColor))
+      }
+
     }
 
     // NOTE: The -2 here is due to the fact that bot.cycle executes the instruction
@@ -741,11 +746,20 @@ case class BjumpInstruction(
       // AUTOREBOOT
       bot.bankIndex = 0
       bot.instructionIndex = -1
-      return None
+      
+      bot.program.banks(0).sourceMap match {
+        case Some(sourceMap) => return Some(BankColorAnimation(bot.id, bot.id, sourceMap.playerColor))
+        case None => return Some(BankColorAnimation(bot.id, bot.id, bot.playerColor))
+      }
+
     } else {
       bot.bankIndex = newBankIndex
       bot.instructionIndex = newInstructionIndex - 1
-      return None
+      
+      bot.program.banks(bot.bankIndex).sourceMap match {
+        case Some(sourceMap) => return Some(BankColorAnimation(bot.id, bot.id, sourceMap.playerColor))
+        case None => return Some(BankColorAnimation(bot.id, bot.id, bot.playerColor))
+      }
     }
   }
 
