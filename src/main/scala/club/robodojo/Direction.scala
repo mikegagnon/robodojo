@@ -10,6 +10,15 @@ object Direction {
   case object Right extends EnumVal
   case object NoDir extends EnumVal
 
+  def fromString(dir: String) =
+    dir match {
+      case "up" => Up
+      case "down" => Down
+      case "left" => Left
+      case "right" => Right
+      case _ => NoDir
+    }
+
   def toAngle(direction: EnumVal): Int =
     direction match {
       case Up => 0

@@ -115,23 +115,52 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
 
+    val defaultRow =
+      playerColor match {
+        case PlayerColor.Blue => config.sim.board.blueRow
+        case PlayerColor.Red => config.sim.board.redRow
+        case PlayerColor.Green => config.sim.board.greenRow
+        case PlayerColor.Yellow => config.sim.board.yellowRow
+      }
+
+  val defaultCol =
+      playerColor match {
+        case PlayerColor.Blue => config.sim.board.blueCol
+        case PlayerColor.Red => config.sim.board.redCol
+        case PlayerColor.Green => config.sim.board.greenCol
+        case PlayerColor.Yellow => config.sim.board.yellowCol
+      }
+
     // Cycle through row, col until you find an empty spot
-    var row = Random.nextInt(config.sim.numRows)
-    var col = Random.nextInt(config.sim.numCols)
+    var row = if (defaultRow >= 0) defaultRow else Random.nextInt(config.sim.numRows)
+    var col = if (defaultCol >= 0) defaultCol else Random.nextInt(config.sim.numCols)
 
     while (board.matrix(row)(col).nonEmpty) {
       row = Random.nextInt(config.sim.numRows)
       col = Random.nextInt(config.sim.numCols)
     }
 
-    val dirNum = Random.nextInt(4)
-    val direction = dirNum match {
-      case 0 => Direction.Up
-      case 1 => Direction.Down
-      case 2 => Direction.Left
-      case 3 => Direction.Right
-      case _ => throw new IllegalStateException("This code shouldn't be reachable")
-    }
+    val defaultDir =
+      playerColor match {
+        case PlayerColor.Blue => Direction.fromString(config.sim.board.blueDir)
+        case PlayerColor.Red => Direction.fromString(config.sim.board.redDir)
+        case PlayerColor.Green => Direction.fromString(config.sim.board.greenDir)
+        case PlayerColor.Yellow => Direction.fromString(config.sim.board.yellowDir)
+      }
+
+    val direction =
+      defaultDir match {
+        case Direction.NoDir => {
+          Random.nextInt(4) match {
+            case 0 => Direction.Up
+            case 1 => Direction.Down
+            case 2 => Direction.Left
+            case 3 => Direction.Right
+            case _ => throw new IllegalStateException("This code shouldn't be reachable")
+          }
+        }
+        case dir: Direction.EnumVal => dir
+      }
 
     val program = programs(playerColor) match {
       case Left(_) => throw new IllegalStateException("This code shouldn't be reachable")

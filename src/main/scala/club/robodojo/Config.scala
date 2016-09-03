@@ -17,6 +17,26 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val numRows: Int = params.getOrElse("sim.numRows", 16).asInstanceOf[Int]
     val numCols: Int = params.getOrElse("sim.numCols", 16).asInstanceOf[Int]
 
+    object board {
+
+      val blueRow: Int = params.getOrElse("sim.board.blueRow", -1).asInstanceOf[Int]
+      val blueCol: Int = params.getOrElse("sim.board.blueCol", -1).asInstanceOf[Int]
+      val blueDir: String = params.getOrElse("sim.board.blueDir", "NoDir").asInstanceOf[String]
+
+      val redRow: Int = params.getOrElse("sim.board.redRow", -1).asInstanceOf[Int]
+      val redCol: Int = params.getOrElse("sim.board.redCol", -1).asInstanceOf[Int]
+      val redDir: String = params.getOrElse("sim.board.redDir", "NoDir").asInstanceOf[String]
+
+      val greenRow: Int = params.getOrElse("sim.board.greenRow", -1).asInstanceOf[Int]
+      val greenCol: Int = params.getOrElse("sim.board.greemCol", -1).asInstanceOf[Int]
+      val greenDir: String = params.getOrElse("sim.board.greemDir", "NoDir").asInstanceOf[String]
+
+      val yellowRow: Int = params.getOrElse("sim.board.yellowRow", -1).asInstanceOf[Int]
+      val yellowCol: Int = params.getOrElse("sim.board.yellowCol", -1).asInstanceOf[Int]
+      val yellowDir: String = params.getOrElse("sim.board.yellowDir", "NoDir").asInstanceOf[String]
+
+    }
+
     // Update according to http://robocom.rrobek.de/help/instr1.html
     object cycleCount {
 
