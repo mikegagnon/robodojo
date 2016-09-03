@@ -342,41 +342,24 @@ case class CreateInstruction(
     val numBanksValue = numBanks.read(bot)
     val mobileValue = mobile.read(bot)
 
-    val remoteCost1 = if (childInstructionSet.local) {
-        0
-      } else {
-        config.sim.cycleCount.durRemoteAccessCost
-      }
+    val remoteCost1 = if (childInstructionSet.local) 0 else config.sim.cycleCount.durRemoteAccessCost
     val remoteCost2 = if (numBanks.local) 0 else config.sim.cycleCount.durRemoteAccessCost
     val remoteCost3 = if (mobile.local) 0 else config.sim.cycleCount.durRemoteAccessCost
 
     val durCreate1 = config.sim.cycleCount.durCreate1
     val durCreate2 = config.sim.cycleCount.durCreate2
     val durCreate3 = config.sim.cycleCount.durCreate3
-    val durCreate3a = config.sim.cycleCount.durCreate3a
     val durCreate4 = config.sim.cycleCount.durCreate4
     val durCreate5 = config.sim.cycleCount.durCreate5
+    val durCreate6 = config.sim.cycleCount.durCreate6
     val maxCreateDur = config.sim.cycleCount.maxCreateDur
 
-    val primary = durCreate1 + durCreate2 * numBanksValue
-    val mobilityCost = if (mobileValue > 0) durCreate3 else 1
-    val secondaryMobilityCost = if (mobileValue > 0) durCreate3a else 0
-
-    val instructionSetCostAdvanced = childInstructionSetValue match {
-      case InstructionSet.Advanced.value => durCreate4
-      case _ => 0
-    }
-
-    val instructionSetCostSuper = childInstructionSetValue match {
-      case InstructionSet.Super.value => durCreate5
-      case _ => 0
-    }
-
     val calculatedCost =
-      primary * mobilityCost +
-      secondaryMobilityCost +
-      instructionSetCostAdvanced +
-      instructionSetCostSuper +
+      (durCreate1 + durCreate2 * numBanksValue) *
+      (if (mobileValue > 0) durCreate3 else 1) +
+      (if (mobileValue > 0) durCreate4 else 0) +
+      (if (childInstructionSetValue == InstructionSet.Advanced.value) durCreate5 else 0) +
+      (if (childInstructionSetValue == InstructionSet.Super.value) durCreate6 else 0) +
       remoteCost1 +
       remoteCost2 +
       remoteCost3
@@ -867,7 +850,15 @@ case class AddInstruction(
   val instructionSet = InstructionSet.Basic
 
   // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durAdd
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteFirstCost = if (first.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteSecondCost = if (second.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durAdd +
+      remoteFirstCost +
+      remoteSecondCost
+  }
 
   def execute(bot: Bot): Option[Animation] = {
     val firstValue: Short = first.read(bot)

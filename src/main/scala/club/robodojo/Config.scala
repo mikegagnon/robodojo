@@ -31,15 +31,15 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       val durAdd = params.getOrElse("sim.cycleCount.durAdd", 6).asInstanceOf[Int]
       val durSub = params.getOrElse("sim.cycleCount.durSub", 6).asInstanceOf[Int]
 
-      val durRemoteAccessCost = params.getOrElse("sim.durRemoteAccessCost", 6).asInstanceOf[Int]
+      val durRemoteAccessCost = params.getOrElse("sim.durRemoteAccessCost", 8).asInstanceOf[Int]
 
       // For the create instruction
-      val durCreate1 = params.getOrElse("sim.cycleCount.durCreate1", 100).asInstanceOf[Int]
-      val durCreate2 = params.getOrElse("sim.cycleCount.durCreate2", 25).asInstanceOf[Int]
-      val durCreate3 = params.getOrElse("sim.cycleCount.durCreate3", 1).asInstanceOf[Int]
-      val durCreate3a = params.getOrElse("sim.cycleCount.durCreate3a", 120).asInstanceOf[Int]
-      val durCreate4 = params.getOrElse("sim.cycleCount.durCreate4", 40).asInstanceOf[Int]
-      val durCreate5 = params.getOrElse("sim.cycleCount.durCreate5", 100).asInstanceOf[Int]
+      val durCreate1 = params.getOrElse("sim.cycleCount.durCreate1", 50).asInstanceOf[Int]
+      val durCreate2 = params.getOrElse("sim.cycleCount.durCreate2", 20).asInstanceOf[Int]
+      val durCreate3 = params.getOrElse("sim.cycleCount.durCreate3", 2).asInstanceOf[Int]
+      val durCreate4 = params.getOrElse("sim.cycleCount.durCreate4", 0).asInstanceOf[Int]
+      val durCreate5 = params.getOrElse("sim.cycleCount.durCreate5", 40).asInstanceOf[Int]
+      val durCreate6 = params.getOrElse("sim.cycleCount.durCreate6", 80).asInstanceOf[Int]
       val maxCreateDur = params.getOrElse("sim.cycleCount.maxCreateDur", 1500).asInstanceOf[Int]
 
       val durTrans1 = params.getOrElse("sim.cycleCount.durTrans1", 5).asInstanceOf[Int]
