@@ -529,7 +529,8 @@ case class TransInstruction(
 
     val numInstructions =
       if (sourceBankIndex < 0 || sourceBankIndex >= bot.program.banks.size) {
-        1
+        // TODO: raise bot error here
+        0
       } else {
         bot
           .program
