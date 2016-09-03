@@ -187,8 +187,11 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
       (0 until bankIndex)
         .map { i =>
           val bank = banks(i)
-          val sourceMap = bank.sourceMap.get
-          sourceMap.text.length + 1
+
+          bank.sourceMap match {
+            case Some(sourceMap) => sourceMap.text.length + 1
+            case None => 1
+          }
         }
         .sum
 
