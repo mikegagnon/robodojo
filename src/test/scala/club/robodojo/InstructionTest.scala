@@ -416,14 +416,6 @@ object InstructionTest extends TestSuite {
         instruction.execute(bot1)
 
         bot2.program.banks(destBank - 1) ==> bot1.program.banks(sourceBank - 1)
-
-        if (destBank - 1 == bot2.bankIndex) {
-          bot2.instructionIndex ==> 0
-          bot2.cycleNum ==> 1
-        } else {
-          bot2.instructionIndex ==> 1
-          bot2.cycleNum ==> 5
-        }
       }
 
       "successful transfers"-{

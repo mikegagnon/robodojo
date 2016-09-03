@@ -611,10 +611,6 @@ case class TransInstruction(
             remoteBot.program.banks += destBankIndex -> bank
             if (remoteBot.bankIndex == destBankIndex) {
 
-              // TODO: should we really reset instruction?
-              remoteBot.instructionIndex = 0
-              remoteBot.cycleNum = 1
-
               //Some(BankColorAnimation(bot.id, remoteBot.id, bank.sourceMap.get.playerColor))
               bank.sourceMap match {
                 case Some(sourceMap) => return Some(BankColorAnimation(bot.id, remoteBot.id, sourceMap.playerColor))

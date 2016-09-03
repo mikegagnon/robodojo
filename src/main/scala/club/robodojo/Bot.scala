@@ -116,6 +116,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
         instructionIndex += 1
 
         if (instructionIndex >= bank.instructions.length) {
+          // AUTOREBOOT
           bankIndex = 0
           instructionIndex = 0
         }
@@ -145,19 +146,29 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
       }
 
       return animation
-    } else {
+    } else if (bankIndex == 0) {
       val errorCode = ErrorCode.DataHunger
 
       val message = s"<p><span class='display-failure'>Error in ${playerColor}'s bot' " +
         s"located at row ${row + 1}, column ${col + 1}</span>: " +
         s"The ${playerColor} bot has tapped out because it attempted to " +
-        s"execute an empty bank (bank ${bankIndex + 1})."
+        s"execute an empty first bank (bank ${bankIndex + 1})."
 
       val errorMessage = ErrorMessage(errorCode, 0, message)
 
       board.removeBot(this)
 
       return Some(FatalErrorAnimation(id, playerColor, row, col, errorMessage))
+    } else {
+
+      // AUTOREBOOT
+      bankIndex = 0
+      instructionIndex = 0
+      val newInstruction = program.banks(bankIndex).instructions(instructionIndex)
+
+      requiredCycles = newInstruction.getRequiredCycles(this)
+
+      return None
     }
   }
 
