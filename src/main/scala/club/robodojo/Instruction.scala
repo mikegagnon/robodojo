@@ -642,8 +642,12 @@ case class JumpInstruction(
 
   val instructionSet = InstructionSet.Basic
 
-  // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durJump
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteCost1 = if (jump.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durJump + remoteCost1
+  }
 
   def execute(bot: Bot): Option[Animation] = {
 
@@ -697,8 +701,15 @@ case class BjumpInstruction(
 
   val instructionSet = InstructionSet.Basic
 
-  // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durBJump
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteFirstCost = if (bankNumber.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteSecondCost = if (instructionNumber.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durBJump +
+      remoteFirstCost +
+      remoteSecondCost
+  }
 
   def execute(bot: Bot): Option[Animation] = {
 
@@ -792,7 +803,12 @@ case class ScanInstruction(
   val instructionSet = InstructionSet.Advanced
 
   // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durScan
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteCost1 = if (dest.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durScan + remoteCost1
+  }
 
   def execute(bot: Bot): Option[Animation] = {
     
@@ -824,8 +840,15 @@ case class CompInstruction(
 
   val instructionSet = InstructionSet.Basic
 
-  // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durComp
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteFirstCost = if (first.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteSecondCost = if (second.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durComp +
+      remoteFirstCost +
+      remoteSecondCost
+  }
 
   def execute(bot: Bot): Option[Animation] = {
     val firstValue = first.read(bot)
@@ -880,8 +903,13 @@ case class SubInstruction(
 
   val instructionSet = InstructionSet.Basic
 
-  // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durSub
+  def getRequiredCycles(bot: Bot): Int = {
+
+    val remoteCost1 = if (first.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+    val remoteCost2 = if (second.local) 0 else config.sim.cycleCount.durRemoteAccessCost
+
+    config.sim.cycleCount.durSub + remoteCost1 + remoteCost2
+  }
 
   def execute(bot: Bot): Option[Animation] = {
     val firstValue: Short = first.read(bot)
