@@ -20,16 +20,16 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     // Update according to http://robocom.rrobek.de/help/instr1.html
     object cycleCount {
 
-      val durMove = params.getOrElse("sim.cycleCount.durMove", 20).asInstanceOf[Int]
-      val durTurn = params.getOrElse("sim.cycleCount.durTurn", 8).asInstanceOf[Int]
-      val durSet = params.getOrElse("sim.cycleCount.durSet", 2).asInstanceOf[Int]
-      val durJump = params.getOrElse("sim.cycleCount.durJump", 1).asInstanceOf[Int]
-      val durBJump = params.getOrElse("sim.cycleCount.durBJump", 2).asInstanceOf[Int]
+      val durMove = params.getOrElse("sim.cycleCount.durMove", 18).asInstanceOf[Int]
+      val durTurn = params.getOrElse("sim.cycleCount.durTurn", 5).asInstanceOf[Int]
+      val durSet = params.getOrElse("sim.cycleCount.durSet", 5).asInstanceOf[Int]
+      val durJump = params.getOrElse("sim.cycleCount.durJump", 2).asInstanceOf[Int]
+      val durBJump = params.getOrElse("sim.cycleCount.durBJump", 5).asInstanceOf[Int]
       val durTapout = params.getOrElse("sim.cycleCount.durTapout", 1).asInstanceOf[Int]
-      val durScan = params.getOrElse("sim.cycleCount.durScan", 8).asInstanceOf[Int]
-      val durComp = params.getOrElse("sim.cycleCount.durComp", 2).asInstanceOf[Int]
-      val durAdd = params.getOrElse("sim.cycleCount.durAdd", 2).asInstanceOf[Int]
-      val durSub = params.getOrElse("sim.cycleCount.durSub", 2).asInstanceOf[Int]
+      val durScan = params.getOrElse("sim.cycleCount.durScan", 6).asInstanceOf[Int]
+      val durComp = params.getOrElse("sim.cycleCount.durComp", 3).asInstanceOf[Int]
+      val durAdd = params.getOrElse("sim.cycleCount.durAdd", 6).asInstanceOf[Int]
+      val durSub = params.getOrElse("sim.cycleCount.durSub", 6).asInstanceOf[Int]
 
       val durRemoteAccessCost = params.getOrElse("sim.durRemoteAccessCost", 6).asInstanceOf[Int]
 
@@ -42,8 +42,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       val durCreate5 = params.getOrElse("sim.cycleCount.durCreate5", 100).asInstanceOf[Int]
       val maxCreateDur = params.getOrElse("sim.cycleCount.maxCreateDur", 1500).asInstanceOf[Int]
 
-      val durTrans1 = params.getOrElse("sim.cycleCount.durTrans1", 14).asInstanceOf[Int]
-      val durTrans2 = params.getOrElse("sim.cycleCount.durTrans2", 1).asInstanceOf[Int]
+      val durTrans1 = params.getOrElse("sim.cycleCount.durTrans1", 5).asInstanceOf[Int]
+      val durTrans2 = params.getOrElse("sim.cycleCount.durTrans2", 3).asInstanceOf[Int]
     }
 
     val maxBanks = params.getOrElse("sim.maxBanks", 50).asInstanceOf[Int]
