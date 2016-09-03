@@ -989,7 +989,6 @@ object InstructionTest extends TestSuite {
 
         val program: Program = Compiler.compile("""
           bank main
-            set #1, 5
             comp #1, #2
             move
             move
@@ -999,7 +998,11 @@ object InstructionTest extends TestSuite {
         val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
         board.addBot(bot)
 
-        val instruction = bot.program.banks(0).instructions(1)
+        bot.registers(0) = 5
+
+        val instruction = bot.program.banks(0).instructions(0)
+
+        bot.instructionIndex = 0
 
         bot.cycleNum = instruction.getRequiredCycles(bot)
 
