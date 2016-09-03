@@ -663,20 +663,21 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     botVisualFeatures
       .get(recipientBotId)
-      .map { features: BotVisualFeatures =>
+      .foreach { features: BotVisualFeatures =>
 
         // First, remove the bankColor if there is one
         if (features.bankCircle.nonEmpty) {
           removeBankColor(recipientBotId)
         } 
 
-        val recipient = board.getBot(recipientBotId).get
-
-        // Second, maybe draw the bankColor
-        if (recipient.playerColor != bankColorAnimation.playerColor) {
-          addBankColor(recipientBotId, bankColorAnimation.playerColor)
-        }
-
+        board
+          .getBot(recipientBotId)
+          .foreach { recipient : Bot =>
+            // Second, maybe draw the bankColor
+            if (recipient.playerColor != bankColorAnimation.playerColor) {
+              addBankColor(recipientBotId, bankColorAnimation.playerColor)
+            }
+          }
       }
   }
 

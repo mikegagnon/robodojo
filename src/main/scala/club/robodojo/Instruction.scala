@@ -615,7 +615,12 @@ case class TransInstruction(
               remoteBot.instructionIndex = 0
               remoteBot.cycleNum = 1
 
-              Some(BankColorAnimation(bot.id, remoteBot.id, bank.sourceMap.get.playerColor))
+              //Some(BankColorAnimation(bot.id, remoteBot.id, bank.sourceMap.get.playerColor))
+              bank.sourceMap match {
+                case Some(sourceMap) => return Some(BankColorAnimation(bot.id, remoteBot.id, sourceMap.playerColor))
+                case None => return Some(BankColorAnimation(bot.id, remoteBot.id, remoteBot.playerColor))
+              }
+
             } else {
               None
             }
