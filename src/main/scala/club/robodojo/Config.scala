@@ -14,8 +14,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   object sim {
     val maxNumVariables = params.getOrElse("sim.maxNumVariables", 20).asInstanceOf[Int]
 
-    val numRows: Int = params.getOrElse("sim.numRows", 3).asInstanceOf[Int]
-    val numCols: Int = params.getOrElse("sim.numCols", 6).asInstanceOf[Int]
+    val numRows: Int = params.getOrElse("sim.numRows", 16).asInstanceOf[Int]
+    val numCols: Int = params.getOrElse("sim.numCols", 16).asInstanceOf[Int]
 
     // Update according to http://robocom.rrobek.de/help/instr1.html
     object cycleCount {
