@@ -334,7 +334,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
   // Setting disableBreakpoint to true disables stopping at breakpoints
   def cycle(disableBreakpoint: Boolean): Boolean = {
 
-    val breakpointHit =
+    var breakpointHit =
       controller
         .debugger
         .botIdDebugged
@@ -352,6 +352,16 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
           bot.cycleNum == 1 && controller.debugger.breakpoints.values.toList.contains(breakpoint)
         }
         .getOrElse(false)
+
+    //
+    if (!breakpointHit) controller.debugger.cycleToNum match {
+      case Some(cycleToNum) => {
+        if (board.cycleNum == cycleToNum) {
+          breakpointHit = true
+        }
+      }
+      case None => ()
+    }
 
     if (breakpointHit && !disableBreakpoint) {
       return true

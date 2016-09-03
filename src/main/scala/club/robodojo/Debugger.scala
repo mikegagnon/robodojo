@@ -38,6 +38,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   // can hold a breakpoint
   var potentialBreakpoints = mutable.Map[Int, Breakpoint]()
 
+  // TODO: document
+  var cycleToNum: Option[Int] = None
+
   /** End initialization **************************************************************************/
 
   def removeBreakpoint(
@@ -323,4 +326,9 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     cmEditor.getDoc().setValue("")
     jQuery("#" + config.debugger.outputId).html("")
   }
+
+  def cycleTo(cycleNum: Int): Unit = {
+    cycleToNum = Some(cycleNum)
+  }
+
 }
