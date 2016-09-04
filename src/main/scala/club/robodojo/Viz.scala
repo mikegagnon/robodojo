@@ -669,8 +669,6 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
   def animateBankColor(bankColorAnimation: BankColorAnimation): Unit = {
     
-    println(bankColorAnimation)
-
     val recipientBotId = bankColorAnimation.recipientBotId
 
     botVisualFeatures
