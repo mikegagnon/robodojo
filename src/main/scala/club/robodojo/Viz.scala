@@ -659,9 +659,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     val color = PlayerColor.toHtmlColor(playerColor)
 
-    circle.graphics.setStrokeStyle(1).beginStroke("white").beginFill(color).drawCircle(0, 0, retina(cellSize / 5.0))
+    circle.graphics.setStrokeStyle(1).beginStroke("white").beginFill(color).drawCircle(0, 0, retina(cellSize / 6.0))
     circle.x = retina(cellSize / 2.0)
-    circle.y = retina(cellSize / 2.0) + 4
+    circle.y = retina(cellSize / 2.0) + cellSize * 0.125
     botImages(botId).addChild(circle)
 
     botVisualFeatures(botId).bankCircle = Some(circle)
