@@ -23,6 +23,8 @@ viruses.
 
 Here's a [screenshot](##4way) of a four-way battle.
 
+Throughout the rest of this document, I assume you are a savvy programmer.
+
 ~4way
 ## Screenshot of a four-way battle
 
@@ -34,3 +36,9 @@ Here's a [screenshot](##4way) of a four-way battle.
 - If a bot has a white line through it, that means the bot is deactivated
 
 
+~tutorial
+## Tutorial
+
+1. Hello World
+2. Replication
+3. 
