@@ -1,7 +1,7 @@
 
 * [Play Robo Dojo](http://robodojo.club)
 * [Introduction](##intro)
-* [Tutorial](##tutorial)
+* [Guide](##guide)
 * [Reference](##ref)
 * [How to navigate this document](##navigate)
 
@@ -36,8 +36,8 @@ Throughout the rest of this document, I assume you are a savvy programmer.
 - If a bot has a white line through it, that means the bot is deactivated
 
 
-~tutorial
-## Tutorial
+~guide
+## guide
 
 1. Hello World
 2. Replication
