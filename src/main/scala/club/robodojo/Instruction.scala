@@ -597,8 +597,8 @@ case class TransInstruction(
 
               //Some(BankColorAnimation(bot.id, remoteBot.id, bank.sourceMap.get.playerColor))
               bank.sourceMap match {
-                case Some(sourceMap) => return Some(BankColorAnimation(bot.id, remoteBot.id, sourceMap.playerColor))
-                case None => return Some(BankColorAnimation(bot.id, remoteBot.id, remoteBot.playerColor))
+                case Some(sourceMap) => Some(BankColorAnimation(bot.id, remoteBot.id, sourceMap.playerColor))
+                case None => Some(BankColorAnimation(bot.id, remoteBot.id, remoteBot.playerColor))
               }
 
             } else {
