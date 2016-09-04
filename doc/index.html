@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+  <head>
+    
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/jquery-1.10.1.js"></script>
+    <script src="js/d3.v3.js"></script>
+    <script src="js/lodash.js"></script>
+    <script src="js/sidenote.js"></script>
+  </head>
+  <body>
+    <div class="btn-group addRemoveColumn">
+      <button class="btn"><a href="javascript:Sidenote.more()">more columns</a></button>
+      <button class="btn"><a href="javascript:Sidenote.less()">fewer columns</a></button>
+    </div>
+    <div class="headerbox">
+<h1>Header goes here</h1>
+    </div>
+    <ul id="breadcrumbs" class="breadcrumb"></ul>
+    <div id='column-container'>
+      <a href="javascript:Sidenote.goBack()"><img id="left-arrow" class="hide-arrow" src="img/left_arrow.png"></a>
+      <a href="javascript:Sidenote.goForward()"><img id="right-arrow" class="hide-arrow" src="img/right_arrow.png"></a>
+      <div class='column' id="column0"></div>
+    </div>
+    <div class="content-storage">
+<div id='main'>
+<p>Main column goes here</p>
+</div>
+    </div>
+  </body>
+</html>
+
