@@ -60,6 +60,13 @@ object App extends JSApp {
   }
 
   @JSExport
+  def getCycles(id: String): Int = {
+    activeInstanceId = Some(id)
+    val robodojo = instances(id)
+    return robodojo.controller.debugger.getCycles()
+  }
+
+  @JSExport
   def clickPlayPause(id: String): Unit = {
     activeInstanceId = Some(id)
     val robodojo = instances(id)
