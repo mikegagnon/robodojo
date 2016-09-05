@@ -23,14 +23,15 @@ TODO
 RoboCom is no longer actively maintained but its website is archived
 [here](http://robocom.rrobek.de/). Here's a [screenshot](##robocomscreenshot).
 
-Its documentation is useful as a secondary source for Robo Dojo.
-
 Robo Dojo only implements the "Original" instruction set from RoboCom.
 
 Robo Dojo uses the "Classic" timing model from RoboCom.
 
 I have strove to make the Robo Dojo simulation semantics identical to RoboCom --
 however [I could not create a cycle-for-cycle duplicate of RoboCom](##compatibility).
+
+Nevertheless, Robo Dojo and RoboCom are similar enough to produce
+[similar outputs for similar inputs](##rdrc-battles).
 
 ~4way
 ## Screenshot of a four-way battle
@@ -79,15 +80,19 @@ Concepts:
 ~compatibility
 ## Compatibility with RoboCom
 
-The problem is at least [twofold](##compat-twofold).
+The problem is at least twofold:
+
+1. RoboCom is closed source
+2. Some of RoboCom's semantics appear to be undocumented
 
 Here is one example of [mysterious RoboCom semantics](##compat-mystery).
 
-~compat-twofold
-## The problem is at least twofold
+~rdrc-battles
+## Tournament
 
-1. RoboCom is closed source
-2. Some of RoboCom's semantics are not documented
+**TODO**: Rename header
+
+
 
 ~compat-mystery
 ## Mysterious RoboCom semantics

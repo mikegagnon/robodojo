@@ -76,16 +76,22 @@ their activation, however this change did not effect convergence.</p>
 <h2>RoboCom</h2>
 <p>RoboCom is no longer actively maintained but its website is archived
 <a href="http://robocom.rrobek.de/">here</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#robocom','#robocomscreenshot','screenshot')">screenshot</a>.</p>
-<p>Its documentation is useful as a secondary source for Robo Dojo.</p>
 <p>Robo Dojo only implements the &#8220;Original&#8221; instruction set from RoboCom.</p>
 <p>Robo Dojo uses the &#8220;Classic&#8221; timing model from RoboCom.</p>
 <p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
 however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility','I could not create a cycle-for-cycle duplicate of RoboCom')">I could not create a cycle-for-cycle duplicate of RoboCom</a>.</p>
+<p>Nevertheless, Robo Dojo and RoboCom are similar enough to produce
+<a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar outputs for similar inputs')">similar outputs for similar inputs</a>.</p>
 </div>
 
 <div id='t826-rc-demo'>
 <h2>T=826 in RoboCom</h2>
 <p><img src="img/compat-826-rc.png"></p>
+</div>
+
+<div id='rdrc-battles'>
+<h2>Tournament</h2>
+<p><strong>TODO</strong>: Rename header</p>
 </div>
 
 <div id='compat-myster-diff'>
@@ -97,14 +103,6 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 <li>At <a href="javascript:Sidenote.openColumnLoud('#compat-myster-diff','#t827','T=827')">T=827</a> the selected bot in RoboCom performed the same operation as Robo
     Dojo at T=826</li>
 </ul>
-</div>
-
-<div id='compat-twofold'>
-<h2>The problem is at least twofold</h2>
-<ol>
-<li>RoboCom is closed source</li>
-<li>Some of RoboCom&#8217;s semantics are not documented</li>
-</ol>
 </div>
 
 <div id='4way'>
@@ -183,7 +181,11 @@ move
 
 <div id='compatibility'>
 <h2>Compatibility with RoboCom</h2>
-<p>The problem is at least <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-twofold','twofold')">twofold</a>.</p>
+<p>The problem is at least twofold:</p>
+<ol>
+<li>RoboCom is closed source</li>
+<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
+</ol>
 <p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
 </div>
 
