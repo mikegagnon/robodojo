@@ -76,6 +76,14 @@ I loaded up [two robots](##compat-mystery-2robots) from the [July Package](http:
 and placed them in the [same starting position](##compat-mystery-start) in both
 Robo Dojo and RoboCom.
 
+Then, the [simulations diverged](##compat-myster-diff) between Robo Dojo and RoboCom.
+
+I investigated several changes to Robo Dojo to see if I could get the 
+simulations to converge, but none of the changes worked.
+
+~compat-myster-diff
+## Simulations diverged
+
 - At [T=822](##t822) the simulations for the selected bot were in sync 
 - At [T=826](##t826) the selected bot in the Robo Dojo simulation completed executing a
     `set` instruction, and loaded a `bjump` instruction
@@ -89,6 +97,35 @@ We know this because:
 
 1. At [T=821](##t821-demo) the selected bots were deactivated
 2. At [T=822](##t822-demo) the selected bots were activated
+
+[Note](##t822-note) on Robo Dojo execution.
+
+~t822-note
+## Note on Robo Dojo execution
+
+In one board cycle, the selected bot becomes activated *and* executes one
+cycle of the `set` instruction.
+
+You might think that a bot shouldn't be able to become activated *and*
+execute a bot-cycle in the same board-cycle, however these semantics are
+intentional.
+
+[Here's how it works](##t822-note-works).
+
+I have investigated preventing bots from executing a cycle immediately after
+their activation, however this change did not effect convergence.
+
+~t822-note-works
+## Here's how it works
+
+1. During T=821 every bot executes one cycle (or zero cycles if the bot is deactivated)
+2. The bots execute in order from oldest bot to youngest bot
+1. During T=821 The mother bot activates the selected bot
+2. Since the selected bot is younger than the mother bot, it gets to execute
+a cycle during T=821 after its mother
+
+
+
 
 ~t826
 ## T=826
