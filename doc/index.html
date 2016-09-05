@@ -26,32 +26,6 @@
       <div class='column' id="column0"></div>
     </div>
     <div class="content-storage">
-<div id='main'>
-<ul>
-<li><a href="http://robodojo.club">Play Robo Dojo</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#intro','Introduction')">Introduction</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference')">Reference</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#navigate','How to navigate this document')">How to navigate this document</a></li>
-</ul>
-</div>
-
-<div id='navigate'>
-<h2>How to navigate this document</h2>
-<p>This is a <a href="http://sidenote.io">Sidenote</a> document.</p>
-<p>Sidenote opens links in new columns.</p>
-<p>TODO</p>
-</div>
-
-<div id='intro'>
-<h2>Introduction</h2>
-<p>Robo Dojo is a clone of the 1998 game <a href="http://robocom.rrobek.de/">RoboCom</a>.
-You play the game by programming bots to battle each other with home-brewed
-viruses.</p>
-<p>Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#intro','#4way','screenshot')">screenshot</a> of a four-way battle.</p>
-<p>Throughout the rest of this document, I assume you are a savvy programmer.</p>
-</div>
-
 <div id='4way'>
 <h2>Screenshot of a four-way battle</h2>
 <p><img src="img/battle.png"></p>
@@ -63,13 +37,89 @@ viruses.</p>
 </ul>
 </div>
 
+<div id='compat-mystery'>
+<h2>Mysterious RoboCom semantics</h2>
+<p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
+and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
+Robo Dojo and RoboCom.</p>
+</div>
+
+<div id='navigate'>
+<h2>How to navigate this document</h2>
+<p>This is a <a href="http://sidenote.io">Sidenote</a> document.</p>
+<p>Sidenote opens links in new columns.</p>
+<p>TODO</p>
+</div>
+
+<div id='compat-mystery-start'>
+<h2>Same starting position</h2>
+<p><img src="img/compat-start-robodojo.png"></p>
+<p><img src="img/compat-start-robocom.png"></p>
+</div>
+
+<div id='compat-mystery-2robots'>
+<h2>Two robots</h2>
+<p>Activator3 and Alien 1.4</p>
+</div>
+
+<div id='compatibility'>
+<h2>Compatibility with RoboCom</h2>
+<p>Robo Dojo is a reimplementation of the 1998 Windows game
+<a href="http://robocom.rrobek.de/">RoboCom</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#compatibility','#robocomscreenshot','screenshot')">screenshot</a>.</p>
+<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
+however I could not create a cycle-for-cycle duplicate of RoboCom.</p>
+<p>The problem is <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-threefold','threefold')">threefold</a>.</p>
+<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
+</div>
+
+<div id='intro'>
+<h2>Introduction</h2>
+<p>Robo Dojo is a clone of the 1998 game <a href="http://robocom.rrobek.de/">RoboCom</a>.
+You play the game by programming bots to battle each other with home-brewed
+viruses.</p>
+<p>Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#intro','#4way','screenshot')">screenshot</a> of a four-way battle.</p>
+<p>Throughout the rest of this document, I assume you are a savvy programmer.</p>
+</div>
+
+<div id='robocomscreenshot'>
+<h2>RoboCom Screenshot</h2>
+<p><img src="img/robocom-screenshot.png"></p>
+</div>
+
+<div id='compat-threefold'>
+<h2>The problem is threefold</h2>
+<ol>
+<li>RoboCom is closed source</li>
+<li>The RoboCom documentation is limited</li>
+<li>Some of RoboCom&#8217;s semantics are not documented</li>
+</ol>
+</div>
+
+<div id='main'>
+<ul>
+<li><a href="http://robodojo.club">Play Robo Dojo</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#intro','Introduction')">Introduction</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference')">Reference</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#errata','Errata')">Errata</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#navigate','How to navigate this document')">How to navigate this document</a></li>
+</ul>
+</div>
+
 <div id='guide'>
-<h2>guide</h2>
+<h2>Guide</h2>
 <ol>
 <li>Hello World</li>
 <li>Replication</li>
 <li></li>
 </ol>
+</div>
+
+<div id='errata'>
+<h2>Errata</h2>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#errata','#compatibility','Compatibility with RoboCom')">Compatibility with RoboCom</a></li>
+</ul>
 </div>
     </div>
   </body>
