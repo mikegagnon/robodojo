@@ -76,10 +76,82 @@ I loaded up [two robots](##compat-mystery-2robots) from the [July Package](http:
 and placed them in the [same starting position](##compat-mystery-start) in both
 Robo Dojo and RoboCom.
 
+- At [T=822](##t822) the simulations for the selected bot were in sync 
+- At [T=826](##t826) the selected bot in the Robo Dojo simulation completed executing a
+    `set` instruction, and loaded a `bjump` instruction
+- At [T=827](##t827) the selected bot in RoboCom performed the same operation as Robo
+    Dojo at T=826
+
+~t822
+## T=822
+
+We know this because:
+
+1. At [T=821](##t821-demo) the selected bots were deactivated
+2. At [T=822](##t822-demo) the selected bots were activated
+
+~t826
+## T=826
+
+We this because:
+
+1. At [T=825](##t825-rd-demo) the selected bot was executing a `set` instruction
+2. At [T=826](##t826-rd-demo) the selected bot was executing a `bjump` instruction
+
+~t827
+## T=827
+
+We this because:
+
+1. At [T=826](##t826-rc-demo) the selected bot was executing a `set` instruction
+2. At [T=827](##t827-rc-demo) the selected bot was executing a `bjump` instruction
+
+
+~t821-demo
+## T=821
+s
+<img src="img/compat-821-rd.png">
+
+<img src="img/compat-821-rc.png">
+
+~t822-demo
+## T=822
+
+<img src="img/compat-822-rd.png">
+
+<img src="img/compat-822-rc.png">
+
+~t825-rd-demo
+## T=825 in Robo Dojo
+
+<img src="img/compat-825-rd.png">
+
+~t826-rd-demo
+## T=826 in Robo Dojo
+
+<img src="img/compat-826-rd.png">
+
+
+
+~t826-rc-demo
+## T=826 in RoboCom
+
+<img src="img/compat-826-rc.png">
+
+~t827-rc-demo
+## T=827 in RoboCom
+
+<img src="img/compat-827-rc.png">
+
+
+
+
+
+
 ~compat-mystery-2robots
 ## Two robots
 
-Activator3 and Alien 1.4
+Activator3 (orange/red) and Alien 1.4 (blue)
 
 ~compat-mystery-start
 ## Same starting position

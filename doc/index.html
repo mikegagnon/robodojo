@@ -26,15 +26,25 @@
       <div class='column' id="column0"></div>
     </div>
     <div class="content-storage">
-<div id='4way'>
-<h2>Screenshot of a four-way battle</h2>
-<p><img src="img/battle.png"></p>
-<ul>
-<li>Each tear-drop shape is a different bot</li>
-<li>If a bot contains a circle of a different color, that means the bot
-  is infected</li>
-<li>If a bot has a white line through it, that means the bot is deactivated</li>
-</ul>
+<div id='t826-rc-demo'>
+<h2>T=826 in RoboCom</h2>
+<p><img src="img/compat-826-rc.png"></p>
+</div>
+
+<div id='t821-demo'>
+<h2>T=821</h2>
+<p>s
+<img src="img/compat-821-rd.png"></p>
+<p><img src="img/compat-821-rc.png"></p>
+</div>
+
+<div id='guide'>
+<h2>Guide</h2>
+<ol>
+<li>Hello World</li>
+<li>Replication</li>
+<li></li>
+</ol>
 </div>
 
 <div id='compat-mystery'>
@@ -42,6 +52,27 @@
 <p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
 and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
 Robo Dojo and RoboCom.</p>
+<ul>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#t822','T=822')">T=822</a> the simulations for the selected bot were in sync </li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#t826','T=826')">T=826</a> the selected bot in the Robo Dojo simulation completed executing a
+    <code>set</code> instruction, and loaded a <code>bjump</code> instruction</li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#t827','T=827')">T=827</a> the selected bot in RoboCom performed the same operation as Robo
+    Dojo at T=826</li>
+</ul>
+</div>
+
+<div id='t827-rc-demo'>
+<h2>T=827 in RoboCom</h2>
+<p><img src="img/compat-827-rc.png"></p>
+</div>
+
+<div id='t826'>
+<h2>T=826</h2>
+<p>We this because:</p>
+<ol>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t826','#t825-rd-demo','T=825')">T=825</a> the selected bot was executing a <code>set</code> instruction</li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t826','#t826-rd-demo','T=826')">T=826</a> the selected bot was executing a <code>bjump</code> instruction</li>
+</ol>
 </div>
 
 <div id='navigate'>
@@ -49,6 +80,20 @@ Robo Dojo and RoboCom.</p>
 <p>This is a <a href="http://sidenote.io">Sidenote</a> document.</p>
 <p>Sidenote opens links in new columns.</p>
 <p>TODO</p>
+</div>
+
+<div id='t825-rd-demo'>
+<h2>T=825 in Robo Dojo</h2>
+<p><img src="img/compat-825-rd.png"></p>
+</div>
+
+<div id='t822'>
+<h2>T=822</h2>
+<p>We know this because:</p>
+<ol>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t822','#t821-demo','T=821')">T=821</a> the selected bots were deactivated</li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t822','#t822-demo','T=822')">T=822</a> the selected bots were activated</li>
+</ol>
 </div>
 
 <div id='compat-mystery-start'>
@@ -59,7 +104,7 @@ Robo Dojo and RoboCom.</p>
 
 <div id='compat-mystery-2robots'>
 <h2>Two robots</h2>
-<p>Activator3 and Alien 1.4</p>
+<p>Activator3 (orange/red) and Alien 1.4 (blue)</p>
 </div>
 
 <div id='compatibility'>
@@ -72,6 +117,11 @@ however I could not create a cycle-for-cycle duplicate of RoboCom.</p>
 <p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
 </div>
 
+<div id='t826-rd-demo'>
+<h2>T=826 in Robo Dojo</h2>
+<p><img src="img/compat-826-rd.png"></p>
+</div>
+
 <div id='intro'>
 <h2>Introduction</h2>
 <p>Robo Dojo is a clone of the 1998 game <a href="http://robocom.rrobek.de/">RoboCom</a>.
@@ -81,9 +131,24 @@ viruses.</p>
 <p>Throughout the rest of this document, I assume you are a savvy programmer.</p>
 </div>
 
+<div id='t822-demo'>
+<h2>T=822</h2>
+<p><img src="img/compat-822-rd.png"></p>
+<p><img src="img/compat-822-rc.png"></p>
+</div>
+
 <div id='robocomscreenshot'>
 <h2>RoboCom Screenshot</h2>
 <p><img src="img/robocom-screenshot.png"></p>
+</div>
+
+<div id='t827'>
+<h2>T=827</h2>
+<p>We this because:</p>
+<ol>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t827','#t826-rc-demo','T=826')">T=826</a> the selected bot was executing a <code>set</code> instruction</li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t827','#t827-rc-demo','T=827')">T=827</a> the selected bot was executing a <code>bjump</code> instruction</li>
+</ol>
 </div>
 
 <div id='compat-threefold'>
@@ -106,13 +171,15 @@ viruses.</p>
 </ul>
 </div>
 
-<div id='guide'>
-<h2>Guide</h2>
-<ol>
-<li>Hello World</li>
-<li>Replication</li>
-<li></li>
-</ol>
+<div id='4way'>
+<h2>Screenshot of a four-way battle</h2>
+<p><img src="img/battle.png"></p>
+<ul>
+<li>Each tear-drop shape is a different bot</li>
+<li>If a bot contains a circle of a different color, that means the bot
+  is infected</li>
+<li>If a bot has a white line through it, that means the bot is deactivated</li>
+</ul>
 </div>
 
 <div id='errata'>
