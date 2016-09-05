@@ -67,7 +67,7 @@ their activation, however this change did not effect convergence.</p>
 You play the game by programming bots to battle each other with home-brewed
 viruses.</p>
 <p>Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#intro','#4way','screenshot')">screenshot</a> of a four-way battle.</p>
-<p>Throughout the rest of this document, I assume you are a savvy programmer.</p>
+<p>Throughout this document, I assume you are a savvy programmer.</p>
 </div>
 
 <div id='t826-rc-demo'>
@@ -94,14 +94,15 @@ viruses.</p>
 </ol>
 </div>
 
-<div id='compatibility'>
-<h2>Compatibility with RoboCom</h2>
-<p>Robo Dojo is a reimplementation of the 1998 Windows game
-<a href="http://robocom.rrobek.de/">RoboCom</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#compatibility','#robocomscreenshot','screenshot')">screenshot</a>.</p>
-<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
-however I could not create a cycle-for-cycle duplicate of RoboCom.</p>
-<p>The problem is at least <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-twofold','twofold')">twofold</a>.</p>
-<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
+<div id='4way'>
+<h2>Screenshot of a four-way battle</h2>
+<p><img src="img/battle.png"></p>
+<ul>
+<li>Each tear-drop shape is a different bot</li>
+<li>If a bot contains a circle of a different color, that means the bot
+  is infected</li>
+<li>If a bot has a white line through it, that means the bot is deactivated</li>
+</ul>
 </div>
 
 <div id='t822-demo'>
@@ -149,15 +150,23 @@ Robo Dojo and RoboCom.</p>
 simulations to converge, but none of the changes worked.</p>
 </div>
 
-<div id='4way'>
-<h2>Screenshot of a four-way battle</h2>
-<p><img src="img/battle.png"></p>
-<ul>
-<li>Each tear-drop shape is a different bot</li>
-<li>If a bot contains a circle of a different color, that means the bot
-  is infected</li>
-<li>If a bot has a white line through it, that means the bot is deactivated</li>
-</ul>
+<div id='guide-hello'>
+<h2>Hello World</h2>
+<p>Here is your &#8220;Hello World&#8221; program:</p>
+<pre><code>bank Main
+
+move
+</code></pre>
+</div>
+
+<div id='compatibility'>
+<h2>Compatibility with RoboCom</h2>
+<p>Robo Dojo is a reimplementation of the 1998 Windows game
+<a href="http://robocom.rrobek.de/">RoboCom</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#compatibility','#robocomscreenshot','screenshot')">screenshot</a>.</p>
+<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
+however I could not create a cycle-for-cycle duplicate of RoboCom.</p>
+<p>The problem is at least <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-twofold','twofold')">twofold</a>.</p>
+<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
 </div>
 
 <div id='t826'>
@@ -213,7 +222,7 @@ simulations to converge, but none of the changes worked.</p>
 <div id='guide'>
 <h2>Guide</h2>
 <ol>
-<li>Hello World</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
 <li>Replication</li>
 <li></li>
 </ol>

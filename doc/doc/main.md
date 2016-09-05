@@ -24,7 +24,7 @@ viruses.
 
 Here's a [screenshot](##4way) of a four-way battle.
 
-Throughout the rest of this document, I assume you are a savvy programmer.
+Throughout this document, I assume you are a savvy programmer.
 
 ~4way
 ## Screenshot of a four-way battle
@@ -40,9 +40,18 @@ Throughout the rest of this document, I assume you are a savvy programmer.
 ~guide
 ## Guide
 
-1. Hello World
+1. [Hello World](##guide-hello)
 2. Replication
 3. 
+
+~guide-hello
+## Hello World
+
+Here is your "Hello World" program:
+
+    bank Main
+
+    move
 
 ~errata
 ## Errata
