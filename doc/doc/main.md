@@ -49,9 +49,26 @@ Throughout this document, I assume you are a savvy programmer.
 
 Here is your "Hello World" program:
 
-    bank Main
-
+    bank main
     move
+
+[Run your program](##guide-hello-run).
+
+Concepts:
+
+- The board
+- The bot
+- The `bank` directive
+- The `move` instruction
+
+~guide-hello-run
+## Run your program
+
+1. Go to [RoboDojo.club](http://robodojo.club)
+2. In the editor, type in your program
+3. Click compile
+4. Click the play button. You will see your bot running.
+5. Click the pause button once you're bored
 
 ~errata
 ## Errata
