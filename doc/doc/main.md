@@ -58,16 +58,15 @@ Robo Dojo is a reimplementation of the 1998 Windows game
 I have strove to make the Robo Dojo simulation semantics identical to RoboCom --
 however I could not create a cycle-for-cycle duplicate of RoboCom.
 
-The problem is [threefold](##compat-threefold).
+The problem is at least [twofold](##compat-twofold).
 
 Here is one example of [mysterious RoboCom semantics](##compat-mystery).
 
-~compat-threefold
-## The problem is threefold
+~compat-twofold
+## The problem is at least twofold
 
 1. RoboCom is closed source
-2. The RoboCom documentation is limited
-3. Some of RoboCom's semantics are not documented
+2. Some of RoboCom's semantics are not documented
 
 ~compat-mystery
 ## Mysterious RoboCom semantics
