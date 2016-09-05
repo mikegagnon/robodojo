@@ -72,13 +72,15 @@ their activation, however this change did not effect convergence.</p>
 <p><img src="img/compat-826-rd.png"></p>
 </div>
 
-<div id='intro'>
-<h2>Introduction</h2>
-<p>Robo Dojo is a clone of the 1998 game <a href="http://robocom.rrobek.de/">RoboCom</a>.
-You play the game by programming bots to battle each other with home-brewed
-viruses.</p>
-<p>Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#intro','#4way','screenshot')">screenshot</a> of a four-way battle.</p>
-<p>Throughout this document, I assume you are a savvy programmer.</p>
+<div id='robocom'>
+<h2>RoboCom</h2>
+<p>RoboCom is no longer actively maintained but its website is archived
+<a href="http://robocom.rrobek.de/">here</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#robocom','#robocomscreenshot','screenshot')">screenshot</a>.</p>
+<p>Its documentation is useful as a secondary source for Robo Dojo.</p>
+<p>Robo Dojo only implements the &#8220;Original&#8221; instruction set from RoboCom.</p>
+<p>Robo Dojo uses the &#8220;Classic&#8221; timing model from RoboCom.</p>
+<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
+however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility','I could not create a cycle-for-cycle duplicate of RoboCom')">I could not create a cycle-for-cycle duplicate of RoboCom</a>.</p>
 </div>
 
 <div id='t826-rc-demo'>
@@ -134,12 +136,13 @@ a cycle during T=821 after its mother</li>
 </div>
 
 <div id='main'>
+<p>Robo Dojo is a game where you program bots to battle each other with home-brewed
+viruses (<a href="javascript:Sidenote.openColumnLoud('#main','#4way','screenshot')">screenshot</a>).
+Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a>.</p>
 <ul>
 <li><a href="http://robodojo.club">Play Robo Dojo</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#intro','Introduction')">Introduction</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference')">Reference</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#errata','Errata')">Errata</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#navigate','How to navigate this document')">How to navigate this document</a></li>
 </ul>
 </div>
@@ -157,6 +160,7 @@ a cycle during T=821 after its mother</li>
 and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
 Robo Dojo and RoboCom.</p>
 <p>Then, the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-myster-diff','simulations diverged')">simulations diverged</a> between Robo Dojo and RoboCom.</p>
+<p><strong>TODO</strong>: explain how I know my semantics are correct.</p>
 <p>I investigated several changes to Robo Dojo to see if I could get the 
 simulations to converge, but none of the changes worked.</p>
 </div>
@@ -179,10 +183,6 @@ move
 
 <div id='compatibility'>
 <h2>Compatibility with RoboCom</h2>
-<p>Robo Dojo is a reimplementation of the 1998 Windows game
-<a href="http://robocom.rrobek.de/">RoboCom</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#compatibility','#robocomscreenshot','screenshot')">screenshot</a>.</p>
-<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
-however I could not create a cycle-for-cycle duplicate of RoboCom.</p>
 <p>The problem is at least <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-twofold','twofold')">twofold</a>.</p>
 <p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
 </div>
@@ -218,13 +218,6 @@ however I could not create a cycle-for-cycle duplicate of RoboCom.</p>
 <li>At <a href="javascript:Sidenote.openColumnLoud('#t822','#t822-demo','T=822')">T=822</a> the selected bots were activated</li>
 </ol>
 <p><a href="javascript:Sidenote.openColumnLoud('#t822','#t822-note','Note')">Note</a> on Robo Dojo execution.</p>
-</div>
-
-<div id='errata'>
-<h2>Errata</h2>
-<ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#errata','#compatibility','Compatibility with RoboCom')">Compatibility with RoboCom</a></li>
-</ul>
 </div>
 
 <div id='robocomscreenshot'>
