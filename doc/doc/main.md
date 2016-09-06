@@ -92,6 +92,15 @@ Here is one example of [mysterious RoboCom semantics](##compat-mystery).
 
 **TODO**: Rename header
 
+Running of of version 8b5386d54cc3a6117733f79b984fcabe13c67cf1
+
+Robo Dojo
+
+- [Activator3] vs. [Alien3.4]: 0-4-3
+
+RoboCom
+
+- [Activator3] vs. [Alien3.4]: 0-0-7
 
 
 ~compat-mystery
