@@ -98,17 +98,19 @@ Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
 
 Round 1
 
-    Match                       Robo Dojo   RoboCom
-    --------------------------------------------------
-    Activator3 vs. Alien3.4     0-2-5       0-1-7
-    Alpha vs. Fruchtzwerk 2     2-0-5       1-0-6
-    Conciler vs. Kommari 2.1    6-0-1       6-0-1
+    Match                             Robo Dojo   RoboCom
+    ------------------------------------------------------
+    Activator3 vs. Alien3.4           0-2-5       0-1-7
+    Alpha vs. Fruchtzwerk 2           2-0-5       1-0-6
+    Conciler vs. Kommari 2.1          6-0-1       6-0-1
+    Delusion 3.7 vs. Einfachst-DM.DV  7-0-0       7-0-0
 
 Round 2
 
-    Match                       Robo Dojo   RoboCom
-    --------------------------------------------------
-    Alien3.4 vs. Alpha        0-0-0       0-0-0
+    Match                             Robo Dojo   RoboCom
+    ------------------------------------------------------
+    Alien3.4 vs. Alpha                0-0-0       0-0-0
+    Conciler vs. Einfachst-DM.DV      0-0-0       0-0-0
 
 
 ~compat-mystery
