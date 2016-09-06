@@ -105,6 +105,8 @@ Round 1
     Conciler vs. Kommari 2.1          6-0-1       6-0-1
     Delusion 3.7 vs. Einfachst-DM.DV  7-0-0       7-0-0
     DoomMob 1.6 vs. Flooder 1.0       0-7-0       0-7-0
+    Geza's McRobi vs. Goody2          0-7-0       0-7-0
+    Martins Echter vs. Goodymorph     0-0-7       0-0-7
 
 Round 2
 
@@ -112,6 +114,7 @@ Round 2
     ------------------------------------------------------
     Alien3.4 vs. Alpha                0-0-0       0-0-0
     Conciler vs. Einfachst-DM.DV      0-0-0       0-0-0
+    Flooder 1.0 vs. Goody2            0-0-0       0-0-0
 
 
 ~compat-mystery
