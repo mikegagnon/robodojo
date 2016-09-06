@@ -102,6 +102,7 @@ Round 1
     --------------------------------------------------
     Activator3 vs. Alien3.4     0-2-5       0-1-7
     Alpha vs. Fruchtzwerk 2     2-0-5       1-0-6
+    Conciler vs. Kommari 2.1    6-0-1       6-0-1
 
 Round 2
 
@@ -119,7 +120,7 @@ Robo Dojo and RoboCom.
 
 Then, the [simulations diverged](##compat-myster-diff) between Robo Dojo and RoboCom.
 
-**TODO**: explain how I know my semantics are correct.
+**TODO**: explain how I know my semantics are correct
 
 I investigated several changes to Robo Dojo to see if I could get the 
 simulations to converge, but none of the changes worked.
