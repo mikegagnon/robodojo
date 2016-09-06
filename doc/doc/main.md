@@ -104,6 +104,7 @@ Round 1
     Alpha vs. Fruchtzwerk 2           2-0-5       1-0-6
     Conciler vs. Kommari 2.1          6-0-1       6-0-1
     Delusion 3.7 vs. Einfachst-DM.DV  7-0-0       7-0-0
+    DoomMob 1.6 vs. Flooder 1.0       0-7-0       0-1-0
 
 Round 2
 
