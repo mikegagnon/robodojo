@@ -62,7 +62,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var instructionIndex = 0
 
-  var cycleNum = 1
+  var cycleNum = 0
 
   // The number of cycles that must be executed before executing the current instruction
   var requiredCycles = 0
