@@ -73,6 +73,29 @@ To implement it, we need to learn four new instructions:
 
 Putting it all together, here is the [Anti Diamond program](##anti-diamond-program).
 
+The battle should look something like [this](##anti-diamond-battle).
+
+~anti-diamond-battle
+## Anti Diamond battle
+
+1. [Diamond (red) starts out with more bots](##ad-battle-1), since it's executing fewer instructions
+2. [Diamond begins to experience tapouts](##ad-battle-2)
+3. [Anti Diamond catches up with Diamond](##ad-battle-3)
+4. [Anti Diamond overwhelms Diamond](##ad-battle-4)
+5. [Anti Diamond wins](##ad-battle-5)
+
+~ad-battle-1
+<img src="img/anti-diamond-1.png">
+~ad-battle-2
+<img src="img/anti-diamond-2.png">
+The red squares indicate a Red bot has just tapped out there.
+~ad-battle-3
+<img src="img/anti-diamond-3.png">
+~ad-battle-4
+<img src="img/anti-diamond-4.png">
+~ad-battle-5
+<img src="img/anti-diamond-5.png">
+
 ~anti-diamond-program
 ## Anti Diamond program
 

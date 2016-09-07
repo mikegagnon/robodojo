@@ -116,6 +116,23 @@ move
 <p><img src="img/compat-826-rd.png"></p>
 </div>
 
+<div id='diamond'>
+<h2>Diamond</h2>
+<p>Adding a <code>turn</code> instruction to the Replication program builds a cluster of
+bots in a diamond shape.</p>
+<pre><code>bank main
+create 2,1,0
+trans 1,1
+set %active, 1
+turn 1
+</code></pre>
+<p><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-screenshot','Screenshot')">Screenshot</a></p>
+<h3>How it works</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-turn','The &lt;tt&gt;turn&lt;/tt&gt; instruction')">The <tt>turn</tt> instruction</a></li>
+</ul>
+</div>
+
 <div id='infection-screenshot-1'>
 <h2>Infection Screenshot 1</h2>
 <p><img src="img/infection-screenshot-1.png"></p>
@@ -171,6 +188,17 @@ bank foe
 </code></pre>
 </div>
 
+<div id='compat-mystery'>
+<h2>Mysterious RoboCom semantics</h2>
+<p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
+and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
+Robo Dojo and RoboCom.</p>
+<p>Then, the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-myster-diff','simulations diverged')">simulations diverged</a> between Robo Dojo and RoboCom.</p>
+<p><strong>TODO</strong>: explain how I know my semantics are correct</p>
+<p>I investigated several changes to Robo Dojo to see if I could get the 
+simulations to converge, but none of the changes worked.</p>
+</div>
+
 <div id='guide-repl-trans'>
 <h2>The <tt>trans</tt> instruction</h2>
 <p>The <code>trans</code> instruction uploads one bank from one bot to another.</p>
@@ -197,16 +225,8 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 <a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar outputs for similar inputs')">similar outputs for similar inputs</a>.</p>
 </div>
 
-<div id='guide-repl-create-mobility'>
-<h2>Mobility</h2>
-<p>Each bot is either mobile or immobile (i.e. whether or not it can execute the
-<code>move</code> instruction).</p>
-<p>The third parameter to the <code>create</code> instruction specifies whether or not the
-child should be mobile:</p>
-<ul>
-<li>0 signifies immobility</li>
-<li>1 signifies mobility </li>
-</ul>
+<div id='ad-battle-3'>
+<p><img src="img/anti-diamond-3.png"></p>
 </div>
 
 <div id='t826-rc-demo'>
@@ -281,6 +301,15 @@ Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 <li>At <a href="javascript:Sidenote.openColumnLoud('#compat-myster-diff','#t827','T=827')">T=827</a> the selected bot in RoboCom performed the same operation as Robo
     Dojo at T=826</li>
 </ul>
+</div>
+
+<div id='guide-repl-create-numbanks'>
+<h2>Number of banks</h2>
+<p>Each bot contains one or more <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-numbanks','#guide-hello-bank','banks')">banks</a>.</p>
+<p>The second parameter to the <code>create</code> instruction specifies how many banks
+the child should have.</p>
+<p>These will all be empty banks, which is to say every bank will have
+zero instructions.</p>
 </div>
 
 <div id='4way'>
@@ -362,46 +391,29 @@ of the first bank of the program.</p>
 </ul>
 </div>
 
-<div id='diamond'>
-<h2>Diamond</h2>
-<p>Adding a <code>turn</code> instruction to the Replication program builds a cluster of
-bots in a diamond shape.</p>
-<pre><code>bank main
-create 2,1,0
-trans 1,1
-set %active, 1
-turn 1
-</code></pre>
-<p><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-screenshot','Screenshot')">Screenshot</a></p>
-<h3>How it works</h3>
+<div id='ad-battle-5'>
+<p><img src="img/anti-diamond-5.png"></p>
+</div>
+
+<div id='ad-battle-2'>
+<p><img src="img/anti-diamond-2.png">
+The red squares indicate a Red bot has just tapped out there.</p>
+</div>
+
+<div id='guide-repl-create-mobility'>
+<h2>Mobility</h2>
+<p>Each bot is either mobile or immobile (i.e. whether or not it can execute the
+<code>move</code> instruction).</p>
+<p>The third parameter to the <code>create</code> instruction specifies whether or not the
+child should be mobile:</p>
 <ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-turn','The &lt;tt&gt;turn&lt;/tt&gt; instruction')">The <tt>turn</tt> instruction</a></li>
+<li>0 signifies immobility</li>
+<li>1 signifies mobility </li>
 </ul>
 </div>
 
-<div id='compat-mystery'>
-<h2>Mysterious RoboCom semantics</h2>
-<p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
-and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
-Robo Dojo and RoboCom.</p>
-<p>Then, the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-myster-diff','simulations diverged')">simulations diverged</a> between Robo Dojo and RoboCom.</p>
-<p><strong>TODO</strong>: explain how I know my semantics are correct</p>
-<p>I investigated several changes to Robo Dojo to see if I could get the 
-simulations to converge, but none of the changes worked.</p>
-</div>
-
-<div id='blue-infected-picture'>
-<h2>An infected blue bot</h2>
-<p><img src="img/infected-bluebot.png"></p>
-</div>
-
-<div id='guide-repl-create-numbanks'>
-<h2>Number of banks</h2>
-<p>Each bot contains one or more <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-numbanks','#guide-hello-bank','banks')">banks</a>.</p>
-<p>The second parameter to the <code>create</code> instruction specifies how many banks
-the child should have.</p>
-<p>These will all be empty banks, which is to say every bank will have
-zero instructions.</p>
+<div id='ad-battle-1'>
+<p><img src="img/anti-diamond-1.png"></p>
 </div>
 
 <div id='guide-hello-compile'>
@@ -429,9 +441,9 @@ a cycle during T=821 after its mother</li>
 </ul>
 </div>
 
-<div id='guide-repl-screenshot'>
-<h2>Screenshot</h2>
-<p><img src="img/replicate.png"></p>
+<div id='blue-infected-picture'>
+<h2>An infected blue bot</h2>
+<p><img src="img/infected-bluebot.png"></p>
 </div>
 
 <div id='guide-hello-execution'>
@@ -472,6 +484,11 @@ set %active, 1
 <div id='guide-diamond-screenshot'>
 <h2>Screenshot</h2>
 <p><img src="img/diamond.png"></p>
+</div>
+
+<div id='guide-repl-screenshot'>
+<h2>Screenshot</h2>
+<p><img src="img/replicate.png"></p>
 </div>
 
 <div id='defeating-diamond-pseudo'>
@@ -546,6 +563,10 @@ should have the Super instruction set, since we want the child to be able to
 <p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
+<div id='ad-battle-4'>
+<p><img src="img/anti-diamond-4.png"></p>
+</div>
+
 <div id='defeating-diamond'>
 <h2>Anti Diamond</h2>
 <p>Let&#8217;s build a program that defeats the Diamond program.</p>
@@ -561,6 +582,7 @@ is straightforward and simple.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-jump','jump')">jump</a></li>
 </ul>
 <p>Putting it all together, here is the <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#anti-diamond-program','Anti Diamond program')">Anti Diamond program</a>.</p>
+<p>The battle should look something like <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#anti-diamond-battle','this')">this</a>.</p>
 </div>
 
 <div id='infection-screenshot-4'>
@@ -657,6 +679,17 @@ causes the forward bot to become activated.</p>
 every Red bot is more-or-less surrounded by other Red bots who are constantly
 propagating their Red banks. Thus, when a Red bot becomes infected, its
 neighboring Red bots disinfect the infected Red bot.</p>
+</div>
+
+<div id='anti-diamond-battle'>
+<h2>Anti Diamond battle</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-3','Anti Diamond catches up with Diamond')">Anti Diamond catches up with Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-4','Anti Diamond overwhelms Diamond')">Anti Diamond overwhelms Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-5','Anti Diamond wins')">Anti Diamond wins</a></li>
+</ol>
 </div>
 
 <div id='infection-explanation'>
