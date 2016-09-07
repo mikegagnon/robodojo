@@ -95,6 +95,16 @@ we need to execute the `trans` and `set` instructions after `create`).
 Thus, `create 2,1,0` creates an immobile bot with the Super instruction set and
 one empty bank.
 
+~guide-repl-create-slow
+## Slowest instruction
+
+Typically, the `create` instruction requires at least several hundred cycles.
+
+- The greater the instruction set, the more cycles are required
+- The more banks, the more cycles required
+- If the child is to be mobile, the more cycles required
+
+
 ~guide-repl-create-instrset
 ## Instruction set
 
@@ -182,9 +192,11 @@ There are two parameters:
 
 Thus, `set %active, 1` assigns the value `1` to the variable `%active`.
 
-### But what does that do?
+`%active` is a special variable: setting it to `1` (or greater)
+causes the forward bot to become activated.
 
-- [Understanding <tt>active</tt> variables](##guide-repl-set-active)
+
+**TODO**: Link to article on variables and constants
 
 ~guide-hello
 ## Hello World

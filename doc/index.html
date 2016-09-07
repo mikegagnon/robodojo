@@ -477,10 +477,9 @@ one empty bank.</p>
 <li>Source value</li>
 </ol>
 <p>Thus, <code>set %active, 1</code> assigns the value <code>1</code> to the variable <code>%active</code>.</p>
-<h3>But what does that do?</h3>
-<ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-set','#guide-repl-set-active','Understanding &lt;tt&gt;active&lt;/tt&gt; variables')">Understanding <tt>active</tt> variables</a></li>
-</ul>
+<p><code>%active</code> is a special variable: setting it to <code>1</code> (or greater)
+causes the forward bot to become activated.</p>
+<p><strong>TODO</strong>: Link to article on variables and constants</p>
 </div>
 
 <div id='robocomscreenshot'>
@@ -496,6 +495,16 @@ one empty bank.</p>
 <div id='t825-rd-demo'>
 <h2>T=825 in Robo Dojo</h2>
 <p><img src="img/compat-825-rd.png"></p>
+</div>
+
+<div id='guide-repl-create-slow'>
+<h2>Slowest instruction</h2>
+<p>Typically, the <code>create</code> instruction requires at least several hundred cycles.</p>
+<ul>
+<li>The greater the instruction set, the more cycles are required</li>
+<li>The more banks, the more cycles required</li>
+<li>If the child is to be mobile, the more cycles required</li>
+</ul>
 </div>
     </div>
   </body>
