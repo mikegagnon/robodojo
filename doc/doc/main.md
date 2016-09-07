@@ -57,7 +57,7 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 Here is your replication-demo program:
 
     bank main
-    create 2,1,1
+    create 2,1,0
     trans 1,1
     set %active, 1
 
@@ -93,7 +93,7 @@ The first parameter of the `create` instruction specifies the instruction set
 for the child bot.
 
 In our Replication program, we use the parameter 2 to specify that the child
-will have the Super instruction set, since we want the child to be able to
+should have the Super instruction set, since we want the child to be able to
 `create` a child of its own.
 
 **TODO**: Link to instruction set documentation
@@ -116,8 +116,26 @@ will have the Super instruction set, since we want the child to be able to
 ~guide-repl-create-numbanks
 ## Number of banks
 
+Each bot contains one or more [banks](##guide-hello-bank).
+
+The second parameter to the `create` instruction specifies how many banks
+the child should have.
+
+These will all be empty banks, which is to say every bank will have
+zero instructions.
+
 ~guide-repl-create-mobility
 ## Mobility
+
+Each bot is either mobile or immobile (i.e. whether or not it can execute the
+`move` instruction).
+
+The third parameter to the `create` instruction specifies whether or not the
+child should be mobile:
+
+- 0 signifies immobility
+- 1 signifies mobility 
+
 
 ~guide-repl-trans
 ## The <tt>trans</tt> instruction
@@ -171,7 +189,7 @@ of the first bank of the program.
 
 ### See also
 
-- [Working with Banks](##working-with-banks)
+- [Working with Banks](##working-with-banks) TODO
 
 ~guide-hello-compile
 ## Compile button

@@ -60,7 +60,7 @@ fresh bot, then randomly places the bot on the board.</p>
 <p>The first parameter of the <code>create</code> instruction specifies the instruction set
 for the child bot.</p>
 <p>In our Replication program, we use the parameter 2 to specify that the child
-will have the Super instruction set, since we want the child to be able to
+should have the Super instruction set, since we want the child to be able to
 <code>create</code> a child of its own.</p>
 <p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
@@ -220,7 +220,7 @@ named the <tt>main</tt> bank.</p>
 of the first bank of the program.</p>
 <h3>See also</h3>
 <ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#working-with-banks','Working with Banks')">Working with Banks</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#working-with-banks','Working with Banks')">Working with Banks</a> TODO</li>
 </ul>
 </div>
 
@@ -237,10 +237,23 @@ simulations to converge, but none of the changes worked.</p>
 
 <div id='guide-repl-create-mobility'>
 <h2>Mobility</h2>
+<p>Each bot is either mobile or immobile (i.e. whether or not it can execute the
+<code>move</code> instruction).</p>
+<p>The third parameter to the <code>create</code> instruction specifies whether or not the
+child should be mobile:</p>
+<ul>
+<li>0 signifies immobility</li>
+<li>1 signifies mobility </li>
+</ul>
 </div>
 
 <div id='guide-repl-create-numbanks'>
 <h2>Number of banks</h2>
+<p>Each bot contains one or more <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-numbanks','#guide-hello-bank','banks')">banks</a>.</p>
+<p>The second parameter to the <code>create</code> instruction specifies how many banks
+the child should have.</p>
+<p>These will all be empty banks, which is to say every bank will have
+zero instructions.</p>
 </div>
 
 <div id='guide-hello'>
