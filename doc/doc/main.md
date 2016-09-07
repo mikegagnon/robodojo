@@ -112,7 +112,7 @@ Round 1
     Liquid Ice 1.2 vs. Lauf und Mine      0-7-1       0-4-3     *
     Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
     Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
-    The Overkiller vs. Nullen2            4-1-2      10-0-0     *+
+    The Overkiller vs. Nullen2            4-1-2      14-0-0     *+
 
 Round 2
 
