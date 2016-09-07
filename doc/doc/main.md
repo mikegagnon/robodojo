@@ -61,11 +61,18 @@ Here is your replication-demo program:
     trans 1,1
     set %active, 1
 
+[Screenshot](##guide-repl-screenshot)
+
 ### How it works
 
 - [The <tt>create</tt> instruction](##guide-repl-create)
 - [The <tt>trans</tt> instruction](##guide-repl-trans)
 - [The <tt>set</tt> instruction](##guide-repl-set)
+
+~guide-repl-screenshot
+## Screenshot
+
+<img src="img/replicate.png">
 
 ~guide-repl-create
 ## The <tt>create</tt> instruction
@@ -172,7 +179,8 @@ Here is your "Hello World" program:
     bank main
     move
 
-[How to run your program](##guide-hello-run)
+- [How to run your program](##guide-hello-run)
+- [Screenshot](##guide-hello-screenshot)
 
 ### How it works
 
@@ -183,13 +191,19 @@ Here is your "Hello World" program:
 - [The <tt>move</tt> instruction](##guide-hello-move)
 - [Auto Reboot](##guide-hello-autoreboot)
 
+~guide-hello-screenshot
+## Screenshot
+
+<img src="img/hello-world.png">
+
 ~guide-hello-autoreboot
 ## Auto Reboot
 
-Whenever the end of a bank has been reached, the bot Auto Reboots, which means
+Whenever a bot reaches the end of its bank, the bot Auto Reboots -- which means
 the bot's execution starts over at the first instruction of the first bank.
 
-This causes the bot to repeatedly execute the move instruction.
+In our Hello World program, Auto Reboot causes the bot to repeatedly execute
+the move instruction.
 
 ~guide-hello-move
 ## The <tt>move</tt> instruction
