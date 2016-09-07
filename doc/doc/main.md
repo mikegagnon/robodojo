@@ -54,7 +54,8 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 ~replication
 ## Replication
 
-Here is your replication-demo program:
+The following program causes your bot to clone itself, then its child clones
+itself, and so on:
 
     bank main
     create 2,1,0
@@ -201,7 +202,7 @@ causes the forward bot to become activated.
 ~guide-hello
 ## Hello World
 
-Here is your "Hello World" program:
+The following program causes your bot to move across the board:
 
     bank main
     move
