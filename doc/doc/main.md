@@ -126,8 +126,8 @@ Round 2
     Goodymorph vs. HotBot V2              0-0-0       0-0-0
     LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
     The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
-    The Overkiller vs. Rainmain           0-0-0       0-0-0
-    Rainman vs. Seuche3                   0-0-0       0-0-0
+    The Overkiller vs. Rainman            0-0-0       0-0-0
+    Seuche3 vs.                           0-0-0       0-0-0
 
 
 ~compat-mystery
