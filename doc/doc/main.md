@@ -173,7 +173,18 @@ Thus `trans 1,1` copies the <tt>main</tt> bank from parent to child.
 ~guide-repl-set
 ## The <tt>set</tt> instruction
 
+The `set` instruction assigns a value to a variable.
 
+There are two parameters:
+
+1. Variable destination
+2. Source value
+
+Thus, `set %active, 1` assigns the value `1` to the variable `%active`.
+
+### But what does that do?
+
+- [Understanding <tt>active</tt> variables](##guide-repl-set-active)
 
 ~guide-hello
 ## Hello World
