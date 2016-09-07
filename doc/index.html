@@ -131,6 +131,46 @@ move
 <p><img src="img/infection-screenshot-2.png"></p>
 </div>
 
+<div id='anti-diamond-program'>
+<h2>Anti Diamond program</h2>
+<p>bank main</p>
+<pre><code>    @start
+
+    ; Register #1 = "empty", or "enemy", or "friend" 
+    scan #1
+
+    ; if "enemy" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,2,0
+
+    ; Disinfect / initialize new bot
+    trans 1,1
+    trans 2,2
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; Transfer self-destruct virus to enemy
+    trans 2,1
+    ; Make sure the enemy is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe
+    tapout
+</code></pre>
+</div>
+
 <div id='guide-repl-trans'>
 <h2>The <tt>trans</tt> instruction</h2>
 <p>The <code>trans</code> instruction uploads one bank from one bot to another.</p>
@@ -243,15 +283,15 @@ Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 </ul>
 </div>
 
-<div id='compatibility'>
-<h2>Compatibility with RoboCom</h2>
-<p>The problem is at least twofold:</p>
-<ol>
-<li>RoboCom is closed source</li>
-<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
-</ol>
-<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
-<p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
+<div id='4way'>
+<h2>Screenshot of a four-way battle</h2>
+<p><img src="img/battle.png"></p>
+<ul>
+<li>Each tear-drop shape is a different bot</li>
+<li>If a bot contains a circle of a different color, that means the bot
+  is infected</li>
+<li>If a bot has a white line through it, that means the bot is deactivated</li>
+</ul>
 </div>
 
 <div id='guide-repl-create-instrset-bot'>
@@ -295,6 +335,17 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 <p>s
 <img src="img/compat-821-rd.png"></p>
 <p><img src="img/compat-821-rc.png"></p>
+</div>
+
+<div id='guide'>
+<h2>Guide</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Anti Diamond')">Anti Diamond</a></li>
+</ol>
 </div>
 
 <div id='guide-hello-bank'>
@@ -423,15 +474,21 @@ set %active, 1
 <p><img src="img/diamond.png"></p>
 </div>
 
-<div id='guide'>
-<h2>Guide</h2>
-<ol>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#submission','Tapping out')">Tapping out</a></li>
-</ol>
+<div id='defeating-diamond-pseudo'>
+<h2>Pseudo code for Anti Diamond</h2>
+<pre><code>bank main
+
+    if (forward cell is empty)
+        clone self
+        turn
+    else if (forward cell is enemy)
+        infect enemy with self-destruct virus
+    else if (forward cell is friendly)
+        disinfect friend
+
+bank self-destruct
+    self destruct
+</code></pre>
 </div>
 
 <div id='guide-hello-editor'>
@@ -450,15 +507,15 @@ set %active, 1
 </ul>
 </div>
 
-<div id='4way'>
-<h2>Screenshot of a four-way battle</h2>
-<p><img src="img/battle.png"></p>
-<ul>
-<li>Each tear-drop shape is a different bot</li>
-<li>If a bot contains a circle of a different color, that means the bot
-  is infected</li>
-<li>If a bot has a white line through it, that means the bot is deactivated</li>
-</ul>
+<div id='compatibility'>
+<h2>Compatibility with RoboCom</h2>
+<p>The problem is at least twofold:</p>
+<ol>
+<li>RoboCom is closed source</li>
+<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
+</ol>
+<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
 </div>
 
 <div id='cycle'>
@@ -489,33 +546,21 @@ should have the Super instruction set, since we want the child to be able to
 <p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
-<div id='submission'>
-<h2>Tapping out</h2>
+<div id='defeating-diamond'>
+<h2>Anti Diamond</h2>
 <p>Let&#8217;s build a program that defeats the Diamond program.</p>
-<pre><code>bank main
-
-    @start
-    scan #1
-    comp #1, 1
-    jump @friend-or-empty
-    jump @foe
-
-    @friend-or-empty
-    comp #1, 2
-    create 2,2,0
-    trans 1,1
-    trans 2,2
-    set %active, 1
-    turn 1
-    jump @start
-
-    @foe
-    trans 2,1
-    jump @start
-
-bank foe
-    tapout
-</code></pre>
+<p>The general idea is to infect Diamond bots with a virus that causes the 
+infected bots to self-destruct.</p>
+<p>The <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-pseudo','pseudo code for our Anti Diamond program')">pseudo code for our Anti Diamond program</a>
+is straightforward and simple.</p>
+<p>To implement it, we need to learn four new instructions:</p>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-tapout','tapout')">tapout</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-scan','scan')">scan</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-comp','comp')">comp</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-jump','jump')">jump</a></li>
+</ul>
+<p>Putting it all together, here is the <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#anti-diamond-program','Anti Diamond program')">Anti Diamond program</a>.</p>
 </div>
 
 <div id='infection-screenshot-4'>

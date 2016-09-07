@@ -51,24 +51,52 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 2. [Replication](##replication)
 3. [Diamond](##diamond)
 4. [Infection & Disinfection](##blue-red-programs)
-5. [Tapping out](##submission)
+5. [Anti Diamond](##defeating-diamond)
 
-~submission
-## Tapping out
+~defeating-diamond
+## Anti Diamond
 
 Let's build a program that defeats the Diamond program.
 
-    bank main
+The general idea is to infect Diamond bots with a virus that causes the 
+infected bots to self-destruct.
+
+The [pseudo code for our Anti Diamond program](##defeating-diamond-pseudo)
+is straightforward and simple.
+
+To implement it, we need to learn four new instructions:
+
+- [tapout](##defeating-diamond-tapout)
+- [scan](##defeating-diamond-scan)
+- [comp](##defeating-diamond-comp)
+- [jump](##defeating-diamond-jump)
+
+Putting it all together, here is the [Anti Diamond program](##anti-diamond-program).
+
+~anti-diamond-program
+## Anti Diamond program
+
+   bank main
 
         @start
+
+        ; Register #1 = "empty", or "enemy", or "friend" 
         scan #1
+
+        ; if "enemy" goto @foe
+        ; else goto @friend-or-empty
         comp #1, 1
         jump @friend-or-empty
         jump @foe
 
+
         @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
         comp #1, 2
         create 2,2,0
+
+        ; Disinfect / initialize new bot
         trans 1,1
         trans 2,2
         set %active, 1
@@ -76,11 +104,32 @@ Let's build a program that defeats the Diamond program.
         jump @start
 
         @foe
+        ; Transfer self-destruct virus to enemy
         trans 2,1
+        ; Make sure the enemy is active, so it can execute the foe bank
+        set %active, 1
         jump @start
 
     bank foe
         tapout
+
+
+
+~defeating-diamond-pseudo
+## Pseudo code for Anti Diamond
+
+    bank main
+
+        if (forward cell is empty)
+            clone self
+            turn
+        else if (forward cell is enemy)
+            infect enemy with self-destruct virus
+        else if (forward cell is friendly)
+            disinfect friend
+
+    bank self-destruct
+        self destruct
 
 ~blue-red-programs
 ## Infection & Disinfection
