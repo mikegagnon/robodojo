@@ -115,6 +115,7 @@ Round 1
     The Overkiller vs. Nullen2            4-1-2      14-0-0     *+
     Rainman vs. RecruteIT                 6-1-0       5-2-0
     Simple vs. Seuche3                    0-0-7       0-0-7
+    Styx vs. Sweeper                      0-0-7       0-0-7
 
 Round 2
 
@@ -127,7 +128,7 @@ Round 2
     LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
     The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
     The Overkiller vs. Rainman            0-0-0       0-0-0
-    Seuche3 vs.                           0-0-0       0-0-0
+    Seuche3 vs. Sweeper                   0-0-0       0-0-0
 
 
 ~compat-mystery
