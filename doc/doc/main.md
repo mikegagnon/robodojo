@@ -116,6 +116,7 @@ Round 1
     Rainman vs. RecruteIT                 6-1-0       5-2-0
     Simple vs. Seuche3                    0-0-7       0-0-7
     Styx vs. Sweeper                      0-0-7       0-0-7
+    Tie Fighter vs. Test 3-1              0-7-0       0-7-0
 
 Round 2
 
@@ -129,7 +130,7 @@ Round 2
     The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
     The Overkiller vs. Rainman            0-0-0       0-0-0
     Seuche3 vs. Sweeper                   0-0-0       0-0-0
-
+    Test 3-1 vs.                          0-0-0       0-0-0
 
 ~compat-mystery
 ## Mysterious RoboCom semantics
