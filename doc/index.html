@@ -279,6 +279,7 @@ move
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-compile','Compile button')">Compile button</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-bank','The &lt;tt&gt;bank&lt;/tt&gt; directive')">The <tt>bank</tt> directive</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-move','The &lt;tt&gt;move&lt;/tt&gt; instruction')">The <tt>move</tt> instruction</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-autoreboot','Auto Reboot')">Auto Reboot</a></li>
 </ul>
 </div>
 
@@ -308,6 +309,13 @@ a cycle during T=821 after its mother</li>
 <p>The board executes one step at a time.</p>
 <p>During each board step, the board executes one <a href="javascript:Sidenote.openColumnLoud('#guide-hello-execution','#cycle','cycle')">cycle</a> for each bot, in order
 from oldest bot to newest bot.</p>
+</div>
+
+<div id='guide-hello-autoreboot'>
+<h2>Auto Reboot</h2>
+<p>Whenever the end of a bank has been reached, the bot Auto Reboots, which means
+the bot&#8217;s execution starts over at the first instruction of the first bank.</p>
+<p>This causes the bot to repeatedly execute the move instruction.</p>
 </div>
 
 <div id='replication'>

@@ -181,6 +181,15 @@ Here is your "Hello World" program:
 - [Compile button](##guide-hello-compile)
 - [The <tt>bank</tt> directive](##guide-hello-bank)
 - [The <tt>move</tt> instruction](##guide-hello-move)
+- [Auto Reboot](##guide-hello-autoreboot)
+
+~guide-hello-autoreboot
+## Auto Reboot
+
+Whenever the end of a bank has been reached, the bot Auto Reboots, which means
+the bot's execution starts over at the first instruction of the first bank.
+
+This causes the bot to repeatedly execute the move instruction.
 
 ~guide-hello-move
 ## The <tt>move</tt> instruction
