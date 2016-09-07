@@ -49,7 +49,39 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 
 1. [Hello World](##guide-hello)
 2. [Replication](##replication)
-3. 
+3. [Diamond](##diamond)
+
+~diamond
+## Diamond
+
+Adding a `turn` instruction to the Replication program builds a cluster of
+bots in a diamond shape.
+
+    bank main
+    create 2,1,0
+    trans 1,1
+    set %active, 1
+    turn 1
+
+[Screenshot](##guide-diamond-screenshot)
+
+### How it works
+
+- [The <tt>turn</tt> instruction](##guide-diamond-turn)
+
+~guide-diamond-turn
+## The <tt>turn</tt> instruction
+
+The `turn` instruction takes one parameter.
+
+- If the parameter is 0, the bot turns to the left (rotates -90°).
+- If the parameter is anything else, the bot turns to the right (rotates 90°).
+
+
+~guide-diamond-screenshot
+## Screenshot
+
+<img src="img/diamond.png">
 
 ~replication
 ## Replication

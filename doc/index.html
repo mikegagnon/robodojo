@@ -38,10 +38,25 @@
 <p>TODO</p>
 </div>
 
-<div id='guide-hello-compile'>
-<h2>Compile button</h2>
-<p>When you click Compile, the board clears itself then uploads your program to a
-fresh bot, then randomly places the bot on the board.</p>
+<div id='guide-hello'>
+<h2>Hello World</h2>
+<p>The following program causes your bot to move across the board:</p>
+<pre><code>bank main
+move
+</code></pre>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-run','How to run your program')">How to run your program</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-screenshot','Screenshot')">Screenshot</a></li>
+</ul>
+<h3>How it works</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-editor','Editors')">Editors</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-execution','Execution model')">Execution model</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-compile','Compile button')">Compile button</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-bank','The &lt;tt&gt;bank&lt;/tt&gt; directive')">The <tt>bank</tt> directive</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-move','The &lt;tt&gt;move&lt;/tt&gt; instruction')">The <tt>move</tt> instruction</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-autoreboot','Auto Reboot')">Auto Reboot</a></li>
+</ul>
 </div>
 
 <div id='compat-mystery-start'>
@@ -239,6 +254,23 @@ of the first bank of the program.</p>
 </ul>
 </div>
 
+<div id='diamond'>
+<h2>Diamond</h2>
+<p>Adding a <code>turn</code> instruction to the Replication program builds a cluster of
+bots in a diamond shape.</p>
+<pre><code>bank main
+create 2,1,0
+trans 1,1
+set %active, 1
+turn 1
+</code></pre>
+<p><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-screenshot','Screenshot')">Screenshot</a></p>
+<h3>How it works</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-turn','The &lt;tt&gt;turn&lt;/tt&gt; instruction')">The <tt>turn</tt> instruction</a></li>
+</ul>
+</div>
+
 <div id='compat-mystery'>
 <h2>Mysterious RoboCom semantics</h2>
 <p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
@@ -271,25 +303,10 @@ the child should have.</p>
 zero instructions.</p>
 </div>
 
-<div id='guide-hello'>
-<h2>Hello World</h2>
-<p>The following program causes your bot to move across the board:</p>
-<pre><code>bank main
-move
-</code></pre>
-<ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-run','How to run your program')">How to run your program</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-screenshot','Screenshot')">Screenshot</a></li>
-</ul>
-<h3>How it works</h3>
-<ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-editor','Editors')">Editors</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-execution','Execution model')">Execution model</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-compile','Compile button')">Compile button</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-bank','The &lt;tt&gt;bank&lt;/tt&gt; directive')">The <tt>bank</tt> directive</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-move','The &lt;tt&gt;move&lt;/tt&gt; instruction')">The <tt>move</tt> instruction</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-autoreboot','Auto Reboot')">Auto Reboot</a></li>
-</ul>
+<div id='guide-hello-compile'>
+<h2>Compile button</h2>
+<p>When you click Compile, the board clears itself then uploads your program to a
+fresh bot, then randomly places the bot on the board.</p>
 </div>
 
 <div id='t822-note-works'>
@@ -351,12 +368,17 @@ set %active, 1
 </ul>
 </div>
 
+<div id='guide-diamond-screenshot'>
+<h2>Screenshot</h2>
+<p><img src="img/diamond.png"></p>
+</div>
+
 <div id='guide'>
 <h2>Guide</h2>
 <ol>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
-<li></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
 </ol>
 </div>
 
@@ -409,6 +431,15 @@ instruction.</p>
 <li>Click the Play button. You will see your bot moving across the board.</li>
 <li>Click the Pause button once you&#8217;re bored</li>
 </ol>
+</div>
+
+<div id='guide-diamond-turn'>
+<h2>The <tt>turn</tt> instruction</h2>
+<p>The <code>turn</code> instruction takes one parameter.</p>
+<ul>
+<li>If the parameter is 0, the bot turns to the left (rotates -90°).</li>
+<li>If the parameter is anything else, the bot turns to the right (rotates 90°).</li>
+</ul>
 </div>
 
 <div id='t826'>
