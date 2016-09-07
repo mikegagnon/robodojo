@@ -89,8 +89,9 @@ should have the Super instruction set, since we want the child to be able to
 <li>Destination bank number</li>
 </ol>
 <p>During the <code>trans</code> instruction&#8217;s last cycle, if the forward cell is occupied,
-then the Source bank will be transfered to the forward bot&#8217;s Destination bank,
-overwriting any bank that might be there already.</p>
+then the bot copies its Source bank into the forward bot&#8217;s Destination bank,
+overwriting any bank that might already be there.</p>
+<p>Thus <code>trans 1,1</code> copies the <tt>main</tt> bank from parent to child.</p>
 </div>
 
 <div id='robocom'>
@@ -458,11 +459,13 @@ their activation, however this change did not effect convergence.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-numbanks','Number of banks')">Number of banks</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-mobility','Mobility')">Mobility</a></li>
 </ol>
-<p>The create instruction is the <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-slow','slowest instruction')">slowest instruction</a>.</p>
+<p>The <code>create</code> instruction is the <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-slow','slowest instruction')">slowest instruction</a>.</p>
 <p>During the <code>create</code> instruction&#8217;s last cycle, if the forward cell is empty, then
-the child will be created in front of the parent.</p>
-<p>The child bot will have empty banks and will be &#8220;inactive&#8221; (which is why
+the child will be created in front of the parent. The child bot will have empty
+banks and will be &#8220;inactive&#8221; (which is why
 we need to execute the <code>trans</code> and <code>set</code> instructions after <code>create</code>). </p>
+<p>Thus, <code>create 2,1,0</code> creates an immobile bot with the Super instruction set and
+one empty bank.</p>
 </div>
 
 <div id='guide-repl-set'>

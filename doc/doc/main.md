@@ -85,13 +85,15 @@ There are three parameters:
 2. [Number of banks](##guide-repl-create-numbanks)
 3. [Mobility](##guide-repl-create-mobility)
 
-The create instruction is the [slowest instruction](##guide-repl-create-slow).
+The `create` instruction is the [slowest instruction](##guide-repl-create-slow).
 
 During the `create` instruction's last cycle, if the forward cell is empty, then
-the child will be created in front of the parent.
-
-The child bot will have empty banks and will be "inactive" (which is why
+the child will be created in front of the parent. The child bot will have empty
+banks and will be "inactive" (which is why
 we need to execute the `trans` and `set` instructions after `create`). 
+
+Thus, `create 2,1,0` creates an immobile bot with the Super instruction set and
+one empty bank.
 
 ~guide-repl-create-instrset
 ## Instruction set
@@ -163,8 +165,10 @@ There are two parameters:
 2. Destination bank number
 
 During the `trans` instruction's last cycle, if the forward cell is occupied,
-then the Source bank will be transfered to the forward bot's Destination bank,
-overwriting any bank that might be there already.
+then the bot copies its Source bank into the forward bot's Destination bank,
+overwriting any bank that might already be there.
+
+Thus `trans 1,1` copies the <tt>main</tt> bank from parent to child.
 
 ~guide-repl-set
 ## The <tt>set</tt> instruction
