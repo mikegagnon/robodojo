@@ -59,23 +59,102 @@ Here is your "Hello World" program:
     bank main
     move
 
-[Run your program](##guide-hello-run).
+[How to run your program](##guide-hello-run)
 
-Concepts:
+### How it works
 
-- The board
-- The bot
-- The `bank` directive
-- The `move` instruction
+- [Editors](##guide-hello-editor)
+- [Execution model](##guide-hello-execution)
+- [Compile button](##guide-hello-compile)
+- [The <tt>bank</tt> directive](##guide-hello-bank)
+- [The <tt>move</tt> instruction](##guide-hello-move)
+
+~guide-hello-move
+## The <tt>move</tt> instruction
+
+The `move` instruction tells the bot to move forward one cell.
+
+It takes 18 [cycles](##guide-hello-execution) to execute; on the 18th cycle the bot 
+attempts to move forward.
+
+If the forward cell is occupied on the 18th cycle, then the `move` instruction
+does nothing.
+
+
+~guide-hello-bank
+## The <tt>bank</tt> directive
+
+Every program is segmented into banks; every instruction belongs to exactly
+one bank.
+
+For our hello-world program, our program has only one bank, which we have
+named the <tt>main</tt> bank.
+
+When the simulation launches, each bot begins executing at the first instruction
+of the first bank of the program.
+
+### See also
+
+- [Working with Banks](##working-with-banks)
+
+~guide-hello-compile
+## Compile button
+
+When you click Compile, the board clears itself then uploads your program to a
+fresh bot, then randomly places the bot on the board.
+
+~guide-hello-editor
+## Editors
+
+There are four editors, one for each color: blue, red, green, and yellow.
+
+The blue editor edits the blue bot's program, etc.
+
+To select your editor, click the "Blue bot" drop down menu.
+
+<img src="img/editor-selection.png">
+
+~guide-hello-execution
+## Execution model
+
+The board is the 16 x 16 toroidal universe where bots play.
+
+Each cell can hold only one bot at a time.
+
+The board executes one step at a time.
+
+During each board step, the board executes one [cycle](##cycle) for each bot, in order
+from oldest bot to newest bot.
+
+~cycle
+## Cycle
+
+To execute an instruction, the bot must execute one or more cycles for the
+instruction.
+
+For example, the `move` instruction requires 18 cycles.
+
+During the 18th cycle, the `move` instruction will actually execute.
+
+Before the 18th cycle, the `move` instruction does nothing.
+
+**See also**
+
+- [The Strategy of Cycles](##cycle-strategy)
+
+~cycle-strategy
+## The Strategy of Cycles
+
+**TODO**
 
 ~guide-hello-run
 ## Run your program
 
 1. Go to [RoboDojo.club](http://robodojo.club)
-2. In the editor, type in your program
-3. Click compile
-4. Click the play button. You will see your bot running.
-5. Click the pause button once you're bored
+2. In the Editor, type in your program
+3. Click Compile
+4. Click the Play button. You will see your bot moving across the board.
+5. Click the Pause button once you're bored
 
 ~compatibility
 ## Compatibility with RoboCom
@@ -86,6 +165,14 @@ The problem is at least twofold:
 2. Some of RoboCom's semantics appear to be undocumented
 
 Here is one example of [mysterious RoboCom semantics](##compat-mystery).
+
+[Known differences](##compat-diff)
+
+~compat-diff
+## Known differences between Robo Dojo and RoboCom
+
+- Elimintation trigger
+- Mobile first bot
 
 ~rdrc-battles
 ## Tournament

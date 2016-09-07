@@ -33,16 +33,10 @@
 <p>TODO</p>
 </div>
 
-<div id='t822-note'>
-<h2>Note on Robo Dojo execution</h2>
-<p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
-cycle of the <code>set</code> instruction.</p>
-<p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
-execute a bot-cycle in the same board-cycle, however these semantics are
-intentional.</p>
-<p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
-<p>I have investigated preventing bots from executing a cycle immediately after
-their activation, however this change did not effect convergence.</p>
+<div id='guide-hello-compile'>
+<h2>Compile button</h2>
+<p>When you click Compile, the board clears itself then uploads your program to a
+fresh bot, then randomly places the bot on the board.</p>
 </div>
 
 <div id='compat-mystery-start'>
@@ -60,16 +54,21 @@ their activation, however this change did not effect convergence.</p>
 <h2>Run your program</h2>
 <ol>
 <li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
-<li>In the editor, type in your program</li>
-<li>Click compile</li>
-<li>Click the play button. You will see your bot running.</li>
-<li>Click the pause button once you&#8217;re bored</li>
+<li>In the Editor, type in your program</li>
+<li>Click Compile</li>
+<li>Click the Play button. You will see your bot moving across the board.</li>
+<li>Click the Pause button once you&#8217;re bored</li>
 </ol>
 </div>
 
 <div id='t826-rd-demo'>
 <h2>T=826 in Robo Dojo</h2>
 <p><img src="img/compat-826-rd.png"></p>
+</div>
+
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
 </div>
 
 <div id='robocom'>
@@ -96,7 +95,7 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 <p><strong>TODO</strong>: Explain X-Y-Z system</p>
 <p>Round 1</p>
 <pre><code>Match                               Robo Dojo   RoboCom
-------------------------------------------------------
+--------------------------------------------------------
 Activator3 vs. Alien3.4               0-2-5       0-1-7     *
 Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
 Conciler vs. Kommari 2.1              6-0-1       6-0-1
@@ -109,19 +108,32 @@ LastHopeC vs. &lt;Jo's little&gt;           6-0-1       8-0-1     *
 Liquid Ice 1.2 vs. Lauf und Mine      0-7-1       0-4-3     *
 Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
 Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
-The Overkiller vs. Nullen2            4-1-2      14-0-0     *+
+The Overkiller vs. Nullen2            4-1-2      14-0-0     * +
 Rainman vs. RecruteIT                 6-1-0       5-2-0
+Simple vs. Seuche3                    0-0-7       0-0-7
+Styx vs. Sweeper                      0-0-7       0-0-7
+Tie Fighter vs. Test 3-1              0-7-0       0-7-0
+UltimaDefender vs. Tom Himself        0-0-7       0-0-7
+Zwei Arten vs. Zellwucher4            7-0-0       7-0-0
 </code></pre>
 <p>Round 2</p>
 <pre><code>Match                                 Robo Dojo   RoboCom
-------------------------------------------------------
-Alien3.4 vs. Alpha                    0-0-0       0-0-0
-Conciler vs. Einfachst-DM.DV          0-0-0       0-0-0
-Flooder 1.0 vs. Goody2                0-0-0       0-0-0
+----------------------------------------------------------
+Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
+Conciler vs. Delusion 3.7             0-7-0       0-7-0
+Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * +
 Goodymorph vs. HotBot V2              0-0-0       0-0-0
 LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
 The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
-The Overkiller vs. Rainmain           0-0-0       0-0-0
+The Overkiller vs. Rainman            0-0-0       0-0-0
+Seuche3 vs. Sweeper                   0-0-0       0-0-0
+Test 3-1 vs. Tom Himself              0-0-0       0-0-0
+Zwei Arten (bye)                      .....       .....
+</code></pre>
+<p>Round 3</p>
+<pre><code>Match                                 Robo Dojo   RoboCom
+----------------------------------------------------------
+Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 </code></pre>
 </div>
 
@@ -183,6 +195,20 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 <p><img src="img/compat-821-rc.png"></p>
 </div>
 
+<div id='guide-hello-bank'>
+<h2>The <tt>bank</tt> directive</h2>
+<p>Every program is segmented into banks; every instruction belongs to exactly
+one bank.</p>
+<p>For our hello-world program, our program has only one bank, which we have
+named the <tt>main</tt> bank.</p>
+<p>When the simulation launches, each bot begins executing at the first instruction
+of the first bank of the program.</p>
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#working-with-banks','Working with Banks')">Working with Banks</a></li>
+</ul>
+</div>
+
 <div id='compat-mystery'>
 <h2>Mysterious RoboCom semantics</h2>
 <p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
@@ -200,14 +226,49 @@ simulations to converge, but none of the changes worked.</p>
 <pre><code>bank main
 move
 </code></pre>
-<p><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-run','Run your program')">Run your program</a>.</p>
-<p>Concepts:</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-run','How to run your program')">How to run your program</a></p>
+<h3>How it works</h3>
 <ul>
-<li>The board</li>
-<li>The bot</li>
-<li>The <code>bank</code> directive</li>
-<li>The <code>move</code> instruction</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-editor','Editors')">Editors</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-execution','Execution model')">Execution model</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-compile','Compile button')">Compile button</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-bank','The &lt;tt&gt;bank&lt;/tt&gt; directive')">The <tt>bank</tt> directive</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello','#guide-hello-move','The &lt;tt&gt;move&lt;/tt&gt; instruction')">The <tt>move</tt> instruction</a></li>
 </ul>
+</div>
+
+<div id='guide-hello-move'>
+<h2>The <tt>move</tt> instruction</h2>
+<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
+<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
+attempts to move forward.</p>
+<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
+does nothing.</p>
+</div>
+
+<div id='compat-diff'>
+<h2>Known differences between Robo Dojo and RoboCom</h2>
+<ul>
+<li>Elimintation trigger</li>
+<li>Mobile first bot</li>
+</ul>
+</div>
+
+<div id='guide-hello-execution'>
+<h2>Execution model</h2>
+<p>The board is the 16 x 16 toroidal universe where bots play.</p>
+<p>Each cell can hold only one bot at a time.</p>
+<p>The board executes one step at a time.</p>
+<p>During each board step, the board executes one <a href="javascript:Sidenote.openColumnLoud('#guide-hello-execution','#cycle','cycle')">cycle</a> for each bot, in order
+from oldest bot to newest bot.</p>
+</div>
+
+<div id='guide-hello-editor'>
+<h2>Editors</h2>
+<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
+<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
+<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
+<p><img src="img/editor-selection.png"></p>
 </div>
 
 <div id='compatibility'>
@@ -218,6 +279,20 @@ move
 <li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
 </ol>
 <p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
+</div>
+
+<div id='cycle'>
+<h2>Cycle</h2>
+<p>To execute an instruction, the bot must execute one or more cycles for the
+instruction.</p>
+<p>For example, the <code>move</code> instruction requires 18 cycles.</p>
+<p>During the 18th cycle, the <code>move</code> instruction will actually execute.</p>
+<p>Before the 18th cycle, the <code>move</code> instruction does nothing.</p>
+<p><strong>See also</strong></p>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#cycle','#cycle-strategy','The Strategy of Cycles')">The Strategy of Cycles</a></li>
+</ul>
 </div>
 
 <div id='t826'>
@@ -238,9 +313,16 @@ move
 </ol>
 </div>
 
-<div id='t825-rd-demo'>
-<h2>T=825 in Robo Dojo</h2>
-<p><img src="img/compat-825-rd.png"></p>
+<div id='t822-note'>
+<h2>Note on Robo Dojo execution</h2>
+<p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
+cycle of the <code>set</code> instruction.</p>
+<p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
+execute a bot-cycle in the same board-cycle, however these semantics are
+intentional.</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
+<p>I have investigated preventing bots from executing a cycle immediately after
+their activation, however this change did not effect convergence.</p>
 </div>
 
 <div id='t822'>
@@ -253,6 +335,15 @@ move
 <p><a href="javascript:Sidenote.openColumnLoud('#t822','#t822-note','Note')">Note</a> on Robo Dojo execution.</p>
 </div>
 
+<div id='guide'>
+<h2>Guide</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
+<li>Replication</li>
+<li></li>
+</ol>
+</div>
+
 <div id='robocomscreenshot'>
 <h2>RoboCom Screenshot</h2>
 <p><img src="img/robocom-screenshot.png"></p>
@@ -263,13 +354,9 @@ move
 <p><img src="img/compat-827-rc.png"></p>
 </div>
 
-<div id='guide'>
-<h2>Guide</h2>
-<ol>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
-<li>Replication</li>
-<li></li>
-</ol>
+<div id='t825-rd-demo'>
+<h2>T=825 in Robo Dojo</h2>
+<p><img src="img/compat-825-rd.png"></p>
 </div>
     </div>
   </body>
