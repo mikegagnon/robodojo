@@ -148,6 +148,17 @@ child should be mobile:
 ~guide-repl-trans
 ## The <tt>trans</tt> instruction
 
+The `trans` instruction uploads one bank from one bot to another.
+
+There are two parameters:
+
+1. Source bank number
+2. Destination bank number
+
+During the `trans` instruction's last cycle, if the forward cell is occupied,
+then the Source bank will be transfered to the forward bot's Destination bank,
+overwriting any bank that might be there already.
+
 ~guide-repl-set
 ## The <tt>set</tt> instruction
 

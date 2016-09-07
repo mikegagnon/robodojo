@@ -77,6 +77,15 @@ should have the Super instruction set, since we want the child to be able to
 
 <div id='guide-repl-trans'>
 <h2>The <tt>trans</tt> instruction</h2>
+<p>The <code>trans</code> instruction uploads one bank from one bot to another.</p>
+<p>There are two parameters:</p>
+<ol>
+<li>Source bank number</li>
+<li>Destination bank number</li>
+</ol>
+<p>During the <code>trans</code> instruction&#8217;s last cycle, if the forward cell is occupied,
+then the Source bank will be transfered to the forward bot&#8217;s Destination bank,
+overwriting any bank that might be there already.</p>
 </div>
 
 <div id='robocom'>
