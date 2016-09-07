@@ -124,8 +124,8 @@ Round 2
 
     Match                                 Robo Dojo   RoboCom
     ----------------------------------------------------------
-    Alien3.4 vs. Alpha                    0-0-0       0-0-0
-    Conciler vs. Einfachst-DM.DV          0-0-0       0-0-0
+    Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
+    Conciler vs. Delusion 3.7             0-7-0       0-7-0
     Flooder 1.0 vs. Goody2                0-0-0       0-0-0
     Goodymorph vs. HotBot V2              0-0-0       0-0-0
     LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
@@ -139,7 +139,7 @@ Round 3
 
     Match                                 Robo Dojo   RoboCom
     ----------------------------------------------------------
-    
+    Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 
 
 ~compat-mystery
