@@ -48,8 +48,84 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 ## Guide
 
 1. [Hello World](##guide-hello)
-2. Replication
+2. [Replication](##replication)
 3. 
+
+~replication
+## Replication
+
+Here is your replication-demo program:
+
+    bank main
+    create 2,1,1
+    trans 1,1
+    set %active, 1
+
+### How it works
+
+- [The <tt>create</tt> instruction](##guide-repl-create)
+- [The <tt>trans</tt> instruction](##guide-repl-trans)
+- [The <tt>set</tt> instruction](##guide-repl-set)
+
+~guide-repl-create
+## The <tt>create</tt> instruction
+
+The `create` instruction builds a new bot in front of the builder.
+
+There are three parameters:
+
+1. [Instruction set](##guide-repl-create-instrset)
+2. [Number of banks](##guide-repl-create-numbanks)
+3. [Mobility](##guide-repl-create-mobility)
+
+~guide-repl-create-instrset
+## Instruction set
+
+There are three instruction sets: Basic (0), Advanced (1), and Super (2).
+
+Different instructions belong to different instruction sets.
+[For example](##guide-repl-create-instrset-example).
+
+Each bot is either Basic, Advanced, or Super -- which effects
+[which instructions each bot may execute](##guide-repl-create-instrset-bot).
+
+The first parameter of the `create` instruction specifies the instruction set
+for the child bot.
+
+In our Replication program, we use the parameter 2 to specify that the child
+will have the Super instruction set, since we want the child to be able to
+`create` a child of its own.
+
+**TODO**: Link to instruction set documentation
+
+
+~guide-repl-create-instrset-bot
+## Which instructions each bot may execute
+
+- A Basic bot can only execute Basic instructions
+- An Advanced bot can execute Basic and Advanced instructions
+- A Super bot can execute Basic, Advanced, and Super instructions
+
+~guide-repl-create-instrset-example
+## For example
+
+- The `move` instruction belongs to the Basic instruction set
+- The `create` instruction belongs to the Super instruction set
+
+
+~guide-repl-create-numbanks
+## Number of banks
+
+~guide-repl-create-mobility
+## Mobility
+
+~guide-repl-trans
+## The <tt>trans</tt> instruction
+
+~guide-repl-set
+## The <tt>set</tt> instruction
+
+
 
 ~guide-hello
 ## Hello World

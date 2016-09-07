@@ -50,15 +50,19 @@ fresh bot, then randomly places the bot on the board.</p>
 <p>Activator3 (orange/red) and Alien 1.4 (blue)</p>
 </div>
 
-<div id='guide-hello-run'>
-<h2>Run your program</h2>
-<ol>
-<li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
-<li>In the Editor, type in your program</li>
-<li>Click Compile</li>
-<li>Click the Play button. You will see your bot moving across the board.</li>
-<li>Click the Pause button once you&#8217;re bored</li>
-</ol>
+<div id='guide-repl-create-instrset'>
+<h2>Instruction set</h2>
+<p>There are three instruction sets: Basic (0), Advanced (1), and Super (2).</p>
+<p>Different instructions belong to different instruction sets.
+<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-example','For example')">For example</a>.</p>
+<p>Each bot is either Basic, Advanced, or Super &#8212; which effects
+<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-bot','which instructions each bot may execute')">which instructions each bot may execute</a>.</p>
+<p>The first parameter of the <code>create</code> instruction specifies the instruction set
+for the child bot.</p>
+<p>In our Replication program, we use the parameter 2 to specify that the child
+will have the Super instruction set, since we want the child to be able to
+<code>create</code> a child of its own.</p>
+<p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
 <div id='t826-rd-demo'>
@@ -69,6 +73,10 @@ fresh bot, then randomly places the bot on the board.</p>
 <div id='cycle-strategy'>
 <h2>The Strategy of Cycles</h2>
 <p><strong>TODO</strong></p>
+</div>
+
+<div id='guide-repl-trans'>
+<h2>The <tt>trans</tt> instruction</h2>
 </div>
 
 <div id='robocom'>
@@ -148,14 +156,23 @@ Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 </ul>
 </div>
 
-<div id='4way'>
-<h2>Screenshot of a four-way battle</h2>
-<p><img src="img/battle.png"></p>
+<div id='compatibility'>
+<h2>Compatibility with RoboCom</h2>
+<p>The problem is at least twofold:</p>
+<ol>
+<li>RoboCom is closed source</li>
+<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
+</ol>
+<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
+</div>
+
+<div id='guide-repl-create-instrset-bot'>
+<h2>Which instructions each bot may execute</h2>
 <ul>
-<li>Each tear-drop shape is a different bot</li>
-<li>If a bot contains a circle of a different color, that means the bot
-  is infected</li>
-<li>If a bot has a white line through it, that means the bot is deactivated</li>
+<li>A Basic bot can only execute Basic instructions</li>
+<li>An Advanced bot can execute Basic and Advanced instructions</li>
+<li>A Super bot can execute Basic, Advanced, and Super instructions</li>
 </ul>
 </div>
 
@@ -165,15 +182,13 @@ Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 <p><img src="img/compat-822-rc.png"></p>
 </div>
 
-<div id='t822-note-works'>
-<h2>Here&#8217;s how it works</h2>
-<ol>
-<li>During T=821 every bot executes one cycle (or zero cycles if the bot is deactivated)</li>
-<li>The bots execute in order from oldest bot to youngest bot</li>
-<li>During T=821 The mother bot activates the selected bot</li>
-<li>Since the selected bot is younger than the mother bot, it gets to execute
-a cycle during T=821 after its mother</li>
-</ol>
+<div id='guide-hello-move'>
+<h2>The <tt>move</tt> instruction</h2>
+<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
+<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
+attempts to move forward.</p>
+<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
+does nothing.</p>
 </div>
 
 <div id='main'>
@@ -220,6 +235,14 @@ Robo Dojo and RoboCom.</p>
 simulations to converge, but none of the changes worked.</p>
 </div>
 
+<div id='guide-repl-create-mobility'>
+<h2>Mobility</h2>
+</div>
+
+<div id='guide-repl-create-numbanks'>
+<h2>Number of banks</h2>
+</div>
+
 <div id='guide-hello'>
 <h2>Hello World</h2>
 <p>Here is your &#8220;Hello World&#8221; program:</p>
@@ -237,20 +260,22 @@ move
 </ul>
 </div>
 
-<div id='guide-hello-move'>
-<h2>The <tt>move</tt> instruction</h2>
-<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
-<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
-attempts to move forward.</p>
-<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
-does nothing.</p>
+<div id='t822-note-works'>
+<h2>Here&#8217;s how it works</h2>
+<ol>
+<li>During T=821 every bot executes one cycle (or zero cycles if the bot is deactivated)</li>
+<li>The bots execute in order from oldest bot to youngest bot</li>
+<li>During T=821 The mother bot activates the selected bot</li>
+<li>Since the selected bot is younger than the mother bot, it gets to execute
+a cycle during T=821 after its mother</li>
+</ol>
 </div>
 
-<div id='compat-diff'>
-<h2>Known differences between Robo Dojo and RoboCom</h2>
+<div id='guide-repl-create-instrset-example'>
+<h2>For example</h2>
 <ul>
-<li>Elimintation trigger</li>
-<li>Mobile first bot</li>
+<li>The <code>move</code> instruction belongs to the Basic instruction set</li>
+<li>The <code>create</code> instruction belongs to the Super instruction set</li>
 </ul>
 </div>
 
@@ -263,6 +288,31 @@ does nothing.</p>
 from oldest bot to newest bot.</p>
 </div>
 
+<div id='replication'>
+<h2>Replication</h2>
+<p>Here is your replication-demo program:</p>
+<pre><code>bank main
+create 2,1,1
+trans 1,1
+set %active, 1
+</code></pre>
+<h3>How it works</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#replication','#guide-repl-create','The &lt;tt&gt;create&lt;/tt&gt; instruction')">The <tt>create</tt> instruction</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#replication','#guide-repl-trans','The &lt;tt&gt;trans&lt;/tt&gt; instruction')">The <tt>trans</tt> instruction</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#replication','#guide-repl-set','The &lt;tt&gt;set&lt;/tt&gt; instruction')">The <tt>set</tt> instruction</a></li>
+</ul>
+</div>
+
+<div id='guide'>
+<h2>Guide</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
+<li></li>
+</ol>
+</div>
+
 <div id='guide-hello-editor'>
 <h2>Editors</h2>
 <p>There are four editors, one for each color: blue, red, green, and yellow.</p>
@@ -271,15 +321,23 @@ from oldest bot to newest bot.</p>
 <p><img src="img/editor-selection.png"></p>
 </div>
 
-<div id='compatibility'>
-<h2>Compatibility with RoboCom</h2>
-<p>The problem is at least twofold:</p>
-<ol>
-<li>RoboCom is closed source</li>
-<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
-</ol>
-<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
-<p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
+<div id='compat-diff'>
+<h2>Known differences between Robo Dojo and RoboCom</h2>
+<ul>
+<li>Elimintation trigger</li>
+<li>Mobile first bot</li>
+</ul>
+</div>
+
+<div id='4way'>
+<h2>Screenshot of a four-way battle</h2>
+<p><img src="img/battle.png"></p>
+<ul>
+<li>Each tear-drop shape is a different bot</li>
+<li>If a bot contains a circle of a different color, that means the bot
+  is infected</li>
+<li>If a bot has a white line through it, that means the bot is deactivated</li>
+</ul>
 </div>
 
 <div id='cycle'>
@@ -293,6 +351,17 @@ instruction.</p>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#cycle','#cycle-strategy','The Strategy of Cycles')">The Strategy of Cycles</a></li>
 </ul>
+</div>
+
+<div id='guide-hello-run'>
+<h2>Run your program</h2>
+<ol>
+<li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
+<li>In the Editor, type in your program</li>
+<li>Click Compile</li>
+<li>Click the Play button. You will see your bot moving across the board.</li>
+<li>Click the Pause button once you&#8217;re bored</li>
+</ol>
 </div>
 
 <div id='t826'>
@@ -335,13 +404,19 @@ their activation, however this change did not effect convergence.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#t822','#t822-note','Note')">Note</a> on Robo Dojo execution.</p>
 </div>
 
-<div id='guide'>
-<h2>Guide</h2>
+<div id='guide-repl-create'>
+<h2>The <tt>create</tt> instruction</h2>
+<p>The <code>create</code> instruction builds a new bot in front of the builder.</p>
+<p>There are three parameters:</p>
 <ol>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
-<li>Replication</li>
-<li></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-instrset','Instruction set')">Instruction set</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-numbanks','Number of banks')">Number of banks</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-mobility','Mobility')">Mobility</a></li>
 </ol>
+</div>
+
+<div id='guide-repl-set'>
+<h2>The <tt>set</tt> instruction</h2>
 </div>
 
 <div id='robocomscreenshot'>
