@@ -99,7 +99,7 @@ Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
 Round 1
 
     Match                               Robo Dojo   RoboCom
-    ------------------------------------------------------
+    --------------------------------------------------------
     Activator3 vs. Alien3.4               0-2-5       0-1-7     *
     Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
     Conciler vs. Kommari 2.1              6-0-1       6-0-1
@@ -118,11 +118,12 @@ Round 1
     Styx vs. Sweeper                      0-0-7       0-0-7
     Tie Fighter vs. Test 3-1              0-7-0       0-7-0
     UltimaDefender vs. Tom Himself        0-0-7       0-0-7
+    Zwei Arten vs. Zellwucher4            7-0-0       7-0-0
 
 Round 2
 
     Match                                 Robo Dojo   RoboCom
-    ------------------------------------------------------
+    ----------------------------------------------------------
     Alien3.4 vs. Alpha                    0-0-0       0-0-0
     Conciler vs. Einfachst-DM.DV          0-0-0       0-0-0
     Flooder 1.0 vs. Goody2                0-0-0       0-0-0
@@ -132,6 +133,14 @@ Round 2
     The Overkiller vs. Rainman            0-0-0       0-0-0
     Seuche3 vs. Sweeper                   0-0-0       0-0-0
     Test 3-1 vs. Tom Himself              0-0-0       0-0-0
+    Zwei Arten (bye)                      .....       .....
+
+Round 3
+
+    Match                                 Robo Dojo   RoboCom
+    ----------------------------------------------------------
+    
+
 
 ~compat-mystery
 ## Mysterious RoboCom semantics
