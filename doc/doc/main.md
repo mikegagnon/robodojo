@@ -112,7 +112,7 @@ Round 1
     Liquid Ice 1.2 vs. Lauf und Mine      0-7-1       0-4-3     *
     Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
     Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
-    The Overkiller vs. Nullen2            4-1-2      14-0-0     *+
+    The Overkiller vs. Nullen2            4-1-2      14-0-0     * +
     Rainman vs. RecruteIT                 6-1-0       5-2-0
     Simple vs. Seuche3                    0-0-7       0-0-7
     Styx vs. Sweeper                      0-0-7       0-0-7
@@ -126,7 +126,7 @@ Round 2
     ----------------------------------------------------------
     Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
     Conciler vs. Delusion 3.7             0-7-0       0-7-0
-    Flooder 1.0 vs. Goody2                0-0-0       0-0-0
+    Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * +
     Goodymorph vs. HotBot V2              0-0-0       0-0-0
     LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
     The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
