@@ -51,6 +51,36 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 2. [Replication](##replication)
 3. [Diamond](##diamond)
 4. [Infection & Disinfection](##blue-red-programs)
+5. [Tapping out](##submission)
+
+~submission
+## Tapping out
+
+Let's build a program that defeats the Diamond program.
+
+    bank main
+
+        @start
+        scan #1
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+        @friend-or-empty
+        comp #1, 2
+        create 2,2,0
+        trans 1,1
+        trans 2,2
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        trans 2,1
+        jump @start
+
+    bank foe
+        tapout
 
 ~blue-red-programs
 ## Infection & Disinfection

@@ -430,6 +430,7 @@ set %active, 1
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#submission','Tapping out')">Tapping out</a></li>
 </ol>
 </div>
 
@@ -486,6 +487,35 @@ for the child bot.</p>
 should have the Super instruction set, since we want the child to be able to
 <code>create</code> a child of its own.</p>
 <p><strong>TODO</strong>: Link to instruction set documentation</p>
+</div>
+
+<div id='submission'>
+<h2>Tapping out</h2>
+<p>Let&#8217;s build a program that defeats the Diamond program.</p>
+<pre><code>bank main
+
+    @start
+    scan #1
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+    @friend-or-empty
+    comp #1, 2
+    create 2,2,0
+    trans 1,1
+    trans 2,2
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    trans 2,1
+    jump @start
+
+bank foe
+    tapout
+</code></pre>
 </div>
 
 <div id='infection-screenshot-4'>
