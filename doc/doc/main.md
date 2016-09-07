@@ -100,27 +100,29 @@ Round 1
 
     Match                               Robo Dojo   RoboCom
     ------------------------------------------------------
-    Activator3 vs. Alien3.4             0-2-5       0-1-7     *
-    Alpha vs. Fruchtzwerk 2             2-0-5       1-0-6
-    Conciler vs. Kommari 2.1            6-0-1       6-0-1
-    Delusion 3.7 vs. Einfachst-DM.DV    7-0-0       7-0-0
-    DoomMob 1.6 vs. Flooder 1.0         0-7-0       0-7-0
-    Geza's McRobi vs. Goody2            0-7-0       0-7-0
-    Martins Echter vs. Goodymorph       0-0-7       0-0-7
-    HotBot V2 vs. inter#active          6-0-1       5-0-2
-    LastHopeC vs. <Jo's little>         6-0-1       8-0-1     *
-    Liquid Ice 1.2 vs. Lauf und Mine    0-7-1       0-4-3     *
-    Mikrovirus vs. The Masterkiller 1   0-6-1       0-5-2
+    Activator3 vs. Alien3.4               0-2-5       0-1-7     *
+    Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
+    Conciler vs. Kommari 2.1              6-0-1       6-0-1
+    Delusion 3.7 vs. Einfachst-DM.DV      7-0-0       7-0-0
+    DoomMob 1.6 vs. Flooder 1.0           0-7-0       0-7-0
+    Geza's McRobi vs. Goody2              0-7-0       0-7-0
+    Martins Echter vs. Goodymorph         0-0-7       0-0-7
+    HotBot V2 vs. inter#active            6-0-1       5-0-2
+    LastHopeC vs. <Jo's little>           6-0-1       8-0-1     *
+    Liquid Ice 1.2 vs. Lauf und Mine      0-7-1       0-4-3     *
+    Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
+    Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
 
 Round 2
 
-    Match                               Robo Dojo   RoboCom
+    Match                                 Robo Dojo   RoboCom
     ------------------------------------------------------
-    Alien3.4 vs. Alpha                  0-0-0       0-0-0
-    Conciler vs. Einfachst-DM.DV        0-0-0       0-0-0
-    Flooder 1.0 vs. Goody2              0-0-0       0-0-0
-    Goodymorph vs. HotBot V2            0-0-0       0-0-0
-    LastHopeC vs. Lauf und Mine         0-0-0       0-0-0
+    Alien3.4 vs. Alpha                    0-0-0       0-0-0
+    Conciler vs. Einfachst-DM.DV          0-0-0       0-0-0
+    Flooder 1.0 vs. Goody2                0-0-0       0-0-0
+    Goodymorph vs. HotBot V2              0-0-0       0-0-0
+    LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
+    The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
 
 
 ~compat-mystery
