@@ -305,7 +305,7 @@ from oldest bot to newest bot.</p>
 <h2>Replication</h2>
 <p>Here is your replication-demo program:</p>
 <pre><code>bank main
-create 2,1,1
+create 2,1,0
 trans 1,1
 set %active, 1
 </code></pre>
@@ -426,6 +426,11 @@ their activation, however this change did not effect convergence.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-numbanks','Number of banks')">Number of banks</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-mobility','Mobility')">Mobility</a></li>
 </ol>
+<p>The create instruction is the <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#guide-repl-create-slow','slowest instruction')">slowest instruction</a>.</p>
+<p>During the <code>create</code> instruction&#8217;s last cycle, if the forward cell is empty, then
+the child will be created in front of the parent.</p>
+<p>The child bot will have empty banks and will be &#8220;inactive&#8221; (which is why
+we need to execute the <code>trans</code> and <code>set</code> instructions after <code>create</code>). </p>
 </div>
 
 <div id='guide-repl-set'>

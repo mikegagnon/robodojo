@@ -78,6 +78,14 @@ There are three parameters:
 2. [Number of banks](##guide-repl-create-numbanks)
 3. [Mobility](##guide-repl-create-mobility)
 
+The create instruction is the [slowest instruction](##guide-repl-create-slow).
+
+During the `create` instruction's last cycle, if the forward cell is empty, then
+the child will be created in front of the parent.
+
+The child bot will have empty banks and will be "inactive" (which is why
+we need to execute the `trans` and `set` instructions after `create`). 
+
 ~guide-repl-create-instrset
 ## Instruction set
 
