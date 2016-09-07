@@ -113,6 +113,7 @@ Round 1
     Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
     Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
     The Overkiller vs. Nullen2            4-1-2      14-0-0     *+
+    Rainman vs. RecruteIT                 6-1-0       5-2-0
 
 Round 2
 
@@ -124,6 +125,7 @@ Round 2
     Goodymorph vs. HotBot V2              0-0-0       0-0-0
     LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
     The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
+    The Overkiller vs. Rainmain           0-0-0       0-0-0
 
 
 ~compat-mystery
