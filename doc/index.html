@@ -26,9 +26,34 @@
       <div class='column' id="column0"></div>
     </div>
     <div class="content-storage">
+<div id='blue-red-programs'>
+<h2>Infection &amp; Disinfection</h2>
+<p>You can launch different-colored bots on the board, each color with a different
+program.</p>
+<p>To edit the program for a color, select a color from the
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#color-dropdown','color editor drop-down menu')">color editor drop-down menu</a>.</p>
+<p>For this experiment:</p>
+<ul>
+<li>Set the Blue bot program to the <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#replication','Replication program')">Replication program</a></li>
+<li>Set the Red bot program to the <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#diamond','Diamond program')">Diamond program</a></li>
+</ul>
+<p>The result should look like <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-1','this')">this</a>, or
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-2','this')">this</a>, <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-3','this')">this</a>, or
+maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','this')">this</a>.</p>
+<p>The Red bots overwhelm the Blue bots, and
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-explanation','infect them with a virus')">infect them with a virus</a>.</p>
+<p>Sometimes <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','Blue bots infect Red bots')">Blue bots infect Red bots</a>, but Red bots quickly
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#disinfection','disinfect themselves')">disinfect themselves</a>.</p>
+</div>
+
 <div id='guide-hello-screenshot'>
 <h2>Screenshot</h2>
 <p><img src="img/hello-world.png"></p>
+</div>
+
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
 </div>
 
 <div id='navigate'>
@@ -36,6 +61,11 @@
 <p>This is a <a href="http://sidenote.io">Sidenote</a> document.</p>
 <p>Sidenote opens links in new columns.</p>
 <p>TODO</p>
+</div>
+
+<div id='color-dropdown'>
+<h2>Color editor drop-down menu</h2>
+<p><img src="img/color-dropdown.png"></p>
 </div>
 
 <div id='guide-hello'>
@@ -70,19 +100,15 @@ move
 <p>Activator3 (orange/red) and Alien 1.4 (blue)</p>
 </div>
 
-<div id='guide-repl-create-instrset'>
-<h2>Instruction set</h2>
-<p>There are three instruction sets: Basic (0), Advanced (1), and Super (2).</p>
-<p>Different instructions belong to different instruction sets.
-<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-example','For example')">For example</a>.</p>
-<p>Each bot is either Basic, Advanced, or Super &#8212; which effects
-<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-bot','which instructions each bot may execute')">which instructions each bot may execute</a>.</p>
-<p>The first parameter of the <code>create</code> instruction specifies the instruction set
-for the child bot.</p>
-<p>In our Replication program, we use the parameter 2 to specify that the child
-should have the Super instruction set, since we want the child to be able to
-<code>create</code> a child of its own.</p>
-<p><strong>TODO</strong>: Link to instruction set documentation</p>
+<div id='guide-hello-run'>
+<h2>Run your program</h2>
+<ol>
+<li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
+<li>In the Editor, type in your program</li>
+<li>Click Compile</li>
+<li>Click the Play button. You will see your bot moving across the board.</li>
+<li>Click the Pause button once you&#8217;re bored</li>
+</ol>
 </div>
 
 <div id='t826-rd-demo'>
@@ -90,9 +116,19 @@ should have the Super instruction set, since we want the child to be able to
 <p><img src="img/compat-826-rd.png"></p>
 </div>
 
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
+<div id='infection-screenshot-1'>
+<h2>Infection Screenshot 1</h2>
+<p><img src="img/infection-screenshot-1.png"></p>
+</div>
+
+<div id='infection-screenshot-3'>
+<h2>Infection Screenshot 3</h2>
+<p><img src="img/infection-screenshot-3.png"></p>
+</div>
+
+<div id='infection-screenshot-2'>
+<h2>Infection Screenshot 2</h2>
+<p><img src="img/infection-screenshot-2.png"></p>
 </div>
 
 <div id='guide-repl-trans'>
@@ -121,9 +157,30 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 <a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar outputs for similar inputs')">similar outputs for similar inputs</a>.</p>
 </div>
 
+<div id='guide-repl-create-mobility'>
+<h2>Mobility</h2>
+<p>Each bot is either mobile or immobile (i.e. whether or not it can execute the
+<code>move</code> instruction).</p>
+<p>The third parameter to the <code>create</code> instruction specifies whether or not the
+child should be mobile:</p>
+<ul>
+<li>0 signifies immobility</li>
+<li>1 signifies mobility </li>
+</ul>
+</div>
+
 <div id='t826-rc-demo'>
 <h2>T=826 in RoboCom</h2>
 <p><img src="img/compat-826-rc.png"></p>
+</div>
+
+<div id='t827'>
+<h2>T=827</h2>
+<p>We this because:</p>
+<ol>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t827','#t826-rc-demo','T=826')">T=826</a> the selected bot was executing a <code>set</code> instruction</li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t827','#t827-rc-demo','T=827')">T=827</a> the selected bot was executing a <code>bjump</code> instruction</li>
+</ol>
 </div>
 
 <div id='rdrc-battles'>
@@ -282,16 +339,9 @@ Robo Dojo and RoboCom.</p>
 simulations to converge, but none of the changes worked.</p>
 </div>
 
-<div id='guide-repl-create-mobility'>
-<h2>Mobility</h2>
-<p>Each bot is either mobile or immobile (i.e. whether or not it can execute the
-<code>move</code> instruction).</p>
-<p>The third parameter to the <code>create</code> instruction specifies whether or not the
-child should be mobile:</p>
-<ul>
-<li>0 signifies immobility</li>
-<li>1 signifies mobility </li>
-</ul>
+<div id='blue-infected-picture'>
+<h2>An infected blue bot</h2>
+<p><img src="img/infected-bluebot.png"></p>
 </div>
 
 <div id='guide-repl-create-numbanks'>
@@ -379,6 +429,7 @@ set %active, 1
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
 </ol>
 </div>
 
@@ -422,24 +473,25 @@ instruction.</p>
 </ul>
 </div>
 
-<div id='guide-hello-run'>
-<h2>Run your program</h2>
-<ol>
-<li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
-<li>In the Editor, type in your program</li>
-<li>Click Compile</li>
-<li>Click the Play button. You will see your bot moving across the board.</li>
-<li>Click the Pause button once you&#8217;re bored</li>
-</ol>
+<div id='guide-repl-create-instrset'>
+<h2>Instruction set</h2>
+<p>There are three instruction sets: Basic (0), Advanced (1), and Super (2).</p>
+<p>Different instructions belong to different instruction sets.
+<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-example','For example')">For example</a>.</p>
+<p>Each bot is either Basic, Advanced, or Super &#8212; which effects
+<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-bot','which instructions each bot may execute')">which instructions each bot may execute</a>.</p>
+<p>The first parameter of the <code>create</code> instruction specifies the instruction set
+for the child bot.</p>
+<p>In our Replication program, we use the parameter 2 to specify that the child
+should have the Super instruction set, since we want the child to be able to
+<code>create</code> a child of its own.</p>
+<p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
-<div id='guide-diamond-turn'>
-<h2>The <tt>turn</tt> instruction</h2>
-<p>The <code>turn</code> instruction takes one parameter.</p>
-<ul>
-<li>If the parameter is 0, the bot turns to the left (rotates -90°).</li>
-<li>If the parameter is anything else, the bot turns to the right (rotates 90°).</li>
-</ul>
+<div id='infection-screenshot-4'>
+<h2>Infection Screenshot 4</h2>
+<p><img src="img/infection-screenshot-4.png"></p>
+<p>Notice the Red bot that has been infected by Blue.</p>
 </div>
 
 <div id='t826'>
@@ -451,13 +503,9 @@ instruction.</p>
 </ol>
 </div>
 
-<div id='t827'>
-<h2>T=827</h2>
-<p>We this because:</p>
-<ol>
-<li>At <a href="javascript:Sidenote.openColumnLoud('#t827','#t826-rc-demo','T=826')">T=826</a> the selected bot was executing a <code>set</code> instruction</li>
-<li>At <a href="javascript:Sidenote.openColumnLoud('#t827','#t827-rc-demo','T=827')">T=827</a> the selected bot was executing a <code>bjump</code> instruction</li>
-</ol>
+<div id='t827-rc-demo'>
+<h2>T=827 in RoboCom</h2>
+<p><img src="img/compat-827-rc.png"></p>
 </div>
 
 <div id='t822-note'>
@@ -470,6 +518,15 @@ intentional.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
 <p>I have investigated preventing bots from executing a cycle immediately after
 their activation, however this change did not effect convergence.</p>
+</div>
+
+<div id='guide-diamond-turn'>
+<h2>The <tt>turn</tt> instruction</h2>
+<p>The <code>turn</code> instruction takes one parameter.</p>
+<ul>
+<li>If the parameter is 0, the bot turns to the left (rotates -90°).</li>
+<li>If the parameter is anything else, the bot turns to the right (rotates 90°).</li>
+</ul>
 </div>
 
 <div id='t822'>
@@ -519,9 +576,23 @@ causes the forward bot to become activated.</p>
 <p><img src="img/robocom-screenshot.png"></p>
 </div>
 
-<div id='t827-rc-demo'>
-<h2>T=827 in RoboCom</h2>
-<p><img src="img/compat-827-rc.png"></p>
+<div id='disinfection'>
+<h2>Red bots quickly disinfect themselves</h2>
+<p>This is because
+every Red bot is more-or-less surrounded by other Red bots who are constantly
+propagating their Red banks. Thus, when a Red bot becomes infected, its
+neighboring Red bots disinfect the infected Red bot.</p>
+</div>
+
+<div id='infection-explanation'>
+<h2>Infection explanation</h2>
+<p>Each Blue bot has a <a href="javascript:Sidenote.openColumnLoud('#infection-explanation','#blue-infected-picture','Red circle inside it')">Red circle inside it</a>,
+which indicates each Blue bot
+is executing a bank that originated from Red&#8217;s program.</p>
+<p>This happens because Red and Blue indiscriminately transfer their first bank 
+to the bots in front of them.</p>
+<p>So, when a Blue bot is infected with a Red bank, the Blue bot begins to turn
+as it reproduces, propagating Red&#8217;s bank along the way.</p>
 </div>
 
 <div id='t825-rd-demo'>

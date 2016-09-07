@@ -50,6 +50,85 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 1. [Hello World](##guide-hello)
 2. [Replication](##replication)
 3. [Diamond](##diamond)
+4. [Infection & Disinfection](##blue-red-programs)
+
+~blue-red-programs
+## Infection & Disinfection
+
+You can launch different-colored bots on the board, each color with a different
+program.
+
+To edit the program for a color, select a color from the
+[color editor drop-down menu](##color-dropdown).
+
+For this experiment:
+
+- Set the Blue bot program to the [Replication program](##replication)
+- Set the Red bot program to the [Diamond program](##diamond)
+
+The result should look like [this](##infection-screenshot-1), or
+[this](##infection-screenshot-2), [this](##infection-screenshot-3), or
+maybe [this](##infection-screenshot-4).
+
+The Red bots overwhelm the Blue bots, and
+[infect them with a virus](##infection-explanation).
+
+Sometimes [Blue bots infect Red bots](##infection-screenshot-4), but Red bots quickly
+[disinfect themselves](##disinfection).
+
+~disinfection
+## Red bots quickly disinfect themselves
+
+This is because
+every Red bot is more-or-less surrounded by other Red bots who are constantly
+propagating their Red banks. Thus, when a Red bot becomes infected, its
+neighboring Red bots disinfect the infected Red bot.
+
+~infection-explanation
+## Infection explanation
+
+Each Blue bot has a [Red circle inside it](##blue-infected-picture),
+which indicates each Blue bot
+is executing a bank that originated from Red's program.
+
+This happens because Red and Blue indiscriminately transfer their first bank 
+to the bots in front of them.
+
+So, when a Blue bot is infected with a Red bank, the Blue bot begins to turn
+as it reproduces, propagating Red's bank along the way.
+
+~blue-infected-picture
+## An infected blue bot
+
+<img src="img/infected-bluebot.png">
+
+~infection-screenshot-4
+## Infection Screenshot 4
+
+<img src="img/infection-screenshot-4.png">
+
+Notice the Red bot that has been infected by Blue.
+
+~infection-screenshot-1
+## Infection Screenshot 1
+
+<img src="img/infection-screenshot-1.png">
+
+~infection-screenshot-2
+## Infection Screenshot 2
+
+<img src="img/infection-screenshot-2.png">
+
+~infection-screenshot-3
+## Infection Screenshot 3
+
+<img src="img/infection-screenshot-3.png">
+
+
+~color-dropdown
+## Color editor drop-down menu
+
+<img src="img/color-dropdown.png">
 
 ~diamond
 ## Diamond
