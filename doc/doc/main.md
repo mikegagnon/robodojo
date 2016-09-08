@@ -100,7 +100,84 @@ bank virus
     
     
     
+dsf
+
+    bank mother-bot ; bank 1
+
+        set #active, 2
         
+        ; #1 determines whether a mother-bot or a cleanup-bot is created
+        set #2, 0
+        
+        @start
+        
+        comp %active, 2
+        jump @empty-or-not-infected
+        
+        turn 1
+        jump @start
+        
+        @empty-or-not-infected
+        scan #1
+        comp #1, 1
+        jump @empty
+
+        ; not infected
+        trans 2, 1
+        set %active, 2
+        
+        @empty
+        comp #2, 0
+        jump @make-cleanup-bot
+        
+        ; make another mother-bot
+        create 2, 4, 0
+        trans 1, 1
+        trans 2, 2
+        trans 3, 3
+        trans 4, 4
+        set %active, 2
+        set #2, 1
+        jump @start
+        
+        @make-cleanup-bot
+        create 1, 2, 1
+        trans 3, 1
+        trans 4, 2
+        set %active, 2
+        set #2, 0
+
+      
+    bank virus ; bank 2
+
+        @start2
+        turn 1
+        
+        comp %active, 2
+        jump @empty-or-not-infected2
+        
+        jump @start2
+        
+        @empty-or-not-infected2
+        trans 1, 1
+        
+    bank cleanup-bot ; bank 3
+        
+        @start3
+        move
+        scan #1
+        comp #1, 1
+        jump @start3
+        
+        ; transfer the tapout bank
+        trans 2, 1
+        
+    bank tapout ; bank 4
+        tapout
+        
+    
+            
+
         
 
 ~defeating-diamond
