@@ -52,7 +52,97 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 3. [Diamond](##diamond)
 4. [Infection & Disinfection](##blue-red-programs)
 5. [Super Diamond](##defeating-diamond)
-6. [Wave Virus](##wave)
+6. [Bank Jumping](##bank-jumping)
+7. [Wave Virus](##wave)
+
+~bank-jumping
+## Bank Jumping
+
+We can develop a program that defeats Super Diamond, by forking Super Diamond
+and making a few small changes.
+
+Basically, we use the <tt>[bjump](##bank-jumping-bjump)</tt> instruction to jump away from the first
+bank. Since Super Diamond attacks the first bank, it easily evades Super
+Diamond's attack.
+
+The Bank Jumping program looks like [this](##bank-jumping-program).
+
+In general, if you jump to arbitrary banks, its more difficult to attack you
+since the attacker doesn't know which bank to hit. Of course, the attacker
+can target every bank, but that leads to a slower attack.
+
+~bank-jumping-bjump
+## bjump
+
+The `bjump` instruction jumps from one bank to another.
+
+It takes two parameters:
+
+1. The bank number to jump to
+2. The instruction number (within that bank) to jump to
+
+### Example usage
+    
+    bank one
+    bjump 3, 1
+
+    bank two
+
+    bank three
+    move
+
+This causes the bot to jump to the first instruction of the third bank.
+
+~bank-jumping-program
+## Bank Jumping program
+
+We point out the differences from Super Diamond by putting "LOOK HERE" in the
+comments.
+
+    bank launcher ; 1
+
+        ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+        bjump 3,1
+
+    bank 2
+
+    bank main ; 3
+
+        @start
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,4,0
+
+        ; LOOK HERE: Disinfect / initialize new bot
+        trans 1,1
+        trans 3,3
+        trans 4,4
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        ; LOOK HERE: Transfer self-destruct virus to the opponent
+        trans 4,1
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start
+
+    bank foe ; 4
+        tapout
 
 ~wave
 ## Wave Virus
@@ -102,81 +192,95 @@ bank virus
     
 dsf
 
-    bank mother-bot ; bank 1
+bank mother-bot ; bank 1
 
-        set #active, 2
-        
-        ; #1 determines whether a mother-bot or a cleanup-bot is created
-        set #2, 0
-        
-        @start
-        
-        comp %active, 2
-        jump @empty-or-not-infected
-        
-        turn 1
-        jump @start
-        
-        @empty-or-not-infected
-        scan #1
-        comp #1, 1
-        jump @empty
-
-        ; not infected
-        trans 2, 1
-        set %active, 2
-        
-        @empty
-        comp #2, 0
-        jump @make-cleanup-bot
-        
-        ; make another mother-bot
-        create 2, 4, 0
-        trans 1, 1
-        trans 2, 2
-        trans 3, 3
-        trans 4, 4
-        set %active, 2
-        set #2, 1
-        jump @start
-        
-        @make-cleanup-bot
-        create 1, 2, 1
-        trans 3, 1
-        trans 4, 2
-        set %active, 2
-        set #2, 0
-
-      
-    bank virus ; bank 2
-
-        @start2
-        turn 1
-        
-        comp %active, 2
-        jump @empty-or-not-infected2
-        
-        jump @start2
-        
-        @empty-or-not-infected2
-        trans 1, 1
-        
-    bank cleanup-bot ; bank 3
-        
-        @start3
-        move
-        scan #1
-        comp #1, 1
-        jump @start3
-        
-        ; transfer the tapout bank
-        trans 2, 1
-        
-    bank tapout ; bank 4
-        tapout
-        
+    set #active, 2
     
-            
+    ; #1 determines whether a mother-bot or a cleanup-bot is created
+    set #2, 0
+    
+    @start
+    
+    scan #1
+    comp #1, 2
+    jump @not-friendly
+    
+    ; friendly --> disinefect
+    trans 1, 1
+    trans 2, 2
+    trans 3, 3
+    trans 4, 4
+    
+    @not-friendly
+    
+    comp %active, 2
+    jump @empty-or-not-infected
+    
+    turn 1
+    jump @start
+    
+    @empty-or-not-infected
+    scan #1
+    comp #1, 1
+    jump @empty
+
+    ; not infected
+    trans 2, 1
+    set %active, 2
+    
+    @empty
+    comp #2, 0
+    jump @make-cleanup-bot
+    
+    ; make another mother-bot
+    create 2, 4, 0
+    trans 1, 1
+    trans 2, 2
+    trans 3, 3
+    trans 4, 4
+    set %active, 2
+    set #2, 1
+    jump @start
+    
+    @make-cleanup-bot
+    create 1, 2, 1
+    trans 3, 1
+    trans 4, 2
+    set %active, 2
+    set #2, 0
+
+  
+bank virus ; bank 2
+
+    @start2
+    turn 1
+    
+    comp %active, 2
+    jump @empty-or-not-infected2
+    
+    jump @start2
+    
+    @empty-or-not-infected2
+    trans 1, 1
+    
+bank cleanup-bot ; bank 3
+    
+    @start3
+    move
+    scan #1
+    comp #1, 1
+    jump @start3
+    
+    ; transfer the tapout bank
+    trans 2, 1
+    
+bank tapout ; bank 4
+    tapout
+    
+    
+    
+    
+
 
         
 

@@ -26,27 +26,6 @@
       <div class='column' id="column0"></div>
     </div>
     <div class="content-storage">
-<div id='Super-diamond-battle'>
-<h2>Super Diamond battle</h2>
-<ol>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-3','Super Diamond catches up with Diamond')">Super Diamond catches up with Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-4','Super Diamond overwhelms Diamond')">Super Diamond overwhelms Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-5','Super Diamond wins')">Super Diamond wins</a></li>
-</ol>
-</div>
-
-<div id='guide-hello-screenshot'>
-<h2>Screenshot</h2>
-<p><img src="img/hello-world.png"></p>
-</div>
-
-<div id='infection-screenshot-3'>
-<h2>Infection Screenshot 3</h2>
-<p><img src="img/infection-screenshot-3.png"></p>
-</div>
-
 <div id='blue-red-programs'>
 <h2>Infection &amp; Disinfection</h2>
 <p>You can launch different-colored bots on the board, each color with a different
@@ -65,6 +44,27 @@ maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infecti
 <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-explanation','infect them with a virus')">infect them with a virus</a>.</p>
 <p>Sometimes <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','Blue bots infect Red bots')">Blue bots infect Red bots</a>, but Red bots quickly
 <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#disinfection','disinfect themselves')">disinfect themselves</a>.</p>
+</div>
+
+<div id='guide-hello-screenshot'>
+<h2>Screenshot</h2>
+<p><img src="img/hello-world.png"></p>
+</div>
+
+<div id='infection-screenshot-3'>
+<h2>Infection Screenshot 3</h2>
+<p><img src="img/infection-screenshot-3.png"></p>
+</div>
+
+<div id='Super-diamond-battle'>
+<h2>Super Diamond battle</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-3','Super Diamond catches up with Diamond')">Super Diamond catches up with Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-4','Super Diamond overwhelms Diamond')">Super Diamond overwhelms Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-5','Super Diamond wins')">Super Diamond wins</a></li>
+</ol>
 </div>
 
 <div id='navigate'>
@@ -338,6 +338,14 @@ the child should have.</p>
 zero instructions.</p>
 </div>
 
+<div id='guide-hello-editor'>
+<h2>Editors</h2>
+<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
+<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
+<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
+<p><img src="img/editor-selection.png"></p>
+</div>
+
 <div id='4way'>
 <h2>Screenshot of a four-way battle</h2>
 <p><img src="img/battle.png"></p>
@@ -400,6 +408,7 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Super Diamond')">Super Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#bank-jumping','Bank Jumping')">Bank Jumping</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#wave','Wave Virus')">Wave Virus</a></li>
 </ol>
 </div>
@@ -523,79 +532,86 @@ jump @start2
 trans 1, 1
 </code></pre>
 <p>dsf</p>
-<pre><code>bank mother-bot ; bank 1
+<p>bank mother-bot ; bank 1</p>
+<pre><code>set #active, 2
 
-    set #active, 2
+; #1 determines whether a mother-bot or a cleanup-bot is created
+set #2, 0
 
-    ; #1 determines whether a mother-bot or a cleanup-bot is created
-    set #2, 0
+@start
 
-    @start
+scan #1
+comp #1, 2
+jump @not-friendly
 
-    comp %active, 2
-    jump @empty-or-not-infected
+; friendly --&gt; disinefect
+trans 1, 1
+trans 2, 2
+trans 3, 3
+trans 4, 4
 
-    turn 1
-    jump @start
+@not-friendly
 
-    @empty-or-not-infected
-    scan #1
-    comp #1, 1
-    jump @empty
+comp %active, 2
+jump @empty-or-not-infected
 
-    ; not infected
-    trans 2, 1
-    set %active, 2
+turn 1
+jump @start
 
-    @empty
-    comp #2, 0
-    jump @make-cleanup-bot
+@empty-or-not-infected
+scan #1
+comp #1, 1
+jump @empty
 
-    ; make another mother-bot
-    create 2, 4, 0
-    trans 1, 1
-    trans 2, 2
-    trans 3, 3
-    trans 4, 4
-    set %active, 2
-    set #2, 1
-    jump @start
+; not infected
+trans 2, 1
+set %active, 2
 
-    @make-cleanup-bot
-    create 1, 2, 1
-    trans 3, 1
-    trans 4, 2
-    set %active, 2
-    set #2, 0
+@empty
+comp #2, 0
+jump @make-cleanup-bot
 
+; make another mother-bot
+create 2, 4, 0
+trans 1, 1
+trans 2, 2
+trans 3, 3
+trans 4, 4
+set %active, 2
+set #2, 1
+jump @start
 
-bank virus ; bank 2
-
-    @start2
-    turn 1
-
-    comp %active, 2
-    jump @empty-or-not-infected2
-
-    jump @start2
-
-    @empty-or-not-infected2
-    trans 1, 1
-
-bank cleanup-bot ; bank 3
-
-    @start3
-    move
-    scan #1
-    comp #1, 1
-    jump @start3
-
-    ; transfer the tapout bank
-    trans 2, 1
-
-bank tapout ; bank 4
-    tapout
+@make-cleanup-bot
+create 1, 2, 1
+trans 3, 1
+trans 4, 2
+set %active, 2
+set #2, 0
 </code></pre>
+<p>bank virus ; bank 2</p>
+<pre><code>@start2
+turn 1
+
+comp %active, 2
+jump @empty-or-not-infected2
+
+jump @start2
+
+@empty-or-not-infected2
+trans 1, 1
+</code></pre>
+<p>bank cleanup-bot ; bank 3</p>
+<pre><code>@start3
+move
+scan #1
+comp #1, 1
+jump @start3
+
+; transfer the tapout bank
+trans 2, 1
+</code></pre>
+<p>bank tapout ; bank 4
+    tapout</p>
 </div>
 
 <div id='guide-hello-autoreboot'>
@@ -638,6 +654,57 @@ set %active, 1
 <p><img src="img/replicate.png"></p>
 </div>
 
+<div id='bank-jumping-program'>
+<h2>Bank Jumping program</h2>
+<p>We point out the differences from Super Diamond by putting &#8220;LOOK HERE&#8221; in the
+comments.</p>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct virus to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    tapout
+</code></pre>
+</div>
+
 <div id='defeating-diamond-pseudo'>
 <h2>Pseudo code for Super Diamond</h2>
 <pre><code>bank main
@@ -656,12 +723,17 @@ bank self-destruct
 </code></pre>
 </div>
 
-<div id='guide-hello-editor'>
-<h2>Editors</h2>
-<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
-<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
-<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
-<p><img src="img/editor-selection.png"></p>
+<div id='bank-jumping'>
+<h2>Bank Jumping</h2>
+<p>We can develop a program that defeats Super Diamond, by forking Super Diamond
+and making a few small changes.</p>
+<p>Basically, we use the <tt><a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-bjump','bjump')">bjump</a></tt> instruction to jump away from the first
+bank. Since Super Diamond attacks the first bank, it easily evades Super
+Diamond&#8217;s attack.</p>
+<p>The Bank Jumping program looks like <a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-program','this')">this</a>.</p>
+<p>In general, if you jump to arbitrary banks, its more difficult to attack you
+since the attacker doesn&#8217;t know which bank to hit. Of course, the attacker
+can target every bank, but that leads to a slower attack.</p>
 </div>
 
 <div id='compat-diff'>
@@ -868,6 +940,26 @@ neighboring Red bots disinfect the infected Red bot.</p>
 <div id='infection-screenshot-1'>
 <h2>Infection Screenshot 1</h2>
 <p><img src="img/infection-screenshot-1.png"></p>
+</div>
+
+<div id='bank-jumping-bjump'>
+<h2>bjump</h2>
+<p>The <code>bjump</code> instruction jumps from one bank to another.</p>
+<p>It takes two parameters:</p>
+<ol>
+<li>The bank number to jump to</li>
+<li>The instruction number (within that bank) to jump to</li>
+</ol>
+<h3>Example usage</h3>
+<pre><code>bank one
+bjump 3, 1
+
+bank two
+
+bank three
+move
+</code></pre>
+<p>This causes the bot to jump to the first instruction of the third bank.</p>
 </div>
 
 <div id='infection-explanation'>
