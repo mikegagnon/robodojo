@@ -370,6 +370,25 @@ bank foe ; 4
 <p><img src="img/compat-827-rc.png"></p>
 </div>
 
+<div id='eng-virus-prototype-3'>
+<h2>Prototype Virus 3</h2>
+<p>PV3 modifies PV2 so that sometimes it taps out opponents.
+Thus, it is able to both infect and eliminate Super Diamond bots.</p>
+<p>In PV2 the <code>@foe</code> section of the program infects opponents with the virus.</p>
+<p>For PV3, we rewrite <code>@foe</code> as follows:</p>
+<pre><code>If (#20 == 0) {
+    #20 = 1
+    infect with tapout malware
+} else {
+    #20 = 0
+    infect with virus
+}
+</code></pre>
+<p>Here&#8217;s the <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype-3','#pv3-foe','actual code')">actual code</a> for the <code>@foe</code> section, and here&#8217;s the
+<a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype-3','#pv3-program','complete program')">complete program</a>.</p>
+<p>PV3 successfully completely eliminates Super Diamond.</p>
+</div>
+
 <div id='eng-virus-prototype-2'>
 <h2>Prototype Virus 2</h2>
 <p>PV2 modifies PV1 so that it heals from self-infection.</p>
@@ -388,9 +407,9 @@ infected Super Diamond bots (<a href="javascript:Sidenote.openColumnLoud('#eng-v
 Diamond bots.</p>
 </div>
 
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
+<div id='infection-screenshot-3'>
+<h2>Infection Screenshot 3</h2>
+<p><img src="img/infection-screenshot-3.png"></p>
 </div>
 
 <div id='guide-hello'>
@@ -436,13 +455,27 @@ move
 </ol>
 </div>
 
-<div id='why-virus'>
-<h2>Why use viruses?</h2>
-<p>It usually takes at least several hundred cycles to create a new bot.</p>
-<p>On the other hand,
-it only takes several tens of cycles to infect a bot with a small code bank.</p>
-<p>So, commandeering a bot is more efficient than creating a bot by an order of
-magnitude.</p>
+<div id='pv3-foe'>
+<h2>Actual code for <code>@foe</code> section of PV3</h2>
+<pre><code>@foe
+
+comp #20, 0
+jump @infect-with-virus
+
+set #20, 1
+trans 5,1
+jump @restart
+
+@infect-with-virus
+; LOOK HERE: Transfer self-destruct malware to the opponent
+set #20, 0
+trans 4,1
+
+@restart
+; Make sure the opponent is active, so it can execute the foe bank
+set %active, 1
+jump @start
+</code></pre>
 </div>
 
 <div id='defeating-diamond-registers'>
@@ -539,6 +572,73 @@ bank self-destruct
 </ul>
 </div>
 
+<div id='pv3-program'>
+<h2>Complete program</h2>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,5,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    trans 5,5
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+
+    comp #20, 0
+    jump @infect-with-virus
+
+    set #20, 1
+    trans 5,1
+    jump @restart
+
+    @infect-with-virus
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    set #20, 0
+    trans 4,1
+
+    @restart
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+    bjump 3, 1
+
+bank tapout; 5
+    tapout
+</code></pre>
+</div>
+
 <div id='blue-red-programs'>
 <h2>Infection &amp; Disinfection</h2>
 <p>You can launch different-colored bots on the board, each color with a different
@@ -576,9 +676,9 @@ maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infecti
 <p>Blue is stuck because its frontier bots are infected with the virus.</p>
 </div>
 
-<div id='infection-screenshot-3'>
-<h2>Infection Screenshot 3</h2>
-<p><img src="img/infection-screenshot-3.png"></p>
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
 </div>
 
 <div id='infection-screenshot-2'>
@@ -1084,6 +1184,15 @@ move
 <p>Otherwise, the bot does turn.</p>
 </div>
 
+<div id='why-virus'>
+<h2>Why use viruses?</h2>
+<p>It usually takes at least several hundred cycles to create a new bot.</p>
+<p>On the other hand,
+it only takes several tens of cycles to infect a bot with a small code bank.</p>
+<p>So, commandeering a bot is more efficient than creating a bot by an order of
+magnitude.</p>
+</div>
+
 <div id='compatibility'>
 <h2>Compatibility with RoboCom</h2>
 <p>The problem is at least twofold:</p>
@@ -1203,6 +1312,7 @@ Super Diamond.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-timing','Timing concerns')">Timing concerns</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype','Prototype Virus 1')">Prototype Virus 1</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-2','Prototype Virus 2')">Prototype Virus 2</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-3','Prototype Virus 3')">Prototype Virus 3</a></li>
 </ul>
 </div>
 

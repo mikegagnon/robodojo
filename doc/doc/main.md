@@ -57,6 +57,120 @@ Super Diamond.
 - [Timing concerns](##eng-virus-timing)
 - [Prototype Virus 1](##eng-virus-prototype)
 - [Prototype Virus 2](##eng-virus-prototype-2)
+- [Prototype Virus 3](##eng-virus-prototype-3)
+
+~eng-virus-prototype-3
+## Prototype Virus 3
+
+PV3 modifies PV2 so that sometimes it taps out opponents.
+Thus, it is able to both infect and eliminate Super Diamond bots.
+
+In PV2 the `@foe` section of the program infects opponents with the virus.
+
+For PV3, we rewrite `@foe` as follows:
+
+    If (#20 == 0) {
+        #20 = 1
+        infect with tapout malware
+    } else {
+        #20 = 0
+        infect with virus
+    }
+
+Here's the [actual code](##pv3-foe) for the `@foe` section, and here's the
+[complete program](##pv3-program).
+
+PV3 successfully completely eliminates Super Diamond.
+
+~pv3-foe
+## Actual code for `@foe` section of PV3
+
+    @foe
+
+    comp #20, 0
+    jump @infect-with-virus
+
+    set #20, 1
+    trans 5,1
+    jump @restart
+
+    @infect-with-virus
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    set #20, 0
+    trans 4,1
+
+    @restart
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+~pv3-program
+## Complete program
+
+    bank launcher ; 1
+
+        ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+        bjump 3,1
+
+    bank 2
+
+    bank main ; 3
+
+        @start
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,5,0
+
+        ; LOOK HERE: Disinfect / initialize new bot
+        trans 1,1
+        trans 3,3
+        trans 4,4
+        trans 5,5
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        
+        comp #20, 0
+        jump @infect-with-virus
+
+        set #20, 1
+        trans 5,1
+        jump @restart
+        
+        @infect-with-virus
+        ; LOOK HERE: Transfer self-destruct malware to the opponent
+        set #20, 0
+        trans 4,1
+        
+        @restart
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start
+
+    bank foe ; 4
+        trans 1,1
+        turn 1
+        bjump 3, 1
+        
+    bank tapout; 5
+        tapout
+
+
 
 ~eng-virus-prototype-2
 ## Prototype Virus 2
