@@ -79,6 +79,7 @@ defeat individual bots by infecting them with tapout malware:</p>
     trans 1,1
     turn 1
 </code></pre>
+<p>Here&#8217;s the <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#pv1-program','complete program')">complete program</a>.</p>
 <p>This virus spreads quickly because its execution time is small compared to
 the disinfection routine. Here are some snapshots of Prototype Virus 1 taking
 on Super Diamond:
@@ -92,6 +93,8 @@ on Super Diamond:
 <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#pv-1-h','8')">8</a>, </p>
 <p>Unfortunately, the virus is so effective it ends up
 <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#pv1-self-infect','infecting Blue&amp;#8217;s bots')">infecting Blue&#8217;s bots</a> at the frontier.</p>
+<p>Furthermore, Prototype Virus 1 has no mechanism to tapout its opponent;
+it merely spreads a virus.</p>
 </div>
 
 <div id='bank-jumping'>
@@ -360,6 +363,22 @@ bank foe ; 4
 <p><img src="img/compat-827-rc.png"></p>
 </div>
 
+<div id='eng-virus-prototype-2'>
+<h2>Prototype Virus 2</h2>
+<p>PV2 modifies PV1 so that it doesn&#8217;t infect its own bots.</p>
+<p>We replace the old payload:</p>
+<pre><code>bank foe
+    trans 1,1
+    turn 1
+</code></pre>
+<p>With a new payload:</p>
+<pre><code>bank foe
+    trans 1,1
+    turn 1
+    bjump 3
+</code></pre>
+</div>
+
 <div id='cycle-strategy'>
 <h2>The Strategy of Cycles</h2>
 <p><strong>TODO</strong></p>
@@ -600,6 +619,56 @@ maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infecti
 <h2>Step 1229</h2>
 <p><img src="img/pv-1-b-1229.png" ></p>
 <p>Blue and Red make contact.</p>
+</div>
+
+<div id='pv1-program'>
+<h2>PV1 Program</h2>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+</code></pre>
 </div>
 
 <div id='defeating-diamond-jump'>
@@ -1050,6 +1119,7 @@ Super Diamond.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#why-virus','Why use viruses?')">Why use viruses?</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-timing','Timing concerns')">Timing concerns</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype','Prototype Virus 1')">Prototype Virus 1</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-2','Prototype Virus 2')">Prototype Virus 2</a></li>
 </ul>
 </div>
 

@@ -56,6 +56,77 @@ Super Diamond.
 - [Why use viruses?](##why-virus)
 - [Timing concerns](##eng-virus-timing)
 - [Prototype Virus 1](##eng-virus-prototype)
+- [Prototype Virus 2](##eng-virus-prototype-2)
+
+~eng-virus-prototype-2
+## Prototype Virus 2
+
+PV2 modifies PV1 so that it doesn't infect its own bots.
+
+We replace the old payload:
+
+    bank foe
+        trans 1,1
+        turn 1
+
+With a new payload:
+
+    bank foe
+        trans 1,1
+        turn 1
+        bjump 3, 1
+
+Here is the [complete program](##pv2-program).
+
+~pv2-program
+## PV2 Program
+
+    bank launcher ; 1
+
+        ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+        bjump 3,1
+
+    bank 2
+
+    bank main ; 3
+
+        @start
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,4,0
+
+        ; LOOK HERE: Disinfect / initialize new bot
+        trans 1,1
+        trans 3,3
+        trans 4,4
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        ; LOOK HERE: Transfer self-destruct malware to the opponent
+        trans 4,1
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start
+
+    bank foe ; 4
+        trans 1,1
+        turn 1
+        bjump 3, 1
 
 ~eng-virus-prototype
 ## Prototype Virus 1
@@ -72,6 +143,8 @@ We are going to replace that payload with a simple virus:
         trans 1,1
         turn 1
 
+Here's the [complete program](##pv1-program).
+
 This virus spreads quickly because its execution time is small compared to
 the disinfection routine. Here are some snapshots of Prototype Virus 1 taking
 on Super Diamond:
@@ -86,6 +159,58 @@ on Super Diamond:
 
 Unfortunately, the virus is so effective it ends up
 [infecting Blue's bots](##pv1-self-infect) at the frontier.
+
+Furthermore, Prototype Virus 1 has no mechanism to tapout its opponent;
+it merely spreads a virus.
+
+~pv1-program
+## PV1 Program
+
+    bank launcher ; 1
+
+        ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+        bjump 3,1
+
+    bank 2
+
+    bank main ; 3
+
+        @start
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,4,0
+
+        ; LOOK HERE: Disinfect / initialize new bot
+        trans 1,1
+        trans 3,3
+        trans 4,4
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        ; LOOK HERE: Transfer self-destruct malware to the opponent
+        trans 4,1
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start
+
+    bank foe ; 4
+        trans 1,1
+        turn 1
 
 ~pv1-self-infect
 ## Self infection
