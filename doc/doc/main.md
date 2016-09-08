@@ -6,16 +6,6 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 * [Play Robo Dojo](http://robodojo.club)
 * [Guide](##guide)
 * [Reference](##ref)
-* [How to navigate this document](##navigate)
-
-~navigate
-## How to navigate this document
-
-This is a [Sidenote](http://sidenote.io) document.
-
-Sidenote opens links in new columns.
-
-TODO
 
 ~robocom
 ## RoboCom
@@ -52,11 +42,141 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 3. [Diamond](##diamond)
 4. [Infection & Disinfection](##blue-red-programs)
 5. [Super Diamond](##defeating-diamond)
-6. [Bank Jumping](##bank-jumping)
-7. [Wave Virus](##wave)
+6. [Bank Jumper](##bank-jumping)
+7. [Engineering a Virus](##eng-virus)
+
+~eng-virus
+## Engineering a Virus
+
+We are going to fork Bank Jumper, and modify it to use a virus to defeat
+Super Diamond.
+
+### Sections
+
+- [Why use viruses?](##why-virus)
+- [Timing concerns](##eng-virus-timing)
+- [Prototype Virus 1](##eng-virus-prototype)
+
+~eng-virus-prototype
+## Prototype Virus 1
+
+Recall, [Super Diamond](##defeating-diamond) and [Bank Jumper](##bank-jumping)
+defeat individual bots by infecting them with tapout malware:
+
+    bank foe
+        tapout
+
+We are going to replace that payload with a simple virus:
+
+    bank foe
+        trans 1,1
+        turn 1
+
+This virus spreads quickly because its execution time is small compared to
+the disinfection routine. Here are some snapshots of Prototype Virus 1 taking
+on Super Diamond:
+[1](##pv-1-a),
+[2](##pv-1-b), 
+[3](##pv-1-c), 
+[4](##pv-1-d), 
+[5](##pv-1-e), 
+[6](##pv-1-f), 
+[7](##pv-1-g), 
+[8](##pv-1-h), 
+
+Unfortunately, the virus is so effective it ends up
+[infecting Blue's bots](##pv1-self-infect) at the frontier.
+
+~pv1-self-infect
+## Self infection
+
+At first glance, it might not seem possible that Prototype Virus 1
+could end up infecting its own bots -- since PV1 spreads its virus through
+bank 1 and PV1 operates out of bank 3.
+
+A little [debugging](##debugging) shows what happens:
+
+1. A PV1 bot creates a child bot, and transfers bank 1 to bank 1
+2. An infected bot infects the child
+3. The PV1 parent then transfers the rest of the banks to the child
+4. The parent activates the child
+5. The child executes the virus bank
+
+**TODO**: link to debugging
+
+~pv-1-a
+## Step 0
+
+<img src="img/pv-1-a.png" >
+
+~pv-1-b
+## Step 1229
+
+<img src="img/pv-1-b-1229.png" >
+
+Blue and Red make contact.
+
+~pv-1-c
+## Step 1279
+
+<img src="img/pv-1-c-1279.png" >
+
+Blue infects two Red bots with the virus.
+
+~pv-1-d
+## Step 1307
+
+<img src="img/pv-1-d-1307.png" >
+
+The virus begins to spread.
+
+~pv-1-e
+## Step 1387
+
+<img src="img/pv-1-e-1387.png" >
+
+~pv-1-f
+## Step 1460
+
+<img src="img/pv-1-f-1460.png" >
+
+The Red team is completely infected with the virus.
+
+~pv-1-g
+## Step 4037
+
+<img src="img/pv-1-g-4037.png" >
+
+The Blue team appears to be closing in on Red.
+
+~pv-1-h
+## Step 13,634
+
+<img src="img/pv-1-h-13634.png" >
+
+Blue is stuck because its frontier bots are infected with the virus.
+
+~eng-virus-timing
+## Timing concerns
+Up until now, minor timing issues haven't played a role in the development of
+our programs. But viruses must be quick, in order to overwhelm disinfection.
+
+So, we will play close attention to timing.
+
+~why-virus
+## Why use viruses?
+
+It usually takes at least several hundred cycles to create a new bot.
+
+On the other hand,
+it only takes several tens of cycles to infect a bot with a small code bank.
+
+So, commandeering a bot is more efficient than creating a bot by an order of
+magnitude.
+
 
 ~bank-jumping
-## Bank Jumping
+## Bank Jumper
 
 We can develop a program that defeats Super Diamond, by forking Super Diamond
 and making a few small changes.
@@ -65,7 +185,7 @@ Basically, we use the <tt>[bjump](##bank-jumping-bjump)</tt> instruction to jump
 bank. Since Super Diamond attacks the first bank, it easily evades Super
 Diamond's attack.
 
-The Bank Jumping program looks like [this](##bank-jumping-program).
+The Bank Jumper program looks like [this](##bank-jumping-program).
 
 In general, if you jump to arbitrary banks, its more difficult to attack you
 since the attacker doesn't know which bank to hit. Of course, the attacker
@@ -94,7 +214,7 @@ It takes two parameters:
 This causes the bot to jump to the first instruction of the third bank.
 
 ~bank-jumping-program
-## Bank Jumping program
+## Bank Jumper program
 
 We point out the differences from Super Diamond by putting "LOOK HERE" in the
 comments.
@@ -135,7 +255,7 @@ comments.
         jump @start
 
         @foe
-        ; LOOK HERE: Transfer self-destruct virus to the opponent
+        ; LOOK HERE: Transfer self-destruct malware to the opponent
         trans 4,1
         ; Make sure the opponent is active, so it can execute the foe bank
         set %active, 1
@@ -149,7 +269,7 @@ comments.
 
 
 
-Bank Jumping modified to use virus instead of tapout
+Bank Jumper modified to use virus instead of tapout
 
     bank launcher ; 1
 
@@ -266,8 +386,8 @@ Wave Virus with submission hold
 
 Let's build a program that defeats the Diamond program.
 
-The general idea is to infect Diamond bots with a virus that causes the 
-infected bots to self-destruct.
+The general idea is to infect Diamond bots with malware that causes the 
+infected bots to "tap out" -- i.e. exit the board.
 
 The [pseudo code for our Super Diamond program](##defeating-diamond-pseudo)
 is straightforward and simple.
@@ -316,8 +436,6 @@ Each bot has 20 registers: `#1` ... `#20`
 
     set #1, 0
     turn #1
-
-**TODO**: rename virus to malware as needed
 
 This program segment sets `#1` equal to zero. Then `turn #1` is equivalent to 
 `turn 0`.
@@ -406,7 +524,7 @@ The red squares indicate a Red bot has just tapped out there.
         jump @start
 
         @foe
-        ; Transfer self-destruct virus to the opponent
+        ; Transfer tapout-malware to the opponent
         trans 2,1
         ; Make sure the opponent is active, so it can execute the foe bank
         set %active, 1
@@ -426,7 +544,7 @@ The red squares indicate a Red bot has just tapped out there.
             clone self
             turn
         else if (forward cell is an opponent)
-            infect the opponent with self-destruct virus
+            infect the opponent with tapout malware
         else if (forward cell is friendly)
             disinfect friend
             turn
@@ -453,7 +571,7 @@ The result should look like [this](##infection-screenshot-1), or
 maybe [this](##infection-screenshot-4).
 
 The Red bots overwhelm the Blue bots, and
-[infect them with a virus](##infection-explanation).
+[infect them with Red's code banks](##infection-explanation).
 
 Sometimes [Blue bots infect Red bots](##infection-screenshot-4), but Red bots quickly
 [disinfect themselves](##disinfection).
