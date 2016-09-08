@@ -468,6 +468,16 @@ a cycle during T=821 after its mother</li>
 
 <div id='defeating-diamond-comp'>
 <h2><tt>comp</tt></h2>
+<p>The <code>comp a, b</code> instruction compares <code>a</code> and <code>b</code>.</p>
+<p>If <code>a</code> and <code>b</code> are equal, then the following instruction is skipped.</p>
+<p>Otherwise, the following instruction is executed as normal.</p>
+<h3>Example usage</h3>
+<pre><code>comp #1, 0
+turn 1
+move
+</code></pre>
+<p>If <code>#1</code> == 0, then the bot does not turn.</p>
+<p>Otherwise, the bot does turn.</p>
 </div>
 
 <div id='guide-hello-execution'>
@@ -594,6 +604,14 @@ should have the Super instruction set, since we want the child to be able to
 
 <div id='defeating-diamond-jump'>
 <h2><tt>jump</tt></h2>
+<p>Example usage:</p>
+<pre><code>@foo
+turn 1
+move
+
+jump @foo
+</code></pre>
+<p>The bot turns and moves in an endless loop.</p>
 </div>
 
 <div id='defeating-diamond'>

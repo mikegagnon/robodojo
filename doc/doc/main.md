@@ -117,8 +117,34 @@ This program segment sets `#1` equal to zero. Then `turn #1` is equivalent to
 ~defeating-diamond-comp
 ## <tt>comp</tt>
 
+The `comp a, b` instruction compares `a` and `b`.
+
+If `a` and `b` are equal, then the following instruction is skipped.
+
+Otherwise, the following instruction is executed as normal.
+
+### Example usage
+
+    comp #1, 0
+    turn 1
+    move
+
+If `#1` == 0, then the bot does not turn.
+
+Otherwise, the bot does turn.
+
 ~defeating-diamond-jump
 ## <tt>jump</tt>
+
+Example usage:
+
+    @foo
+    turn 1
+    move
+
+    jump @foo
+
+The bot turns and moves in an endless loop.
 
 ~Super-diamond-battle
 ## Super Diamond battle
