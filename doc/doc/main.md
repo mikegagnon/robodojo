@@ -86,7 +86,22 @@ When executed, the `tapout` instruction causes the bot to exit the board.
 The `scan` instruction looks at the cell in front of the bot.
 
 But before describing the details of `scan`, we need to make a digression and
-discuss [variables](##defeating-diamond-variables). 
+discuss [registers](##defeating-diamond-registers). 
+
+~defeating-diamond-registers
+## Registers
+
+Bots can read and write registers.
+
+Each bot has 20 register variables: `#1` ... `#20`
+
+### Example usage
+
+    set #1, 0
+    turn #1
+
+This program segment sets `#1` equal to zero. Then `turn #1` is equivalent to 
+`turn 0`.
 
 ~defeating-diamond-comp
 ## <tt>comp</tt>

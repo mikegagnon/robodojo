@@ -42,9 +42,9 @@
 <p><img src="img/hello-world.png"></p>
 </div>
 
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
+<div id='infection-screenshot-3'>
+<h2>Infection Screenshot 3</h2>
+<p><img src="img/infection-screenshot-3.png"></p>
 </div>
 
 <div id='blue-red-programs'>
@@ -184,9 +184,16 @@ bank foe
 </code></pre>
 </div>
 
-<div id='infection-screenshot-3'>
-<h2>Infection Screenshot 3</h2>
-<p><img src="img/infection-screenshot-3.png"></p>
+<div id='defeating-diamond-registers'>
+<h2>Registers</h2>
+<p>Bots can read and write registers.</p>
+<p>Each bot has 20 register variables: <code>#1</code> &#8230; <code>#20</code></p>
+<h3>Example usage</h3>
+<pre><code>set #1, 0
+turn #1
+</code></pre>
+<p>This program segment sets <code>#1</code> equal to zero. Then <code>turn #1</code> is equivalent to 
+<code>turn 0</code>.</p>
 </div>
 
 <div id='infection-screenshot-2'>
@@ -195,12 +202,12 @@ bank foe
 </div>
 
 <div id='compat-mystery'>
-<h2>Mysterious RoboCom semSupercs</h2>
+<h2>Mysterious RoboCom semantics</h2>
 <p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
 and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
 Robo Dojo and RoboCom.</p>
 <p>Then, the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-myster-diff','simulations diverged')">simulations diverged</a> between Robo Dojo and RoboCom.</p>
-<p><strong>TODO</strong>: explain how I know my semSupercs are correct</p>
+<p><strong>TODO</strong>: explain how I know my semantics are correct</p>
 <p>I investigated several changes to Robo Dojo to see if I could get the 
 simulations to converge, but none of the changes worked.</p>
 </div>
@@ -225,7 +232,7 @@ overwriting any bank that might already be there.</p>
 <a href="http://robocom.rrobek.de/">here</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#robocom','#robocomscreenshot','screenshot')">screenshot</a>.</p>
 <p>Robo Dojo only implements the &#8220;Original&#8221; instruction set from RoboCom.</p>
 <p>Robo Dojo uses the &#8220;Classic&#8221; timing model from RoboCom.</p>
-<p>I have strove to make the Robo Dojo simulation semSupercs identical to RoboCom &#8212;
+<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
 however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility','I could not create a cycle-for-cycle duplicate of RoboCom')">I could not create a cycle-for-cycle duplicate of RoboCom</a>.</p>
 <p>Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 <a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar outputs for similar inputs')">similar outputs for similar inputs</a>.</p>
@@ -239,6 +246,11 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 <div id='t826-rc-demo'>
 <h2>T=826 in RoboCom</h2>
 <p><img src="img/compat-826-rc.png"></p>
+</div>
+
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
 </div>
 
 <div id='t827'>
@@ -545,9 +557,9 @@ bank self-destruct
 <p>The problem is at least twofold:</p>
 <ol>
 <li>RoboCom is closed source</li>
-<li>Some of RoboCom&#8217;s semSupercs appear to be undocumented</li>
+<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
 </ol>
-<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semSupercs')">mysterious RoboCom semSupercs</a>.</p>
+<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
 </div>
 
@@ -611,7 +623,7 @@ is straightforward and simple.</p>
 <h2><tt>scan</tt></h2>
 <p>The <code>scan</code> instruction looks at the cell in front of the bot.</p>
 <p>But before describing the details of <code>scan</code>, we need to make a digression and
-discuss <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#defeating-diamond-variables','variables')">variables</a>.</p>
+discuss <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#defeating-diamond-registers','registers')">registers</a>. </p>
 </div>
 
 <div id='t827-rc-demo'>
@@ -624,7 +636,7 @@ discuss <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#
 <p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
 cycle of the <code>set</code> instruction.</p>
 <p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
-execute a bot-cycle in the same board-cycle, however these semSupercs are
+execute a bot-cycle in the same board-cycle, however these semantics are
 intentional.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
 <p>I have investigated preventing bots from executing a cycle immediately after
