@@ -85,20 +85,33 @@ When executed, the `tapout` instruction causes the bot to exit the board.
 
 The `scan` instruction looks at the cell in front of the bot.
 
-But before describing the details of `scan`, we need to make a digression and
-discuss [registers](##defeating-diamond-registers). 
+But before describing `scan` further, we need to discuss
+[registers](##defeating-diamond-registers). 
+
+`scan #register` sets `#register` to either 0, 1, or 2, depending on what is 
+in front of the bot.
+
+- `#register` = 0 if the front cell is empty
+- `#register` = 1 if the front cell contains an opponent
+- `#register` = 2 if the front cell contains a friend
+
+### Example usage
+
+`scan #1` sets `#1` to either 0, 1, or 2.
 
 ~defeating-diamond-registers
 ## Registers
 
 Bots can read and write registers.
 
-Each bot has 20 register variables: `#1` ... `#20`
+Each bot has 20 registers: `#1` ... `#20`
 
 ### Example usage
 
     set #1, 0
     turn #1
+
+**TODO**: rename virus to malware as needed
 
 This program segment sets `#1` equal to zero. Then `turn #1` is equivalent to 
 `turn 0`.
@@ -137,10 +150,10 @@ The red squares indicate a Red bot has just tapped out there.
 
         @start
 
-        ; Register #1 = "empty", or "enemy", or "friend" 
+        ; Register #1 = "empty", or "opponent", or "friend" 
         scan #1
 
-        ; if "enemy" goto @foe
+        ; if "opponent" goto @foe
         ; else goto @friend-or-empty
         comp #1, 1
         jump @friend-or-empty
@@ -161,9 +174,9 @@ The red squares indicate a Red bot has just tapped out there.
         jump @start
 
         @foe
-        ; Transfer self-destruct virus to enemy
+        ; Transfer self-destruct virus to the opponent
         trans 2,1
-        ; Make sure the enemy is active, so it can execute the foe bank
+        ; Make sure the opponent is active, so it can execute the foe bank
         set %active, 1
         jump @start
 
@@ -180,8 +193,8 @@ The red squares indicate a Red bot has just tapped out there.
         if (forward cell is empty)
             clone self
             turn
-        else if (forward cell is enemy)
-            infect enemy with self-destruct virus
+        else if (forward cell is an opponent)
+            infect the opponent with self-destruct virus
         else if (forward cell is friendly)
             disinfect friend
             turn

@@ -149,10 +149,10 @@ turn 1
 <p>bank main</p>
 <pre><code>    @start
 
-    ; Register #1 = "empty", or "enemy", or "friend" 
+    ; Register #1 = "empty", or "opponent", or "friend" 
     scan #1
 
-    ; if "enemy" goto @foe
+    ; if "opponent" goto @foe
     ; else goto @friend-or-empty
     comp #1, 1
     jump @friend-or-empty
@@ -173,9 +173,9 @@ turn 1
     jump @start
 
     @foe
-    ; Transfer self-destruct virus to enemy
+    ; Transfer self-destruct virus to the opponent
     trans 2,1
-    ; Make sure the enemy is active, so it can execute the foe bank
+    ; Make sure the opponent is active, so it can execute the foe bank
     set %active, 1
     jump @start
 
@@ -187,11 +187,12 @@ bank foe
 <div id='defeating-diamond-registers'>
 <h2>Registers</h2>
 <p>Bots can read and write registers.</p>
-<p>Each bot has 20 register variables: <code>#1</code> &#8230; <code>#20</code></p>
+<p>Each bot has 20 registers: <code>#1</code> &#8230; <code>#20</code></p>
 <h3>Example usage</h3>
 <pre><code>set #1, 0
 turn #1
 </code></pre>
+<p><strong>TODO</strong>: rename virus to malware as needed</p>
 <p>This program segment sets <code>#1</code> equal to zero. Then <code>turn #1</code> is equivalent to 
 <code>turn 0</code>.</p>
 </div>
@@ -521,8 +522,8 @@ set %active, 1
     if (forward cell is empty)
         clone self
         turn
-    else if (forward cell is enemy)
-        infect enemy with self-destruct virus
+    else if (forward cell is an opponent)
+        infect the opponent with self-destruct virus
     else if (forward cell is friendly)
         disinfect friend
         turn
@@ -622,8 +623,17 @@ is straightforward and simple.</p>
 <div id='defeating-diamond-scan'>
 <h2><tt>scan</tt></h2>
 <p>The <code>scan</code> instruction looks at the cell in front of the bot.</p>
-<p>But before describing the details of <code>scan</code>, we need to make a digression and
-discuss <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#defeating-diamond-registers','registers')">registers</a>. </p>
+<p>But before describing <code>scan</code> further, we need to discuss
+<a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#defeating-diamond-registers','registers')">registers</a>. </p>
+<p><code>scan #register</code> sets <code>#register</code> to either 0, 1, or 2, depending on what is 
+in front of the bot.</p>
+<ul>
+<li><code>#register</code> = 0 if the front cell is empty</li>
+<li><code>#register</code> = 1 if the front cell contains an opponent</li>
+<li><code>#register</code> = 2 if the front cell contains a friend</li>
+</ul>
+<h3>Example usage</h3>
+<p><code>scan #1</code> sets <code>#1</code> to either 0, 1, or 2.</p>
 </div>
 
 <div id='t827-rc-demo'>
