@@ -147,136 +147,84 @@ comments.
 ~wave
 ## Wave Virus
 
-bank main
+    bank launcher ; 1
 
-    set #active, 2
-    
-    @start
-    
-    comp %active, 2
-    jump @empty-or-not-infected
-    
-    turn 1
-    jump @start
-    
-    @empty-or-not-infected
-    scan #1
-    comp #1, 1
-    jump @empty
+        ; jump to bank 3 to evade Super Diamond's attack
+        bjump 3,1
 
-    ; not infected
-    trans 2, 1
-    set %active, 2
-    
-    @empty
-    create 2, 2, 0
-    trans 1, 1
-    trans 2, 2
-    set %active, 2
-  
-bank virus
+    bank 2
 
-    @start2
-    turn 1
-    
-    comp %active, 2
-    jump @empty-or-not-infected2
-    
-    jump @start2
-    
-    @empty-or-not-infected2
-    trans 1, 1
-    
-    
-    
-    
-dsf
+    bank main ; 3
 
-bank mother-bot ; bank 1
+        ; controls whether to infect with virus or with tapout
+        set #15, 0
 
-    set #active, 2
-    
-    ; #1 determines whether a mother-bot or a cleanup-bot is created
-    set #2, 0
-    
-    @start
-    
-    scan #1
-    comp #1, 2
-    jump @not-friendly
-    
-    ; friendly --> disinefect
-    trans 1, 1
-    trans 2, 2
-    trans 3, 3
-    trans 4, 4
-    
-    @not-friendly
-    
-    comp %active, 2
-    jump @empty-or-not-infected
-    
-    turn 1
-    jump @start
-    
-    @empty-or-not-infected
-    scan #1
-    comp #1, 1
-    jump @empty
+        @start
+        
+        trans 6,1
 
-    ; not infected
-    trans 2, 1
-    set %active, 2
-    
-    @empty
-    comp #2, 0
-    jump @make-cleanup-bot
-    
-    ; make another mother-bot
-    create 2, 4, 0
-    trans 1, 1
-    trans 2, 2
-    trans 3, 3
-    trans 4, 4
-    set %active, 2
-    set #2, 1
-    jump @start
-    
-    @make-cleanup-bot
-    create 1, 2, 1
-    trans 3, 1
-    trans 4, 2
-    set %active, 2
-    set #2, 0
+        comp %active, 42
+        jump @do-scan
+        
+        trans 5, 1
 
-  
-bank virus ; bank 2
+        @do-scan
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
 
-    @start2
-    turn 1
-    
-    comp %active, 2
-    jump @empty-or-not-infected2
-    
-    jump @start2
-    
-    @empty-or-not-infected2
-    trans 1, 1
-    
-bank cleanup-bot ; bank 3
-    
-    @start3
-    move
-    scan #1
-    comp #1, 1
-    jump @start3
-    
-    ; transfer the tapout bank
-    trans 2, 1
-    
-bank tapout ; bank 4
-    tapout
-    
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,6,0
+
+        ; Disinfect / initialize new bot
+        trans 6,1
+        trans 3,3
+        trans 4,4
+        trans 5,5
+        trans 6,6
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        ; Transfer decide which bank to infect opponent with
+        comp #15, 0
+        jump @infect-with-virus
+        
+        ; infect with tapout
+        trans 5,1
+        set #15,1
+        jump @restart
+        
+        @infect-with-virus
+        set #15,0
+        trans 4, 1
+       
+        @restart
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start
+
+    bank virus ; 4
+        turn 1
+        trans 1,1
+        set #active, 42
+        
+    bank tapout ; 5
+        tapout
+        
+    bank backup-bjump ; 6
+        bjump 3,1
+        
     
     
     
