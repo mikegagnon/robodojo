@@ -51,17 +51,17 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 2. [Replication](##replication)
 3. [Diamond](##diamond)
 4. [Infection & Disinfection](##blue-red-programs)
-5. [Anti Diamond](##defeating-diamond)
+5. [Super Diamond](##defeating-diamond)
 
 ~defeating-diamond
-## Anti Diamond
+## Super Diamond
 
 Let's build a program that defeats the Diamond program.
 
 The general idea is to infect Diamond bots with a virus that causes the 
 infected bots to self-destruct.
 
-The [pseudo code for our Anti Diamond program](##defeating-diamond-pseudo)
+The [pseudo code for our Super Diamond program](##defeating-diamond-pseudo)
 is straightforward and simple.
 
 To implement it, we need to learn four new instructions:
@@ -71,18 +71,37 @@ To implement it, we need to learn four new instructions:
 - [comp](##defeating-diamond-comp)
 - [jump](##defeating-diamond-jump)
 
-Putting it all together, here is the [Anti Diamond program](##anti-diamond-program).
+Putting it all together, here is the [Super Diamond program](##Super-diamond-program).
 
-The battle should look something like [this](##anti-diamond-battle).
+The battle should look something like [this](##Super-diamond-battle).
 
-~anti-diamond-battle
-## Anti Diamond battle
+~defeating-diamond-tapout
+## <tt>tapout</tt>
+
+When executed, the `tapout` instruction causes the bot to exit the board.
+
+~defeating-diamond-scan
+## <tt>scan</tt>
+
+The `scan` instruction looks at the cell in front of the bot.
+
+But before describing the details of `scan`, we need to make a digression and
+discuss [variables](##defeating-diamond-variables). 
+
+~defeating-diamond-comp
+## <tt>comp</tt>
+
+~defeating-diamond-jump
+## <tt>jump</tt>
+
+~Super-diamond-battle
+## Super Diamond battle
 
 1. [Diamond (red) starts out with more bots](##ad-battle-1), since it's executing fewer instructions
 2. [Diamond begins to experience tapouts](##ad-battle-2)
-3. [Anti Diamond catches up with Diamond](##ad-battle-3)
-4. [Anti Diamond overwhelms Diamond](##ad-battle-4)
-5. [Anti Diamond wins](##ad-battle-5)
+3. [Super Diamond catches up with Diamond](##ad-battle-3)
+4. [Super Diamond overwhelms Diamond](##ad-battle-4)
+5. [Super Diamond wins](##ad-battle-5)
 
 ~ad-battle-1
 <img src="img/anti-diamond-1.png">
@@ -96,8 +115,8 @@ The red squares indicate a Red bot has just tapped out there.
 ~ad-battle-5
 <img src="img/anti-diamond-5.png">
 
-~anti-diamond-program
-## Anti Diamond program
+~Super-diamond-program
+## Super Diamond program
 
    bank main
 
@@ -139,7 +158,7 @@ The red squares indicate a Red bot has just tapped out there.
 
 
 ~defeating-diamond-pseudo
-## Pseudo code for Anti Diamond
+## Pseudo code for Super Diamond
 
     bank main
 
@@ -150,6 +169,7 @@ The red squares indicate a Red bot has just tapped out there.
             infect enemy with self-destruct virus
         else if (forward cell is friendly)
             disinfect friend
+            turn
 
     bank self-destruct
         self destruct

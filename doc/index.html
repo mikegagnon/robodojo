@@ -26,6 +26,27 @@
       <div class='column' id="column0"></div>
     </div>
     <div class="content-storage">
+<div id='Super-diamond-battle'>
+<h2>Super Diamond battle</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-3','Super Diamond catches up with Diamond')">Super Diamond catches up with Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-4','Super Diamond overwhelms Diamond')">Super Diamond overwhelms Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-5','Super Diamond wins')">Super Diamond wins</a></li>
+</ol>
+</div>
+
+<div id='guide-hello-screenshot'>
+<h2>Screenshot</h2>
+<p><img src="img/hello-world.png"></p>
+</div>
+
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
+</div>
+
 <div id='blue-red-programs'>
 <h2>Infection &amp; Disinfection</h2>
 <p>You can launch different-colored bots on the board, each color with a different
@@ -44,16 +65,6 @@ maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infecti
 <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-explanation','infect them with a virus')">infect them with a virus</a>.</p>
 <p>Sometimes <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','Blue bots infect Red bots')">Blue bots infect Red bots</a>, but Red bots quickly
 <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#disinfection','disinfect themselves')">disinfect themselves</a>.</p>
-</div>
-
-<div id='guide-hello-screenshot'>
-<h2>Screenshot</h2>
-<p><img src="img/hello-world.png"></p>
-</div>
-
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
 </div>
 
 <div id='navigate'>
@@ -133,23 +144,8 @@ turn 1
 </ul>
 </div>
 
-<div id='infection-screenshot-1'>
-<h2>Infection Screenshot 1</h2>
-<p><img src="img/infection-screenshot-1.png"></p>
-</div>
-
-<div id='infection-screenshot-3'>
-<h2>Infection Screenshot 3</h2>
-<p><img src="img/infection-screenshot-3.png"></p>
-</div>
-
-<div id='infection-screenshot-2'>
-<h2>Infection Screenshot 2</h2>
-<p><img src="img/infection-screenshot-2.png"></p>
-</div>
-
-<div id='anti-diamond-program'>
-<h2>Anti Diamond program</h2>
+<div id='Super-diamond-program'>
+<h2>Super Diamond program</h2>
 <p>bank main</p>
 <pre><code>    @start
 
@@ -188,13 +184,23 @@ bank foe
 </code></pre>
 </div>
 
+<div id='infection-screenshot-3'>
+<h2>Infection Screenshot 3</h2>
+<p><img src="img/infection-screenshot-3.png"></p>
+</div>
+
+<div id='infection-screenshot-2'>
+<h2>Infection Screenshot 2</h2>
+<p><img src="img/infection-screenshot-2.png"></p>
+</div>
+
 <div id='compat-mystery'>
-<h2>Mysterious RoboCom semantics</h2>
+<h2>Mysterious RoboCom semSupercs</h2>
 <p>I loaded up <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-2robots','two robots')">two robots</a> from the <a href="http://robocom.rrobek.de/?area=d_bots">July Package</a>,
 and placed them in the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-mystery-start','same starting position')">same starting position</a> in both
 Robo Dojo and RoboCom.</p>
 <p>Then, the <a href="javascript:Sidenote.openColumnLoud('#compat-mystery','#compat-myster-diff','simulations diverged')">simulations diverged</a> between Robo Dojo and RoboCom.</p>
-<p><strong>TODO</strong>: explain how I know my semantics are correct</p>
+<p><strong>TODO</strong>: explain how I know my semSupercs are correct</p>
 <p>I investigated several changes to Robo Dojo to see if I could get the 
 simulations to converge, but none of the changes worked.</p>
 </div>
@@ -219,14 +225,15 @@ overwriting any bank that might already be there.</p>
 <a href="http://robocom.rrobek.de/">here</a>. Here&#8217;s a <a href="javascript:Sidenote.openColumnLoud('#robocom','#robocomscreenshot','screenshot')">screenshot</a>.</p>
 <p>Robo Dojo only implements the &#8220;Original&#8221; instruction set from RoboCom.</p>
 <p>Robo Dojo uses the &#8220;Classic&#8221; timing model from RoboCom.</p>
-<p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
+<p>I have strove to make the Robo Dojo simulation semSupercs identical to RoboCom &#8212;
 however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility','I could not create a cycle-for-cycle duplicate of RoboCom')">I could not create a cycle-for-cycle duplicate of RoboCom</a>.</p>
 <p>Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 <a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar outputs for similar inputs')">similar outputs for similar inputs</a>.</p>
 </div>
 
-<div id='ad-battle-3'>
-<p><img src="img/anti-diamond-3.png"></p>
+<div id='blue-infected-picture'>
+<h2>An infected blue bot</h2>
+<p><img src="img/infected-bluebot.png"></p>
 </div>
 
 <div id='t826-rc-demo'>
@@ -290,6 +297,11 @@ Zwei Arten (bye)                      .....       .....
 ----------------------------------------------------------
 Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 </code></pre>
+</div>
+
+<div id='defeating-diamond-tapout'>
+<h2><tt>tapout</tt></h2>
+<p>When executed, the <code>tapout</code> instruction causes the bot to exit the board.</p>
 </div>
 
 <div id='compat-myster-diff'>
@@ -373,7 +385,7 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Anti Diamond')">Anti Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Super Diamond')">Super Diamond</a></li>
 </ol>
 </div>
 
@@ -441,9 +453,8 @@ a cycle during T=821 after its mother</li>
 </ul>
 </div>
 
-<div id='blue-infected-picture'>
-<h2>An infected blue bot</h2>
-<p><img src="img/infected-bluebot.png"></p>
+<div id='defeating-diamond-comp'>
+<h2><tt>comp</tt></h2>
 </div>
 
 <div id='guide-hello-execution'>
@@ -492,7 +503,7 @@ set %active, 1
 </div>
 
 <div id='defeating-diamond-pseudo'>
-<h2>Pseudo code for Anti Diamond</h2>
+<h2>Pseudo code for Super Diamond</h2>
 <pre><code>bank main
 
     if (forward cell is empty)
@@ -502,6 +513,7 @@ set %active, 1
         infect enemy with self-destruct virus
     else if (forward cell is friendly)
         disinfect friend
+        turn
 
 bank self-destruct
     self destruct
@@ -524,14 +536,18 @@ bank self-destruct
 </ul>
 </div>
 
+<div id='ad-battle-4'>
+<p><img src="img/anti-diamond-4.png"></p>
+</div>
+
 <div id='compatibility'>
 <h2>Compatibility with RoboCom</h2>
 <p>The problem is at least twofold:</p>
 <ol>
 <li>RoboCom is closed source</li>
-<li>Some of RoboCom&#8217;s semantics appear to be undocumented</li>
+<li>Some of RoboCom&#8217;s semSupercs appear to be undocumented</li>
 </ol>
-<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semantics')">mysterious RoboCom semantics</a>.</p>
+<p>Here is one example of <a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-mystery','mysterious RoboCom semSupercs')">mysterious RoboCom semSupercs</a>.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#compatibility','#compat-diff','Known differences')">Known differences</a></p>
 </div>
 
@@ -563,16 +579,16 @@ should have the Super instruction set, since we want the child to be able to
 <p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
-<div id='ad-battle-4'>
-<p><img src="img/anti-diamond-4.png"></p>
+<div id='defeating-diamond-jump'>
+<h2><tt>jump</tt></h2>
 </div>
 
 <div id='defeating-diamond'>
-<h2>Anti Diamond</h2>
+<h2>Super Diamond</h2>
 <p>Let&#8217;s build a program that defeats the Diamond program.</p>
 <p>The general idea is to infect Diamond bots with a virus that causes the 
 infected bots to self-destruct.</p>
-<p>The <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-pseudo','pseudo code for our Anti Diamond program')">pseudo code for our Anti Diamond program</a>
+<p>The <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-pseudo','pseudo code for our Super Diamond program')">pseudo code for our Super Diamond program</a>
 is straightforward and simple.</p>
 <p>To implement it, we need to learn four new instructions:</p>
 <ul>
@@ -581,8 +597,8 @@ is straightforward and simple.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-comp','comp')">comp</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-jump','jump')">jump</a></li>
 </ul>
-<p>Putting it all together, here is the <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#anti-diamond-program','Anti Diamond program')">Anti Diamond program</a>.</p>
-<p>The battle should look something like <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#anti-diamond-battle','this')">this</a>.</p>
+<p>Putting it all together, here is the <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#Super-diamond-program','Super Diamond program')">Super Diamond program</a>.</p>
+<p>The battle should look something like <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#Super-diamond-battle','this')">this</a>.</p>
 </div>
 
 <div id='infection-screenshot-4'>
@@ -591,13 +607,11 @@ is straightforward and simple.</p>
 <p>Notice the Red bot that has been infected by Blue.</p>
 </div>
 
-<div id='t826'>
-<h2>T=826</h2>
-<p>We this because:</p>
-<ol>
-<li>At <a href="javascript:Sidenote.openColumnLoud('#t826','#t825-rd-demo','T=825')">T=825</a> the selected bot was executing a <code>set</code> instruction</li>
-<li>At <a href="javascript:Sidenote.openColumnLoud('#t826','#t826-rd-demo','T=826')">T=826</a> the selected bot was executing a <code>bjump</code> instruction</li>
-</ol>
+<div id='defeating-diamond-scan'>
+<h2><tt>scan</tt></h2>
+<p>The <code>scan</code> instruction looks at the cell in front of the bot.</p>
+<p>But before describing the details of <code>scan</code>, we need to make a digression and
+discuss <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#defeating-diamond-variables','variables')">variables</a>.</p>
 </div>
 
 <div id='t827-rc-demo'>
@@ -610,7 +624,7 @@ is straightforward and simple.</p>
 <p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
 cycle of the <code>set</code> instruction.</p>
 <p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
-execute a bot-cycle in the same board-cycle, however these semantics are
+execute a bot-cycle in the same board-cycle, however these semSupercs are
 intentional.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
 <p>I have investigated preventing bots from executing a cycle immediately after
@@ -668,6 +682,19 @@ causes the forward bot to become activated.</p>
 <p><strong>TODO</strong>: Link to article on variables and constants</p>
 </div>
 
+<div id='t826'>
+<h2>T=826</h2>
+<p>We this because:</p>
+<ol>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t826','#t825-rd-demo','T=825')">T=825</a> the selected bot was executing a <code>set</code> instruction</li>
+<li>At <a href="javascript:Sidenote.openColumnLoud('#t826','#t826-rd-demo','T=826')">T=826</a> the selected bot was executing a <code>bjump</code> instruction</li>
+</ol>
+</div>
+
+<div id='ad-battle-3'>
+<p><img src="img/anti-diamond-3.png"></p>
+</div>
+
 <div id='robocomscreenshot'>
 <h2>RoboCom Screenshot</h2>
 <p><img src="img/robocom-screenshot.png"></p>
@@ -681,15 +708,9 @@ propagating their Red banks. Thus, when a Red bot becomes infected, its
 neighboring Red bots disinfect the infected Red bot.</p>
 </div>
 
-<div id='anti-diamond-battle'>
-<h2>Anti Diamond battle</h2>
-<ol>
-<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
-<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-3','Anti Diamond catches up with Diamond')">Anti Diamond catches up with Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-4','Anti Diamond overwhelms Diamond')">Anti Diamond overwhelms Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#anti-diamond-battle','#ad-battle-5','Anti Diamond wins')">Anti Diamond wins</a></li>
-</ol>
+<div id='infection-screenshot-1'>
+<h2>Infection Screenshot 1</h2>
+<p><img src="img/infection-screenshot-1.png"></p>
 </div>
 
 <div id='infection-explanation'>
