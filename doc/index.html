@@ -603,7 +603,8 @@ should have the Super instruction set, since we want the child to be able to
 infected bots to self-destruct.</p>
 <p>The <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-pseudo','pseudo code for our Super Diamond program')">pseudo code for our Super Diamond program</a>
 is straightforward and simple.</p>
-<p>To implement it, we need to learn four new instructions:</p>
+<p>To implement it, we need to learn about <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-registers','registers')">registers</a>
+and four new instructions:</p>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-tapout','tapout')">tapout</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-scan','scan')">scan</a></li>
@@ -623,14 +624,12 @@ is straightforward and simple.</p>
 <div id='defeating-diamond-scan'>
 <h2><tt>scan</tt></h2>
 <p>The <code>scan</code> instruction looks at the cell in front of the bot.</p>
-<p>But before describing <code>scan</code> further, we need to discuss
-<a href="javascript:Sidenote.openColumnLoud('#defeating-diamond-scan','#defeating-diamond-registers','registers')">registers</a>. </p>
-<p><code>scan #register</code> sets <code>#register</code> to either 0, 1, or 2, depending on what is 
+<p><code>scan variable</code> sets <code>variable</code> to either 0, 1, or 2, depending on what is 
 in front of the bot.</p>
 <ul>
-<li><code>#register</code> = 0 if the front cell is empty</li>
-<li><code>#register</code> = 1 if the front cell contains an opponent</li>
-<li><code>#register</code> = 2 if the front cell contains a friend</li>
+<li><code>variable</code> = 0 if the front cell is empty</li>
+<li><code>variable</code> = 1 if the front cell contains an opponent</li>
+<li><code>variable</code> = 2 if the front cell contains a friend</li>
 </ul>
 <h3>Example usage</h3>
 <p><code>scan #1</code> sets <code>#1</code> to either 0, 1, or 2.</p>

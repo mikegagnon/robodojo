@@ -64,7 +64,8 @@ infected bots to self-destruct.
 The [pseudo code for our Super Diamond program](##defeating-diamond-pseudo)
 is straightforward and simple.
 
-To implement it, we need to learn four new instructions:
+To implement it, we need to learn about [registers](##defeating-diamond-registers)
+and four new instructions:
 
 - [tapout](##defeating-diamond-tapout)
 - [scan](##defeating-diamond-scan)
@@ -85,15 +86,12 @@ When executed, the `tapout` instruction causes the bot to exit the board.
 
 The `scan` instruction looks at the cell in front of the bot.
 
-But before describing `scan` further, we need to discuss
-[registers](##defeating-diamond-registers). 
-
-`scan #register` sets `#register` to either 0, 1, or 2, depending on what is 
+`scan variable` sets `variable` to either 0, 1, or 2, depending on what is 
 in front of the bot.
 
-- `#register` = 0 if the front cell is empty
-- `#register` = 1 if the front cell contains an opponent
-- `#register` = 2 if the front cell contains a friend
+- `variable` = 0 if the front cell is empty
+- `variable` = 1 if the front cell contains an opponent
+- `variable` = 2 if the front cell contains a friend
 
 ### Example usage
 
