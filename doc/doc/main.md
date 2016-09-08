@@ -147,6 +147,8 @@ comments.
 ~wave
 ## Wave Virus
 
+Bank Jumping modified to use virus instead of tapout
+
     bank launcher ; 1
 
         ; jump to bank 3 to evade Super Diamond's attack
@@ -156,19 +158,8 @@ comments.
 
     bank main ; 3
 
-        ; controls whether to infect with virus or with tapout
-        set #15, 0
-
         @start
-        
-        trans 6,1
 
-        comp %active, 42
-        jump @do-scan
-        
-        trans 5, 1
-
-        @do-scan
         ; Register #1 = "empty", or "opponent", or "friend" 
         scan #1
 
@@ -183,47 +174,29 @@ comments.
 
         ; if "friend" skip the follow create instruction
         comp #1, 2
-        create 2,6,0
+        create 2,4,0
 
         ; Disinfect / initialize new bot
-        trans 6,1
+        trans 1,1
         trans 3,3
         trans 4,4
-        trans 5,5
-        trans 6,6
         set %active, 1
         turn 1
         jump @start
 
         @foe
-        ; Transfer decide which bank to infect opponent with
-        comp #15, 0
-        jump @infect-with-virus
-        
-        ; infect with tapout
-        trans 5,1
-        set #15,1
-        jump @restart
-        
-        @infect-with-virus
-        set #15,0
-        trans 4, 1
-       
-        @restart
+        ; LOOK HERE: Transfer wave virus to the opponent
+        trans 4,1
         ; Make sure the opponent is active, so it can execute the foe bank
         set %active, 1
         jump @start
-
-    bank virus ; 4
+        
+    bank wave-virus ;4
         turn 1
         trans 1,1
-        set #active, 42
-        
-    bank tapout ; 5
-        tapout
-        
-    bank backup-bjump ; 6
         bjump 3,1
+
+
         
     
     

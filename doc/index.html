@@ -493,125 +493,54 @@ move
 
 <div id='wave'>
 <h2>Wave Virus</h2>
-<p>bank main</p>
-<pre><code>set #active, 2
+<p>Bank Jumping modified to use virus instead of tapout</p>
+<pre><code>bank launcher ; 1
 
-@start
+    ; jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
 
-comp %active, 2
-jump @empty-or-not-infected
+bank 2
 
-turn 1
-jump @start
+bank main ; 3
 
-@empty-or-not-infected
-scan #1
-comp #1, 1
-jump @empty
+    @start
 
-; not infected
-trans 2, 1
-set %active, 2
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
 
-@empty
-create 2, 2, 0
-trans 1, 1
-trans 2, 2
-set %active, 2
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer wave virus to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank wave-virus ;4
+    turn 1
+    trans 1,1
+    bjump 3,1
 </code></pre>
-<p>bank virus</p>
-<pre><code>@start2
-turn 1
-
-comp %active, 2
-jump @empty-or-not-infected2
-
-jump @start2
-
-@empty-or-not-infected2
-trans 1, 1
-</code></pre>
-<p>dsf</p>
-<p>bank mother-bot ; bank 1</p>
-<pre><code>set #active, 2
-
-; #1 determines whether a mother-bot or a cleanup-bot is created
-set #2, 0
-
-@start
-
-scan #1
-comp #1, 2
-jump @not-friendly
-
-; friendly --&gt; disinefect
-trans 1, 1
-trans 2, 2
-trans 3, 3
-trans 4, 4
-
-@not-friendly
-
-comp %active, 2
-jump @empty-or-not-infected
-
-turn 1
-jump @start
-
-@empty-or-not-infected
-scan #1
-comp #1, 1
-jump @empty
-
-; not infected
-trans 2, 1
-set %active, 2
-
-@empty
-comp #2, 0
-jump @make-cleanup-bot
-
-; make another mother-bot
-create 2, 4, 0
-trans 1, 1
-trans 2, 2
-trans 3, 3
-trans 4, 4
-set %active, 2
-set #2, 1
-jump @start
-
-@make-cleanup-bot
-create 1, 2, 1
-trans 3, 1
-trans 4, 2
-set %active, 2
-set #2, 0
-</code></pre>
-<p>bank virus ; bank 2</p>
-<pre><code>@start2
-turn 1
-
-comp %active, 2
-jump @empty-or-not-infected2
-
-jump @start2
-
-@empty-or-not-infected2
-trans 1, 1
-</code></pre>
-<p>bank cleanup-bot ; bank 3</p>
-<pre><code>@start3
-move
-scan #1
-comp #1, 1
-jump @start3
-
-; transfer the tapout bank
-trans 2, 1
-</code></pre>
-<p>bank tapout ; bank 4
-    tapout</p>
 </div>
 
 <div id='guide-hello-autoreboot'>
