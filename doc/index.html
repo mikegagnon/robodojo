@@ -151,15 +151,13 @@ overwriting any bank that might already be there.</p>
 <p><img src="img/compat-822-rc.png"></p>
 </div>
 
-<div id='main'>
-<p>Robo Dojo is a game where you program bots to battle each other with home-brewed
-viruses (<a href="javascript:Sidenote.openColumnLoud('#main','#4way','screenshot')">screenshot</a>).
-Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a>.</p>
-<ul>
-<li><a href="http://robodojo.club">Play Robo Dojo</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference')">Reference</a></li>
-</ul>
+<div id='pv2-sd-comparison'>
+<h2>PV2 payload on Super Diamond bots</h2>
+<p>Super Diamond bots never have a third bank, so when they execute <code>bjump 3,1</code>
+it causes a <a href="javascript:Sidenote.openColumnLoud('#pv2-sd-comparison','#pv2-auto-reboot','Auto Reboot')">Auto Reboot</a>, which results in the bot
+restarting at bank 1.</p>
+<p>Therefore, the new payload does not affect the way Super Diamond bots execute
+the new virus payload (except for timing, since <code>bjump</code> takes up a few cycles).</p>
 </div>
 
 <div id='ad-battle-4'>
@@ -182,6 +180,15 @@ The red squares indicate a Red bot has just tapped out there.</p>
 
 <div id='ad-battle-1'>
 <p><img src="img/anti-diamond-1.png"></p>
+</div>
+
+<div id='guide-hello-move'>
+<h2>The <tt>move</tt> instruction</h2>
+<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
+<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
+attempts to move forward.</p>
+<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
+does nothing.</p>
 </div>
 
 <div id='wave'>
@@ -365,18 +372,20 @@ bank foe ; 4
 
 <div id='eng-virus-prototype-2'>
 <h2>Prototype Virus 2</h2>
-<p>PV2 modifies PV1 so that it doesn&#8217;t infect its own bots.</p>
-<p>We replace the old payload:</p>
+<p>PV2 modifies PV1 so that it heals from self-infection.</p>
+<p>We replace the old payload with a new payload:</p>
 <pre><code>bank foe
     trans 1,1
     turn 1
+    bjump 3, 1
 </code></pre>
-<p>With a new payload:</p>
-<pre><code>bank foe
-    trans 1,1
-    turn 1
-    bjump 3
-</code></pre>
+<p>Here is the <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype-2','#pv2-program','complete program')">complete program</a>.</p>
+<p>For Super Diamond bots, the new payload behaves <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype-2','#pv2-sd-comparison','similar')">similar</a> to the old payload.</p>
+<p>For PV2 bots, the new payload behaves <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype-2','#pv2-payload-comparison','differently')">differently</a> compared to the old payload. </p>
+<p>Consequently, PV2 bots don&#8217;t become stuck and they completely surround the 
+infected Super Diamond bots (<a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype-2','#pv2-screenshot','screenshot')">screenshot</a>).</p>
+<p>But, the PV2 bots still don&#8217;t have a mechanism to tap out the infected Super
+Diamond bots.</p>
 </div>
 
 <div id='cycle-strategy'>
@@ -448,13 +457,9 @@ turn #1
 <code>turn 0</code>.</p>
 </div>
 
-<div id='guide-hello-move'>
-<h2>The <tt>move</tt> instruction</h2>
-<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
-<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
-attempts to move forward.</p>
-<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
-does nothing.</p>
+<div id='pv2-screenshot'>
+<h2>PV2 screenshot</h2>
+<p><img src="img/pv-2.png"></p>
 </div>
 
 <div id='compat-mystery'>
@@ -761,6 +766,16 @@ the move instruction.</p>
 <p><img src="img/diamond.png"></p>
 </div>
 
+<div id='pv2-auto-reboot'>
+<h2>Auto Reboot</h2>
+<p>There are <a href="javascript:Sidenote.openColumnLoud('#pv2-auto-reboot','#autoreboot','many events')">many events</a> that can trigger an Auto Reboot.</p>
+<p>Among them, if a bot executes a <code>bjump</code> instruction to a bank that doesn&#8217;t
+exist, then the bot will Auto Reboot.</p>
+<p>A bot reboots by jumping to the first instruction of the first bank.</p>
+<p>If the first bank is empty, then the bot taps out from &#8220;Data Hunger.&#8221;</p>
+<p><strong>TODO</strong>: Link to Auto Reboot.</p>
+</div>
+
 <div id='eng-virus-timing'>
 <h2>Timing concerns</h2>
 <p>Up until now, minor timing issues haven&#8217;t played a role in the development of
@@ -808,6 +823,17 @@ for the child bot.</p>
 should have the Super instruction set, since we want the child to be able to
 <code>create</code> a child of its own.</p>
 <p><strong>TODO</strong>: Link to instruction set documentation</p>
+</div>
+
+<div id='main'>
+<p>Robo Dojo is a game where you program bots to battle each other with home-brewed
+viruses (<a href="javascript:Sidenote.openColumnLoud('#main','#4way','screenshot')">screenshot</a>).
+Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a>.</p>
+<ul>
+<li><a href="http://robodojo.club">Play Robo Dojo</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference')">Reference</a></li>
+</ul>
 </div>
 
 <div id='t826'>
@@ -978,6 +1004,57 @@ a cycle during T=821 after its mother</li>
 </ol>
 </div>
 
+<div id='pv2-program'>
+<h2>PV2 Program</h2>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+    bjump 3, 1
+</code></pre>
+</div>
+
 <div id='t821-demo'>
 <h2>T=821</h2>
 <p>s
@@ -1029,6 +1106,12 @@ instruction.</p>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#cycle','#cycle-strategy','The Strategy of Cycles')">The Strategy of Cycles</a></li>
 </ul>
+</div>
+
+<div id='pv2-payload-comparison'>
+<h2>PV2 payload on PV2 bots</h2>
+<p>Since bank 3 is the main bank for PV2 bots, when a PV2 bot executes the virus 
+payload it causes the PV2 bot to resume its execution as normal.</p>
 </div>
 
 <div id='guide-diamond-turn'>

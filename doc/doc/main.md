@@ -61,15 +61,9 @@ Super Diamond.
 ~eng-virus-prototype-2
 ## Prototype Virus 2
 
-PV2 modifies PV1 so that it doesn't infect its own bots.
+PV2 modifies PV1 so that it heals from self-infection.
 
-We replace the old payload:
-
-    bank foe
-        trans 1,1
-        turn 1
-
-With a new payload:
+We replace the old payload with a new payload:
 
     bank foe
         trans 1,1
@@ -77,6 +71,51 @@ With a new payload:
         bjump 3, 1
 
 Here is the [complete program](##pv2-program).
+
+For Super Diamond bots, the new payload behaves [similar](##pv2-sd-comparison) to the old payload.
+
+For PV2 bots, the new payload behaves [differently](##pv2-payload-comparison) compared to the old payload. 
+
+Consequently, PV2 bots don't become stuck and they completely surround the 
+infected Super Diamond bots ([screenshot](##pv2-screenshot)).
+
+But, the PV2 bots still don't have a mechanism to tap out the infected Super
+Diamond bots.
+
+~pv2-screenshot
+## PV2 screenshot
+
+<img src="img/pv-2.png">
+
+~pv2-sd-comparison
+## PV2 payload on Super Diamond bots
+
+Super Diamond bots never have a third bank, so when they execute `bjump 3,1`
+it causes a [Auto Reboot](##pv2-auto-reboot), which results in the bot
+restarting at bank 1.
+
+Therefore, the new payload does not affect the way Super Diamond bots execute
+the new virus payload (except for timing, since `bjump` takes up a few cycles).
+
+~pv2-payload-comparison
+## PV2 payload on PV2 bots
+
+Since bank 3 is the main bank for PV2 bots, when a PV2 bot executes the virus 
+payload it causes the PV2 bot to resume its execution as normal.
+
+~pv2-auto-reboot
+## Auto Reboot
+
+There are [many events](##autoreboot) that can trigger an Auto Reboot.
+
+Among them, if a bot executes a `bjump` instruction to a bank that doesn't
+exist, then the bot will Auto Reboot.
+
+A bot reboots by jumping to the first instruction of the first bank.
+
+If the first bank is empty, then the bot taps out from "Data Hunger."
+
+**TODO**: Link to Auto Reboot.
 
 ~pv2-program
 ## PV2 Program
