@@ -400,6 +400,7 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#diamond','Diamond')">Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Super Diamond')">Super Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#wave','Wave Virus')">Wave Virus</a></li>
 </ol>
 </div>
 
@@ -481,13 +482,53 @@ move
 <p>Otherwise, the bot does turn.</p>
 </div>
 
-<div id='guide-hello-execution'>
-<h2>Execution model</h2>
-<p>The board is the 16 x 16 toroidal universe where bots play.</p>
-<p>Each cell can hold only one bot at a time.</p>
-<p>The board executes one step at a time.</p>
-<p>During each board step, the board executes one <a href="javascript:Sidenote.openColumnLoud('#guide-hello-execution','#cycle','cycle')">cycle</a> for each bot, in order
-from oldest bot to newest bot.</p>
+<div id='wave'>
+<h2>Wave Virus</h2>
+<pre><code>bank main
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,2,0
+
+    ; Disinfect / initialize new bot
+    trans 1,1
+    trans 2,2
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; Transfer self-destruct virus to the opponent
+    trans 2,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe
+
+    @start2
+    turn 1
+
+    scan #1
+    comp #1, 2
+    jump @start2
+
+    trans 1,1
+</code></pre>
 </div>
 
 <div id='guide-hello-autoreboot'>
@@ -514,6 +555,10 @@ set %active, 1
 <li><a href="javascript:Sidenote.openColumnLoud('#replication','#guide-repl-trans','The &lt;tt&gt;trans&lt;/tt&gt; instruction')">The <tt>trans</tt> instruction</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#replication','#guide-repl-set','The &lt;tt&gt;set&lt;/tt&gt; instruction')">The <tt>set</tt> instruction</a></li>
 </ul>
+</div>
+
+<div id='ad-battle-4'>
+<p><img src="img/anti-diamond-4.png"></p>
 </div>
 
 <div id='guide-diamond-screenshot'>
@@ -560,8 +605,13 @@ bank self-destruct
 </ul>
 </div>
 
-<div id='ad-battle-4'>
-<p><img src="img/anti-diamond-4.png"></p>
+<div id='guide-hello-execution'>
+<h2>Execution model</h2>
+<p>The board is the 16 x 16 toroidal universe where bots play.</p>
+<p>Each cell can hold only one bot at a time.</p>
+<p>The board executes one step at a time.</p>
+<p>During each board step, the board executes one <a href="javascript:Sidenote.openColumnLoud('#guide-hello-execution','#cycle','cycle')">cycle</a> for each bot, in order
+from oldest bot to newest bot.</p>
 </div>
 
 <div id='compatibility'>
