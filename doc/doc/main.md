@@ -52,6 +52,68 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 3. [Diamond](##diamond)
 4. [Infection & Disinfection](##blue-red-programs)
 5. [Super Diamond](##defeating-diamond)
+6. [Wave Virus](##wave)
+
+~wave
+## Wave Virus
+
+    bank main
+
+        @start
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,2,0
+
+        ; Disinfect / initialize new bot
+        trans 1,1
+        trans 2,2
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        ; Transfer self-destruct virus to the opponent
+        trans 2,1
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start
+
+    bank foe
+        @start-foe
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "friend" goto @friend-foe
+        ; else goto @opponent-or-empty
+        comp #1, 2
+        jump @opponent-or-empty-foe
+        jump @friend-foe
+
+
+        @opponent-or-empty-foe
+        turn 1
+        jump @start-foe
+
+        @friend-foe
+        ; Transfer self-destruct virus to the opponent
+        trans 1,1
+        ; Make sure the opponent is active, so it can execute the foe bank
+        set %active, 1
+        jump @start-foe
 
 ~defeating-diamond
 ## Super Diamond
@@ -170,7 +232,7 @@ The red squares indicate a Red bot has just tapped out there.
 ~Super-diamond-program
 ## Super Diamond program
 
-   bank main
+    bank main
 
         @start
 
