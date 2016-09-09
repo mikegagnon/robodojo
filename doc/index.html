@@ -636,8 +636,8 @@ bank self-destruct
 <p><a href="javascript:Sidenote.openColumnLoud('#empty-banks','#bank-jumping','Bank Jumper')">Bank Jumper</a> taught us that we can&#8217;t get away with just
 attacking the first bank &#8212; since our opponent may be operating out of any
 bank.</p>
-<p>So now let&#8217;s build a program that can defeat an opponent operating out of
-any bank.</p>
+<p>So now let&#8217;s build a program that can defeat Bank Jumper variants operating out
+of any bank.</p>
 <p>The idea is to fork Bank Jumper and replace its <code>@foe</code> routine with the
 following pseudocode:</p>
 <pre><code>for (int i = 1; i &lt;= 50; i++) {
@@ -815,7 +815,7 @@ maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infecti
 <li>If we overwrite bank <em>n</em> with an empty bank, then the opponent will perform
   an <a href="javascript:Sidenote.openColumnLoud('#empty-banks-data-hunger','#auto-reboot','Auto Reboot')">Auto Reboot</a></li>
 <li>The Auto Reboot causes the opponent to restart at bank 1, instruction 1</li>
-<li>If bank 1 is empty, then the opponent taps out due to &#8220;Data Hunger&#8221; </li>
+<li>If bank 1 is empty, then the opponent taps out due to &#8220;Data Hunger&#8221;</li>
 </ul>
 <p><strong>TODO</strong>: Link to auto reboot</p>
 </div>
@@ -913,16 +913,10 @@ turn 1
 </ul>
 </div>
 
-<div id='t822-note'>
-<h2>Note on Robo Dojo execution</h2>
-<p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
-cycle of the <code>set</code> instruction.</p>
-<p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
-execute a bot-cycle in the same board-cycle, however these semantics are
-intentional.</p>
-<p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
-<p>I have investigated preventing bots from executing a cycle immediately after
-their activation, however this change did not effect convergence.</p>
+<div id='guide-hello-compile'>
+<h2>Compile button</h2>
+<p>When you click Compile, the board clears itself then uploads your program to a
+fresh bot, then randomly places the bot on the board.</p>
 </div>
 
 <div id='guide-repl-create-instrset-example'>
@@ -1029,6 +1023,18 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 </ul>
 </div>
 
+<div id='t822-note'>
+<h2>Note on Robo Dojo execution</h2>
+<p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
+cycle of the <code>set</code> instruction.</p>
+<p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
+execute a bot-cycle in the same board-cycle, however these semantics are
+intentional.</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
+<p>I have investigated preventing bots from executing a cycle immediately after
+their activation, however this change did not effect convergence.</p>
+</div>
+
 <div id='t826'>
 <h2>T=826</h2>
 <p>We this because:</p>
@@ -1102,10 +1108,10 @@ as it reproduces, propagating Red&#8217;s bank along the way.</p>
 <p><img src="img/color-dropdown.png"></p>
 </div>
 
-<div id='guide-hello-compile'>
-<h2>Compile button</h2>
-<p>When you click Compile, the board clears itself then uploads your program to a
-fresh bot, then randomly places the bot on the board.</p>
+<div id='empty-banks-add'>
+<h2><tt>add</tt> and <tt>sub</tt></h2>
+<p><code>add #a, b</code> adds <code>#a</code> and <code>b</code> together, then stores the result in <code>#a</code>.</p>
+<p><code>sub #a, b</code> subtracts <code>b</code> from <code>#a</code>, then stores the result in <code>#a</code>.</p>
 </div>
 
 <div id='t826-rd-demo'>

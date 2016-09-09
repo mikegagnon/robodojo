@@ -53,8 +53,8 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 attacking the first bank -- since our opponent may be operating out of any
 bank.
 
-So now let's build a program that can defeat an opponent operating out of
-any bank.
+So now let's build a program that can defeat Bank Jumper variants operating out
+of any bank.
 
 The idea is to fork Bank Jumper and replace its `@foe` routine with the
 following pseudocode:
@@ -74,6 +74,13 @@ To implement the new `@foe` routine, we need to learn the
 
 Here is the [complete program](##empty-banks-program).
 
+~empty-banks-add
+## <tt>add</tt> and <tt>sub</tt>
+
+`add #a, b` adds `#a` and `b` together, then stores the result in `#a`.
+
+`sub #a, b` subtracts `b` from `#a`, then stores the result in `#a`.
+
 ~empty-banks-data-hunger
 ## Data Hunger
 
@@ -81,7 +88,7 @@ Here is the [complete program](##empty-banks-program).
 - If we overwrite bank *n* with an empty bank, then the opponent will perform
   an [Auto Reboot](##auto-reboot)
 - The Auto Reboot causes the opponent to restart at bank 1, instruction 1
-- If bank 1 is empty, then the opponent taps out due to "Data Hunger" 
+- If bank 1 is empty, then the opponent taps out due to "Data Hunger"
 
 **TODO**: Link to auto reboot
 
