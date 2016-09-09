@@ -439,8 +439,6 @@ Blue is stuck because its frontier bots are infected with the virus.
 Up until now, minor timing issues haven't played a role in the development of
 our programs. But viruses must be quick, in order to overwhelm disinfection.
 
-So, we will play close attention to timing.
-
 ~why-virus
 ## Why use viruses?
 
