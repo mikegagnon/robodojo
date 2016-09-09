@@ -537,6 +537,30 @@ jump @start
 </code></pre>
 </div>
 
+<div id='review'>
+<h2>Review</h2>
+<p>You have now learned all 12 Robo Dojo instructions.</p>
+<ol>
+<li><code>add #a, b</code></li>
+<li><code>bjump a, b</code></li>
+<li><code>comp a, b</code></li>
+<li><code>create a, b, c</code></li>
+<li><code>jump a</code></li>
+<li><code>move</code></li>
+<li><code>scan #a</code></li>
+<li><code>set #a, b</code></li>
+<li><code>sub #a, b</code></li>
+<li><code>tapout</code></li>
+<li><code>trans a, b</code></li>
+<li><code>turn a</code></li>
+</ol>
+<p>You have also learned about Auto Reboot, Data Hunger, and some design patterns
+for Robo Dojo programs.</p>
+<p>You can progress your skills by studying the <a href="javascript:Sidenote.openColumnLoud('#review','#ref','Reference Manual')">Reference Manual</a> and 
+other Robo Dojo programs (which you can access via <a href="http://robodojo.club">Robo Dojo</a>
+itself).</p>
+</div>
+
 <div id='defeating-diamond-registers'>
 <h2>Registers</h2>
 <p>Bots can read and write registers.</p>
@@ -639,7 +663,7 @@ bank.</p>
 <p>So now let&#8217;s build a program that can defeat Bank Jumper variants operating out
 of any bank.</p>
 <p>The idea is to fork Bank Jumper and replace its <code>@foe</code> routine with the
-following pseudocode:</p>
+following pseudo code:</p>
 <pre><code>for (int i = 1; i &lt;= 50; i++) {
     transfer [empty bank] to bank i
     if (forward cell does not contain opponent) {
@@ -1018,8 +1042,9 @@ viruses (<a href="javascript:Sidenote.openColumnLoud('#main','#4way','screenshot
 Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a>.</p>
 <ul>
 <li><a href="http://robodojo.club">Play Robo Dojo</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference')">Reference</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Bot Building Guide')">Bot Building Guide</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference Manual')">Reference Manual</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging Manual')">Debugging Manual</a></li>
 </ul>
 </div>
 
@@ -1064,7 +1089,9 @@ as it reproduces, propagating Red&#8217;s bank along the way.</p>
 </div>
 
 <div id='guide'>
-<h2>Guide</h2>
+<h2>Bot Building Guide</h2>
+<p>This guide introduces you to the various Robo Dojo instructions, design patterns, and a few nooks and crannies. This 
+guide assumes you are already a savvy programmer.</p>
 <ol>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#guide-hello','Hello World')">Hello World</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#replication','Replication')">Replication</a></li>
@@ -1074,6 +1101,7 @@ as it reproduces, propagating Red&#8217;s bank along the way.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#bank-jumping','Bank Jumper')">Bank Jumper</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#eng-virus','Prototype Virus')">Prototype Virus</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#empty-banks','Empty Banks')">Empty Banks</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#review','Review')">Review</a></li>
 </ol>
 </div>
 

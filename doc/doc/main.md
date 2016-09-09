@@ -4,8 +4,9 @@ viruses ([screenshot](##4way)).
 Robo Dojo clones the 1998 game [RoboCom](##robocom).
 
 * [Play Robo Dojo](http://robodojo.club)
-* [Guide](##guide)
-* [Reference](##ref)
+* [Bot Building Guide](##guide)
+* [Reference Manual](##ref)
+* [Debugging Manual](##debugging)
 
 ~robocom
 ## RoboCom
@@ -35,7 +36,10 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 
 
 ~guide
-## Guide
+## Bot Building Guide
+
+This guide introduces you to the various Robo Dojo instructions, design patterns, and a few nooks and crannies. This 
+guide assumes you are already a savvy programmer.
 
 1. [Hello World](##guide-hello)
 2. [Replication](##replication)
@@ -45,6 +49,32 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 6. [Bank Jumper](##bank-jumping)
 7. [Prototype Virus](##eng-virus)
 8. [Empty Banks](##empty-banks)
+9. [Review](##review)
+
+~review
+## Review
+
+You have now learned all 12 Robo Dojo instructions.
+
+1. `add #a, b`
+2. `bjump a, b`
+3. `comp a, b`
+4. `create a, b, c`
+5. `jump a`
+6. `move`
+7. `scan #a`
+8. `set #a, b`
+9. `sub #a, b`
+10. `tapout`
+11. `trans a, b`
+12. `turn a`
+
+You have also learned about Auto Reboot, Data Hunger, and some design patterns
+for Robo Dojo programs.
+
+You can progress your skills by studying the [Reference Manual](##ref) and 
+other Robo Dojo programs (which you can access via [Robo Dojo](http://robodojo.club)
+itself).
 
 ~empty-banks
 ## Empty Banks
@@ -57,7 +87,7 @@ So now let's build a program that can defeat Bank Jumper variants operating out
 of any bank.
 
 The idea is to fork Bank Jumper and replace its `@foe` routine with the
-following pseudocode:
+following pseudo code:
 
     for (int i = 1; i <= 50; i++) {
         transfer [empty bank] to bank i
