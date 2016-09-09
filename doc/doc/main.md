@@ -49,6 +49,34 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 ~empty-banks
 ## Empty Banks
 
+[Bank Jumper](##bank-jumping) taught us that we can't get away with just
+attacking the first bank -- since our opponent may be operating out of any
+bank.
+
+So now let's build a program that can defeat an opponent operating out of
+any bank.
+
+The idea is to fork Bank Jumper and replace its `@foe` routine with the
+following pseudocode:
+
+    for (int i = 1; i <= 50; i++) {
+        transfer [empty bank] to bank i
+        if (forward cell does not contain opponent) {
+            break
+        }
+    } 
+
+The routine causes [Data Hunger](##empty-banks-data-hunger) in the opponent,
+which causes the opponent to tap out.
+
+To implement the new `@foe` routine, we need to learn the
+[add instruction](##empty-banks-add).
+
+Here is the [complete program](##empty-banks-program).
+
+~empty-banks-program
+## Complete program
+
     bank launcher ; 1
 
         ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
@@ -109,7 +137,7 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 
 
 ~eng-virus
-## Engineering a Virus
+## Prototype Virus
 
 We are going to fork Bank Jumper, and modify it to use a virus to defeat
 Super Diamond.

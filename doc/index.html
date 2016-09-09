@@ -129,6 +129,65 @@ overwriting any bank that might already be there.</p>
 <p><img src="img/compat-826-rc.png"></p>
 </div>
 
+<div id='empty-banks-program'>
+<h2>Complete program</h2>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,3,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    set #2, 1
+
+    @foe-loop
+    comp #2, 51
+    jump @foe-infect
+
+    ; end of loop
+    jump @start
+
+    @foe-infect
+    trans 2, #2
+    set %active, 1
+
+    add #2, 1
+
+    scan #3
+    comp #3, 1
+    jump @start
+    jump @foe-loop
+</code></pre>
+</div>
+
 <div id='defeating-diamond-tapout'>
 <h2><tt>tapout</tt></h2>
 <p>When executed, the <code>tapout</code> instruction causes the bot to exit the board.</p>
@@ -574,61 +633,25 @@ bank self-destruct
 
 <div id='empty-banks'>
 <h2>Empty Banks</h2>
-<pre><code>bank launcher ; 1
-
-    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
-    bjump 3,1
-
-bank 2
-
-bank main ; 3
-
-    @start
-
-    ; Register #1 = "empty", or "opponent", or "friend" 
-    scan #1
-
-    ; if "opponent" goto @foe
-    ; else goto @friend-or-empty
-    comp #1, 1
-    jump @friend-or-empty
-    jump @foe
-
-
-    @friend-or-empty
-
-    ; if "friend" skip the follow create instruction
-    comp #1, 2
-    create 2,3,0
-
-    ; LOOK HERE: Disinfect / initialize new bot
-    trans 1,1
-    trans 3,3
-    set %active, 1
-    turn 1
-    jump @start
-
-    @foe
-    set #2, 1
-
-    @foe-loop
-    comp #2, 51
-    jump @foe-infect
-
-    ; end of loop
-    jump @start
-
-    @foe-infect
-    trans 2, #2
-    set %active, 1
-
-    add #2, 1
-
-    scan #3
-    comp #3, 1
-    jump @start
-    jump @foe-loop
+<p><a href="javascript:Sidenote.openColumnLoud('#empty-banks','#bank-jumping','Bank Jumper')">Bank Jumper</a> taught us that we can&#8217;t get away with just
+attacking the first bank &#8212; since our opponent may be operating out of any
+bank.</p>
+<p>So now let&#8217;s build a program that can defeat an opponent operating out of
+any bank.</p>
+<p>The idea is to fork Bank Jumper and replace its <code>@foe</code> routine with the
+following pseudocode:</p>
+<pre><code>for (int i = 1; i &lt;= 50; i++) {
+    transfer [empty bank] to bank i
+    if (forward cell does not contain opponent) {
+        break
+    }
+}
 </code></pre>
+<p>The routine causes <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#empty-banks-data-hunger','Data Hunger')">Data Hunger</a> in the opponent,
+which causes the opponent to tap out.</p>
+<p>To implement the new <code>@foe</code> routine, we need to learn the
+<a href="javascript:Sidenote.openColumnLoud('#empty-banks','#empty-banks-add','add instruction')">add instruction</a>.</p>
+<p>Here is the <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#empty-banks-program','complete program')">complete program</a>.</p>
 </div>
 
 <div id='pv3-program'>
@@ -1362,7 +1385,7 @@ causes the forward bot to become activated.</p>
 </div>
 
 <div id='eng-virus'>
-<h2>Engineering a Virus</h2>
+<h2>Prototype Virus</h2>
 <p>We are going to fork Bank Jumper, and modify it to use a virus to defeat
 Super Diamond.</p>
 <h3>Sections</h3>
