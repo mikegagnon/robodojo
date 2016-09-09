@@ -43,7 +43,7 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 4. [Infection & Disinfection](##blue-red-programs)
 5. [Super Diamond](##defeating-diamond)
 6. [Bank Jumper](##bank-jumping)
-7. [Virus](##eng-virus)
+7. [Prototype Virus](##eng-virus)
 8. [Empty Banks](##empty-banks)
 
 ~empty-banks
@@ -84,22 +84,26 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
         jump @start
 
         @foe
-        set #2, 50
-        
+        set #2, 1
+
         @foe-loop
-        comp #2, -1
+        comp #2, 51
         jump @foe-infect
-        
+
         ; end of loop
-        set %active, 1
         jump @start
-        
+
         @foe-infect
         trans 2, #2
-        sub #2, 1
+        set %active, 1
+
+        add #2, 1
+        
+        scan #3
+        comp #3, 1
+        jump @start
         jump @foe-loop
 
-    
 
     
 

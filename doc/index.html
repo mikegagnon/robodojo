@@ -609,19 +609,24 @@ bank main ; 3
     jump @start
 
     @foe
-    set #2, 50
+    set #2, 1
 
     @foe-loop
-    comp #2, -1
+    comp #2, 51
     jump @foe-infect
 
     ; end of loop
-    set %active, 1
     jump @start
 
     @foe-infect
     trans 2, #2
-    sub #2, 1
+    set %active, 1
+
+    add #2, 1
+
+    scan #3
+    comp #3, 1
+    jump @start
     jump @foe-loop
 </code></pre>
 </div>
@@ -1026,7 +1031,7 @@ as it reproduces, propagating Red&#8217;s bank along the way.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Super Diamond')">Super Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#bank-jumping','Bank Jumper')">Bank Jumper</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#eng-virus','Virus')">Virus</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#eng-virus','Prototype Virus')">Prototype Virus</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#empty-banks','Empty Banks')">Empty Banks</a></li>
 </ol>
 </div>
