@@ -572,6 +572,60 @@ bank self-destruct
 </ul>
 </div>
 
+<div id='empty-banks'>
+<h2>Empty Banks</h2>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,3,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    set #2, 50
+
+    @foe-loop
+    comp #2, -1
+    jump @foe-infect
+
+    ; end of loop
+    set %active, 1
+    jump @start
+
+    @foe-infect
+    trans 2, #2
+    sub #2, 1
+    jump @foe-loop
+</code></pre>
+</div>
+
 <div id='pv3-program'>
 <h2>Complete program</h2>
 <pre><code>bank launcher ; 1
@@ -972,7 +1026,8 @@ as it reproduces, propagating Red&#8217;s bank along the way.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#blue-red-programs','Infection &amp; Disinfection')">Infection &amp; Disinfection</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#defeating-diamond','Super Diamond')">Super Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#guide','#bank-jumping','Bank Jumper')">Bank Jumper</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide','#eng-virus','Engineering a Virus')">Engineering a Virus</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#eng-virus','Virus')">Virus</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide','#empty-banks','Empty Banks')">Empty Banks</a></li>
 </ol>
 </div>
 

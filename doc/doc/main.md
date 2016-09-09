@@ -43,7 +43,66 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 4. [Infection & Disinfection](##blue-red-programs)
 5. [Super Diamond](##defeating-diamond)
 6. [Bank Jumper](##bank-jumping)
-7. [Engineering a Virus](##eng-virus)
+7. [Virus](##eng-virus)
+8. [Empty Banks](##empty-banks)
+
+~empty-banks
+## Empty Banks
+
+    bank launcher ; 1
+
+        ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+        bjump 3,1
+
+    bank 2
+
+    bank main ; 3
+
+        @start
+
+        ; Register #1 = "empty", or "opponent", or "friend" 
+        scan #1
+
+        ; if "opponent" goto @foe
+        ; else goto @friend-or-empty
+        comp #1, 1
+        jump @friend-or-empty
+        jump @foe
+
+
+        @friend-or-empty
+
+        ; if "friend" skip the follow create instruction
+        comp #1, 2
+        create 2,3,0
+
+        ; LOOK HERE: Disinfect / initialize new bot
+        trans 1,1
+        trans 3,3
+        set %active, 1
+        turn 1
+        jump @start
+
+        @foe
+        set #2, 50
+        
+        @foe-loop
+        comp #2, -1
+        jump @foe-infect
+        
+        ; end of loop
+        set %active, 1
+        jump @start
+        
+        @foe-infect
+        trans 2, #2
+        sub #2, 1
+        jump @foe-loop
+
+    
+
+    
+
 
 ~eng-virus
 ## Engineering a Virus
