@@ -74,6 +74,17 @@ To implement the new `@foe` routine, we need to learn the
 
 Here is the [complete program](##empty-banks-program).
 
+~empty-banks-data-hunger
+## Data Hunger
+
+- Let's say an opponent bot is running on bank *n*.
+- If we overwrite bank *n* with an empty bank, then the opponent will perform
+  an [Auto Reboot](##auto-reboot)
+- The Auto Reboot causes the opponent to restart at bank 1, instruction 1
+- If bank 1 is empty, then the opponent taps out due to "Data Hunger" 
+
+**TODO**: Link to auto reboot
+
 ~empty-banks-program
 ## Complete program
 
