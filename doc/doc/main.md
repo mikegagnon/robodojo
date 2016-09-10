@@ -1407,9 +1407,9 @@ Here's [how to read the results](##results-table).
     Conciler vs. Delusion 3.7             0-7-0       0-7-0
     Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * + -
     Goodymorph vs. HotBot V2              0-2-5       0-2-5
-    LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
-    The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
-    The Overkiller vs. Rainman            0-0-0       0-0-0
+    LastHopeC vs. Lauf und Mine           7-0-0       7-0-0
+    The Masterkiller 1 vs. TheMob.NextG2  5-0-2       6-0-1
+    The Overkiller vs. Rainman            7-0-0       7-0-0
     Seuche3 vs. Sweeper                   0-0-0       0-0-0
     Test 3-1 vs. Tom Himself              0-0-0       0-0-0
     Zwei Arten (bye)                      .....       .....
@@ -1420,6 +1420,8 @@ Here's [how to read the results](##results-table).
     ----------------------------------------------------------------------
     Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
     Goody2 vs. HotBot V2                  0-0-0       0-0-0
+    LastHopeC vs. The Masterkiller 1      0-0-0       0-0-0
+    The Overkiller vs. Rainman            0-0-0       0-0-0
 
 
 
