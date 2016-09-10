@@ -1410,7 +1410,7 @@ Here's [how to read the results](##results-table).
     LastHopeC vs. Lauf und Mine           7-0-0       7-0-0
     The Masterkiller 1 vs. TheMob.NextG2  5-0-2       6-0-1
     The Overkiller vs. Rainman            7-0-0       7-0-0
-    Seuche3 vs. Sweeper                   0-0-0       0-0-0
+    Seuche3 vs. Sweeper                   2-0-5       1-0-6
     Test 3-1 vs. Tom Himself              0-0-0       0-0-0
     Zwei Arten (bye)                      .....       .....
 
@@ -1421,7 +1421,7 @@ Here's [how to read the results](##results-table).
     Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
     Goody2 vs. HotBot V2                  0-0-0       0-0-0
     LastHopeC vs. The Masterkiller 1      0-0-0       0-0-0
-    The Overkiller vs. Rainman            0-0-0       0-0-0
+    The Overkiller vs. Seuche3            0-0-0       0-0-0
 
 
 
