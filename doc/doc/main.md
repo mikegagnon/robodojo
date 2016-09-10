@@ -1411,21 +1411,31 @@ Here's [how to read the results](##results-table).
     The Masterkiller 1 vs. TheMob.NextG2  5-0-2       6-0-1
     The Overkiller vs. Rainman            7-0-0       7-0-0
     Seuche3 vs. Sweeper                   2-0-5       1-0-6
-    Test 3-1 vs. Tom Himself              7-0-0       0-0-0
+    Test 3-1 vs. Tom Himself              7-0-0       7-0-0
     Zwei Arten (bye)                      .....       .....
 
 ### Round 3
 
     Match                                 Robo Dojo   RoboCom  Footnotes
     ----------------------------------------------------------------------
-    Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
-    Goody2 vs. HotBot V2                  0-0-0       0-0-0
-    LastHopeC vs. The Masterkiller 1      0-0-0       0-0-0
+    Alien3.4 (bye)                        .....       .....
+    Delusion 3.7 (bye)                    .....       .....
+    Goody2 (bye)                          .....       .....
+    HotBot V2 (bye)                       .....       .....
+    LastHopeC (bye)                       .....       .....
+    The Masterkiller (bye)                .....       .....
     The Overkiller vs. Seuche3            0-0-0       0-0-0
+    Test 3-1 vs. Zwei Arten               0-0-0       0-0-0
 
-
+[Note on brackets](##brackets)
 
 Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
+
+~brackets
+## Note on brackets
+
+I forgot about setting up bytes until Round 2. In contrast to typical tournament
+brackets, I added the byes in Round 2 and 3. It doesn't really matter though.
 
 ~results-table
 ## Reading the results
