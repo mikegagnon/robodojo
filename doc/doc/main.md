@@ -1370,16 +1370,15 @@ Here is one example of [mysterious RoboCom semantics](##compat-mystery).
 ~rdrc-battles
 ## Tournament
 
-**TODO**: Rename header
+To see how closely Robo Dojo matches RoboCom semantics, we ran a
+Tournament using [programs from the July Package](##july-package).
 
-Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
+Here's [how to read the results](##results-table).
 
-**TODO**: Explain X-Y-Z system
+### Round 1
 
-Round 1
-
-    Match                               Robo Dojo   RoboCom
-    --------------------------------------------------------
+    Match                               Robo Dojo   RoboCom  Footnotes
+    --------------------------------------------------------------------
     Activator3 vs. Alien3.4               0-2-5       0-1-7     *
     Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
     Conciler vs. Kommari 2.1              6-0-1       6-0-1
@@ -1400,13 +1399,13 @@ Round 1
     UltimaDefender vs. Tom Himself        0-0-7       0-0-7
     Zwei Arten vs. Zellwucher4            7-0-0       7-0-0
 
-Round 2
+### Round 2
 
-    Match                                 Robo Dojo   RoboCom
-    ----------------------------------------------------------
+    Match                                 Robo Dojo   RoboCom  Footnotes
+    ----------------------------------------------------------------------
     Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
     Conciler vs. Delusion 3.7             0-7-0       0-7-0
-    Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * +
+    Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * + -
     Goodymorph vs. HotBot V2              0-0-0       0-0-0
     LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
     The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
@@ -1415,12 +1414,75 @@ Round 2
     Test 3-1 vs. Tom Himself              0-0-0       0-0-0
     Zwei Arten (bye)                      .....       .....
 
-Round 3
+### Round 3
 
-    Match                                 Robo Dojo   RoboCom
-    ----------------------------------------------------------
+    Match                                 Robo Dojo   RoboCom  Footnotes
+    ----------------------------------------------------------------------
     Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 
+
+
+Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
+
+~results-table
+## Reading the results
+
+For each program pairing, we ran a match under Robo Dojo and a match under
+RoboCom. A match consists of seven or more bouts -- where a bout is a
+single program execution that ends once one color has been eliminated from the 
+board, or the bout times out at 80,000 steps.
+
+The results of a match are denoted <tt>A-B-C</tt>, where:
+
+- <tt>A</tt> is the number of times the *first* program won a bout
+- <tt>B</tt> is the number of times the *second* program won a bout
+- <tt>C</tt> the number of times the programs tied
+
+
+### Footnotes
+
+<tt>\*</tt>, <tt>\+</tt>, and <tt>\-</tt> denote "unusual" matches.
+
+<tt>\*</tt> denotes an [overtime match](##overtime-match).
+
+<tt>\+</tt> denotes an overtime match where overtime times-out after 14 bouts.
+
+<tt>\-</tt> denotes a match where the [winners are different](##different-winners)
+in Robo Com and Robo Dojo.
+
+~different-winners
+## Winners are different
+In this situation, we flip a coin to decide which program moves ahead in the
+tournament.
+
+~overtime-match
+## Overtime Matches
+Say the Robo Dojo result for a match is 0-2-5,
+but the RoboCom result is 0-0-7. We then wonder: "is it even possible for
+the second player to win in this match in Robo Com?"" In such situations, we
+go into overtime, which means retrying the match in RoboCom until either:
+(a) the second player scores a win (which definitely answers out question), or
+(b) the second player never scores a win and we reach a total of 14 matches.
+
+~july-package
+## July Package
+
+The [July Package](http://robocom.rrobek.de//download/julypack.zip)
+contains a corpus of 50 RoboCom Classic programs, released in 1998.
+
+We selected a subset of these programs for out tournament, based on the following
+criteria:
+
+Several programs appeared under different version numbers. For example,
+the package includes
+both <tt>Alien1.4</tt> and <tt>Alien3.4</tt>/. For such program families,
+we only include the latest program (excluding the earlier programs in the family.
+)
+
+Lastly, we excluded <tt>Activator5</tt> because it fails to compile under 
+Robo Dojo.
+
+**TODO**: Explain failed compilation
 
 ~compat-mystery
 ## Mysterious RoboCom semantics

@@ -26,6 +26,12 @@
       <div class='column' id="column0"></div>
     </div>
     <div class="content-storage">
+<div id='different-winners'>
+<h2>Winners are different</h2>
+<p>In this situation, we flip a coin to decide which program moves ahead in the
+tournament.</p>
+</div>
+
 <div id='Super-diamond-program'>
 <h2>Super Diamond program</h2>
 <pre><code>bank main
@@ -202,6 +208,16 @@ bank main ; 3
 <li>At <a href="javascript:Sidenote.openColumnLoud('#compat-myster-diff','#t827','T=827')">T=827</a> the selected bot in RoboCom performed the same operation as Robo
     Dojo at T=826</li>
 </ul>
+</div>
+
+<div id='overtime-match'>
+<h2>Overtime Matches</h2>
+<p>Say the Robo Dojo result for a match is 0-2-5,
+but the RoboCom result is 0-0-7. We then wonder: &#8220;is it even possible for
+the second player to win in this match in Robo Com?&#8221;&#8221; In such situations, we
+go into overtime, which means retrying the match in RoboCom until either:
+(a) the second player scores a win (which definitely answers out question), or
+(b) the second player never scores a win and we reach a total of 14 matches.</p>
 </div>
 
 <div id='t822-demo'>
@@ -682,6 +698,22 @@ which causes the opponent to tap out.</p>
 <p>Here is the <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#empty-banks-program','complete program')">complete program</a>.</p>
 </div>
 
+<div id='july-package'>
+<h2>July Package</h2>
+<p>The <a href="http://robocom.rrobek.de//download/julypack.zip">July Package</a>
+contains a corpus of 50 RoboCom Classic programs, released in 1998.</p>
+<p>We selected a subset of these programs for out tournament, based on the following
+criteria:</p>
+<p>Several programs appeared under different version numbers. For example,
+the package includes
+both <tt>Alien1.4</tt> and <tt>Alien3.4</tt>/. For such program families,
+we only include the latest program (excluding the earlier programs in the family.
+)</p>
+<p>Lastly, we excluded <tt>Activator5</tt> because it fails to compile under 
+Robo Dojo.</p>
+<p><strong>TODO</strong>: Explain failed compilation</p>
+</div>
+
 <div id='pv3-program'>
 <h2>Complete program</h2>
 <pre><code>bank launcher ; 1
@@ -747,6 +779,26 @@ bank foe ; 4
 bank tapout; 5
     tapout
 </code></pre>
+</div>
+
+<div id='results-table'>
+<h2>Reading the results</h2>
+<p>For each program pairing, we ran a match under Robo Dojo and a match under
+RoboCom. A match consists of seven or more bouts &#8212; where a bout is a
+single program execution that ends once one color has been eliminated from the 
+board, or the bout times out at 80,000 steps.</p>
+<p>The results of a match are denoted <tt>A-B-C</tt>, where:</p>
+<ul>
+<li><tt>A</tt> is the number of times the <em>first</em> program won a bout</li>
+<li><tt>B</tt> is the number of times the <em>second</em> program won a bout</li>
+<li><tt>C</tt> the number of times the programs tied</li>
+</ul>
+<h3>Footnotes</h3>
+<p><tt>*</tt>, <tt>+</tt>, and <tt>-</tt> denote &#8220;unusual&#8221; matches.</p>
+<p><tt>*</tt> denotes an <a href="javascript:Sidenote.openColumnLoud('#results-table','#overtime-match','overtime match')">overtime match</a>.</p>
+<p><tt>+</tt> denotes an overtime match where overtime times-out after 14 bouts.</p>
+<p><tt>-</tt> denotes a match where the <a href="javascript:Sidenote.openColumnLoud('#results-table','#different-winners','winners are different')">winners are different</a>
+in Robo Com and Robo Dojo.</p>
 </div>
 
 <div id='blue-red-programs'>
@@ -1169,12 +1221,12 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 
 <div id='rdrc-battles'>
 <h2>Tournament</h2>
-<p><strong>TODO</strong>: Rename header</p>
-<p>Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6</p>
-<p><strong>TODO</strong>: Explain X-Y-Z system</p>
-<p>Round 1</p>
-<pre><code>Match                               Robo Dojo   RoboCom
---------------------------------------------------------
+<p>To see how closely Robo Dojo matches RoboCom semantics, we ran a
+Tournament using <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#july-package','programs from the July Package')">programs from the July Package</a>.</p>
+<p>Here&#8217;s <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#results-table','how to read the results')">how to read the results</a>.</p>
+<h3>Round 1</h3>
+<pre><code>Match                               Robo Dojo   RoboCom  Footnotes
+--------------------------------------------------------------------
 Activator3 vs. Alien3.4               0-2-5       0-1-7     *
 Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
 Conciler vs. Kommari 2.1              6-0-1       6-0-1
@@ -1195,12 +1247,12 @@ Tie Fighter vs. Test 3-1              0-7-0       0-7-0
 UltimaDefender vs. Tom Himself        0-0-7       0-0-7
 Zwei Arten vs. Zellwucher4            7-0-0       7-0-0
 </code></pre>
-<p>Round 2</p>
-<pre><code>Match                                 Robo Dojo   RoboCom
-----------------------------------------------------------
+<h3>Round 2</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
 Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
 Conciler vs. Delusion 3.7             0-7-0       0-7-0
-Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * +
+Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * + -
 Goodymorph vs. HotBot V2              0-0-0       0-0-0
 LastHopeC vs. Lauf und Mine           0-0-0       0-0-0
 The Masterkiller 1 vs. TheMob.NextG2  0-0-0       0-0-0
@@ -1209,11 +1261,12 @@ Seuche3 vs. Sweeper                   0-0-0       0-0-0
 Test 3-1 vs. Tom Himself              0-0-0       0-0-0
 Zwei Arten (bye)                      .....       .....
 </code></pre>
-<p>Round 3</p>
-<pre><code>Match                                 Robo Dojo   RoboCom
-----------------------------------------------------------
+<h3>Round 3</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
 Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
 </code></pre>
+<p>Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6</p>
 </div>
 
 <div id='guide-repl-create-instrset-bot'>
