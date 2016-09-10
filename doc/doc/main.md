@@ -1411,7 +1411,7 @@ Here's [how to read the results](##results-table).
     The Masterkiller 1 vs. TheMob.NextG2  5-0-2       6-0-1
     The Overkiller vs. Rainman            7-0-0       7-0-0
     Seuche3 vs. Sweeper                   2-0-5       1-0-6
-    Test 3-1 vs. Tom Himself              0-0-0       0-0-0
+    Test 3-1 vs. Tom Himself              7-0-0       0-0-0
     Zwei Arten (bye)                      .....       .....
 
 ### Round 3
