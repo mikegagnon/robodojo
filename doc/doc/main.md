@@ -8,6 +8,9 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 * [Reference Manual](##ref)
 * [Debugging Manual](##debugging)
 
+~ref
+## Reference Manual
+
 ~robocom
 ## RoboCom
 
@@ -39,7 +42,7 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 ## Bot Building Guide
 
 This guide introduces you to the various Robo Dojo instructions, design patterns, and a few nooks and crannies. This 
-guide assumes you are already a savvy programmer.
+guide assumes you are already a programmer.
 
 1. [Hello World](##guide-hello)
 2. [Replication](##replication)
