@@ -17,7 +17,6 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Comments](##ref-comments)
 - [Steps and Cycles](##ref-cycles)
 - [Data Hunger](##ref-data-hunger)
-- Eliminations
 - [Forward bot](##ref-forward-bot)
 - [Instruction Sets](##ref-instrset)
 - Instructions
