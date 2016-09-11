@@ -319,13 +319,11 @@ The red squares indicate a Red bot has just tapped out there.</p>
 <p><img src="img/anti-diamond-1.png"></p>
 </div>
 
-<div id='guide-hello-move'>
-<h2>The <tt>move</tt> instruction</h2>
-<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
-<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
-attempts to move forward.</p>
-<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
-does nothing.</p>
+<div id='ref-data-hunger'>
+<h2>Data Hunger</h2>
+<p>If a bot finds an empty first bank after an <a href="javascript:Sidenote.openColumnLoud('#ref-data-hunger','#auto-reboot','Auto Reboot')">Auto Reboot</a>, or
+upon <a href="javascript:Sidenote.openColumnLoud('#ref-data-hunger','#ref-active','activation')">activation</a> for the first time, then the bot
+taps out from &#8220;Data Hunger.&#8221;</p>
 </div>
 
 <div id='wave'>
@@ -898,9 +896,8 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#auto-reboot','Auto Reboot')">Auto Reboot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-banks','Banks')">Banks</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-comments','Comments')">Comments</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-const-reg','Constants, Registers, and Remotes')">Constants, Registers, and Remotes</a></li>
-<li>Steps and Cycles</li>
-<li>Data Hunger</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-cycles','Steps and Cycles')">Steps and Cycles</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-data-hunger','Data Hunger')">Data Hunger</a></li>
 <li>Eliminations</li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-forward-bot','Forward bot')">Forward bot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
@@ -978,15 +975,13 @@ bank self-destruct
 </code></pre>
 </div>
 
-<div id='4way'>
-<h2>Screenshot of a four-way battle</h2>
-<p><img src="img/battle.png"></p>
-<ul>
-<li>Each tear-drop shape is a different bot</li>
-<li>If a bot contains a circle of a different color, that means the bot
-  is infected</li>
-<li>If a bot has a white line through it, that means the bot is deactivated</li>
-</ul>
+<div id='guide-hello-move'>
+<h2>The <tt>move</tt> instruction</h2>
+<p>The <code>move</code> instruction tells the bot to move forward one cell.</p>
+<p>It takes 18 <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#guide-hello-execution','cycles')">cycles</a> to execute; on the 18th cycle the bot 
+attempts to move forward.</p>
+<p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
+does nothing.</p>
 </div>
 
 <div id='empty-banks'>
@@ -1239,6 +1234,17 @@ in Robo Com and Robo Dojo.</p>
 <li>If bank 1 is empty, then the opponent taps out due to &#8220;Data Hunger&#8221;</li>
 </ul>
 <p><strong>TODO</strong>: Link to auto reboot</p>
+</div>
+
+<div id='4way'>
+<h2>Screenshot of a four-way battle</h2>
+<p><img src="img/battle.png"></p>
+<ul>
+<li>Each tear-drop shape is a different bot</li>
+<li>If a bot contains a circle of a different color, that means the bot
+  is infected</li>
+<li>If a bot has a white line through it, that means the bot is deactivated</li>
+</ul>
 </div>
 
 <div id='pv1-program'>

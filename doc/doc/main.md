@@ -15,8 +15,8 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Auto Reboot](##auto-reboot)
 - [Banks](##ref-banks)
 - [Comments](##ref-comments)
-- Steps and Cycles
-- Data Hunger
+- [Steps and Cycles](##ref-cycles)
+- [Data Hunger](##ref-data-hunger)
 - Eliminations
 - [Forward bot](##ref-forward-bot)
 - [Instruction Sets](##ref-instrset)
@@ -25,6 +25,13 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 - Runtime Errors
+
+~ref-data-hunger
+## Data Hunger
+
+If a bot finds an empty first bank after an [Auto Reboot](##auto-reboot), or
+upon [activation](##ref-active) for the first time, then the bot
+taps out from "Data Hunger."
 
 ~ref-comments
 ## Comments
