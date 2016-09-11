@@ -1442,13 +1442,13 @@ Here's [how to read the results](##results-table).
     Match                                 Robo Dojo   RoboCom  Footnotes
     ----------------------------------------------------------------------
     Alien 3.4 vs. HotBot V2               0-7-0       0-7-0                     
-    The Masterkiller vs. The Overkiller   0-0-0       0-0-0
+    The Masterkiller vs. The Overkiller   6-0-1       3-0-4
 
 ### Round 6
 
     Match                                 Robo Dojo   RoboCom  Footnotes
     ----------------------------------------------------------------------
-
+    HotBot V2 vs. The Masterkiller        0-4-3      0-14-0
 
 
 [Note on brackets](##brackets)
