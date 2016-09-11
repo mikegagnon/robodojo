@@ -4,7 +4,7 @@ viruses ([screenshot](##4way)).
 Robo Dojo clones the 1998 game [RoboCom](##robocom).
 
 * [Play Robo Dojo](http://robodojo.club)
-* [Bot Building Guide](##guide)
+* [Guide](##guide)
 * [Reference Manual](##ref)
 * [Debugging Manual](##debugging)
 
@@ -39,10 +39,10 @@ Nevertheless, Robo Dojo and RoboCom are similar enough to produce
 
 
 ~guide
-## Bot Building Guide
+## Guide
 
-This guide introduces you to the various Robo Dojo instructions, design patterns, and a few nooks and crannies. This 
-guide assumes you are already a programmer.
+Through 8 case studies, this guide teaches you the essentials of Robo Dojo
+programming. This guide assumes you are already a programmer.
 
 1. [Hello World](##guide-hello)
 2. [Replication](##replication)
@@ -52,7 +52,8 @@ guide assumes you are already a programmer.
 6. [Bank Jumper](##bank-jumping)
 7. [Prototype Virus](##eng-virus)
 8. [Empty Banks](##empty-banks)
-9. [Review](##review)
+
+[Review](##review)
 
 ~review
 ## Review
@@ -1424,8 +1425,19 @@ Here's [how to read the results](##results-table).
     HotBot V2 (bye)                       .....       .....
     LastHopeC (bye)                       .....       .....
     The Masterkiller (bye)                .....       .....
-    The Overkiller vs. Seuche3            0-0-0       0-0-0
+    The Overkiller vs. Seuche3            1-7-1      12-0-2    * + -
     Test 3-1 vs. Zwei Arten               0-0-0       0-0-0
+
+### Round 3
+
+    Match                                 Robo Dojo   RoboCom  Footnotes
+    ----------------------------------------------------------------------
+    Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
+    Goody2 vs. HotBot V2 (bye)            0-0-0       0-0-0
+    LastHopeC vs. The Masterkiller        0-0-0       0-0-0
+    The Overkiller vs. 
+
+
 
 [Note on brackets](##brackets)
 
