@@ -27,6 +27,27 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Remote Access](##remote-access)
 - Runtime Errors
 
+~remote-access
+## Remote Access
+
+Every bot can remotely access its [forward bot's](##ref-forward-bot) data to a limited extent.
+
+The key is using [remote parameters](##ref-parameters-remote).
+
+For example, a bot can obtain the number of banks in the forward bot, by
+using the `%banks` parameter.
+
+### Remote-access cost
+
+Every instruction requires a certain number of cycles to execute.
+
+When an instruction accesses a remote parameter (either reading or writing)
+then the instruction takes longer to execute.
+
+Specifically, the number of required cycles increases by `8` for every
+remote parameter that is accessed.
+
+
 ~ref-forward-bot
 ## Forward bot
 
@@ -283,7 +304,7 @@ activated.
 For a bot to become activated, its `#active` register must be set to 1 or
 greater. Note: a bot cannot activate itself since it cannot execute. To
 activate a deactivated bot, another but must set `#active` by using
-[Remote Access](##ref-remote-access).
+[Remote Access](##remote-access).
 
 
 ~robocom
