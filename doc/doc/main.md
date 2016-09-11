@@ -19,10 +19,54 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Data Hunger](##ref-data-hunger)
 - [Forward bot](##ref-forward-bot)
 - [Instruction Sets](##ref-instrset)
-- Instructions
+- [Instructions](##ref-instructions)
 - [Mobility](##ref-mobility)
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
+
+~ref-instructions
+## Instructions
+
+~ref-instrset
+## Instruction Sets
+
+Different instructions belong to different Instruction Sets.
+
+There are three instruction sets:
+
+- [Basic](##ref-instrset-basic)
+- [Advanced](##ref-instrset-advanced)
+- [Super](##ref-instrset-super)
+
+~ref-instrset-basic
+## Basic Instruction Set
+
+The following instructions are in the Basic Instruction Set:
+
+- [<tt>add a, b</tt>](##add-instruction)
+- [<tt>bjump a, b</tt>](##bjump-instruction)
+- [<tt>comp a, b</tt>](##comp-instruction)
+- [<tt>jump a</tt>](##jump-instruction)
+- [<tt>move</tt>](##move-instruction)
+- [<tt>set a, b</tt>](##set-instruction)
+- [<tt>sub a, b</tt>](##sub-instruction)
+- [<tt>tapout</tt>](##tapout-instruction)
+- [<tt>turn a</tt>](##turn-instruction) 
+
+~ref-instrset-advanced
+## Advanced Instruction Set
+
+The following instructions are in the Advanced Instruction Set:
+
+- [<tt>scan a</tt>](##scan-instruction)
+- [<tt>trans a, b</tt>](##trans-instruction) 
+
+~ref-instrset-super
+## Super Instruction Set
+
+There is only one instruction in the Super Instruction Set:
+
+- [<tt>create a, b, c</tt>](##create-instruction)
 
 ~ref-data-hunger
 ## Data Hunger
