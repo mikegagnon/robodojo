@@ -897,7 +897,7 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-active','Active')">Active</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#auto-reboot','Auto Reboot')">Auto Reboot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-banks','Banks')">Banks</a></li>
-<li>Comments</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-comments','Comments')">Comments</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-const-reg','Constants, Registers, and Remotes')">Constants, Registers, and Remotes</a></li>
 <li>Steps and Cycles</li>
 <li>Data Hunger</li>
@@ -1288,6 +1288,15 @@ bank main ; 3
 bank foe ; 4
     trans 1,1
     turn 1
+</code></pre>
+</div>
+
+<div id='ref-comments'>
+<h2>Comments</h2>
+<p>You can include comments in your program with semicolons.</p>
+<p>For example:</p>
+<pre><code>bank main        ; bank #1
+comp 1, #2       ; if #2 == 1, skip the next instruction
 </code></pre>
 </div>
 

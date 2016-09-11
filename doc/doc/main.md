@@ -14,7 +14,7 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Active](##ref-active)
 - [Auto Reboot](##auto-reboot)
 - [Banks](##ref-banks)
-- Comments
+- [Comments](##ref-comments)
 - [Constants, Registers, and Remotes](##ref-const-reg)
 - Steps and Cycles
 - Data Hunger
@@ -26,6 +26,16 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 - Runtime Errors
+
+~ref-comments
+## Comments
+
+You can include comments in your program with semicolons.
+
+For example:
+
+    bank main        ; bank #1
+    comp 1, #2       ; if #2 == 1, skip the next instruction
 
 ~auto-reboot
 ## Auto Reboot
