@@ -103,17 +103,12 @@ on Super Diamond:
 it merely spreads a virus.</p>
 </div>
 
-<div id='bank-jumping'>
-<h2>Bank Jumper</h2>
-<p>We can develop a program that defeats Super Diamond, by forking Super Diamond
-and making a few small changes.</p>
-<p>Basically, we use the <tt><a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-bjump','bjump')">bjump</a></tt> instruction to jump away from the first
-bank. Since Super Diamond attacks the first bank, it easily evades Super
-Diamond&#8217;s attack.</p>
-<p>The Bank Jumper program looks like <a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-program','this')">this</a>.</p>
-<p>In general, if you jump to arbitrary banks, its more difficult to attack you
-since the attacker doesn&#8217;t know which bank to hit. Of course, the attacker
-can target every bank, but that leads to a slower attack.</p>
+<div id='guide-hello-editor'>
+<h2>Editors</h2>
+<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
+<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
+<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
+<p><img src="img/editor-selection.png"></p>
 </div>
 
 <div id='guide-repl-trans'>
@@ -133,6 +128,20 @@ overwriting any bank that might already be there.</p>
 <div id='t826-rc-demo'>
 <h2>T=826 in RoboCom</h2>
 <p><img src="img/compat-826-rc.png"></p>
+</div>
+
+<div id='ref-active'>
+<h2>Active</h2>
+<p>For any given bot, at any given moment: the bot is either <em>active</em> or
+<em>deactivated</em>.</p>
+<p>If a bot is active, then it will execute a <a href="javascript:Sidenote.openColumnLoud('#ref-active','#ref-cycles','cycle')">cycle</a>
+during its turn during the current step.</p>
+<p>If a bot is deactivated, then it will not execute anything &#8212; until it becomes
+activated.</p>
+<p>For a bot to become activated, its <code>#active</code> register must be set to 1 or
+greater. Note: a bot cannot activate itself since it cannot execute. To
+activate a deactivated bot, another but must set <code>#active</code> by using
+<a href="javascript:Sidenote.openColumnLoud('#ref-active','#ref-remote-access','Remote Access')">Remote Access</a>.</p>
 </div>
 
 <div id='empty-banks-program'>
@@ -210,6 +219,55 @@ bank main ; 3
 </ul>
 </div>
 
+<div id='ref-parameters-local'>
+<h2>Local parameters</h2>
+<p>When a parameter is <em>local</em>, that means that the value is stored inside the
+bot that is executing the instruction.</p>
+<p>Local parameters begin with either <code>#</code> or <code>$</code>, or are an integer literal such as
+<code>5</code>.</p>
+<p>Parameters that begin with <code>#</code>
+are <a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-parameters-writable','writable')">writable</a>.</p>
+<p>Parameters that begin with <code>$</code> are not writable &#8212; they are local constants.</p>
+<h3>List of all local parameters</h3>
+<table>
+    <tr>
+        <td><code>-32768</code> &#8230; <code>32767</code></td>
+        <td>These are 16-bit integer literals.</td>
+    </tr>
+    <tr>
+        <td><code>#active</code></td>
+        <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
+    </tr>
+    <tr>
+        <td><code>$banks</code></td>
+        <td>The number of banks in the local bot.</td>
+    </tr>
+    <tr>
+        <td><code>$instrset</code></td>
+        <td>The instruction set of the local bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i>instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>$mobile</code></td>
+        <td><code>0</code> if the bot is not mobile; <code>1</code>
+        if the bot is mobile.</td>
+    </tr>
+    <tr>
+        <td><code>$fields</code></td>
+        <td>The number of rows on the board.</td>
+    </tr>
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-banks','Banks')">Banks</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-mobility','Mobility')">Mobility</a></li>
+</ul>
+</div>
+
 <div id='overtime-match'>
 <h2>Overtime Matches</h2>
 <p>Say the Robo Dojo result for a match is 0-2-5,
@@ -226,13 +284,16 @@ go into overtime, which means retrying the match in RoboCom until either:
 <p><img src="img/compat-822-rc.png"></p>
 </div>
 
-<div id='pv2-sd-comparison'>
-<h2>PV2 payload on Super Diamond bots</h2>
-<p>Super Diamond bots never have a third bank, so when they execute <code>bjump 3,1</code>
-it causes a <a href="javascript:Sidenote.openColumnLoud('#pv2-sd-comparison','#pv2-auto-reboot','Auto Reboot')">Auto Reboot</a>, which results in the bot
-restarting at bank 1.</p>
-<p>Therefore, the new payload does not affect the way Super Diamond bots execute
-the new virus payload (except for timing, since <code>bjump</code> takes up a few cycles).</p>
+<div id='main'>
+<p>Robo Dojo is a game where you program bots to battle each other with home-brewed
+viruses (<a href="javascript:Sidenote.openColumnLoud('#main','#4way','screenshot')">screenshot</a>).
+Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a>.</p>
+<ul>
+<li><a href="http://robodojo.club">Play Robo Dojo</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference Manual')">Reference Manual</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging Manual')">Debugging Manual</a></li>
+</ul>
 </div>
 
 <div id='ad-battle-4'>
@@ -389,6 +450,27 @@ set %active, 1
 </ul>
 </div>
 
+<div id='ref-parameters'>
+<h2>Parameters</h2>
+<p>Most instructions take parameters. <a href="javascript:Sidenote.openColumnLoud('#ref-parameters','#ref-parameters-example','For example&amp;#8230;')">For example&#8230;</a></p>
+<p>Every parameter has the data type of 16-bit integer.</p>
+<h3>Read, write, local, &amp; remote</h3>
+<p>Every parameter is <em>readable</em>.</p>
+<p>Some parameters are <a href="javascript:Sidenote.openColumnLoud('#ref-parameters','#ref-parameters-writable','*writable*')"><em>writable</em></a>,
+<a href="javascript:Sidenote.openColumnLoud('#ref-parameters','#ref-parameters-local','*local*')"><em>local</em></a>, or <a href="javascript:Sidenote.openColumnLoud('#ref-parameters','#ref-parameters-remote','*remote*')"><em>remote</em></a>.</p>
+<h3>Parameter list</h3>
+<table>
+    <tr>
+        <td><code>#1</code> &#8230; <code>#20</code></td>
+        <td>These local registers store arbitrary integer values</td>
+    </tr>
+    <tr>
+        <td><code>#active</code></td>
+        <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
+    </tr>
+</table>
+</div>
+
 <div id='bank-jumping-program'>
 <h2>Bank Jumper program</h2>
 <p>We point out the differences from Super Diamond by putting &#8220;LOOK HERE&#8221; in the
@@ -443,6 +525,11 @@ bank foe ; 4
 <div id='t827-rc-demo'>
 <h2>T=827 in RoboCom</h2>
 <p><img src="img/compat-827-rc.png"></p>
+</div>
+
+<div id='ref-parameters-example'>
+<h2>For example</h2>
+<p><code>set %active, 1</code> has parameters <code>%active</code> and <code>1</code>.</p>
 </div>
 
 <div id='rdrc-battles-details'>
@@ -564,6 +651,17 @@ Diamond bots.</p>
 <p><img src="img/infection-screenshot-3.png"></p>
 </div>
 
+<div id='ref-cycles'>
+<h2>Steps and Cycles</h2>
+<p>Simulations progress one step at a time.</p>
+<p>Each step, each bot on the board executes a single cycle. The bots are
+executed in order from oldest bot to youngest bot.</p>
+<p>Every instruction requires a certain number of cycles before it executes.</p>
+<p>For example the <a href="javascript:Sidenote.openColumnLoud('#ref-cycles','#ref-turn','&lt;tt&gt;turn&lt;/tt&gt; instruction')"><tt>turn</tt> instruction</a> requires 5 cycles.
+On its 5th cycle, the <tt>turn</tt> operation actually goes into effect.</p>
+<p><strong>TODO</strong>: Linkify</p>
+</div>
+
 <div id='guide-hello'>
 <h2>Hello World</h2>
 <p>The following program causes your bot to move across the board:</p>
@@ -596,15 +694,19 @@ move
 <p>Activator3 (orange/red) and Alien 1.4 (blue)</p>
 </div>
 
-<div id='guide-hello-run'>
-<h2>Run your program</h2>
-<ol>
-<li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
-<li>In the Editor, type in your program</li>
-<li>Click Compile</li>
-<li>Click the Play button. You will see your bot moving across the board.</li>
-<li>Click the Pause button once you&#8217;re bored</li>
-</ol>
+<div id='guide-repl-create-instrset'>
+<h2>Instruction set</h2>
+<p>There are three instruction sets: Basic (0), Advanced (1), and Super (2).</p>
+<p>Different instructions belong to different instruction sets.
+<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-example','For example')">For example</a>.</p>
+<p>Each bot is either Basic, Advanced, or Super &#8212; which effects
+<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-bot','which instructions each bot may execute')">which instructions each bot may execute</a>.</p>
+<p>The first parameter of the <code>create</code> instruction specifies the instruction set
+for the child bot.</p>
+<p>In our Replication program, we use the parameter 2 to specify that the child
+should have the Super instruction set, since we want the child to be able to
+<code>create</code> a child of its own.</p>
+<p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
 <div id='pv3-foe'>
@@ -680,6 +782,23 @@ turn #1
 
 <div id='ref'>
 <h2>Reference Manual</h2>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-active','Active')">Active</a></li>
+<li>Auto Reboot</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-banks','Banks')">Banks</a></li>
+<li>Comments</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-const-reg','Constants, Registers, and Remotes')">Constants, Registers, and Remotes</a></li>
+<li>Steps and Cycles</li>
+<li>Data Hunger</li>
+<li>Eliminations</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-forward-bot','Forward bot')">Forward bot</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
+<li>Instructions</li>
+<li><a href="#ref-mobility">Mobility</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-parameters','Parameters')">Parameters</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#remote-access','Remote Access')">Remote Access</a></li>
+<li>Runtime Errors</li>
+</ul>
 </div>
 
 <div id='compat-mystery'>
@@ -804,6 +923,35 @@ Robo Dojo.</p>
 fresh bot, then randomly places the bot on the board.</p>
 </div>
 
+<div id='ref-parameters-writable'>
+<h2>Writable parameters</h2>
+<p>Most writable parameters begin with <code>#</code>. The only exception is the writable
+parameter <code>%active</code>.</p>
+<h3>List of all writable parameters</h3>
+<table>
+    <tr>
+        <td><code>#1</code> &#8230; <code>#20</code></td>
+        <td>These local registers store arbitrary integer values</td>
+    </tr>
+    <tr>
+        <td><code>#active</code></td>
+        <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
+    </tr>
+    <tr>
+        <td><code>%active</code></td>
+        <td>Like <code>#active</code>, except it sets the <code>#active</code>
+            value in the forward bot. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot. </td>
+    </tr>
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-writable','#ref-forward-bot','Forward bot')">Forward bot</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-writable','#remote-access','Remote Access')">Remote Access</a></li>
+</ul>
+</div>
+
 <div id='pv3-program'>
 <h2>Complete program</h2>
 <pre><code>bank launcher ; 1
@@ -891,24 +1039,15 @@ board, or the bout times out at 80,000 steps.</p>
 in Robo Com and Robo Dojo.</p>
 </div>
 
-<div id='blue-red-programs'>
-<h2>Infection &amp; Disinfection</h2>
-<p>You can launch different-colored bots on the board, each color with a different
-program.</p>
-<p>To edit the program for a color, select a color from the
-<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#color-dropdown','color editor drop-down menu')">color editor drop-down menu</a>.</p>
-<p>For this experiment:</p>
-<ul>
-<li>Set the Blue bot program to the <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#replication','Replication program')">Replication program</a></li>
-<li>Set the Red bot program to the <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#diamond','Diamond program')">Diamond program</a></li>
-</ul>
-<p>The result should look like <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-1','this')">this</a>, or
-<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-2','this')">this</a>, <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-3','this')">this</a>, or
-maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','this')">this</a>.</p>
-<p>The Red bots overwhelm the Blue bots, and
-<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-explanation','infect them with Red&amp;#8217;s code banks')">infect them with Red&#8217;s code banks</a>.</p>
-<p>Sometimes <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','Blue bots infect Red bots')">Blue bots infect Red bots</a>, but Red bots quickly
-<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#disinfection','disinfect themselves')">disinfect themselves</a>.</p>
+<div id='Super-diamond-battle'>
+<h2>Super Diamond battle</h2>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-3','Super Diamond catches up with Diamond')">Super Diamond catches up with Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-4','Super Diamond overwhelms Diamond')">Super Diamond overwhelms Diamond</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-5','Super Diamond wins')">Super Diamond wins</a></li>
+</ol>
 </div>
 
 <div id='infection-screenshot-4'>
@@ -1146,12 +1285,17 @@ exist, then the bot will Auto Reboot.</p>
 our programs. But viruses must be quick, in order to overwhelm disinfection.</p>
 </div>
 
-<div id='guide-hello-editor'>
-<h2>Editors</h2>
-<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
-<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
-<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
-<p><img src="img/editor-selection.png"></p>
+<div id='bank-jumping'>
+<h2>Bank Jumper</h2>
+<p>We can develop a program that defeats Super Diamond, by forking Super Diamond
+and making a few small changes.</p>
+<p>Basically, we use the <tt><a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-bjump','bjump')">bjump</a></tt> instruction to jump away from the first
+bank. Since Super Diamond attacks the first bank, it easily evades Super
+Diamond&#8217;s attack.</p>
+<p>The Bank Jumper program looks like <a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-program','this')">this</a>.</p>
+<p>In general, if you jump to arbitrary banks, its more difficult to attack you
+since the attacker doesn&#8217;t know which bank to hit. Of course, the attacker
+can target every bank, but that leads to a slower attack.</p>
 </div>
 
 <div id='defeating-diamond'>
@@ -1173,31 +1317,23 @@ and four new instructions:</p>
 <p>The battle should look something like <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#Super-diamond-battle','this')">this</a>.</p>
 </div>
 
-<div id='guide-repl-create-instrset'>
-<h2>Instruction set</h2>
-<p>There are three instruction sets: Basic (0), Advanced (1), and Super (2).</p>
-<p>Different instructions belong to different instruction sets.
-<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-example','For example')">For example</a>.</p>
-<p>Each bot is either Basic, Advanced, or Super &#8212; which effects
-<a href="javascript:Sidenote.openColumnLoud('#guide-repl-create-instrset','#guide-repl-create-instrset-bot','which instructions each bot may execute')">which instructions each bot may execute</a>.</p>
-<p>The first parameter of the <code>create</code> instruction specifies the instruction set
-for the child bot.</p>
-<p>In our Replication program, we use the parameter 2 to specify that the child
-should have the Super instruction set, since we want the child to be able to
-<code>create</code> a child of its own.</p>
-<p><strong>TODO</strong>: Link to instruction set documentation</p>
+<div id='guide-repl-create-slow'>
+<h2>Slowest instruction</h2>
+<p>Typically, the <code>create</code> instruction requires at least several hundred cycles.</p>
+<ul>
+<li>The greater the instruction set, the more cycles are required</li>
+<li>The more banks, the more cycles required</li>
+<li>If the child is to be mobile, the more cycles required</li>
+</ul>
 </div>
 
-<div id='main'>
-<p>Robo Dojo is a game where you program bots to battle each other with home-brewed
-viruses (<a href="javascript:Sidenote.openColumnLoud('#main','#4way','screenshot')">screenshot</a>).
-Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a>.</p>
-<ul>
-<li><a href="http://robodojo.club">Play Robo Dojo</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide')">Guide</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference Manual')">Reference Manual</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging Manual')">Debugging Manual</a></li>
-</ul>
+<div id='pv2-sd-comparison'>
+<h2>PV2 payload on Super Diamond bots</h2>
+<p>Super Diamond bots never have a third bank, so when they execute <code>bjump 3,1</code>
+it causes a <a href="javascript:Sidenote.openColumnLoud('#pv2-sd-comparison','#pv2-auto-reboot','Auto Reboot')">Auto Reboot</a>, which results in the bot
+restarting at bank 1.</p>
+<p>Therefore, the new payload does not affect the way Super Diamond bots execute
+the new virus payload (except for timing, since <code>bjump</code> takes up a few cycles).</p>
 </div>
 
 <div id='t826'>
@@ -1245,30 +1381,40 @@ programming. This guide assumes you are already a programmer.</p>
 <p><a href="javascript:Sidenote.openColumnLoud('#guide','#review','Review')">Review</a></p>
 </div>
 
-<div id='guide-repl-create-slow'>
-<h2>Slowest instruction</h2>
-<p>Typically, the <code>create</code> instruction requires at least several hundred cycles.</p>
+<div id='blue-red-programs'>
+<h2>Infection &amp; Disinfection</h2>
+<p>You can launch different-colored bots on the board, each color with a different
+program.</p>
+<p>To edit the program for a color, select a color from the
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#color-dropdown','color editor drop-down menu')">color editor drop-down menu</a>.</p>
+<p>For this experiment:</p>
 <ul>
-<li>The greater the instruction set, the more cycles are required</li>
-<li>The more banks, the more cycles required</li>
-<li>If the child is to be mobile, the more cycles required</li>
+<li>Set the Blue bot program to the <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#replication','Replication program')">Replication program</a></li>
+<li>Set the Red bot program to the <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#diamond','Diamond program')">Diamond program</a></li>
 </ul>
-</div>
-
-<div id='Super-diamond-battle'>
-<h2>Super Diamond battle</h2>
-<ol>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-3','Super Diamond catches up with Diamond')">Super Diamond catches up with Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-4','Super Diamond overwhelms Diamond')">Super Diamond overwhelms Diamond</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-5','Super Diamond wins')">Super Diamond wins</a></li>
-</ol>
+<p>The result should look like <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-1','this')">this</a>, or
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-2','this')">this</a>, <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-3','this')">this</a>, or
+maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','this')">this</a>.</p>
+<p>The Red bots overwhelm the Blue bots, and
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-explanation','infect them with Red&amp;#8217;s code banks')">infect them with Red&#8217;s code banks</a>.</p>
+<p>Sometimes <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infection-screenshot-4','Blue bots infect Red bots')">Blue bots infect Red bots</a>, but Red bots quickly
+<a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#disinfection','disinfect themselves')">disinfect themselves</a>.</p>
 </div>
 
 <div id='guide-hello-screenshot'>
 <h2>Screenshot</h2>
 <p><img src="img/hello-world.png"></p>
+</div>
+
+<div id='guide-hello-run'>
+<h2>Run your program</h2>
+<ol>
+<li>Go to <a href="http://robodojo.club">RoboDojo.club</a></li>
+<li>In the Editor, type in your program</li>
+<li>Click Compile</li>
+<li>Click the Play button. You will see your bot moving across the board.</li>
+<li>Click the Pause button once you&#8217;re bored</li>
+</ol>
 </div>
 
 <div id='color-dropdown'>
@@ -1442,6 +1588,13 @@ instruction.</p>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#cycle','#cycle-strategy','The Strategy of Cycles')">The Strategy of Cycles</a></li>
 </ul>
+</div>
+
+<div id='ref-forward-bot'>
+<h2>Forward bot</h2>
+<p>Say <em>Bot X</em> is some bot on the board.</p>
+<p>Relative to Bot X, the term <em>forward bot</em> refers to the bot occupying the cell
+in front of Bot X.</p>
 </div>
 
 <div id='pv2-payload-comparison'>

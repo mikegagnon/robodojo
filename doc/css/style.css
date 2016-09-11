@@ -39,6 +39,16 @@ i {
   font-style: italic;
 }
 
+table {
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 0 50px 0 50px;
+}
+
+td {
+    border: 1px solid #ccc;
+}
+
 strong {
   font-family: Georgia, Times, serif;
   font-style: bold;

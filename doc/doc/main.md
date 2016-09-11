@@ -13,18 +13,177 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 
 - [Active](##ref-active)
 - Auto Reboot
-- Banks
+- [Banks](##ref-banks)
 - Comments
-- Constants and Variables
-- Cycles
+- [Constants, Registers, and Remotes](##ref-const-reg)
+- Steps and Cycles
 - Data Hunger
 - Eliminations
-- Instruction Sets
+- [Forward bot](##ref-forward-bot)
+- [Instruction Sets](##ref-instrset)
 - Instructions
-- Mobility
-- Parameters
+- [Mobility](#ref-mobility)
+- [Parameters](##ref-parameters)
+- [Remote Access](##remote-access)
 - Runtime Errors
-- Steps
+
+~ref-forward-bot
+## Forward bot
+
+Say *Bot X* is some bot on the board.
+
+Relative to Bot X, the term *forward bot* refers to the bot occupying the cell
+in front of Bot X.
+
+~ref-parameters
+## Parameters
+
+Most instructions take parameters. [For example...](##ref-parameters-example)
+
+Every parameter has the data type of 16-bit integer.
+
+### Read, write, local, & remote
+
+Every parameter is *readable*.
+
+Some parameters are [*writable*](##ref-parameters-writable),
+[*local*](##ref-parameters-local), or [*remote*](##ref-parameters-remote).
+
+### Parameter list
+
+<table>
+    <tr>
+        <td><code>#1</code> ... <code>#20</code></td>
+        <td>These local registers store arbitrary integer values</td>
+    </tr>
+    <tr>
+        <td><code>#active</code></td>
+        <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
+    </tr>
+</table>
+
+~ref-parameters-example
+## For example
+
+`set %active, 1` has parameters `%active` and `1`.
+
+
+
+~ref-parameters-local
+## Local parameters
+
+When a parameter is *local*, that means that the value is stored inside the
+bot that is executing the instruction.
+
+Local parameters begin with either `#` or `$`, or are an integer literal such as
+`5`.
+
+Parameters that begin with `#`
+are [writable](##ref-parameters-writable).
+
+Parameters that begin with `$` are not writable -- they are local constants.
+
+### List of all local parameters
+
+<table>
+    <tr>
+        <td><code>-32768</code> ... <code>32767</code></td>
+        <td>These are 16-bit integer literals.</td>
+    </tr>
+    <tr>
+        <td><code>#active</code></td>
+        <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
+    </tr>
+    <tr>
+        <td><code>$banks</code></td>
+        <td>The number of banks in the local bot.</td>
+    </tr>
+    <tr>
+        <td><code>$instrset</code></td>
+        <td>The instruction set of the local bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i>instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>$mobile</code></td>
+        <td><code>0</code> if the bot is not mobile; <code>1</code>
+        if the bot is mobile.</td>
+    </tr>
+    <tr>
+        <td><code>$fields</code></td>
+        <td>The number of rows on the board.</td>
+    </tr>
+</table>
+
+### See also
+
+- [Instruction Sets](##ref-instrset)
+- [Banks](##ref-banks)
+- [Mobility](##ref-mobility)
+
+~ref-parameters-writable
+## Writable parameters
+
+Most writable parameters begin with `#`. The only exception is the writable
+parameter `%active`.
+
+### List of all writable parameters
+
+<table>
+    <tr>
+        <td><code>#1</code> ... <code>#20</code></td>
+        <td>These local registers store arbitrary integer values</td>
+    </tr>
+    <tr>
+        <td><code>#active</code></td>
+        <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
+    </tr>
+    <tr>
+        <td><code>%active</code></td>
+        <td>Like <code>#active</code>, except it sets the <code>#active</code>
+            value in the forward bot. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot. </td>
+    </tr>
+</table>
+
+### See also
+
+- [Forward bot](##ref-forward-bot)
+- [Remote Access](##remote-access)
+
+~ref-cycles
+## Steps and Cycles
+
+Simulations progress one step at a time.
+
+Each step, each bot on the board executes a single cycle. The bots are
+executed in order from oldest bot to youngest bot.
+
+Every instruction requires a certain number of cycles before it executes.
+
+For example the [<tt>turn</tt> instruction](##ref-turn) requires 5 cycles.
+On its 5th cycle, the <tt>turn</tt> operation actually goes into effect.
+
+**TODO**: Linkify
+
+~ref-active
+## Active
+
+For any given bot, at any given moment: the bot is either *active* or
+*deactivated*.
+
+If a bot is active, then it will execute a [cycle](##ref-cycles)
+during its turn during the current step.
+
+If a bot is deactivated, then it will not execute anything -- until it becomes
+activated.
+
+For a bot to become activated, its `#active` register must be set to 1 or
+greater. Note: a bot cannot activate itself since it cannot execute. To
+activate a deactivated bot, another but must set `#active` by using
+[Remote Access](##ref-remote-access).
+
 
 ~robocom
 ## RoboCom
