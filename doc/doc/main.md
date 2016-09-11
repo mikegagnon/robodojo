@@ -1448,8 +1448,11 @@ Here's [how to read the results](##results-table).
 
     Match                                 Robo Dojo   RoboCom  Footnotes
     ----------------------------------------------------------------------
-    HotBot V2 vs. The Masterkiller        0-4-3      0-14-0
+    HotBot V2 vs. The Masterkiller        0-4-3      0-14-0    * +
 
+### Champion
+
+    The Masterkiller  
 
 [Note on brackets](##brackets)
 
