@@ -1426,7 +1426,7 @@ Here's [how to read the results](##results-table).
     LastHopeC (bye)                       .....       .....
     The Masterkiller (bye)                .....       .....
     The Overkiller vs. Seuche3            1-7-1      12-0-2    * + -
-    Test 3-1 vs. Zwei Arten               0-0-0       0-0-0
+    Test 3-1 vs. Zwei Arten               3-4-0       4-3-0        -
 
 ### Round 3
 
@@ -1435,7 +1435,7 @@ Here's [how to read the results](##results-table).
     Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
     Goody2 vs. HotBot V2 (bye)            0-0-0       0-0-0
     LastHopeC vs. The Masterkiller        0-0-0       0-0-0
-    The Overkiller vs. 
+    The Overkiller vs. Test 3-1           0-0-0       0-0-0
 
 
 
