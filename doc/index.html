@@ -818,6 +818,11 @@ bank foe ; 4
 </code></pre>
 </div>
 
+<div id='ref-runtime-errors'>
+<h2>Runtime Errors</h2>
+<p>There are two types of run-time errors: fatal errors and non-fatal errors.</p>
+</div>
+
 <div id='pv3-foe'>
 <h2>Actual code for <code>@foe</code> section of PV3</h2>
 <pre><code>@foe
@@ -872,18 +877,6 @@ other Robo Dojo programs (which you can access via <a href="http://robodojo.club
 itself).</p>
 </div>
 
-<div id='defeating-diamond-registers'>
-<h2>Registers</h2>
-<p>Bots can read and write registers.</p>
-<p>Each bot has 20 registers: <code>#1</code> &#8230; <code>#20</code></p>
-<h3>Example usage</h3>
-<pre><code>set #1, 0
-turn #1
-</code></pre>
-<p>This program segment sets <code>#1</code> equal to zero. Then <code>turn #1</code> is equivalent to 
-<code>turn 0</code>.</p>
-</div>
-
 <div id='pv2-screenshot'>
 <h2>PV2 screenshot</h2>
 <p><img src="img/pv-2.png"></p>
@@ -898,14 +891,13 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-comments','Comments')">Comments</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-cycles','Steps and Cycles')">Steps and Cycles</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-data-hunger','Data Hunger')">Data Hunger</a></li>
-<li>Eliminations</li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-forward-bot','Forward bot')">Forward bot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
 <li>Instructions</li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-mobility','Mobility')">Mobility</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-parameters','Parameters')">Parameters</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#remote-access','Remote Access')">Remote Access</a></li>
-<li>Runtime Errors</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-runtime-errors','Runtime Errors')">Runtime Errors</a></li>
 </ul>
 </div>
 
@@ -1174,9 +1166,16 @@ in Robo Com and Robo Dojo.</p>
 <p>Blue is stuck because its frontier bots are infected with the virus.</p>
 </div>
 
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
+<div id='defeating-diamond-registers'>
+<h2>Registers</h2>
+<p>Bots can read and write registers.</p>
+<p>Each bot has 20 registers: <code>#1</code> &#8230; <code>#20</code></p>
+<h3>Example usage</h3>
+<pre><code>set #1, 0
+turn #1
+</code></pre>
+<p>This program segment sets <code>#1</code> equal to zero. Then <code>turn #1</code> is equivalent to 
+<code>turn 0</code>.</p>
 </div>
 
 <div id='infection-screenshot-2'>
@@ -1477,6 +1476,11 @@ it causes a <a href="javascript:Sidenote.openColumnLoud('#pv2-sd-comparison','#p
 restarting at bank 1.</p>
 <p>Therefore, the new payload does not affect the way Super Diamond bots execute
 the new virus payload (except for timing, since <code>bjump</code> takes up a few cycles).</p>
+</div>
+
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
 </div>
 
 <div id='t826'>

@@ -23,7 +23,6 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Mobility](##ref-mobility)
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
-- Runtime Errors
 
 ~ref-data-hunger
 ## Data Hunger
