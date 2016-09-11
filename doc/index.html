@@ -697,6 +697,7 @@ Diamond bots.</p>
 <h2>Banks</h2>
 <p>Every program is segmented into banks; every instruction belongs to exactly
 one bank.</p>
+<p>A bot can have a maximum of 50 banks.</p>
 <p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-bank-instruction','&lt;tt&gt;bjump&lt;/tt&gt; instruction')"><tt>bjump</tt> instruction</a> is used to
 jump between banks.</p>
 <p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-trans-instruction','&lt;tt&gt;trans&lt;/tt&gt; instruction')"><tt>trans</tt> instruction</a> is used to transfer
@@ -1300,6 +1301,22 @@ move
 jump @foo
 </code></pre>
 <p>The bot turns and moves in an endless loop.</p>
+</div>
+
+<div id='auto-reboot'>
+<h2>Auto Reboot</h2>
+<p>An Auto Reboot is when a bot jumps to bank 1, instruction 1 due to a
+non-fatal error. There are four events that can lead to an Auto Reboot.</p>
+<ol>
+<li>If a bot&#8217;s execution reaches the end of its current bank, and the last
+   instruction is not a <a href="javascript:Sidenote.openColumnLoud('#auto-reboot','#jump-instruction','&lt;tt&gt;jump&lt;/tt&gt;')"><tt>jump</tt></a> instruction.</li>
+<li>If a bot <a href="javascript:Sidenote.openColumnLoud('#auto-reboot','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a>&#8216;s to a bank that does not
+   exist. However, if the <code>bjump</code> jumps to a bank that couldn&#8217;t possibly exist
+   (such as bank 51), then the bot taps out.</li>
+<li>If a bot&#8217;s current bank is overwritten by an empty bank</li>
+<li>If a bot&#8217;s current bank is overwritten by a smaller bank, and the bot&#8217;s
+   instruction pointer becomes invalid</li>
+</ol>
 </div>
 
 <div id='guide-hello-bank'>

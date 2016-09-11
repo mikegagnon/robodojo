@@ -27,11 +27,28 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Remote Access](##remote-access)
 - Runtime Errors
 
+~auto-reboot
+## Auto Reboot
+
+An Auto Reboot is when a bot jumps to bank 1, instruction 1 due to a
+non-fatal error. There are four events that can lead to an Auto Reboot.
+
+1. If a bot's execution reaches the end of its current bank, and the last
+   instruction is not a [<tt>jump</tt>](##jump-instruction) instruction.
+2. If a bot [<tt>bjump</tt>](##bjump-instruction)'s to a bank that does not
+   exist. However, if the `bjump` jumps to a bank that couldn't possibly exist
+   (such as bank 51), then the bot taps out.
+3. If a bot's current bank is overwritten by an empty bank
+4. If a bot's current bank is overwritten by a smaller bank, and the bot's
+   instruction pointer becomes invalid
+
 ~ref-banks
 ## Banks
 
 Every program is segmented into banks; every instruction belongs to exactly
 one bank.
+
+A bot can have a maximum of 50 banks.
 
 The [<tt>bjump</tt> instruction](##ref-bank-instruction) is used to
 jump between banks.
