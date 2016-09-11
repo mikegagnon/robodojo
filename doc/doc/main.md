@@ -1432,10 +1432,16 @@ Here's [how to read the results](##results-table).
 
     Match                                 Robo Dojo   RoboCom  Footnotes
     ----------------------------------------------------------------------
-    Alien3.4 vs. Delusion 3.7             0-0-0       0-0-0
+    Alien3.4 vs. Delusion 3.7            11-3-0       2-4-1    * + -
     Goody2 vs. HotBot V2 (bye)            0-0-0       0-0-0
     LastHopeC vs. The Masterkiller        0-0-0       0-0-0
     The Overkiller vs. Test 3-1           0-0-0       0-0-0
+
+### Round 4
+
+    Match                                 Robo Dojo   RoboCom  Footnotes
+    ----------------------------------------------------------------------
+    Alien 3.4 vs.                           
 
 
 
