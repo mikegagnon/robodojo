@@ -15,7 +15,6 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Auto Reboot](##auto-reboot)
 - [Banks](##ref-banks)
 - [Comments](##ref-comments)
-- [Constants, Registers, and Remotes](##ref-const-reg)
 - Steps and Cycles
 - Data Hunger
 - Eliminations
