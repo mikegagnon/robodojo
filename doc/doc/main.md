@@ -11,20 +11,20 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 ~ref
 ## Reference Manual
 
-- Banks
-- Cycles
-- Steps
-- Data Hunger
+- [Active](##ref-active)
 - Auto Reboot
-- Constants and Variables
-- Active
-- Mobility
-- Instructions
-- Instruction Sets
-- Parameters
+- Banks
 - Comments
-- Runtime Errors
+- Constants and Variables
+- Cycles
+- Data Hunger
 - Eliminations
+- Instruction Sets
+- Instructions
+- Mobility
+- Parameters
+- Runtime Errors
+- Steps
 
 ~robocom
 ## RoboCom
