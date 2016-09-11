@@ -51,7 +51,17 @@ Some parameters are [*writable*](##ref-parameters-writable),
 
 ### Parameter list
 
+
+
+
+
+
+
 <table>
+    <tr>
+        <td><code>-32768</code> ... <code>32767</code></td>
+        <td>These are 16-bit integer literals.</td>
+    </tr>
     <tr>
         <td><code>#1</code> ... <code>#20</code></td>
         <td>These local registers store arbitrary integer values</td>
@@ -60,14 +70,103 @@ Some parameters are [*writable*](##ref-parameters-writable),
         <td><code>#active</code></td>
         <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
     </tr>
-</table>
+    <tr>
+        <td><code>%active</code></td>
+        <td><code>%active</code> is the only remote parameter that is writable. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>$banks</code></td>
+        <td>The number of banks in the local bot.</td>
+    </tr>
+    <tr>
+        <td><code>%banks</code></td>
+        <td>The number of banks in the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>$fields</code></td>
+        <td>The number of rows on the board.</td>
+    </tr>
+    <tr>
+        <td><code>$instrset</code></td>
+        <td>The instruction set of the local bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>%instrset</code></td>
+        <td>The instruction set of the forward bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>$mobile</code></td>
+        <td><code>0</code> if the bot is immobile; <code>1</code>
+        if the bot is mobile.</td>
+    </tr>
+    <tr>
+        <td><code>%mobile</code></td>
+        <td><code>0</code> if the forward bot is  immobile; <code>1</code>
+        if the forward bot is mobile.</td>
+    </tr>
 
+</table>
 ~ref-parameters-example
 ## For example
 
 `set %active, 1` has parameters `%active` and `1`.
 
 
+~ref-parameters-remote
+## Remote parameters
+
+Remote parameters refer to values in the [forward bot](##ref-forward-bot).
+If the remote cell is empty though, then every remote parameter yields the 
+value `0`.
+
+Every remote parameter begins with `%`.
+
+There is only one [writable](##ref-parameters-writable) remote parameter:
+`%active`. The rest are read-only.
+
+### Examples
+
+- `set %active, 1` sets the forward bot's `#active` register to 1.
+- `set #3, %banks` sets the local register `#3` to the number-of-banks
+  in the forward bot. Or, sets `#3` to zero if the forward cell is 
+  empty.
+
+## List of all remote parameters
+
+<table>
+    <tr>
+        <td><code>%active</code></td>
+        <td><code>%active</code> is the only remote parameter that is writable. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>%banks</code></td>
+        <td>The number of banks in the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>%instrset</code></td>
+        <td>The instruction set of the forward bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>%mobile</code></td>
+        <td><code>0</code> if the forward bot is  immobile; <code>1</code>
+        if the forward bot is mobile.</td>
+    </tr>
+</table>
+
+### See also
+
+- [Active](##ref-active)
 
 ~ref-parameters-local
 ## Local parameters
@@ -103,11 +202,11 @@ Parameters that begin with `$` are not writable -- they are local constants.
         <td>The instruction set of the local bot. <code>0</code> signifies
         the <i>Basic</i> instruction set; <code>1</code> signifies the
         <i>Advanced</i> instruction
-        set; <code>2</code> signifies the <i>Super</i>instruction set.</td>
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
     </tr>
     <tr>
         <td><code>$mobile</code></td>
-        <td><code>0</code> if the bot is not mobile; <code>1</code>
+        <td><code>0</code> if the bot is immobile; <code>1</code>
         if the bot is mobile.</td>
     </tr>
     <tr>
@@ -121,6 +220,7 @@ Parameters that begin with `$` are not writable -- they are local constants.
 - [Instruction Sets](##ref-instrset)
 - [Banks](##ref-banks)
 - [Mobility](##ref-mobility)
+- [Active](##ref-active)
 
 ~ref-parameters-writable
 ## Writable parameters
@@ -141,9 +241,9 @@ parameter `%active`.
     </tr>
     <tr>
         <td><code>%active</code></td>
-        <td>Like <code>#active</code>, except it sets the <code>#active</code>
-            value in the forward bot. Setting <code>%active</code> to 0 or negative
-            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot. </td>
+        <td>A reference to the forward bot's <code>#active</code> register.
+        <code>%active</code> is the only remote parameter that is writable. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot.</td>
     </tr>
 </table>
 
@@ -151,6 +251,7 @@ parameter `%active`.
 
 - [Forward bot](##ref-forward-bot)
 - [Remote Access](##remote-access)
+- [Active](##ref-active)
 
 ~ref-cycles
 ## Steps and Cycles

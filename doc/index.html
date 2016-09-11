@@ -247,11 +247,11 @@ are <a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-pa
         <td>The instruction set of the local bot. <code>0</code> signifies
         the <i>Basic</i> instruction set; <code>1</code> signifies the
         <i>Advanced</i> instruction
-        set; <code>2</code> signifies the <i>Super</i>instruction set.</td>
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
     </tr>
     <tr>
         <td><code>$mobile</code></td>
-        <td><code>0</code> if the bot is not mobile; <code>1</code>
+        <td><code>0</code> if the bot is immobile; <code>1</code>
         if the bot is mobile.</td>
     </tr>
     <tr>
@@ -265,6 +265,7 @@ are <a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-pa
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-banks','Banks')">Banks</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-mobility','Mobility')">Mobility</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-local','#ref-active','Active')">Active</a></li>
 </ul>
 </div>
 
@@ -461,6 +462,10 @@ set %active, 1
 <h3>Parameter list</h3>
 <table>
     <tr>
+        <td><code>-32768</code> &#8230; <code>32767</code></td>
+        <td>These are 16-bit integer literals.</td>
+    </tr>
+    <tr>
         <td><code>#1</code> &#8230; <code>#20</code></td>
         <td>These local registers store arbitrary integer values</td>
     </tr>
@@ -468,6 +473,48 @@ set %active, 1
         <td><code>#active</code></td>
         <td>This is a special register: setting <code>#active</code> to 0 or negative deactivates the bot.</td>
     </tr>
+    <tr>
+        <td><code>%active</code></td>
+        <td><code>%active</code> is the only remote parameter that is writable. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>$banks</code></td>
+        <td>The number of banks in the local bot.</td>
+    </tr>
+    <tr>
+        <td><code>%banks</code></td>
+        <td>The number of banks in the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>$fields</code></td>
+        <td>The number of rows on the board.</td>
+    </tr>
+    <tr>
+        <td><code>$instrset</code></td>
+        <td>The instruction set of the local bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>%instrset</code></td>
+        <td>The instruction set of the forward bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>$mobile</code></td>
+        <td><code>0</code> if the bot is immobile; <code>1</code>
+        if the bot is mobile.</td>
+    </tr>
+    <tr>
+        <td><code>%mobile</code></td>
+        <td><code>0</code> if the forward bot is  immobile; <code>1</code>
+        if the forward bot is mobile.</td>
+    </tr>
+
 </table>
 </div>
 
@@ -939,9 +986,9 @@ parameter <code>%active</code>.</p>
     </tr>
     <tr>
         <td><code>%active</code></td>
-        <td>Like <code>#active</code>, except it sets the <code>#active</code>
-            value in the forward bot. Setting <code>%active</code> to 0 or negative
-            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot. </td>
+        <td>A reference to the forward bot&#8217;s <code>#active</code> register.
+        <code>%active</code> is the only remote parameter that is writable. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot.</td>
     </tr>
 </table>
 
@@ -949,6 +996,7 @@ parameter <code>%active</code>.</p>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-writable','#ref-forward-bot','Forward bot')">Forward bot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-writable','#remote-access','Remote Access')">Remote Access</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-writable','#ref-active','Active')">Active</a></li>
 </ul>
 </div>
 
@@ -1442,6 +1490,52 @@ maybe <a href="javascript:Sidenote.openColumnLoud('#blue-red-programs','#infecti
 <p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
 however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility','I could not create a cycle-for-cycle duplicate of RoboCom')">I could not create a cycle-for-cycle duplicate of RoboCom</a>.</p>
 <p>Nevertheless, Robo Dojo and RoboCom have <a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar')">similar</a> semantics.</p>
+</div>
+
+<div id='ref-parameters-remote'>
+<h2>Remote parameters</h2>
+<p>Remote parameters refer to values in the <a href="javascript:Sidenote.openColumnLoud('#ref-parameters-remote','#ref-forward-bot','forward bot')">forward bot</a>.
+If the remote cell is empty though, then every remote parameter yields the 
+value <code>0</code>.</p>
+<p>Every remote parameter begins with <code>%</code>.</p>
+<p>There is only one <a href="javascript:Sidenote.openColumnLoud('#ref-parameters-remote','#ref-parameters-writable','writable')">writable</a> remote parameter:
+<code>%active</code>. The rest are read-only.</p>
+<h3>Examples</h3>
+<ul>
+<li><code>set %active, 1</code> sets the forward bot&#8217;s <code>#active</code> register to 1.</li>
+<li><code>set #3, %banks</code> sets the local register <code>#3</code> to the number-of-banks
+  in the forward bot. Or, sets <code>#3</code> to zero if the forward cell is 
+  empty.</li>
+</ul>
+<h2>List of all remote parameters</h2>
+<table>
+    <tr>
+        <td><code>%active</code></td>
+        <td><code>%active</code> is the only remote parameter that is writable. Setting <code>%active</code> to 0 or negative
+            deactivates the forward bot. In contrast, setting <code>%active</code> to a positive value activates the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>%banks</code></td>
+        <td>The number of banks in the forward bot.</td>
+    </tr>
+    <tr>
+        <td><code>%instrset</code></td>
+        <td>The instruction set of the forward bot. <code>0</code> signifies
+        the <i>Basic</i> instruction set; <code>1</code> signifies the
+        <i>Advanced</i> instruction
+        set; <code>2</code> signifies the <i>Super</i> instruction set.</td>
+    </tr>
+    <tr>
+        <td><code>%mobile</code></td>
+        <td><code>0</code> if the forward bot is  immobile; <code>1</code>
+        if the forward bot is mobile.</td>
+    </tr>
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-remote','#ref-active','Active')">Active</a></li>
+</ul>
 </div>
 
 <div id='ad-battle-3'>
