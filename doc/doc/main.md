@@ -24,8 +24,7 @@ Robo Dojo uses the "Classic" timing model from RoboCom.
 I have strove to make the Robo Dojo simulation semantics identical to RoboCom --
 however [I could not create a cycle-for-cycle duplicate of RoboCom](##compatibility).
 
-Nevertheless, Robo Dojo and RoboCom are similar enough to produce
-[similar outputs for similar inputs](##rdrc-battles).
+Nevertheless, Robo Dojo and RoboCom have [similar](##rdrc-battles) semantics.
 
 ~4way
 ## Screenshot of a four-way battle
@@ -1371,10 +1370,18 @@ Here is one example of [mysterious RoboCom semantics](##compat-mystery).
 ~rdrc-battles
 ## Tournament
 
-To see how closely Robo Dojo matches RoboCom semantics, we ran a
-Tournament using [programs from the July Package](##july-package).
+To see how closely Robo Dojo matches RoboCom semantics, I ran a
+Tournament of programs using [programs from the July Package](##july-package).
 
-Here's [how to read the results](##results-table).
+The [results](##rdrc-battles-details) show that Robo Dojo semantics are similar
+to RoboCom semantics: of the 38 matches in the tournament, Robo Dojo and RoboCom produced different
+victors only four times.
+
+~rdrc-battles-details
+## Tournament results details
+
+Here's [how to read the results](##results-table). The brackets are little
+[wonky](##brackets), but that's OK.
 
 ### Round 1
 
@@ -1454,16 +1461,12 @@ Here's [how to read the results](##results-table).
 
     The Masterkiller  
 
-[Note on brackets](##brackets)
-
-Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
-
 ~brackets
 ## Note on brackets
 
 I forgot about setting up byes until Round 2. In contrast to typical tournament
 brackets, I added the byes in Round 2 and 3. For our purposes,
-It doesn't really matter.
+it doesn't really matter.
 
 ~results-table
 ## Reading the results

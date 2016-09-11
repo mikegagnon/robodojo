@@ -445,6 +445,83 @@ bank foe ; 4
 <p><img src="img/compat-827-rc.png"></p>
 </div>
 
+<div id='rdrc-battles-details'>
+<h2>Tournament results details</h2>
+<p>Here&#8217;s <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles-details','#results-table','how to read the results')">how to read the results</a>. The brackets are little
+<a href="javascript:Sidenote.openColumnLoud('#rdrc-battles-details','#brackets','wonky')">wonky</a>, but that&#8217;s OK.</p>
+<h3>Round 1</h3>
+<pre><code>Match                               Robo Dojo   RoboCom  Footnotes
+--------------------------------------------------------------------
+Activator3 vs. Alien3.4               0-2-5       0-1-7     *
+Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
+Conciler vs. Kommari 2.1              6-0-1       6-0-1
+Delusion 3.7 vs. Einfachst-DM.DV      7-0-0       7-0-0
+DoomMob 1.6 vs. Flooder 1.0           0-7-0       0-7-0
+Geza's McRobi vs. Goody2              0-7-0       0-7-0
+Martins Echter vs. Goodymorph         0-0-7       0-0-7
+HotBot V2 vs. inter#active            6-0-1       5-0-2
+LastHopeC vs. &lt;Jo's little&gt;           6-0-1       8-0-1     *
+Liquid Ice 1.2 vs. Lauf und Mine      0-7-1       0-4-3     *
+Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
+Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
+The Overkiller vs. Nullen2            4-1-2      14-0-0     * +
+Rainman vs. RecruteIT                 6-1-0       5-2-0
+Simple vs. Seuche3                    0-0-7       0-0-7
+Styx vs. Sweeper                      0-0-7       0-0-7
+Tie Fighter vs. Test 3-1              0-7-0       0-7-0
+UltimaDefender vs. Tom Himself        0-0-7       0-0-7
+Zwei Arten vs. Zellwucher4            7-0-0       7-0-0
+</code></pre>
+<h3>Round 2</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
+Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
+Conciler vs. Delusion 3.7             0-7-0       0-7-0
+Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * + -
+Goodymorph vs. HotBot V2              0-2-5       0-2-5
+LastHopeC vs. Lauf und Mine           7-0-0       7-0-0
+The Masterkiller 1 vs. TheMob.NextG2  5-0-2       6-0-1
+The Overkiller vs. Rainman            7-0-0       7-0-0
+Seuche3 vs. Sweeper                   2-0-5       1-0-6
+Test 3-1 vs. Tom Himself              7-0-0       7-0-0
+Zwei Arten (bye)                      .....       .....
+</code></pre>
+<h3>Round 3</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
+Alien3.4 (bye)                        .....       .....
+Delusion 3.7 (bye)                    .....       .....
+Goody2 (bye)                          .....       .....
+HotBot V2 (bye)                       .....       .....
+LastHopeC (bye)                       .....       .....
+The Masterkiller (bye)                .....       .....
+The Overkiller vs. Seuche3            1-7-1      12-0-2    * + -
+Test 3-1 vs. Zwei Arten               3-4-0       4-3-0        -
+</code></pre>
+<h3>Round 4</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
+Alien3.4 vs. Delusion 3.7            11-3-0       2-4-1    * + -
+Goody2 vs. HotBot V2                  0-7-0       0-7-0
+LastHopeC vs. The Masterkiller        0-1-7       0-2-5    *
+The Overkiller vs. Test 3-1           7-0-0       7-0-0
+</code></pre>
+<h3>Round 5</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
+Alien 3.4 vs. HotBot V2               0-7-0       0-7-0                     
+The Masterkiller vs. The Overkiller   6-0-1       3-0-4
+</code></pre>
+<h3>Round 6</h3>
+<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
+----------------------------------------------------------------------
+HotBot V2 vs. The Masterkiller        0-4-3      0-14-0    * +
+</code></pre>
+<h3>Champion</h3>
+<pre><code>The Masterkiller
+</code></pre>
+</div>
+
 <div id='eng-virus-prototype-3'>
 <h2>Prototype Virus 3</h2>
 <p>PV3 modifies PV2 so that sometimes it taps out opponents.
@@ -555,8 +632,9 @@ jump @start
 
 <div id='brackets'>
 <h2>Note on brackets</h2>
-<p>I forgot about setting up bytes until Round 2. In contrast to typical tournament
-brackets, I added the byes in Round 2 and 3. It doesn&#8217;t really matter though.</p>
+<p>I forgot about setting up byes until Round 2. In contrast to typical tournament
+brackets, I added the byes in Round 2 and 3. For our purposes,
+it doesn&#8217;t really matter.</p>
 </div>
 
 <div id='review'>
@@ -718,6 +796,12 @@ we only include the latest program (excluding the earlier programs in the family
 <p>Lastly, we excluded <tt>Activator5</tt> because it fails to compile under 
 Robo Dojo.</p>
 <p><strong>TODO</strong>: Explain failed compilation</p>
+</div>
+
+<div id='guide-hello-compile'>
+<h2>Compile button</h2>
+<p>When you click Compile, the board clears itself then uploads your program to a
+fresh bot, then randomly places the bot on the board.</p>
 </div>
 
 <div id='pv3-program'>
@@ -999,10 +1083,16 @@ turn 1
 </ul>
 </div>
 
-<div id='guide-hello-compile'>
-<h2>Compile button</h2>
-<p>When you click Compile, the board clears itself then uploads your program to a
-fresh bot, then randomly places the bot on the board.</p>
+<div id='t822-note'>
+<h2>Note on Robo Dojo execution</h2>
+<p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
+cycle of the <code>set</code> instruction.</p>
+<p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
+execute a bot-cycle in the same board-cycle, however these semantics are
+intentional.</p>
+<p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
+<p>I have investigated preventing bots from executing a cycle immediately after
+their activation, however this change did not effect convergence.</p>
 </div>
 
 <div id='guide-repl-create-instrset-example'>
@@ -1110,18 +1200,6 @@ Robo Dojo clones the 1998 game <a href="javascript:Sidenote.openColumnLoud('#mai
 </ul>
 </div>
 
-<div id='t822-note'>
-<h2>Note on Robo Dojo execution</h2>
-<p>In one board cycle, the selected bot becomes activated <em>and</em> executes one
-cycle of the <code>set</code> instruction.</p>
-<p>You might think that a bot shouldn&#8217;t be able to become activated <em>and</em>
-execute a bot-cycle in the same board-cycle, however these semantics are
-intentional.</p>
-<p><a href="javascript:Sidenote.openColumnLoud('#t822-note','#t822-note-works','Here&amp;#8217;s how it works')">Here&#8217;s how it works</a>.</p>
-<p>I have investigated preventing bots from executing a cycle immediately after
-their activation, however this change did not effect convergence.</p>
-</div>
-
 <div id='t826'>
 <h2>T=826</h2>
 <p>We this because:</p>
@@ -1217,8 +1295,7 @@ programming. This guide assumes you are already a programmer.</p>
 <p>Robo Dojo uses the &#8220;Classic&#8221; timing model from RoboCom.</p>
 <p>I have strove to make the Robo Dojo simulation semantics identical to RoboCom &#8212;
 however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility','I could not create a cycle-for-cycle duplicate of RoboCom')">I could not create a cycle-for-cycle duplicate of RoboCom</a>.</p>
-<p>Nevertheless, Robo Dojo and RoboCom are similar enough to produce
-<a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar outputs for similar inputs')">similar outputs for similar inputs</a>.</p>
+<p>Nevertheless, Robo Dojo and RoboCom have <a href="javascript:Sidenote.openColumnLoud('#robocom','#rdrc-battles','similar')">similar</a> semantics.</p>
 </div>
 
 <div id='ad-battle-3'>
@@ -1227,60 +1304,11 @@ however <a href="javascript:Sidenote.openColumnLoud('#robocom','#compatibility',
 
 <div id='rdrc-battles'>
 <h2>Tournament</h2>
-<p>To see how closely Robo Dojo matches RoboCom semantics, we ran a
-Tournament using <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#july-package','programs from the July Package')">programs from the July Package</a>.</p>
-<p>Here&#8217;s <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#results-table','how to read the results')">how to read the results</a>.</p>
-<h3>Round 1</h3>
-<pre><code>Match                               Robo Dojo   RoboCom  Footnotes
---------------------------------------------------------------------
-Activator3 vs. Alien3.4               0-2-5       0-1-7     *
-Alpha vs. Fruchtzwerk 2               2-0-5       1-0-6
-Conciler vs. Kommari 2.1              6-0-1       6-0-1
-Delusion 3.7 vs. Einfachst-DM.DV      7-0-0       7-0-0
-DoomMob 1.6 vs. Flooder 1.0           0-7-0       0-7-0
-Geza's McRobi vs. Goody2              0-7-0       0-7-0
-Martins Echter vs. Goodymorph         0-0-7       0-0-7
-HotBot V2 vs. inter#active            6-0-1       5-0-2
-LastHopeC vs. &lt;Jo's little&gt;           6-0-1       8-0-1     *
-Liquid Ice 1.2 vs. Lauf und Mine      0-7-1       0-4-3     *
-Mikrovirus vs. The Masterkiller 1     0-6-1       0-5-2
-Das Geschwür vs. TheMob.NextG2        0-0-7       0-0-7
-The Overkiller vs. Nullen2            4-1-2      14-0-0     * +
-Rainman vs. RecruteIT                 6-1-0       5-2-0
-Simple vs. Seuche3                    0-0-7       0-0-7
-Styx vs. Sweeper                      0-0-7       0-0-7
-Tie Fighter vs. Test 3-1              0-7-0       0-7-0
-UltimaDefender vs. Tom Himself        0-0-7       0-0-7
-Zwei Arten vs. Zellwucher4            7-0-0       7-0-0
-</code></pre>
-<h3>Round 2</h3>
-<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
-----------------------------------------------------------------------
-Alien3.4 vs. Alpha                    7-0-1       6-0-1     *
-Conciler vs. Delusion 3.7             0-7-0       0-7-0
-Flooder 1.0 vs. Goody2                1-2-4      1-0-13     * + -
-Goodymorph vs. HotBot V2              0-2-5       0-2-5
-LastHopeC vs. Lauf und Mine           7-0-0       7-0-0
-The Masterkiller 1 vs. TheMob.NextG2  5-0-2       6-0-1
-The Overkiller vs. Rainman            7-0-0       7-0-0
-Seuche3 vs. Sweeper                   2-0-5       1-0-6
-Test 3-1 vs. Tom Himself              7-0-0       7-0-0
-Zwei Arten (bye)                      .....       .....
-</code></pre>
-<h3>Round 3</h3>
-<pre><code>Match                                 Robo Dojo   RoboCom  Footnotes
-----------------------------------------------------------------------
-Alien3.4 (bye)                        .....       .....
-Delusion 3.7 (bye)                    .....       .....
-Goody2 (bye)                          .....       .....
-HotBot V2 (bye)                       .....       .....
-LastHopeC (bye)                       .....       .....
-The Masterkiller (bye)                .....       .....
-The Overkiller vs. Seuche3            0-0-0       0-0-0
-Test 3-1 vs. Zwei Arten               0-0-0       0-0-0
-</code></pre>
-<p><a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#brackets','Note on brackets')">Note on brackets</a></p>
-<p>Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6</p>
+<p>To see how closely Robo Dojo matches RoboCom semantics, I ran a
+Tournament of programs using <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#july-package','programs from the July Package')">programs from the July Package</a>.</p>
+<p>The <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#rdrc-battles-details','results')">results</a> show that Robo Dojo semantics are similar
+to RoboCom semantics: of the 38 matches in the tournament, Robo Dojo and RoboCom produced different
+victors only four times.</p>
 </div>
 
 <div id='guide-repl-create-instrset-bot'>
