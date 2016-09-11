@@ -12,7 +12,7 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 ## Reference Manual
 
 - [Active](##ref-active)
-- Auto Reboot
+- [Auto Reboot](##auto-reboot)
 - [Banks](##ref-banks)
 - Comments
 - [Constants, Registers, and Remotes](##ref-const-reg)
@@ -22,10 +22,25 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Forward bot](##ref-forward-bot)
 - [Instruction Sets](##ref-instrset)
 - Instructions
-- [Mobility](#ref-mobility)
+- [Mobility](##ref-mobility)
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 - Runtime Errors
+
+~ref-banks
+## Banks
+
+Every program is segmented into banks; every instruction belongs to exactly
+one bank.
+
+The [<tt>bjump</tt> instruction](##ref-bank-instruction) is used to
+jump between banks.
+
+The [<tt>trans</tt> instruction](##ref-trans-instruction) is used to transfer
+a bank from one bot to its forward bot.
+
+If a bot's execution reaches the end of a bank, then the bot performs
+an [Auto Reboot](##ref-auto-reboot).
 
 ~remote-access
 ## Remote Access
