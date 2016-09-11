@@ -1428,21 +1428,27 @@ Here's [how to read the results](##results-table).
     The Overkiller vs. Seuche3            1-7-1      12-0-2    * + -
     Test 3-1 vs. Zwei Arten               3-4-0       4-3-0        -
 
-### Round 3
-
-    Match                                 Robo Dojo   RoboCom  Footnotes
-    ----------------------------------------------------------------------
-    Alien3.4 vs. Delusion 3.7            11-3-0       2-4-1    * + -
-    Goody2 vs. HotBot V2 (bye)            0-0-0       0-0-0
-    LastHopeC vs. The Masterkiller        0-0-0       0-0-0
-    The Overkiller vs. Test 3-1           0-0-0       0-0-0
-
 ### Round 4
 
     Match                                 Robo Dojo   RoboCom  Footnotes
     ----------------------------------------------------------------------
-    Alien 3.4 vs.                           
+    Alien3.4 vs. Delusion 3.7            11-3-0       2-4-1    * + -
+    Goody2 vs. HotBot V2                  0-7-0       0-7-0
+    LastHopeC vs. The Masterkiller        0-1-7       0-2-5    *
+    The Overkiller vs. Test 3-1           7-0-0       7-0-0
 
+### Round 5
+
+    Match                                 Robo Dojo   RoboCom  Footnotes
+    ----------------------------------------------------------------------
+    Alien 3.4 vs. HotBot V2               0-0-0       0-0-0                     
+    The Masterkiller vs. The Overkiller   0-0-0       0-0-0
+
+### Round 6
+
+    Match                                 Robo Dojo   RoboCom  Footnotes
+    ----------------------------------------------------------------------
+    
 
 
 [Note on brackets](##brackets)
@@ -1452,8 +1458,9 @@ Running of of version 93d5a2177f910cf17aa3885102b5687a962531b6
 ~brackets
 ## Note on brackets
 
-I forgot about setting up bytes until Round 2. In contrast to typical tournament
-brackets, I added the byes in Round 2 and 3. It doesn't really matter though.
+I forgot about setting up byes until Round 2. In contrast to typical tournament
+brackets, I added the byes in Round 2 and 3. For our purposes,
+It doesn't really matter.
 
 ~results-table
 ## Reading the results
