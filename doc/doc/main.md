@@ -664,7 +664,7 @@ The [<tt>trans</tt> instruction](##ref-trans-instruction) is used to transfer
 a bank from one bot to its forward bot.
 
 If a bot's execution reaches the end of a bank, then the bot performs
-an [Auto Reboot](##ref-auto-reboot).
+an [Auto Reboot](##auto-reboot).
 
 ~remote-access
 ## Remote Access
@@ -932,10 +932,8 @@ executed in order from oldest bot to youngest bot.
 
 Every instruction requires a certain number of cycles before it executes.
 
-For example the [<tt>turn</tt> instruction](##ref-turn) requires 5 cycles.
+For example the [<tt>turn</tt> instruction](##turn-instruction) requires 5 cycles.
 On its 5th cycle, the <tt>turn</tt> operation actually goes into effect.
-
-**TODO**: Linkify
 
 ~ref-active
 ## Active
@@ -1051,6 +1049,11 @@ To implement the new `@foe` routine, we need to learn the
 
 Here is the [complete program](##empty-banks-program).
 
+### See also
+
+- The Reference-manual entries for [<tt>add</tt>](##add-instruction) and
+ [<tt>sub</tt>](##sub-instruction)
+
 ~empty-banks-add
 ## <tt>add</tt> and <tt>sub</tt>
 
@@ -1066,8 +1069,6 @@ Here is the [complete program](##empty-banks-program).
   an [Auto Reboot](##auto-reboot)
 - The Auto Reboot causes the opponent to restart at bank 1, instruction 1
 - If bank 1 is empty, then the opponent taps out due to "Data Hunger"
-
-**TODO**: Link to auto reboot
 
 ~empty-banks-program
 ## Complete program
@@ -1306,7 +1307,7 @@ payload it causes the PV2 bot to resume its execution as normal.
 ~pv2-auto-reboot
 ## Auto Reboot
 
-There are [many events](##autoreboot) that can trigger an Auto Reboot.
+There are [several events](##auto-reboot) that can trigger an Auto Reboot.
 
 Among them, if a bot executes a `bjump` instruction to a bank that doesn't
 exist, then the bot will Auto Reboot.
@@ -1314,8 +1315,6 @@ exist, then the bot will Auto Reboot.
 A bot reboots by jumping to the first instruction of the first bank.
 
 If the first bank is empty, then the bot taps out from "Data Hunger."
-
-**TODO**: Link to Auto Reboot.
 
 ~pv2-program
 ## PV2 Program
@@ -1466,8 +1465,6 @@ A little [debugging](##debugging) shows what happens:
 4. The parent activates the child
 5. The child executes the virus bank
 
-**TODO**: link to debugging
-
 ~pv-1-a
 ## Step 0
 
@@ -1552,6 +1549,10 @@ The Bank Jumper program looks like [this](##bank-jumping-program).
 In general, if you jump to arbitrary banks, its more difficult to attack you
 since the attacker doesn't know which bank to hit. Of course, the attacker
 can target every bank, but that leads to a slower attack.
+
+### See also
+
+- The Reference-manual entry for [<tt>bjump</tt>](##bjump-instruction)
 
 ~bank-jumping-bjump
 ## bjump
@@ -1765,6 +1766,15 @@ and four new instructions:
 Putting it all together, here is the [Super Diamond program](##Super-diamond-program).
 
 The battle should look something like [this](##Super-diamond-battle).
+
+### See also
+
+The Reference-manual entries for:
+
+- [tapout](##tapout-instruction)
+- [scan](##scan-instruction)
+- [comp](##comp-instruction)
+- [jump](##jump-instruction)
 
 ~defeating-diamond-tapout
 ## <tt>tapout</tt>
@@ -2010,6 +2020,10 @@ bots in a diamond shape.
 
 - [The <tt>turn</tt> instruction](##guide-diamond-turn)
 
+### See also
+
+- Reference-manual entry for [<tt>turn</tt>](##turn-instruction)
+
 ~guide-diamond-turn
 ## The <tt>turn</tt> instruction
 
@@ -2069,6 +2083,10 @@ we need to execute the `trans` and `set` instructions after `create`).
 Thus, `create 2,1,0` creates an immobile bot with the Super instruction set and
 one empty bank.
 
+### See also
+
+- Reference-manual entry for [<tt>create</tt>](##create-instruction)
+
 ~guide-repl-create-slow
 ## Slowest instruction
 
@@ -2096,8 +2114,6 @@ for the child bot.
 In our Replication program, we use the parameter 2 to specify that the child
 should have the Super instruction set, since we want the child to be able to
 `create` a child of its own.
-
-**TODO**: Link to instruction set documentation
 
 
 ~guide-repl-create-instrset-bot
@@ -2154,6 +2170,10 @@ overwriting any bank that might already be there.
 
 Thus `trans 1,1` copies the <tt>main</tt> bank from parent to child.
 
+### See also
+
+- Reference-manual entry for [<tt>trans</tt>](##trans-instruction)
+
 ~guide-repl-set
 ## The <tt>set</tt> instruction
 
@@ -2170,7 +2190,13 @@ Thus, `set %active, 1` assigns the value `1` to the variable `%active`.
 causes the forward bot to become activated.
 
 
-**TODO**: Link to article on variables and constants
+### See also
+
+Reference-manual entries for:
+
+- [<tt>set</tt>](##set-instruction)
+- [Active](##ref-active)
+- [Remote Access](##remote-access)
 
 ~guide-hello
 ## Hello World
@@ -2217,6 +2243,10 @@ attempts to move forward.
 If the forward cell is occupied on the 18th cycle, then the `move` instruction
 does nothing.
 
+### See also
+
+- Reference-manual entry for [<tt>move</li>](##move-instruction)
+
 
 ~guide-hello-bank
 ## The <tt>bank</tt> directive
@@ -2232,7 +2262,7 @@ of the first bank of the program.
 
 ### See also
 
-- [Working with Banks](##working-with-banks) TODO
+- [Banks](##ref-banks)
 
 ~guide-hello-compile
 ## Compile button
@@ -2274,15 +2304,6 @@ For example, the `move` instruction requires 18 cycles.
 During the 18th cycle, the `move` instruction will actually execute.
 
 Before the 18th cycle, the `move` instruction does nothing.
-
-**See also**
-
-- [The Strategy of Cycles](##cycle-strategy)
-
-~cycle-strategy
-## The Strategy of Cycles
-
-**TODO**
 
 ~guide-hello-run
 ## Run your program

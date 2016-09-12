@@ -177,6 +177,10 @@ it merely spreads a virus.</p>
 then the bot copies its Source bank into the forward bot&#8217;s Destination bank,
 overwriting any bank that might already be there.</p>
 <p>Thus <code>trans 1,1</code> copies the <tt>main</tt> bank from parent to child.</p>
+<h3>See also</h3>
+<ul>
+<li>Reference-manual entry for <a href="javascript:Sidenote.openColumnLoud('#guide-repl-trans','#trans-instruction','&lt;tt&gt;trans&lt;/tt&gt;')"><tt>trans</tt></a></li>
+</ul>
 </div>
 
 <div id='t826-rc-demo'>
@@ -852,7 +856,7 @@ jump between banks.</p>
 <p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-trans-instruction','&lt;tt&gt;trans&lt;/tt&gt; instruction')"><tt>trans</tt> instruction</a> is used to transfer
 a bank from one bot to its forward bot.</p>
 <p>If a bot&#8217;s execution reaches the end of a bank, then the bot performs
-an <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-auto-reboot','Auto Reboot')">Auto Reboot</a>.</p>
+an <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#auto-reboot','Auto Reboot')">Auto Reboot</a>.</p>
 </div>
 
 <div id='comp-instruction'>
@@ -893,9 +897,8 @@ an <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-auto-reboot','
 <p>Each step, each bot on the board executes a single cycle. The bots are
 executed in order from oldest bot to youngest bot.</p>
 <p>Every instruction requires a certain number of cycles before it executes.</p>
-<p>For example the <a href="javascript:Sidenote.openColumnLoud('#ref-cycles','#ref-turn','&lt;tt&gt;turn&lt;/tt&gt; instruction')"><tt>turn</tt> instruction</a> requires 5 cycles.
+<p>For example the <a href="javascript:Sidenote.openColumnLoud('#ref-cycles','#turn-instruction','&lt;tt&gt;turn&lt;/tt&gt; instruction')"><tt>turn</tt> instruction</a> requires 5 cycles.
 On its 5th cycle, the <tt>turn</tt> operation actually goes into effect.</p>
-<p><strong>TODO</strong>: Linkify</p>
 </div>
 
 <div id='guide-hello'>
@@ -942,7 +945,6 @@ for the child bot.</p>
 <p>In our Replication program, we use the parameter 2 to specify that the child
 should have the Super instruction set, since we want the child to be able to
 <code>create</code> a child of its own.</p>
-<p><strong>TODO</strong>: Link to instruction set documentation</p>
 </div>
 
 <div id='pv2-program'>
@@ -1176,7 +1178,6 @@ bank 1 and PV1 operates out of bank 3.</p>
 <li>The parent activates the child</li>
 <li>The child executes the virus bank</li>
 </ol>
-<p><strong>TODO</strong>: link to debugging</p>
 </div>
 
 <div id='defeating-diamond-pseudo'>
@@ -1252,6 +1253,10 @@ bank self-destruct
 attempts to move forward.</p>
 <p>If the forward cell is occupied on the 18th cycle, then the <code>move</code> instruction
 does nothing.</p>
+<h3>See also</h3>
+<ul>
+<li>Reference-manual entry for <a href="javascript:Sidenote.openColumnLoud('#guide-hello-move','#move-instruction','&lt;tt&gt;move&lt;/li&gt;')"><tt>move</li></a></li>
+</ul>
 </div>
 
 <div id='empty-banks'>
@@ -1275,6 +1280,11 @@ which causes the opponent to tap out.</p>
 <p>To implement the new <code>@foe</code> routine, we need to learn the
 <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#empty-banks-add','add instruction')">add instruction</a>.</p>
 <p>Here is the <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#empty-banks-program','complete program')">complete program</a>.</p>
+<h3>See also</h3>
+<ul>
+<li>The Reference-manual entries for <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#add-instruction','&lt;tt&gt;add&lt;/tt&gt;')"><tt>add</tt></a> and
+ <a href="javascript:Sidenote.openColumnLoud('#empty-banks','#sub-instruction','&lt;tt&gt;sub&lt;/tt&gt;')"><tt>sub</tt></a></li>
+</ul>
 </div>
 
 <div id='july-package'>
@@ -1543,7 +1553,6 @@ is immobile.</p>
 <li>The Auto Reboot causes the opponent to restart at bank 1, instruction 1</li>
 <li>If bank 1 is empty, then the opponent taps out due to &#8220;Data Hunger&#8221;</li>
 </ul>
-<p><strong>TODO</strong>: Link to auto reboot</p>
 </div>
 
 <div id='4way'>
@@ -1654,7 +1663,7 @@ named the <tt>main</tt> bank.</p>
 of the first bank of the program.</p>
 <h3>See also</h3>
 <ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#working-with-banks','Working with Banks')">Working with Banks</a> TODO</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#ref-banks','Banks')">Banks</a> TODO</li>
 </ul>
 </div>
 
@@ -1672,6 +1681,10 @@ turn 1
 <h3>How it works</h3>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#diamond','#guide-diamond-turn','The &lt;tt&gt;turn&lt;/tt&gt; instruction')">The <tt>turn</tt> instruction</a></li>
+</ul>
+<h3>See also</h3>
+<ul>
+<li>Reference-manual entry for <a href="javascript:Sidenote.openColumnLoud('#diamond','#turn-instruction','&lt;tt&gt;turn&lt;/tt&gt;')"><tt>turn</tt></a></li>
 </ul>
 </div>
 
@@ -1776,12 +1789,11 @@ the move instruction.</p>
 
 <div id='pv2-auto-reboot'>
 <h2>Auto Reboot</h2>
-<p>There are <a href="javascript:Sidenote.openColumnLoud('#pv2-auto-reboot','#autoreboot','many events')">many events</a> that can trigger an Auto Reboot.</p>
+<p>There are <a href="javascript:Sidenote.openColumnLoud('#pv2-auto-reboot','#auto-reboot','several events')">several events</a> that can trigger an Auto Reboot.</p>
 <p>Among them, if a bot executes a <code>bjump</code> instruction to a bank that doesn&#8217;t
 exist, then the bot will Auto Reboot.</p>
 <p>A bot reboots by jumping to the first instruction of the first bank.</p>
 <p>If the first bank is empty, then the bot taps out from &#8220;Data Hunger.&#8221;</p>
-<p><strong>TODO</strong>: Link to Auto Reboot.</p>
 </div>
 
 <div id='eng-virus-timing'>
@@ -1801,6 +1813,10 @@ Diamond&#8217;s attack.</p>
 <p>In general, if you jump to arbitrary banks, its more difficult to attack you
 since the attacker doesn&#8217;t know which bank to hit. Of course, the attacker
 can target every bank, but that leads to a slower attack.</p>
+<h3>See also</h3>
+<ul>
+<li>The Reference-manual entry for <a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a></li>
+</ul>
 </div>
 
 <div id='defeating-diamond'>
@@ -1820,6 +1836,14 @@ and four new instructions:</p>
 </ul>
 <p>Putting it all together, here is the <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#Super-diamond-program','Super Diamond program')">Super Diamond program</a>.</p>
 <p>The battle should look something like <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#Super-diamond-battle','this')">this</a>.</p>
+<h3>See also</h3>
+<p>The Reference-manual entries for:</p>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#tapout-instruction','tapout')">tapout</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#scan-instruction','scan')">scan</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#comp-instruction','comp')">comp</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#jump-instruction','jump')">jump</a></li>
+</ul>
 </div>
 
 <div id='guide-repl-create-slow'>
@@ -2363,6 +2387,10 @@ banks and will be &#8220;inactive&#8221; (which is why
 we need to execute the <code>trans</code> and <code>set</code> instructions after <code>create</code>). </p>
 <p>Thus, <code>create 2,1,0</code> creates an immobile bot with the Super instruction set and
 one empty bank.</p>
+<h3>See also</h3>
+<ul>
+<li>Reference-manual entry for <a href="javascript:Sidenote.openColumnLoud('#guide-repl-create','#create-instruction','&lt;tt&gt;create&lt;/tt&gt;')"><tt>create</tt></a></li>
+</ul>
 </div>
 
 <div id='guide-repl-set'>
@@ -2376,7 +2404,13 @@ one empty bank.</p>
 <p>Thus, <code>set %active, 1</code> assigns the value <code>1</code> to the variable <code>%active</code>.</p>
 <p><code>%active</code> is a special variable: setting it to <code>1</code> (or greater)
 causes the forward bot to become activated.</p>
-<p><strong>TODO</strong>: Link to article on variables and constants</p>
+<h3>See also</h3>
+<p>Reference-manual entries for:</p>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-set','#set-instruction','&lt;tt&gt;set&lt;/tt&gt;')"><tt>set</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-set','#ref-active','Active')">Active</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-repl-set','#remote-access','Remote Access')">Remote Access</a></li>
+</ul>
 </div>
 
 <div id='eng-virus'>
