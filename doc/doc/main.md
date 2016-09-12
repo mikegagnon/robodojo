@@ -657,10 +657,10 @@ one bank.
 
 A bot can have a maximum of 50 banks.
 
-The [<tt>bjump</tt> instruction](##ref-bank-instruction) is used to
+The [<tt>bjump</tt> instruction](##bjump-instruction) is used to
 jump between banks.
 
-The [<tt>trans</tt> instruction](##ref-trans-instruction) is used to transfer
+The [<tt>trans</tt> instruction](##trans-instruction) is used to transfer
 a bank from one bot to its forward bot.
 
 If a bot's execution reaches the end of a bank, then the bot performs

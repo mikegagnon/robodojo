@@ -851,9 +851,9 @@ Diamond bots.</p>
 <p>Every program is segmented into banks; every instruction belongs to exactly
 one bank.</p>
 <p>A bot can have a maximum of 50 banks.</p>
-<p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-bank-instruction','&lt;tt&gt;bjump&lt;/tt&gt; instruction')"><tt>bjump</tt> instruction</a> is used to
+<p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt; instruction')"><tt>bjump</tt> instruction</a> is used to
 jump between banks.</p>
-<p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-trans-instruction','&lt;tt&gt;trans&lt;/tt&gt; instruction')"><tt>trans</tt> instruction</a> is used to transfer
+<p>The <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#trans-instruction','&lt;tt&gt;trans&lt;/tt&gt; instruction')"><tt>trans</tt> instruction</a> is used to transfer
 a bank from one bot to its forward bot.</p>
 <p>If a bot&#8217;s execution reaches the end of a bank, then the bot performs
 an <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#auto-reboot','Auto Reboot')">Auto Reboot</a>.</p>
@@ -996,11 +996,6 @@ bank foe ; 4
     turn 1
     bjump 3, 1
 </code></pre>
-</div>
-
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
 </div>
 
 <div id='pv3-foe'>
@@ -1663,7 +1658,7 @@ named the <tt>main</tt> bank.</p>
 of the first bank of the program.</p>
 <h3>See also</h3>
 <ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#ref-banks','Banks')">Banks</a> TODO</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#guide-hello-bank','#ref-banks','Banks')">Banks</a></li>
 </ul>
 </div>
 
@@ -2304,10 +2299,6 @@ instruction.</p>
 <p>For example, the <code>move</code> instruction requires 18 cycles.</p>
 <p>During the 18th cycle, the <code>move</code> instruction will actually execute.</p>
 <p>Before the 18th cycle, the <code>move</code> instruction does nothing.</p>
-<p><strong>See also</strong></p>
-<ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#cycle','#cycle-strategy','The Strategy of Cycles')">The Strategy of Cycles</a></li>
-</ul>
 </div>
 
 <div id='ref-forward-bot'>
