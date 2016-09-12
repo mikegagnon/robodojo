@@ -45,7 +45,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def removeBreakpoint(
       lineIndex: Int,
-      gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
 
     if (breakpoints.contains(lineIndex)) {
@@ -63,7 +62,6 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
   def addBreakpoint(
       lineIndex: Int,
-      gutterMarkers: js.UndefOr[js.Array[String]],
       cm: codemirror.Editor): Unit = {
 
     if (potentialBreakpoints.contains(lineIndex)) {
@@ -297,7 +295,19 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
           cmEditor.setGutterMarker(lineIndex, "breakpoints", makeMarker())
       }
 
+  def removeBreakpoints(): Unit = {
+    breakpoints
+      .keys
+      .foreach { lineIndex =>
+        removeBreakpoint(lineIndex, cmEditor)
+      }
+  }
+
   def setupDebugger(botId: Long): Unit = {
+
+    if (botIdDebugged.nonEmpty && botIdDebugged.get != botId) {
+      removeBreakpoints()
+    }
 
     botIdDebugged = Some(botId)
 

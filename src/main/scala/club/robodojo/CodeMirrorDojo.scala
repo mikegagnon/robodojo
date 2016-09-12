@@ -42,9 +42,9 @@ object CodeMirrorDojo {
         val gutterMarkers: js.UndefOr[js.Array[String]] = info.gutterMarkers
 
         if (gutterMarkers.isEmpty || gutterMarkers == null) {
-          debugger.get.addBreakpoint(lineIndex, gutterMarkers, cm)
+          debugger.get.addBreakpoint(lineIndex, cm)
         } else {
-          debugger.get.removeBreakpoint(lineIndex, gutterMarkers, cm)
+          debugger.get.removeBreakpoint(lineIndex, cm)
         }
         ()
       })
