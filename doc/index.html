@@ -1847,6 +1847,80 @@ to RoboCom semantics: of the 38 matches in the tournament, Robo Dojo and RoboCom
 victors only four times.</p>
 </div>
 
+<div id='create-instruction'>
+<h2><tt>create iset, banks, mobile</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>
+        On its final cycle:
+
+        <ul>
+         <li> if the forward cell is occupied, then does nothing.</li>
+         <li> if the forward cell is empty, then deploys a new bot in the
+             forward cell:
+                <ul>
+                    <li>The new bot&#8217;s <tt>$instrset</tt>, <tt>$banks</tt>, &
+                        <tt>$mobile</tt> values are set to the
+                        <tt>iset</tt>, <tt>banks</tt>, & <tt>mobile</tt> values
+                        from the instruction.
+                    </li>
+                    <li>The new bot is initially deactivated</li>
+                    <li>Each of the new bot&#8217;s banks is empty</li>
+
+                </ul>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>
+            <tt>iset</tt>, <tt>banks</tt>, & <tt>mobile</tt> can be any
+            parameter
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Super</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>
+
+      <pre>
+(50 + 20 * <tt>banks</tt>) *
+(if (mobile == 1) 2 else 1) +
+(if (iset == Advanced) 40 else 0) +
+(if (iset == Super) 80 else 0) </pre>
+
+
+        </td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>
+        The parent bot taps out if any of the following events occur:
+        <ul>
+            <li>If the parent&#8217;s <tt>$instrset</tt> is less than Super</li>
+            <li>If <tt>iset</tt> < 0 or <tt>iset</tt> > 2</li>
+            <li>If <tt>banks</tt> < 1 or <tt>banks</tt> > 50</li>
+            <li>IF <tt>mobile</tt> < 0 or <tt>mobile</tt> > 1</li>
+
+
+        </ul>
+
+        </td>
+    </tr>
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#create-instruction','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#create-instruction','#ref-banks','Banks')">Banks</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#create-instruction','#ref-mobility','Mobility')">Mobility</a></li>
+</ul>
+</div>
+
 <div id='guide-repl-create-instrset-bot'>
 <h2>Which instructions each bot may execute</h2>
 <ul>

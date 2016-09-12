@@ -43,6 +43,79 @@ There are 12 Robo Dojo instructions
 11. [<tt>trans a, b</tt>](##trans-instruction)
 12. [<tt>turn a</tt>](##turn-instruction)
 
+~create-instruction
+## <tt>create iset, banks, mobile</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>
+        On its final cycle:
+
+        <ul>
+         <li> if the forward cell is occupied, then does nothing.</li>
+         <li> if the forward cell is empty, then deploys a new bot in the
+             forward cell:
+                <ul>
+                    <li>The new bot's <tt>$instrset</tt>, <tt>$banks</tt>, &
+                        <tt>$mobile</tt> values are set to the
+                        <tt>iset</tt>, <tt>banks</tt>, & <tt>mobile</tt> values
+                        from the instruction.
+                    </li>
+                    <li>The new bot is initially deactivated</li>
+                    <li>Each of the new bot's banks is empty</li>
+
+                </ul>
+        </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>
+            <tt>iset</tt>, <tt>banks</tt>, & <tt>mobile</tt> can be any
+            parameter
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Super</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>
+            
+      <pre>
+(50 + 20 * <tt>banks</tt>) *
+(if (mobile == 1) 2 else 1) +
+(if (iset == Advanced) 40 else 0) +
+(if (iset == Super) 80 else 0) </pre>
+
+
+        </td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>
+        The parent bot taps out if any of the following events occur:
+        <ul>
+            <li>If the parent's <tt>$instrset</tt> is less than Super</li>
+            <li>If <tt>iset</tt> < 0 or <tt>iset</tt> > 2</li>
+            <li>If <tt>banks</tt> < 1 or <tt>banks</tt> > 50</li>
+            <li>IF <tt>mobile</tt> < 0 or <tt>mobile</tt> > 1</li>
+
+
+        </ul>
+
+        </td>
+    </tr>
+</table>
+
+### See also
+
+- [Instruction Sets](##ref-instrset)
+- [Banks](##ref-banks)
+- [Mobility](##ref-mobility)
+
 ~add-instruction
 ## <tt>add a, b</tt>
 
