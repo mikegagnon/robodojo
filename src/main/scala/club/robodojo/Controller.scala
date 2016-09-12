@@ -41,6 +41,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
         ${buttonHtml(config.viz.stepButtonId, "Step one cycle", "clickStep", "step-forward", config.viz.stepSpanId)}
         ${buttonHtml(config.viz.debugButtonId, "Open / close the debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
         ${buttonHtml(config.viz.editorButtonId, "Open / close the editor", "clickEditor", "pencil", config.viz.editorSpanId)}
+        <span id="${config.viz.cycleCounterId}"></span>
       </div>
 
       <!-- activate tooltips -->

@@ -180,6 +180,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     def editorButtonId = consoleDivId + "-editorButton"
     def editorSpanId = consoleDivId + "-editor"
 
+    def cycleCounterId = consoleDivId + "-cycleCounter"
+
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 15).asInstanceOf[Int]
     val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 1000).asInstanceOf[Int]

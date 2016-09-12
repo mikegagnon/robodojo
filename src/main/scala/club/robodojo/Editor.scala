@@ -267,6 +267,9 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
     controller.debugger.reset()
     createjs.Ticker.paused = true
+
+    viz.drawNumSteps()
+
   }
 
   def displaySuccess(): Unit = {

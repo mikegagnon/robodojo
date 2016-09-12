@@ -83,6 +83,8 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     addBotImages()
 
     stage.update()
+
+    drawNumSteps()
   }
 
   def updateMainDiv(): Unit = {
@@ -507,7 +509,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         case bankColorAnimation: BankColorAnimation => animateBankColor(bankColorAnimation)
       }
     }
+
+    drawNumSteps()
   }
+
+  def drawNumSteps(): Unit =
+    jQuery("#" + config.viz.cycleCounterId).text("Step " + board.cycleNum.toString)
 
   def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
 
