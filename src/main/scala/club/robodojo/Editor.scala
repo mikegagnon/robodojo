@@ -150,6 +150,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     val program = config.editor.preloadedPrograms(headerName)(programName)
     cmEditor.getDoc().setValue(program)
 
+    clickCompile()
   }
 
   // playerColor is the color that has been selected from the dropdown
