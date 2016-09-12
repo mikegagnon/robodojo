@@ -77,6 +77,12 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
               Compile
             </button>
 
+            <button type="button"
+                    class="btn btn-default dark-border"
+                    onclick='club.robodojo.App().clickBotSelect("${config.id}")'>
+              Select bot
+            </button>
+
           </div> <!-- end editor-console -->
 
           <div class="dark-border light-background">
