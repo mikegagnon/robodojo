@@ -67,6 +67,13 @@ object App extends JSApp {
   }
 
   @JSExport
+  def clickProgram(id: String, headerName: String, programName: String): Unit = {
+    activeInstanceId = Some(id)
+    val robodojo = instances(id)
+    robodojo.controller.editor.clickProgram(headerName, programName)
+  }
+
+  @JSExport
   def clickPlayPause(id: String): Unit = {
     activeInstanceId = Some(id)
     val robodojo = instances(id)

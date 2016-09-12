@@ -57,7 +57,12 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
           s"<p><b>${headerName}</b></p>" ::
           program.map { case (programName: String, programBody: String) =>
-            s"<button type='button' class='btn btn-default modal-body-button'>${programName}</button>"
+            s"""<button
+                  type='button'
+                  class='btn btn-default modal-body-button'
+                  onclick='club.robodojo.App().clickProgram("${config.id}", "${headerName}", "${programName}")'>
+                    ${programName}
+                  </button>"""
           }.toList
 
         }
@@ -96,16 +101,16 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
             <button type="button"
                     class="btn btn-default dark-border"
                     data-toggle="modal"
-                    data-target="#selectBotModal">
+                    data-target="#${config.editor.selectBotModal}">
               Select program
             </button>
 
             <!-- Select-bot Modal -->
-            <div class="modal fade" id="selectBotModal" tabindex="-1" role="dialog" aria-labelledby="selectBotModalLabel">
+            <div class="modal fade" id="${config.editor.selectBotModal}" tabindex="-1" role="dialog" aria-labelledby="selectBotModalLabel">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button id="${config.editor.closeModalButton}" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="selectBotModalLabel">Select program</h4>
                   </div>
                   <div class="modal-body" id="${config.editor.modalBodyId}">
@@ -137,6 +142,14 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       """
 
     jQuery("#" + config.id).append(html)
+  }
+
+  def clickProgram(headerName: String, programName: String): Unit = {
+    jQuery("#" + config.editor.closeModalButton).click()
+
+    val program = config.editor.preloadedPrograms(headerName)(programName)
+    cmEditor.getDoc().setValue(program)
+
   }
 
   // playerColor is the color that has been selected from the dropdown
