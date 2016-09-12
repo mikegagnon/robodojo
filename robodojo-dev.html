@@ -28,18 +28,114 @@
         "compiler.safetyChecks": false,
 
 
-        "sim.editor.preload.header.0.name": "Header 0",
-        "sim.editor.preload.header.1.name": "Header 1",
-        "sim.editor.preload.header.2.name": "Header 2",
+        "sim.editor.preload.header.0.name": "Guide programs",
 
-        "sim.editor.preload.header.0.program.0.name" : "Program 0 name",
-        "sim.editor.preload.header.0.program.0.body" : "Program 0 body",
+        "sim.editor.preload.header.0.program.0.name" : "Hellow World",
+        "sim.editor.preload.header.0.program.0.body" : `bank main
+move
+`,
 
-        "sim.editor.preload.header.0.program.1.name" : "Program 1 name",
-        "sim.editor.preload.header.0.program.1.body" : "Program 1 body",
+        "sim.editor.preload.header.0.program.1.name" : "Replication",
+        "sim.editor.preload.header.0.program.1.body" : `bank main
+create 2,1,0
+trans 1,1
+set %active, 1
+`,
         
-        "sim.editor.preload.header.1.program.0.name" : "Program 2 name",
-        "sim.editor.preload.header.1.program.0.body" : "Program 2 body",
+        "sim.editor.preload.header.0.program.2.name" : "Diamond",
+        "sim.editor.preload.header.0.program.2.body" : `bank main
+create 2,1,0
+trans 1,1
+set %active, 1
+turn 1
+`,
+
+        "sim.editor.preload.header.0.program.3.name" : "Super Diamond",
+        "sim.editor.preload.header.0.program.3.body" : `bank main
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,2,0
+
+    ; Disinfect / initialize new bot
+    trans 1,1
+    trans 2,2
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; Transfer tapout-malware to the opponent
+    trans 2,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe
+    tapout
+`,
+
+        "sim.editor.preload.header.0.program.4.name" : "Bank Jumper",
+        "sim.editor.preload.header.0.program.4.body" : `bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    tapout
+`,
+
 
         /*"sim.board.blueRow": 1,
         "sim.board.blueCol": 13,
