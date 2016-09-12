@@ -154,6 +154,15 @@ overwriting any bank that might already be there.</p>
 <p><img src="img/compat-826-rc.png"></p>
 </div>
 
+<div id='guide-repl-create-instrset-bot'>
+<h2>Which instructions each bot may execute</h2>
+<ul>
+<li>A Basic bot can only execute Basic instructions</li>
+<li>An Advanced bot can execute Basic and Advanced instructions</li>
+<li>A Super bot can execute Basic, Advanced, and Super instructions</li>
+</ul>
+</div>
+
 <div id='ref-active'>
 <h2>Active</h2>
 <p>For any given bot, at any given moment: the bot is either <em>active</em> or
@@ -1020,7 +1029,7 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-comments','Comments')">Comments</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-cycles','Steps and Cycles')">Steps and Cycles</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-data-hunger','Data Hunger')">Data Hunger</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-forward-bot','Forward bot')">Forward bot</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-forward-bot','Forward Cell &amp; Bot')">Forward Cell &amp; Bot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instructions','Instructions')">Instructions</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-labels','Labels')">Labels</a></li>
@@ -1115,6 +1124,52 @@ bank 1 and PV1 operates out of bank 3.</p>
 bank self-destruct
     self destruct
 </code></pre>
+</div>
+
+<div id='scan-instruction'>
+<h2><tt>scan a</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>If the forward cell contains&#8230;
+            <ul>
+                <li>
+                    nothing: then sets <tt>a</tt> to zero
+                </li>
+                <li>
+                    an opponent bot: then sets <tt>a</tt> to 1
+                </li>
+                <li>
+                    a friend bot: then sets <tt>a</tt> to 2
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> must be writable
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Advanced</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None
+        </td>
+    </tr>
+
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#scan-instruction','#ref-forward-bot','Forward cell')">Forward cell</a></li>
+</ul>
 </div>
 
 <div id='guide-hello-move'>
@@ -1921,12 +1976,39 @@ victors only four times.</p>
 </ul>
 </div>
 
-<div id='guide-repl-create-instrset-bot'>
-<h2>Which instructions each bot may execute</h2>
+<div id='move-instruction'>
+<h2><tt>move</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>During its final cycle, if the forward cell is empty, the bot
+        moves into that cell. Otherwise, the instruction does nothing.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>N/A
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>18</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None
+        </td>
+    </tr>
+
+</table>
+
+<h3>See also</h3>
 <ul>
-<li>A Basic bot can only execute Basic instructions</li>
-<li>An Advanced bot can execute Basic and Advanced instructions</li>
-<li>A Super bot can execute Basic, Advanced, and Super instructions</li>
+<li><a href="javascript:Sidenote.openColumnLoud('#move-instruction','#ref-forward-bot','Forward cell')">Forward cell</a></li>
 </ul>
 </div>
 
@@ -2072,8 +2154,9 @@ instruction.</p>
 <div id='ref-forward-bot'>
 <h2>Forward bot</h2>
 <p>Say <em>Bot X</em> is some bot on the board.</p>
-<p>Relative to Bot X, the term <em>forward bot</em> refers to the bot occupying the cell
+<p>Relative to Bot X, the term <em>forward cell</em> refers to the cell directly
 in front of Bot X.</p>
+<p>If there is a bot in that cell, it is referred to as the <em>forward bot</em>.</p>
 </div>
 
 <div id='pv2-payload-comparison'>

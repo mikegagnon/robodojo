@@ -17,7 +17,7 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Comments](##ref-comments)
 - [Steps and Cycles](##ref-cycles)
 - [Data Hunger](##ref-data-hunger)
-- [Forward bot](##ref-forward-bot)
+- [Forward Cell & Bot](##ref-forward-bot)
 - [Instruction Sets](##ref-instrset)
 - [Instructions](##ref-instructions)
 - [Labels](##ref-labels)
@@ -42,6 +42,87 @@ There are 12 Robo Dojo instructions
 10. [<tt>tapout</tt>](##tapout-instruction)
 11. [<tt>trans a, b</tt>](##trans-instruction)
 12. [<tt>turn a</tt>](##turn-instruction)
+
+~scan-instruction
+## <tt>scan a</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>If the forward cell contains...
+            <ul>
+                <li>
+                    nothing: then sets <tt>a</tt> to zero
+                </li>
+                <li>
+                    an opponent bot: then sets <tt>a</tt> to 1
+                </li>
+                <li>
+                    a friend bot: then sets <tt>a</tt> to 2
+                </li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> must be writable
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Advanced</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None
+        </td>
+    </tr>
+
+</table>
+
+### See also
+
+- [Forward cell](##ref-forward-bot)
+
+~move-instruction
+## <tt>move</tt>
+
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>During its final cycle, if the forward cell is empty, the bot
+        moves into that cell. Otherwise, the instruction does nothing.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>N/A
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>18</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None
+        </td>
+    </tr>
+
+</table>
+
+### See also
+
+- [Forward cell](##ref-forward-bot)
 
 ~jump-instruction
 ## <tt>jump a</tt>
@@ -447,8 +528,11 @@ remote parameter that is accessed.
 
 Say *Bot X* is some bot on the board.
 
-Relative to Bot X, the term *forward bot* refers to the bot occupying the cell
+Relative to Bot X, the term *forward cell* refers to the cell directly
 in front of Bot X.
+
+If there is a bot in that cell, it is referred to as the *forward bot*.
+
 
 ~ref-parameters
 ## Parameters
