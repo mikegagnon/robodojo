@@ -37,6 +37,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
   def addHtml(): Unit = {
     val html = s"""
       <div id='${config.viz.consoleDivId}'>
+        <button type="button" class="btn btn-primary dark-border" onclick='window.open("doc/")'>Help</button>
         ${buttonHtml(config.viz.playPauseButtonId, "Run / pause game", "clickPlayPause", "play", config.viz.playPauseSpanId)}
         ${buttonHtml(config.viz.stepButtonId, "Step one cycle", "clickStep", "step-forward", config.viz.stepSpanId)}
         ${buttonHtml(config.viz.debugButtonId, "Open / close the debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
