@@ -43,6 +43,35 @@ There are 12 Robo Dojo instructions
 11. [<tt>trans a, b</tt>](##trans-instruction)
 12. [<tt>turn a</tt>](##turn-instruction)
 
+~sub-instruction
+## <tt>sub a, b</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>Subtracts <tt>b</tt> from <tt>a</tt>, then stores the result in
+            <tt>a</tt></td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> must be writable <br>
+            <tt>b</tt> can be any parameter
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None</td>
+    </tr>
+
+</table>
 
 ~set-instruction
 ## <tt>set a, b</tt>
