@@ -43,6 +43,40 @@ There are 12 Robo Dojo instructions
 11. [<tt>trans a, b</tt>](##trans-instruction)
 12. [<tt>turn a</tt>](##turn-instruction)
 
+~turn-instruction
+## <tt>turn a</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>
+            <ul>
+                <li>If <tt>a</tt> == 0, rotates the bot to the left 90°</li>
+                <li>Else, rotates the bot to the right 90°</li>
+            <ul>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> can be any parameter</td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None
+        </td>
+    </tr>
+
+</table>
+
+
 ~trans-instruction
 ## <tt>trans a, b</tt>
 
