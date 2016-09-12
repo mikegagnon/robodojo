@@ -79,9 +79,43 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
             <button type="button"
                     class="btn btn-default dark-border"
+                    data-toggle="modal"
+                    data-target="#selectBotModal"
                     onclick='club.robodojo.App().clickBotSelect("${config.id}")'>
-              Select bot
+              Select program
             </button>
+
+            <!-- Select-bot Modal -->
+            <div class="modal fade" id="selectBotModal" tabindex="-1" role="dialog" aria-labelledby="selectBotModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="selectBotModalLabel">Select program</h4>
+                  </div>
+                  <div class="modal-body">
+
+                    <p><b>Programs from the Robo Dojo Guide</b></p>
+                    <button type="button" class="btn btn-default modal-body-button">Hello World</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Replication</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Diamond</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Super Diamond</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Bank Jumper</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Prototype Virus 1</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Prototype Virus 2</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Prototype Virus 3</button>
+                    <button type="button" class="btn btn-default modal-body-button" >Empy Banks</button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
 
           </div> <!-- end editor-console -->
 

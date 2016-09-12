@@ -100,3 +100,7 @@
 .breakpoints {
     width: 1em;
 }
+
+.modal-body-button {
+    margin-bottom: 5px;
+}
