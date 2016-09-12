@@ -38,6 +38,19 @@ There are three instruction sets:
 - [Advanced](##ref-instrset-advanced)
 - [Super](##ref-instrset-super)
 
+### The <tt>$instrset</tt> constant
+
+Each bot has an instruction-set constant: `$instrset` 
+
+- If `$instrset` == 0, then the bot can only execute Basic instructions
+- If `$instrset` == 1, then the bot can execute Basic and Advanced instructions
+- If `$instrset` == 2, then the bot can execute all instructions
+
+### Initializing <tt>$instrset</tt>
+
+The `$instrset` value is determined when the bot is created. See the
+[<tt>create</tt> instruction](##create-instruction).
+
 ~ref-instrset-basic
 ## Basic Instruction Set
 
