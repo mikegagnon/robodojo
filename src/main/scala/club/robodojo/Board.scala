@@ -1,14 +1,18 @@
 package club.robodojo
 
-import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
 
 class Board(implicit val config: Config) {
 
   val matrix = Array.fill[Option[Bot]](config.sim.numRows, config.sim.numCols)(None)
 
-  var bots = new ArrayBuffer[Bot]()
+  var bots = new mutable.ArrayBuffer[Bot]()
 
   var cycleNum = 0
+
+  var botCount = mutable.Map[PlayerColor.EnumVal, Int]()
+
+  var victor: Option[PlayerColor.EnumVal] = None
 
   def deepCopy(): Board = {
     val newBoard = new Board()
@@ -19,6 +23,9 @@ class Board(implicit val config: Config) {
       newBoard.addBot(newBot)
     }
 
+    newBoard.botCount = botCount
+    newBoard.victor = victor
+
     return newBoard
   }
 
@@ -28,6 +35,13 @@ class Board(implicit val config: Config) {
       case None => {
         matrix(bot.row)(bot.col) = Some(bot)
         bots += bot
+
+
+        if (!botCount.contains(bot.playerColor)) {
+          botCount(bot.playerColor) = 0
+        }
+
+        botCount(bot.playerColor) += 1
       }
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
@@ -38,6 +52,28 @@ class Board(implicit val config: Config) {
     bots = bots.filter { b =>
       b.id != bot.id
     }
+
+    botCount(bot.playerColor) -= 1
+
+    checkVictory()
+  }
+
+  def checkVictory(): Unit = {
+
+    var colors: List[PlayerColor.EnumVal] = PlayerColor
+      .colors
+      .flatMap { color: PlayerColor.EnumVal =>
+        if (botCount.getOrElse(color, 0) == 0) {
+          None
+        } else {
+          Some(color)
+        }
+      }
+
+    if (colors.length == 1) {
+      victor = Some(colors(0))
+    }
+
   }
 
   // TESTED
@@ -54,7 +90,7 @@ class Board(implicit val config: Config) {
     }
 
   // TODO: cycle bots sorted by id
-  def cycle(): ArrayBuffer[Animation] = {
+  def cycle(): mutable.ArrayBuffer[Animation] = {
     cycleNum += 1
 
     // TODO: this might be empty if all bots return None, which seems to causes exceptions

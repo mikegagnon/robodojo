@@ -269,7 +269,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     createjs.Ticker.paused = true
 
     viz.drawNumSteps()
-
+    viz.drawVictor()
   }
 
   def displaySuccess(): Unit = {

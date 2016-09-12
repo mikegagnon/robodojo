@@ -511,10 +511,23 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     }
 
     drawNumSteps()
+    drawVictor()
+    
+
+  }
+
+  def drawVictor(): Unit = {
+
+    if (board.victor.isEmpty) {
+      jQuery("#" + config.viz.victorColorId).text("")
+    } else {
+      jQuery("#" + config.viz.victorColorId).text(board.victor.get + " wins")
+    }
+
   }
 
   def drawNumSteps(): Unit =
-    jQuery("#" + config.viz.cycleCounterId).text("Step " + board.cycleNum.toString)
+    jQuery("#" + config.viz.cycleCounterId).text("Step " + board.cycleNum.toString + ".  ")
 
   def animateMoveSucceed(animation: MoveAnimationSucceed): Unit = {
 
