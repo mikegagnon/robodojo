@@ -80,8 +80,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
             <button type="button"
                     class="btn btn-default dark-border"
                     data-toggle="modal"
-                    data-target="#selectBotModal"
-                    onclick='club.robodojo.App().clickBotSelect("${config.id}")'>
+                    data-target="#selectBotModal">
               Select program
             </button>
 
@@ -93,7 +92,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="selectBotModalLabel">Select program</h4>
                   </div>
-                  <div class="modal-body">
+                  <div class="modal-body" id="${config.editor.modalBodyId}">
 
                     <p><b>Programs from the Robo Dojo Guide</b></p>
                     <button type="button" class="btn btn-default modal-body-button">Hello World</button>

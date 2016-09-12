@@ -90,6 +90,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
     val textAreaId = divId + "-textArea"
     val consoleDivId = divId + "-console-div"
     val outputId = divId + "-output"
+    val modalBodyId = divId + "-modalBody"
     val selectBotButtonId = consoleDivId + "-select-bot-button"
     val fontSize = params.getOrElse("editor.fontSize", "11px").asInstanceOf[String]
 
