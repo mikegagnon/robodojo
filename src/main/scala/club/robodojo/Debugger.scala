@@ -102,9 +102,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
 
       }
 
-      if (bank.sourceMap.isEmpty) {
-        return mutable.Map[Int, Breakpoint]()
-      } else {
+      if (bank.sourceMap.nonEmpty) {
         lineIndex += bank.sourceMap.get.text.length
       }
 
