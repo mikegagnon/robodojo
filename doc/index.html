@@ -319,6 +319,53 @@ The red squares indicate a Red bot has just tapped out there.</p>
 <p><img src="img/anti-diamond-1.png"></p>
 </div>
 
+<div id='bjump-instruction'>
+<h2><tt>bjump bank, instruction</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>
+            Sets the instruction pointer to bank <tt>bank</tt>, instruction
+            <tt>instruction</tt>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>bank</tt> and <tt>instruction</tt> can be any parameter. <br>
+        <tt>instruction</tt> can also be a label
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>
+            <ul>
+               <li>If <tt>bank</tt> > 50 or <tt>bank</tt> < 1,
+                    then the bot taps out
+               </li> 
+               <li>Else if the bot does not have the specified <tt>bank</tt>,
+               or the specified <tt>instruction</tt>, then the bot Auto
+               Reboots
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#ref-banks','Banks')">Banks</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#labels','Labels')">Labels</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#auto-reboot','Auto Reboot')">Auto Reboot</a></li>
+</ul>
+</div>
+
 <div id='ref-data-hunger'>
 <h2>Data Hunger</h2>
 <p>If a bot finds an empty first bank after an <a href="javascript:Sidenote.openColumnLoud('#ref-data-hunger','#auto-reboot','Auto Reboot')">Auto Reboot</a>, or
@@ -886,6 +933,21 @@ turn #1
 
 <div id='ref-instructions'>
 <h2>Instructions</h2>
+<p>There are 12 Robo Dojo instructions</p>
+<ol>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#add-instruction','&lt;tt&gt;add a, b&lt;/tt&gt;')"><tt>add a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#bjump-instruction','&lt;tt&gt;bjump a, b&lt;/tt&gt;')"><tt>bjump a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;comp a, b&lt;/tt&gt;')"><tt>comp a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;create a, b, c&lt;/tt&gt;')"><tt>create a, b, c</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;jump a&lt;/tt&gt;')"><tt>jump a</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;move&lt;/tt&gt;')"><tt>move</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;scan a&lt;/tt&gt;')"><tt>scan a</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;set a, b&lt;/tt&gt;')"><tt>set a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;sub a, b&lt;/tt&gt;')"><tt>sub a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;apout&lt;/tt&gt;')"><tt>apout</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;trans a, b&lt;/tt&gt;')"><tt>trans a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;turn a&lt;/tt&gt;')"><tt>turn a</tt></a></li>
+</ol>
 </div>
 
 <div id='pv2-screenshot'>
@@ -905,6 +967,7 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-forward-bot','Forward bot')">Forward bot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instrset','Instruction Sets')">Instruction Sets</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-instructions','Instructions')">Instructions</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-labels','Labels')">Labels</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-mobility','Mobility')">Mobility</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-parameters','Parameters')">Parameters</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#remote-access','Remote Access')">Remote Access</a></li>
@@ -1413,12 +1476,34 @@ intentional.</p>
 their activation, however this change did not effect convergence.</p>
 </div>
 
-<div id='guide-repl-create-instrset-example'>
-<h2>For example</h2>
-<ul>
-<li>The <code>move</code> instruction belongs to the Basic instruction set</li>
-<li>The <code>create</code> instruction belongs to the Super instruction set</li>
-</ul>
+<div id='add-instruction'>
+<h2><tt>add a, b</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>Sums <tt>a</tt> and <tt>b</tt>, then stores the result in
+            <tt>a</tt></td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> must be writable <br>
+            <tt>b</tt> can be any parameter
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None</td>
+    </tr>
+
+</table>
 </div>
 
 <div id='guide-repl-screenshot'>
@@ -1767,6 +1852,14 @@ move
 </code></pre>
 <p>If <code>#1</code> == 0, then the bot does not turn.</p>
 <p>Otherwise, the bot does turn.</p>
+</div>
+
+<div id='guide-repl-create-instrset-example'>
+<h2>For example</h2>
+<ul>
+<li>The <code>move</code> instruction belongs to the Basic instruction set</li>
+<li>The <code>create</code> instruction belongs to the Super instruction set</li>
+</ul>
 </div>
 
 <div id='why-virus'>

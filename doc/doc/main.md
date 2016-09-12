@@ -20,12 +20,104 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Forward bot](##ref-forward-bot)
 - [Instruction Sets](##ref-instrset)
 - [Instructions](##ref-instructions)
+- [Labels](##ref-labels)
 - [Mobility](##ref-mobility)
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 
 ~ref-instructions
 ## Instructions
+
+There are 12 Robo Dojo instructions
+
+1. [<tt>add a, b</tt>](##add-instruction)
+2. [<tt>bjump a, b</tt>](##bjump-instruction)
+3. [<tt>comp a, b</tt>](##)
+4. [<tt>create a, b, c</tt>](##)
+5. [<tt>jump a</tt>](##)
+6. [<tt>move</tt>](##)
+7. [<tt>scan a</tt>](##)
+8. [<tt>set a, b</tt>](##)
+9. [<tt>sub a, b</tt>](##)
+10. [<tt>apout</tt>](##)
+11. [<tt>trans a, b</tt>](##)
+12. [<tt>turn a</tt>](##)
+
+~add-instruction
+## <tt>add a, b</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>Sums <tt>a</tt> and <tt>b</tt>, then stores the result in
+            <tt>a</tt></td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> must be writable <br>
+            <tt>b</tt> can be any parameter
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>6</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None</td>
+    </tr>
+
+</table>
+
+~bjump-instruction
+## <tt>bjump bank, instruction</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>
+            Sets the instruction pointer to bank <tt>bank</tt>, instruction
+            <tt>instruction</tt>
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>bank</tt> and <tt>instruction</tt> can be any parameter. <br>
+        <tt>instruction</tt> can also be a label
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>5</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>
+            <ul>
+               <li>If <tt>bank</tt> > 50 or <tt>bank</tt> < 1,
+                    then the bot taps out
+               </li> 
+               <li>Else if the bot does not have the specified <tt>bank</tt>,
+               or the specified <tt>instruction</tt>, then the bot Auto
+               Reboots
+            </ul>
+        </td>
+    </tr>
+</table>
+
+### See also
+
+- [Banks](##ref-banks)
+- [Labels](##labels)
+- [Auto Reboot](##auto-reboot)
 
 ~ref-mobility
 ## Mobility
