@@ -52,6 +52,7 @@ object ErrorCode {
   case object BadMobileParam extends CompileTimeError
   case object DuplicateLabels extends CompileTimeError
   case object MissingLabel extends CompileTimeError
+  case object TooManyInstructions extends CompileTimeError
 
   case object InvalidParameter extends RunTimeError
   case object DataHunger extends RunTimeError
@@ -890,7 +891,12 @@ object Compiler {
 
         if (errors.isEmpty) {
           result.instruction.foreach { instruction: Instruction =>
-            if (bankNumber >= 0) {
+
+            if (bankBuilders(bankNumber).instructions.length >= config.compiler.maxBankInstructions) {
+              errors += ErrorMessage(ErrorCode.TooManyInstructions, tl.lineIndex,
+                s"Too many instructions in Bank #${bankNumber + 1}. Each bank may hold a maximum of " +
+                s"${config.compiler.maxBankInstructions} instructions.")
+            } else if (bankNumber >= 0) {
               bankBuilders(bankNumber).instructions += instruction
 
               currentLabelId.foreach { id: String =>
