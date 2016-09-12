@@ -1,5 +1,7 @@
 package club.robodojo
 
+import scala.collection.mutable
+
 object Config {
   val default = new Config(Map[String,Any]())
 }
@@ -100,8 +102,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       2 -> "",
       3 -> "")
 
-    // preloadedPrograms == List[headerName, List(programName, programBody)]
-    val preloadedPrograms: List[(String, List[(String, String)])] = {
+    // preloadedPrograms(headerName)(programName) == programBody
+    val preloadedPrograms: mutable.Map[String, mutable.Map[String, String]] = {
         
         // EXAMPLE INPUT:
         /*
@@ -109,29 +111,49 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
         "sim.editor.preload.header.1.name": "Header 1",
         "sim.editor.preload.header.2.name": "Header 2",
 
-        "sim.editor.preload.program.header.0.program.0.name" : "Program 0 name",
-        "sim.editor.preload.program.header.0.program.0.body" : "Program 0 body",
+        "sim.editor.preload.header.0.program.0.name" : "Program 0 name",
+        "sim.editor.preload.header.0.program.0.body" : "Program 0 body",
 
-        "sim.editor.preload.program.header.0.program.1.name" : "Program 1 name",
-        "sim.editor.preload.program.header.0.program.1.body" : "Program 1 body",
+        "sim.editor.preload.header.0.program.1.name" : "Program 1 name",
+        "sim.editor.preload.header.0.program.1.body" : "Program 1 body",
         
-        "sim.editor.preload.program.header.1.program.0.name" : "Program 2 name",
-        "sim.editor.preload.program.header.1.program.0.body" : "Program 2 body",
+        "sim.editor.preload.header.1.program.0.name" : "Program 2 name",
+        "sim.editor.preload.header.1.program.0.body" : "Program 2 body",
         */
 
+        var preload = mutable.Map[String, mutable.Map[String, String]]()
 
         var headerIndex = 0
         var headerName: Option[String] =
           params.get(s"sim.editor.preload.header.${headerIndex}.name").asInstanceOf[Option[String]]
 
-        while(headerName.nonEmpty) {
-          println(headerName)
-          headerIndex += 1
+        while (headerName.nonEmpty) {
 
-          headerName = params.get(s"sim.editor.preload.header.${headerIndex}.name").asInstanceOf[Option[String]]
+          preload += (headerName.get -> mutable.Map[String, String]())
+
+          var programIndex = 0
+          var programPrefix = s"sim.editor.preload.header.${headerIndex}.program.${programIndex}"
+          var programName: Option[String] =
+            params.get(programPrefix + ".name").asInstanceOf[Option[String]]
+          var programBody: Option[String] =
+            params.get(programPrefix + ".body").asInstanceOf[Option[String]]
+
+          while (programName.nonEmpty && programBody.nonEmpty) {
+
+            preload(headerName.get) += (programName.get -> programBody.get)
+
+            programIndex += 1
+            programPrefix = s"sim.editor.preload.header.${headerIndex}.program.${programIndex}"
+            programName = params.get(programPrefix + ".name").asInstanceOf[Option[String]]
+            programBody = params.get(programPrefix + ".body").asInstanceOf[Option[String]]
+          }
+          
+          headerIndex += 1
+          headerName =
+            params.get(s"sim.editor.preload.header.${headerIndex}.name").asInstanceOf[Option[String]]
         }
 
-        Nil
+        preload
     }
   }
 
