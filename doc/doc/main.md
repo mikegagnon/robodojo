@@ -43,6 +43,47 @@ There are 12 Robo Dojo instructions
 11. [<tt>trans a, b</tt>](##trans-instruction)
 12. [<tt>turn a</tt>](##turn-instruction)
 
+~trans-instruction
+## <tt>trans a, b</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>During the last cycle of the instruction, the bot transfers bank <tt>a</tt> to the forward bot's bank <tt>b</tt>. If the forward cell is
+        empty, then does nothing. If the forward bot doesn't have a bank <tt>b</tt>
+        , then does nothing.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> and <tt>b</tt> can be any parameter</td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Advanced</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>5 + 3 * <i>N</i>, where <i>N</i> is the number of instructions in bank
+        <tt>a</tt></td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>The bot taps out if:
+            <ul>
+                <li>its instructions set is less than Advanced</li>
+                <li><tt>a</tt> < 1 or <tt>a</tt> > $banks</li>
+            </ul>
+        </td>
+    </tr>
+
+</table>
+
+### See also
+
+- [Forward bot](##ref-forward-bot)
+- [Instruction Set](##ref-instrset)
+
 ~tapout-instruction
 ## <tt>tapout</tt>
 

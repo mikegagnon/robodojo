@@ -342,6 +342,48 @@ go into overtime, which means retrying the match in RoboCom until either:
 (b) the second player never scores a win and we reach a total of 14 matches.</p>
 </div>
 
+<div id='trans-instruction'>
+<h2><tt>trans a, b</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>During the last cycle of the instruction, the bot transfers bank <tt>a</tt> to the forward bot&#8217;s bank <tt>b</tt>. If the forward cell is
+        empty, then does nothing. If the forward bot doesn&#8217;t have a bank <tt>b</tt>
+        , then does nothing.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> and <tt>b</tt> can be any parameter</td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Advanced</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>5 + 3 * <i>N</i>, where <i>N</i> is the number of instructions in bank
+        <tt>a</tt></td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>The bot taps out if:
+            <ul>
+                <li>its instructions set is less than Advanced</li>
+                <li><tt>a</tt> < 1 or <tt>a</tt> > $banks</li>
+            </ul>
+        </td>
+    </tr>
+
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#trans-instruction','#ref-forward-bot','Forward bot')">Forward bot</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#trans-instruction','#ref-instrset','Instruction Set')">Instruction Set</a></li>
+</ul>
+</div>
+
 <div id='t822-demo'>
 <h2>T=822</h2>
 <p><img src="img/compat-822-rd.png"></p>
