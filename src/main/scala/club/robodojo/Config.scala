@@ -99,6 +99,40 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       1 -> "",
       2 -> "",
       3 -> "")
+
+    // preloadedPrograms == List[headerName, List(programName, programBody)]
+    val preloadedPrograms: List[(String, List[(String, String)])] = {
+        
+        // EXAMPLE INPUT:
+        /*
+        "sim.editor.preload.header.0.name": "Header 0",
+        "sim.editor.preload.header.1.name": "Header 1",
+        "sim.editor.preload.header.2.name": "Header 2",
+
+        "sim.editor.preload.program.header.0.program.0.name" : "Program 0 name",
+        "sim.editor.preload.program.header.0.program.0.body" : "Program 0 body",
+
+        "sim.editor.preload.program.header.0.program.1.name" : "Program 1 name",
+        "sim.editor.preload.program.header.0.program.1.body" : "Program 1 body",
+        
+        "sim.editor.preload.program.header.1.program.0.name" : "Program 2 name",
+        "sim.editor.preload.program.header.1.program.0.body" : "Program 2 body",
+        */
+
+
+        var headerIndex = 0
+        var headerName: Option[String] =
+          params.get(s"sim.editor.preload.header.${headerIndex}.name").asInstanceOf[Option[String]]
+
+        while(headerName.nonEmpty) {
+          println(headerName)
+          headerIndex += 1
+
+          headerName = params.get(s"sim.editor.preload.header.${headerIndex}.name").asInstanceOf[Option[String]]
+        }
+
+        Nil
+    }
   }
 
   object viz {
