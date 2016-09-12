@@ -103,7 +103,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       3 -> "")
 
     // preloadedPrograms(headerName)(programName) == programBody
-    val preloadedPrograms: mutable.Map[String, mutable.Map[String, String]] = {
+    val preloadedPrograms: mutable.LinkedHashMap[String, mutable.LinkedHashMap[String, String]] = {
         
         // EXAMPLE INPUT:
         /*
@@ -121,7 +121,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
         "sim.editor.preload.header.1.program.0.body" : "Program 2 body",
         */
 
-        var preload = mutable.Map[String, mutable.Map[String, String]]()
+        var preload = mutable.LinkedHashMap[String, mutable.LinkedHashMap[String, String]]()
 
         var headerIndex = 0
         var headerName: Option[String] =
@@ -129,7 +129,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
         while (headerName.nonEmpty) {
 
-          preload += (headerName.get -> mutable.Map[String, String]())
+          preload += (headerName.get -> mutable.LinkedHashMap[String, String]())
 
           var programIndex = 0
           var programPrefix = s"sim.editor.preload.header.${headerIndex}.program.${programIndex}"

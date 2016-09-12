@@ -5,6 +5,8 @@ import org.denigma.codemirror.{CodeMirror, EditorConfiguration}
 import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLTextAreaElement
 import org.scalajs.jquery.jQuery
+import scala.collection.mutable
+
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ArrayBuffer
@@ -46,6 +48,20 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   /** End initialization **************************************************************************/
 
   def addHtml(): Unit = {
+
+    val programSelection =
+      config
+        .editor
+        .preloadedPrograms
+        .flatMap { case (headerName: String, program: mutable.LinkedHashMap[String, String]) =>
+
+          s"<p><b>${headerName}</b></p>" ::
+          program.map { case (programName: String, programBody: String) =>
+            s"<button type='button' class='btn btn-default modal-body-button'>${programName}</button>"
+          }.toList
+
+        }
+        .mkString(" ")
 
     // TODO: make outputId scrollable. Make sure to put checks in so it doesn't get overly
     // flooded.
@@ -93,17 +109,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
                     <h4 class="modal-title" id="selectBotModalLabel">Select program</h4>
                   </div>
                   <div class="modal-body" id="${config.editor.modalBodyId}">
-
-                    <p><b>Programs from the Robo Dojo Guide</b></p>
-                    <button type="button" class="btn btn-default modal-body-button">Hello World</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Replication</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Diamond</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Super Diamond</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Bank Jumper</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Prototype Virus 1</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Prototype Virus 2</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Prototype Virus 3</button>
-                    <button type="button" class="btn btn-default modal-body-button" >Empy Banks</button>
+                    ${programSelection}
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
