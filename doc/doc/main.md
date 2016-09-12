@@ -43,6 +43,50 @@ There are 12 Robo Dojo instructions
 11. [<tt>trans a, b</tt>](##trans-instruction)
 12. [<tt>turn a</tt>](##turn-instruction)
 
+~jump-instruction
+## <tt>jump a</tt>
+
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>If <tt>a</tt> is a label, then jump to the first instruction
+           that appears after that label. Otherwise (if <tt>a</tt> is
+           an integer), then jump <tt>a</tt> instructions forward or backward
+           (depending on if <tt>a</tt> is positive or negative).
+
+           For example, if <tt>a</tt> is 3, then jump to the third instruction
+           that appears after the <tt>jump</tt> instruction.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> can be any parameter. Also, it can be a label.
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>If the instruction jumps out of bounds (i.e. out side of its bank),
+        then an Auto Reboot happens, possibly leading to Data Hunger.
+        </td>
+    </tr>
+
+</table>
+
+### See also
+
+- [Labels](##ref-labels)
+- [Auto Reboot](##auto-reboot)
+- [Data Hunger](##ref-data-hunger)
+
 ~create-instruction
 ## <tt>create iset, banks, mobile</tt>
 

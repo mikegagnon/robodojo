@@ -32,6 +32,30 @@
 tournament.</p>
 </div>
 
+<div id='ref-labels'>
+<h2>Labels</h2>
+<p>Labels mark places in your program for <a href="javascript:Sidenote.openColumnLoud('#ref-labels','#jump-instruction','&lt;tt&gt;jump&lt;/tt&gt;')"><tt>jump</tt></a>
+and <a href="javascript:Sidenote.openColumnLoud('#ref-labels','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a> instructions.</p>
+<h3>Example 1</h3>
+<pre><code>@foo
+add #1, 1
+jump @foo
+</code></pre>
+<h3>Example 2</h3>
+<pre><code>bank main ; bank 1
+    bjump 4, @start
+
+bank foo ; 2
+bank bar ; 3
+
+bank baz ; 4
+    create 1, 1, 1
+
+    @start
+    turn 1
+</code></pre>
+</div>
+
 <div id='Super-diamond-program'>
 <h2>Super Diamond program</h2>
 <pre><code>bank main
@@ -612,14 +636,6 @@ bank main ; 3
 bank foe ; 4
     tapout
 </code></pre>
-</div>
-
-<div id='disinfection'>
-<h2>Red bots quickly disinfect themselves</h2>
-<p>This is because
-every Red bot is more-or-less surrounded by other Red bots who are constantly
-propagating their Red banks. Thus, when a Red bot becomes infected, its
-neighboring Red bots disinfect the infected Red bot.</p>
 </div>
 
 <div id='t827-rc-demo'>
@@ -1662,28 +1678,12 @@ the new virus payload (except for timing, since <code>bjump</code> takes up a fe
 </ol>
 </div>
 
-<div id='ref-labels'>
-<h2>Labels</h2>
-<p>Labels mark places in your program for <a href="javascript:Sidenote.openColumnLoud('#ref-labels','#jump-instruction','&lt;tt&gt;jump&lt;/tt&gt;')"><tt>jump</tt></a>
-and <a href="javascript:Sidenote.openColumnLoud('#ref-labels','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a> instructions.</p>
-<h3>Example 1</h3>
-<pre><code>@foo
-add #1, 1
-jump @foo
-</code></pre>
-<h3>Example 2</h3>
-<pre><code>bank main ; bank 1
-    bjump 4, @start
-
-bank foo ; 2
-bank bar ; 3
-
-bank baz ; 4
-    create 1, 1, 1
-
-    @start
-    turn 1
-</code></pre>
+<div id='disinfection'>
+<h2>Red bots quickly disinfect themselves</h2>
+<p>This is because
+every Red bot is more-or-less surrounded by other Red bots who are constantly
+propagating their Red banks. Thus, when a Red bot becomes infected, its
+neighboring Red bots disinfect the infected Red bot.</p>
 </div>
 
 <div id='infection-explanation'>
@@ -1930,6 +1930,15 @@ victors only four times.</p>
 </ul>
 </div>
 
+<div id='why-virus'>
+<h2>Why use viruses?</h2>
+<p>It usually takes at least several hundred cycles to create a new bot.</p>
+<p>On the other hand,
+it only takes several tens of cycles to infect a bot with a small code bank.</p>
+<p>So, commandeering a bot is more efficient than creating a bot by an order of
+magnitude.</p>
+</div>
+
 <div id='t822-note-works'>
 <h2>Here&#8217;s how it works</h2>
 <ol>
@@ -1992,13 +2001,48 @@ move
 </ul>
 </div>
 
-<div id='why-virus'>
-<h2>Why use viruses?</h2>
-<p>It usually takes at least several hundred cycles to create a new bot.</p>
-<p>On the other hand,
-it only takes several tens of cycles to infect a bot with a small code bank.</p>
-<p>So, commandeering a bot is more efficient than creating a bot by an order of
-magnitude.</p>
+<div id='jump-instruction'>
+<h2><tt>jump a</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>If <tt>a</tt> is a label, then jump to the first instruction
+           that appears after that label. Otherwise (if <tt>a</tt> is
+           an integer), then jump <tt>a</tt> instructions forward or backward
+           (depending on if <tt>a</tt> is positive or negative).
+
+           For example, if <tt>a</tt> is 3, then jump to the third instruction
+           that appears after the <tt>jump</tt> instruction.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td><tt>a</tt> can be any parameter. Also, it can be a label.
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>2</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>If the instruction jumps out of bounds (i.e. out side of its bank),
+        then an Auto Reboot happens, possibly leading to Data Hunger.
+        </td>
+    </tr>
+
+</table>
+
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#jump-instruction','#ref-labels','Labels')">Labels</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#jump-instruction','#auto-reboot','Auto Reboot')">Auto Reboot</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#jump-instruction','#ref-data-hunger','Data Hunger')">Data Hunger</a></li>
+</ul>
 </div>
 
 <div id='compatibility'>
