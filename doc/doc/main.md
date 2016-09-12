@@ -512,6 +512,11 @@ The key is using [remote parameters](##ref-parameters-remote).
 For example, a bot can obtain the number of banks in the forward bot, by
 using the `%banks` parameter.
 
+### Default values
+
+If an instruction attempts to read a remote value, but the forward cell is empty,
+then the remote value is read as zero.
+
 ### Remote-access cost
 
 Every instruction requires a certain number of cycles to execute.
@@ -666,6 +671,7 @@ There is only one [writable](##ref-parameters-writable) remote parameter:
 ### See also
 
 - [Active](##ref-active)
+- [Remote Access](##remote-access)
 
 ~ref-parameters-local
 ## Local parameters

@@ -1886,6 +1886,7 @@ value <code>0</code>.</p>
 <h3>See also</h3>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-remote','#ref-active','Active')">Active</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-parameters-remote','#remote-access','Remote Access')">Remote Access</a></li>
 </ul>
 </div>
 
@@ -2038,6 +2039,9 @@ a cycle during T=821 after its mother</li>
 <p>The key is using <a href="javascript:Sidenote.openColumnLoud('#remote-access','#ref-parameters-remote','remote parameters')">remote parameters</a>.</p>
 <p>For example, a bot can obtain the number of banks in the forward bot, by
 using the <code>%banks</code> parameter.</p>
+<h3>Default values</h3>
+<p>If an instruction attempts to read a remote value, but the forward cell is empty,
+then the remote value is read as zero.</p>
 <h3>Remote-access cost</h3>
 <p>Every instruction requires a certain number of cycles to execute.</p>
 <p>When an instruction accesses a remote parameter (either reading or writing)
