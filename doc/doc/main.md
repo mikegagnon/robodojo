@@ -78,7 +78,8 @@ There are 12 Robo Dojo instructions
     </tr>
     <tr>
         <td>Runtime exceptions</td>
-        <td>None
+        <td>If the bot's instruction set is less than Advanced, then the
+            bot taps out.
         </td>
     </tr>
 
@@ -87,6 +88,7 @@ There are 12 Robo Dojo instructions
 ### See also
 
 - [Forward cell](##ref-forward-bot)
+- [Instruction Set](##ref-instrset)
 
 ~move-instruction
 ## <tt>move</tt>
