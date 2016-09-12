@@ -103,17 +103,12 @@ on Super Diamond:
 it merely spreads a virus.</p>
 </div>
 
-<div id='bank-jumping'>
-<h2>Bank Jumper</h2>
-<p>We can develop a program that defeats Super Diamond, by forking Super Diamond
-and making a few small changes.</p>
-<p>Basically, we use the <tt><a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-bjump','bjump')">bjump</a></tt> instruction to jump away from the first
-bank. Since Super Diamond attacks the first bank, it easily evades Super
-Diamond&#8217;s attack.</p>
-<p>The Bank Jumper program looks like <a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-program','this')">this</a>.</p>
-<p>In general, if you jump to arbitrary banks, its more difficult to attack you
-since the attacker doesn&#8217;t know which bank to hit. Of course, the attacker
-can target every bank, but that leads to a slower attack.</p>
+<div id='guide-hello-editor'>
+<h2>Editors</h2>
+<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
+<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
+<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
+<p><img src="img/editor-selection.png"></p>
 </div>
 
 <div id='guide-repl-trans'>
@@ -1191,6 +1186,19 @@ in Robo Com and Robo Dojo.</p>
 <p>Notice the Red bot that has been infected by Blue.</p>
 </div>
 
+<div id='ref-mobility'>
+<h2>Mobility</h2>
+<p>Each bot is either mobile or immobile.</p>
+<p>Parent bots determine whether their children are mobile or immobile.</p>
+<p>The <code>$mobile</code> constant is <code>1</code> if the bot is mobile, and <code>0</code> if the bot
+is immobile.</p>
+<p>An immobile bot taps out if it attempts to <a href="javascript:Sidenote.openColumnLoud('#ref-mobility','#move-instruction','&lt;tt&gt;move&lt;/tt&gt;')"><tt>move</tt></a>.</p>
+<h3>See also</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-mobility','#create-instruction','&lt;tt&gt;create&lt;/tt&gt; instruction')"><tt>create</tt> instruction</a></li>
+</ul>
+</div>
+
 <div id='infection-screenshot-1'>
 <h2>Infection Screenshot 1</h2>
 <p><img src="img/infection-screenshot-1.png"></p>
@@ -1456,12 +1464,17 @@ exist, then the bot will Auto Reboot.</p>
 our programs. But viruses must be quick, in order to overwhelm disinfection.</p>
 </div>
 
-<div id='guide-hello-editor'>
-<h2>Editors</h2>
-<p>There are four editors, one for each color: blue, red, green, and yellow.</p>
-<p>The blue editor edits the blue bot&#8217;s program, etc.</p>
-<p>To select your editor, click the &#8220;Blue bot&#8221; drop down menu.</p>
-<p><img src="img/editor-selection.png"></p>
+<div id='bank-jumping'>
+<h2>Bank Jumper</h2>
+<p>We can develop a program that defeats Super Diamond, by forking Super Diamond
+and making a few small changes.</p>
+<p>Basically, we use the <tt><a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-bjump','bjump')">bjump</a></tt> instruction to jump away from the first
+bank. Since Super Diamond attacks the first bank, it easily evades Super
+Diamond&#8217;s attack.</p>
+<p>The Bank Jumper program looks like <a href="javascript:Sidenote.openColumnLoud('#bank-jumping','#bank-jumping-program','this')">this</a>.</p>
+<p>In general, if you jump to arbitrary banks, its more difficult to attack you
+since the attacker doesn&#8217;t know which bank to hit. Of course, the attacker
+can target every bank, but that leads to a slower attack.</p>
 </div>
 
 <div id='defeating-diamond'>

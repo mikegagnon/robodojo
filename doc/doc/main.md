@@ -27,6 +27,22 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 ~ref-instructions
 ## Instructions
 
+~ref-mobility
+## Mobility
+
+Each bot is either mobile or immobile.
+
+Parent bots determine whether their children are mobile or immobile.
+
+The `$mobile` constant is `1` if the bot is mobile, and `0` if the bot
+is immobile.
+
+An immobile bot taps out if it attempts to [<tt>move</tt>](##move-instruction).
+
+### See also
+
+- [<tt>create</tt> instruction](##create-instruction)
+
 ~ref-instrset
 ## Instruction Sets
 
