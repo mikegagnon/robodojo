@@ -136,6 +136,229 @@ bank foe ; 4
     tapout
 `,
 
+        "sim.editor.preload.header.0.program.5.name" : "Prototype Virus 1",
+        "sim.editor.preload.header.0.program.5.body" : `bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+
+`,
+
+        "sim.editor.preload.header.0.program.6.name" : "Prototype Virus 2",
+        "sim.editor.preload.header.0.program.6.body" : `bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+    bjump 3, 1
+
+`,
+
+
+        "sim.editor.preload.header.0.program.7.name" : "Prototype Virus 3",
+        "sim.editor.preload.header.0.program.7.body" : `bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,5,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    trans 5,5
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+
+    comp #20, 0
+    jump @infect-with-virus
+
+    set #20, 1
+    trans 5,1
+    jump @restart
+
+    @infect-with-virus
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    set #20, 0
+    trans 4,1
+
+    @restart
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+    bjump 3, 1
+
+bank tapout; 5
+    tapout
+
+`,
+
+        "sim.editor.preload.header.0.program.8.name" : "Empty Banks",
+        "sim.editor.preload.header.0.program.8.body" : `bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,3,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    set #2, 1
+
+    @foe-loop
+    comp #2, 51
+    jump @foe-infect
+
+    ; end of loop
+    jump @start
+
+    @foe-infect
+    trans 2, #2
+    set %active, 1
+
+    add #2, 1
+
+    scan #3
+    comp #3, 1
+    jump @start
+    jump @foe-loop
+
+`
 
         /*"sim.board.blueRow": 1,
         "sim.board.blueCol": 13,
