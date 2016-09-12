@@ -361,7 +361,7 @@ The red squares indicate a Red bot has just tapped out there.</p>
 <h3>See also</h3>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#ref-banks','Banks')">Banks</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#labels','Labels')">Labels</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#ref-labels','Labels')">Labels</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#bjump-instruction','#auto-reboot','Auto Reboot')">Auto Reboot</a></li>
 </ul>
 </div>
@@ -614,6 +614,14 @@ bank foe ; 4
 </code></pre>
 </div>
 
+<div id='disinfection'>
+<h2>Red bots quickly disinfect themselves</h2>
+<p>This is because
+every Red bot is more-or-less surrounded by other Red bots who are constantly
+propagating their Red banks. Thus, when a Red bot becomes infected, its
+neighboring Red bots disinfect the infected Red bot.</p>
+</div>
+
 <div id='t827-rc-demo'>
 <h2>T=827 in RoboCom</h2>
 <p><img src="img/compat-827-rc.png"></p>
@@ -751,9 +759,36 @@ a bank from one bot to its forward bot.</p>
 an <a href="javascript:Sidenote.openColumnLoud('#ref-banks','#ref-auto-reboot','Auto Reboot')">Auto Reboot</a>.</p>
 </div>
 
-<div id='infection-screenshot-3'>
-<h2>Infection Screenshot 3</h2>
-<p><img src="img/infection-screenshot-3.png"></p>
+<div id='comp-instruction'>
+<h2><tt>comp a, b</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>If <tt>a</tt> == <tt>b</tt>, then the next instruction is skipped;
+        otherwise, the next instruction is executed as normal.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>
+            <tt>a</tt> and <tt>b</tt> can be any parameter.
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>
+            None
+        </td>
+    </tr>
+</table>
 </div>
 
 <div id='ref-cycles'>
@@ -865,6 +900,11 @@ bank foe ; 4
 </code></pre>
 </div>
 
+<div id='cycle-strategy'>
+<h2>The Strategy of Cycles</h2>
+<p><strong>TODO</strong></p>
+</div>
+
 <div id='pv3-foe'>
 <h2>Actual code for <code>@foe</code> section of PV3</h2>
 <pre><code>@foe
@@ -937,16 +977,16 @@ turn #1
 <ol>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#add-instruction','&lt;tt&gt;add a, b&lt;/tt&gt;')"><tt>add a, b</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#bjump-instruction','&lt;tt&gt;bjump a, b&lt;/tt&gt;')"><tt>bjump a, b</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;comp a, b&lt;/tt&gt;')"><tt>comp a, b</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;create a, b, c&lt;/tt&gt;')"><tt>create a, b, c</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;jump a&lt;/tt&gt;')"><tt>jump a</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;move&lt;/tt&gt;')"><tt>move</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;scan a&lt;/tt&gt;')"><tt>scan a</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;set a, b&lt;/tt&gt;')"><tt>set a, b</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;sub a, b&lt;/tt&gt;')"><tt>sub a, b</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;apout&lt;/tt&gt;')"><tt>apout</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;trans a, b&lt;/tt&gt;')"><tt>trans a, b</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#','&lt;tt&gt;turn a&lt;/tt&gt;')"><tt>turn a</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#comp-instruction','&lt;tt&gt;comp a, b&lt;/tt&gt;')"><tt>comp a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#create-instruction','&lt;tt&gt;create a, b, c&lt;/tt&gt;')"><tt>create a, b, c</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#jump-instruction','&lt;tt&gt;jump a&lt;/tt&gt;')"><tt>jump a</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#move-instruction','&lt;tt&gt;move&lt;/tt&gt;')"><tt>move</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#scan-instruction','&lt;tt&gt;scan a&lt;/tt&gt;')"><tt>scan a</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#set-instruction','&lt;tt&gt;set a, b&lt;/tt&gt;')"><tt>set a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#sub-instruction','&lt;tt&gt;sub a, b&lt;/tt&gt;')"><tt>sub a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#tapout-instruction','&lt;tt&gt;tapout&lt;/tt&gt;')"><tt>tapout</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#trans-instruction','&lt;tt&gt;trans a, b&lt;/tt&gt;')"><tt>trans a, b</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#turn-instruction','&lt;tt&gt;turn a&lt;/tt&gt;')"><tt>turn a</tt></a></li>
 </ol>
 </div>
 
@@ -1273,9 +1313,9 @@ is immobile.</p>
 <p>Blue is stuck because its frontier bots are infected with the virus.</p>
 </div>
 
-<div id='cycle-strategy'>
-<h2>The Strategy of Cycles</h2>
-<p><strong>TODO</strong></p>
+<div id='infection-screenshot-3'>
+<h2>Infection Screenshot 3</h2>
+<p><img src="img/infection-screenshot-3.png"></p>
 </div>
 
 <div id='infection-screenshot-2'>
@@ -1424,7 +1464,7 @@ non-fatal error. There are four events that can lead to an Auto Reboot.</p>
 <ol>
 <li>If a bot&#8217;s execution reaches the end of its current bank, and the last
    instruction is not a <a href="javascript:Sidenote.openColumnLoud('#auto-reboot','#jump-instruction','&lt;tt&gt;jump&lt;/tt&gt;')"><tt>jump</tt></a> instruction.</li>
-<li>If a bot <a href="javascript:Sidenote.openColumnLoud('#auto-reboot','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a>&#8216;s to a bank that does not
+<li>If a bot <a href="javascript:Sidenote.openColumnLoud('#auto-reboot','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a>&#8217;s to a bank that does not
    exist. However, if the <code>bjump</code> jumps to a bank that couldn&#8217;t possibly exist
    (such as bank 51), then the bot taps out.</li>
 <li>If a bot&#8217;s current bank is overwritten by an empty bank</li>
@@ -1622,12 +1662,28 @@ the new virus payload (except for timing, since <code>bjump</code> takes up a fe
 </ol>
 </div>
 
-<div id='disinfection'>
-<h2>Red bots quickly disinfect themselves</h2>
-<p>This is because
-every Red bot is more-or-less surrounded by other Red bots who are constantly
-propagating their Red banks. Thus, when a Red bot becomes infected, its
-neighboring Red bots disinfect the infected Red bot.</p>
+<div id='ref-labels'>
+<h2>Labels</h2>
+<p>Labels mark places in your program for <a href="javascript:Sidenote.openColumnLoud('#ref-labels','#jump-instruction','&lt;tt&gt;jump&lt;/tt&gt;')"><tt>jump</tt></a>
+and <a href="javascript:Sidenote.openColumnLoud('#ref-labels','#bjump-instruction','&lt;tt&gt;bjump&lt;/tt&gt;')"><tt>bjump</tt></a> instructions.</p>
+<h3>Example 1</h3>
+<pre><code>@foo
+add #1, 1
+jump @foo
+</code></pre>
+<h3>Example 2</h3>
+<pre><code>bank main ; bank 1
+    bjump 4, @start
+
+bank foo ; 2
+bank bar ; 3
+
+bank baz ; 4
+    create 1, 1, 1
+
+    @start
+    turn 1
+</code></pre>
 </div>
 
 <div id='infection-explanation'>

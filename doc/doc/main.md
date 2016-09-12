@@ -32,16 +32,16 @@ There are 12 Robo Dojo instructions
 
 1. [<tt>add a, b</tt>](##add-instruction)
 2. [<tt>bjump a, b</tt>](##bjump-instruction)
-3. [<tt>comp a, b</tt>](##)
-4. [<tt>create a, b, c</tt>](##)
-5. [<tt>jump a</tt>](##)
-6. [<tt>move</tt>](##)
-7. [<tt>scan a</tt>](##)
-8. [<tt>set a, b</tt>](##)
-9. [<tt>sub a, b</tt>](##)
-10. [<tt>apout</tt>](##)
-11. [<tt>trans a, b</tt>](##)
-12. [<tt>turn a</tt>](##)
+3. [<tt>comp a, b</tt>](##comp-instruction)
+4. [<tt>create a, b, c</tt>](##create-instruction)
+5. [<tt>jump a</tt>](##jump-instruction)
+6. [<tt>move</tt>](##move-instruction)
+7. [<tt>scan a</tt>](##scan-instruction)
+8. [<tt>set a, b</tt>](##set-instruction)
+9. [<tt>sub a, b</tt>](##sub-instruction)
+10. [<tt>tapout</tt>](##tapout-instruction)
+11. [<tt>trans a, b</tt>](##trans-instruction)
+12. [<tt>turn a</tt>](##turn-instruction)
 
 ~add-instruction
 ## <tt>add a, b</tt>
@@ -116,8 +116,74 @@ There are 12 Robo Dojo instructions
 ### See also
 
 - [Banks](##ref-banks)
-- [Labels](##labels)
+- [Labels](##ref-labels)
 - [Auto Reboot](##auto-reboot)
+
+
+~comp-instruction
+## <tt>comp a, b</tt>
+
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>If <tt>a</tt> == <tt>b</tt>, then the next instruction is skipped;
+        otherwise, the next instruction is executed as normal.
+        </td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>
+            <tt>a</tt> and <tt>b</tt> can be any parameter.
+        </td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>3</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>
+            None
+        </td>
+    </tr>
+</table>
+
+
+
+~ref-labels
+## Labels
+
+Labels mark places in your program for [<tt>jump</tt>](##jump-instruction)
+and [<tt>bjump</tt>](##bjump-instruction) instructions.
+
+### Example 1
+
+    @foo
+    add #1, 1
+    jump @foo
+
+### Example 2
+
+    bank main ; bank 1
+        bjump 4, @start
+
+    bank foo ; 2
+    bank bar ; 3
+
+    bank baz ; 4
+        create 1, 1, 1
+        
+        @start
+        turn 1
+
+
+
+
+
 
 ~ref-mobility
 ## Mobility
@@ -214,7 +280,7 @@ non-fatal error. There are four events that can lead to an Auto Reboot.
 
 1. If a bot's execution reaches the end of its current bank, and the last
    instruction is not a [<tt>jump</tt>](##jump-instruction) instruction.
-2. If a bot [<tt>bjump</tt>](##bjump-instruction)'s to a bank that does not
+2. If a bot [<tt>bjump</tt>](##bjump-instruction)&#8217;s to a bank that does not
    exist. However, if the `bjump` jumps to a bank that couldn't possibly exist
    (such as bank 51), then the bot taps out.
 3. If a bot's current bank is overwritten by an empty bank
