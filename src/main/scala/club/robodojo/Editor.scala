@@ -28,11 +28,18 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   // Check for programs specified on the the url
   config.programRefBlue.foreach { prb : ProgramRef =>
-    files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
+    if (config.editor.preloadedPrograms.contains(prb.headerName) &&
+        config.editor.preloadedPrograms(prb.headerName).contains(prb.programName)) {
+      files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
+    }
   }
 
-
-
+  config.programRefRed.foreach { prr : ProgramRef =>
+    if (config.editor.preloadedPrograms.contains(prr.headerName) &&
+        config.editor.preloadedPrograms(prr.headerName).contains(prr.programName)) {
+      files += PlayerColor.Red -> config.editor.preloadedPrograms(prr.headerName)(prr.programName)
+    }
+  }
 
   // programs(playerColor) == the result of compiling playerColor's program
   var programs: HashMap[PlayerColor.EnumVal, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
@@ -52,6 +59,10 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   jQuery(s"#${config.editor.divId} .CodeMirror").css("font-size", config.editor.fontSize)
 
   cmEditor.getDoc().setValue(files(currentPlayerColor))
+
+  if (files(PlayerColor.Blue).length > 0) {
+    clickCompile()
+  }
 
   /** End initialization **************************************************************************/
 
