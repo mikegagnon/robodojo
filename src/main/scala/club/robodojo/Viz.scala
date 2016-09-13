@@ -400,7 +400,7 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
     val delta = event.delta.asInstanceOf[Double]
 
     // The number of cycles to execute this tick
-    val cyclesDouble: Double = config.viz.cyclesPerSecond * delta / 1000.0 + remainingCycles
+    val cyclesDouble: Double = controller.cps * delta / 1000.0 + remainingCycles
 
     val cycles: Int = Math.floor(cyclesDouble).toInt
 

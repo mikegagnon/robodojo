@@ -14,6 +14,9 @@ class Controller(val viz: Viz)(implicit val config: Config) {
 
   val editor = new Editor(this, viz)
 
+  // Cycles per second
+  var cps = config.viz.cyclesPerSecond
+
   /** End initialization **************************************************************************/
 
   def buttonHtml(
@@ -45,7 +48,7 @@ class Controller(val viz: Viz)(implicit val config: Config) {
         ${buttonHtml(config.viz.debugButtonId, "Open / close the debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
         ${buttonHtml(config.viz.editorButtonId, "Open / close the editor", "clickEditor", "pencil", config.viz.editorSpanId)}
 
-        <span id="${config.viz.speedId}"></span>
+        <span id="${config.viz.speedId}">Speed ${config.viz.cyclesPerSecond}. </span>
 
         <span id="${config.viz.cycleCounterId}"></span>
 
@@ -84,8 +87,12 @@ class Controller(val viz: Viz)(implicit val config: Config) {
     js.Dynamic.global.`$`("[data-toggle='tooltip']").tooltip("hide")
   }
 
-  def changeSpeed(cps: Int): Unit = {
-    println(cps)
+  def displaySpeed(): Unit =
+      jQuery("#" + config.viz.speedId).text("Speed " + cps + ". ")
+
+  def changeSpeed(speed: Int): Unit = {
+    cps = speed
+    displaySpeed()
   }
 
   def clickPlayPause(): Unit = {
