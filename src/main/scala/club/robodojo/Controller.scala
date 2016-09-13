@@ -37,13 +37,28 @@ class Controller(val viz: Viz)(implicit val config: Config) {
   def addHtml(): Unit = {
     val html = s"""
       <div id='${config.viz.consoleDivId}'>
+        
+        <div>
         <button type="button" class="btn btn-primary dark-border" onclick='window.open("doc/")'>Help</button>
         ${buttonHtml(config.viz.playPauseButtonId, "Run / pause game", "clickPlayPause", "play", config.viz.playPauseSpanId)}
         ${buttonHtml(config.viz.stepButtonId, "Step one cycle", "clickStep", "step-forward", config.viz.stepSpanId)}
         ${buttonHtml(config.viz.debugButtonId, "Open / close the debugger", "clickDebug", "eye-open", config.viz.debugSpanId)}
         ${buttonHtml(config.viz.editorButtonId, "Open / close the editor", "clickEditor", "pencil", config.viz.editorSpanId)}
+
+        <span id="${config.viz.speedId}"></span>
+
         <span id="${config.viz.cycleCounterId}"></span>
+
         <span id="${config.viz.victorColorId}"></span>
+        </div>
+
+        <input type="range"
+               min="1"
+               max="${config.viz.maxCyclesPerSecond}"
+               value="${config.viz.cyclesPerSecond}"
+               style="width: ${config.viz.canvas.width}px"
+               oninput="club.robodojo.App().changeSpeed('${config.id}', parseInt(this.value))"
+               onchange="club.robodojo.App().changeSpeed('${config.id}', parseInt(this.value))">
       </div>
 
       <!-- activate tooltips -->
@@ -67,6 +82,10 @@ class Controller(val viz: Viz)(implicit val config: Config) {
 
   def hideTooltip(): Unit = {
     js.Dynamic.global.`$`("[data-toggle='tooltip']").tooltip("hide")
+  }
+
+  def changeSpeed(cps: Int): Unit = {
+    println(cps)
   }
 
   def clickPlayPause(): Unit = {

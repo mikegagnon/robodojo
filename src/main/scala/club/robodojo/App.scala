@@ -66,6 +66,14 @@ object App extends JSApp {
     return robodojo.controller.debugger.getCycles()
   }
 
+
+  @JSExport
+  def changeSpeed(id: String, cps: Int): Unit = {
+    activeInstanceId = Some(id)
+    val robodojo = instances(id)
+    robodojo.controller.changeSpeed(cps)
+  }
+
   @JSExport
   def clickProgram(id: String, headerName: String, programName: String): Unit = {
     activeInstanceId = Some(id)
