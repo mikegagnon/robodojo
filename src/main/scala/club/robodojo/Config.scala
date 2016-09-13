@@ -1,6 +1,7 @@
 package club.robodojo
 
 import scala.collection.mutable
+import java.net.URLDecoder
 
 object Config {
   val default = new Config(Map[String,Any]())
@@ -33,7 +34,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
           if (keyVal.length != 2) {
             throw new IllegalArgumentException()
           } else {
-            (keyVal(0), keyVal(1))
+            (URLDecoder.decode(keyVal(0), "UTF-8"), URLDecoder.decode(keyVal(1), "UTF-8"))
           }
         }
         .toMap

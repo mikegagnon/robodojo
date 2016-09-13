@@ -26,6 +26,14 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     PlayerColor.Green -> config.editor.defaultPrograms(2),
     PlayerColor.Yellow -> config.editor.defaultPrograms(3))
 
+  // Check for programs specified on the the url
+  config.programRefBlue.foreach { prb : ProgramRef =>
+    files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
+  }
+
+
+
+
   // programs(playerColor) == the result of compiling playerColor's program
   var programs: HashMap[PlayerColor.EnumVal, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
     PlayerColor.Blue -> Left(ArrayBuffer()),
