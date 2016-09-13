@@ -6,6 +6,8 @@ object Config {
   val default = new Config(Map[String,Any]())
 }
 
+case class ProgramRef(headerName: String, programName: String)
+
 // TODO: change defs to vals?
 // TODO: remove all SVG config vals
 class Config(params: Map[String, Any] = Map[String, Any]()) {
@@ -40,8 +42,19 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
       case e: IllegalArgumentException => Map[String, String]()
     }
 
-    println(urlParams)
+  val programRefBlue: Option[ProgramRef] =
+    if (urlParams.contains("bh") && urlParams.contains("bp")) {
+      Some(ProgramRef(urlParams("bh"), urlParams("bp")))
+    } else {
+      None
+    }
 
+  val programRefRed: Option[ProgramRef] =
+    if (urlParams.contains("rh") && urlParams.contains("rp")) {
+      Some(ProgramRef(urlParams("rh"), urlParams("rp")))
+    } else {
+      None
+    }
 
   // simulation constants
   object sim {
