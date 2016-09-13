@@ -13,4 +13,8 @@ class Robodojo(preload: createjs.LoadQueue)(implicit val config: Config) {
 
   viz.init(controller)
 
+  if (controller.editor.files(PlayerColor.Blue).length > 0) {
+    controller.editor.clickCompile()
+  }
+
 }

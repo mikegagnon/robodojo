@@ -60,10 +60,6 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   cmEditor.getDoc().setValue(files(currentPlayerColor))
 
-  if (files(PlayerColor.Blue).length > 0) {
-    clickCompile()
-  }
-
   /** End initialization **************************************************************************/
 
   def addHtml(): Unit = {
