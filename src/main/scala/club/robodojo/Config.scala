@@ -15,6 +15,34 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   // From dom.window.location
   val location: String = params.getOrElse("location", "").asInstanceOf[String]
 
+  val urlParams: Map[String, String] =
+    try {
+
+      val parts = location.split("\\?")
+
+      if (parts.length != 2) {
+        throw new IllegalArgumentException()
+      }
+
+      parts(1)
+        .split("&")
+        .map { pair: String =>
+          val keyVal = pair.split("=")
+          if (keyVal.length != 2) {
+            throw new IllegalArgumentException()
+          } else {
+            (keyVal(0), keyVal(1))
+          }
+        }
+        .toMap
+
+    } catch {
+      case e: IllegalArgumentException => Map[String, String]()
+    }
+
+    println(urlParams)
+
+
   // simulation constants
   object sim {
     val maxNumVariables = params.getOrElse("sim.maxNumVariables", 20).asInstanceOf[Int]
