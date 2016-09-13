@@ -520,8 +520,12 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
 
     if (board.victor.isEmpty) {
       jQuery("#" + config.viz.victorColorId).text("")
-    } else {
+    } else if (jQuery("#" + config.viz.victorColorId).text != board.victor.get + " wins") {
+
       jQuery("#" + config.viz.victorColorId).text(board.victor.get + " wins")
+
+      createjs.Ticker.paused = false
+      controller.clickPlayPause()
     }
 
   }
