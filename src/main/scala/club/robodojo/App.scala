@@ -5,6 +5,7 @@ import scala.scalajs.js.annotation.JSExport
 import scala.scalajs.js
 import com.scalawarrior.scalajs.createjs
 import scala.collection.mutable.ArrayBuffer
+import org.scalajs.dom
 
 // TODO: update this
 // App deals with all Robodojo instances for a given html page. Here is a demo of how you
@@ -45,7 +46,7 @@ object App extends JSApp {
   @JSExport
   def newRobodojo(configJS: js.Dictionary[Any]): Unit = {
 
-    val config = new Config(configJS.toMap)
+    val config = new Config(configJS.toMap + ("location" -> dom.window.location.toString))
     configs += config
 
     // The id of the first Robodojo instantiation goes to activeInstanceId

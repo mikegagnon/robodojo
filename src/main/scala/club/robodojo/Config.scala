@@ -12,6 +12,9 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   val id: String = params.getOrElse("id", "robodojo").asInstanceOf[String]
 
+  // From dom.window.location
+  val location: String = params.getOrElse("location", "").asInstanceOf[String]
+
   // simulation constants
   object sim {
     val maxNumVariables = params.getOrElse("sim.maxNumVariables", 20).asInstanceOf[Int]
