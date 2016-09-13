@@ -1,12 +1,12 @@
 
-Robo Dojo is a game where you program bots to battle each other with home-brewed
-viruses ([screenshot](##4way)).
-Robo Dojo clones the 1998 game [RoboCom](##robocom).
+Robo Dojo is a virus-programming game.
 
 * [Play Robo Dojo](http://robodojo.club)
+* [Introduction](##intro)
 * [Guide](##guide)
 * [Reference Manual](##ref)
 * [Debugging Manual](##debugging)
+* [RoboCom](##robocom)
 
 ~ref
 ## Reference Manual
@@ -25,23 +25,122 @@ Robo Dojo clones the 1998 game [RoboCom](##robocom).
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 
+~intro
+## Introduction
+
+To begin, two bots are randomly placed on a 16 &times; 16 board -- one bot is loaded with
+your program, the other is loaded with your opponent's program.
+
+When you press the play button, the bots run -- 
+moving, turning, looking, multiplying, infecting, disinfecting,
+crashing, emergent phenomena arising ...
+
+You are declared the victor once all your opponent's bots have crashed.
+
+The game is simple: there are only 12
+[instructions](##ref-instructions) and only a handful of [concepts](##ref).
+The game is also 
+complex: it is challenging to craft winning
+programs.
+
+The game is not solved. Is it possible to develop a program that defeats
+all other programs? Does every effective strategy imply an effective
+counter strategy?
+
+[Try it now](##try-it).
+
+### Screen shots 
+
+[1](##overview-1),
+[2](##overview-2),
+[3](##overview-3),
+[4](##overview-4),
+[5](##overview-5),
+[6](##overview-6),
+[7](##overview-7),
+[8](##overview-8),
+[9](##overview-9)
+
+~try-it
+## Try it now
+
+1. Go to [RoboDojo.club](http://RoboDojo.club)
+2. Click "Select program", then click a program
+3. Click "Blue bot", then select "Red Bot"
+4. Click "Select program", then click a program
+5. Click the Play button
+
+~overview-1
+## 1. Before match begins
+
+<img src="img/match-1.png" >
+
+~overview-2
+## 2. Bots multiply
+
+<img src="img/match-2.png" >
+
+~overview-3
+## 3. Blue infects Red
+
+<img src="img/match-3.png" >
+
+On the right side: a Red bot has a Blue circle -- indicating that the Red 
+bot has been infected by Blue.
+
+~overview-4
+## 4. Red infects Blue
+
+<img src="img/match-4.png" >
+
+~overview-5
+## 5. Red disinfects itself
+
+<img src="img/match-5.png" >
+
+Notice: the Red bot that was previously infected is now free of the Blue circle; the
+Red bot has been disinfected.
+
+Also, the Red square indicates that a Red bot had recently crashed in that
+cell.
+
+~overview-6
+## 6. Blue is almost totally infected
+
+<img src="img/match-6.png" >
+
+~overview-7
+## 7. Red is growing
+
+<img src="img/match-7.png" >
+
+~overview-8
+## 8. Blue is almost eliminated
+
+<img src="img/match-8.png" >
+
+~overview-9
+## 9. Blue is eliminated
+
+<img src="img/match-9.png" >
+
 ~ref-instructions
 ## Instructions
 
 There are 12 Robo Dojo instructions
 
-1. [<tt>add a, b</tt>](##add-instruction)
-2. [<tt>bjump a, b</tt>](##bjump-instruction)
-3. [<tt>comp a, b</tt>](##comp-instruction)
-4. [<tt>create a, b, c</tt>](##create-instruction)
-5. [<tt>jump a</tt>](##jump-instruction)
+1. [<tt>add</tt>](##add-instruction)
+2. [<tt>bjump</tt>](##bjump-instruction)
+3. [<tt>comp</tt>](##comp-instruction)
+4. [<tt>create</tt>](##create-instruction)
+5. [<tt>jump</tt>](##jump-instruction)
 6. [<tt>move</tt>](##move-instruction)
-7. [<tt>scan a</tt>](##scan-instruction)
-8. [<tt>set a, b</tt>](##set-instruction)
-9. [<tt>sub a, b</tt>](##sub-instruction)
+7. [<tt>scan</tt>](##scan-instruction)
+8. [<tt>set</tt>](##set-instruction)
+9. [<tt>sub</tt>](##sub-instruction)
 10. [<tt>tapout</tt>](##tapout-instruction)
-11. [<tt>trans a, b</tt>](##trans-instruction)
-12. [<tt>turn a</tt>](##turn-instruction)
+11. [<tt>trans</tt>](##trans-instruction)
+12. [<tt>turn</tt>](##turn-instruction)
 
 ~turn-instruction
 ## <tt>turn a</tt>
@@ -955,6 +1054,8 @@ activate a deactivated bot, another but must set `#active` by using
 
 ~robocom
 ## RoboCom
+
+Robo Dojo clones the 1998 game [RoboCom](##robocom).
 
 RoboCom is no longer actively maintained but its website is archived
 [here](http://robocom.rrobek.de/). Here's a [screenshot](##robocomscreenshot).
