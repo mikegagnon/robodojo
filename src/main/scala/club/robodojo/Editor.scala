@@ -150,7 +150,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
             <button type="button"
                     class="btn btn-default dark-border"
                     onclick='club.robodojo.App().clickCompile("${config.id}")'>
-              Compile
+              Compile / Reset
             </button>
 
             <button type="button"
