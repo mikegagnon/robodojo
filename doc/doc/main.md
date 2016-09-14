@@ -3,7 +3,7 @@ Robo Dojo is a virus-programming game.
 
 * [Play Robo Dojo](http://robodojo.club)
 * [Introduction & Demos](##intro)
-* [Guide](##guide)
+* [Guide Book](##guide)
 * [Reference Manual](##ref)
 * [Debugging Manual](##debugging)
 * [RoboCom](##robocom)
@@ -1066,7 +1066,7 @@ Nevertheless, Robo Dojo and RoboCom have [similar](##rdrc-battles) semantics.
 
 
 ~guide
-## Guide
+## Guide Book
 
 Through 8 case studies, this guide teaches you the essentials of Robo Dojo
 programming. This guide assumes you are already a programmer.
@@ -1100,10 +1100,11 @@ You have now learned all 12 Robo Dojo instructions.
 11. `trans a, b`
 12. `turn a`
 
-You have also learned about Auto Reboot, Data Hunger, and some design patterns
+You have also learned about [Auto Reboot](##auto-reboot),
+[Data Hunger](##ref-data-hunger), and some design patterns
 for Robo Dojo programs.
 
-You can progress your skills by studying the [Reference Manual](##ref) and 
+You can learn more by studying the [Reference Manual](##ref) and 
 other Robo Dojo programs (which you can access via [Robo Dojo](http://robodojo.club)
 itself).
 
