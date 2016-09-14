@@ -892,28 +892,31 @@ object Compiler {
         if (errors.isEmpty) {
           result.instruction.foreach { instruction: Instruction =>
 
-            if (bankBuilders(bankNumber).instructions.length >= config.compiler.maxBankInstructions) {
-              errors += ErrorMessage(ErrorCode.TooManyInstructions, tl.lineIndex,
-                s"Too many instructions in Bank #${bankNumber + 1}. Each bank may hold a maximum of " +
-                s"${config.compiler.maxBankInstructions} instructions.")
-            } else if (bankNumber >= 0) {
-              bankBuilders(bankNumber).instructions += instruction
+            if (bankNumber >= 0) {
 
-              currentLabelId.foreach { id: String =>
-                val instructionIndex = bankBuilders(bankNumber).instructions.length - 1
+              if (bankBuilders(bankNumber).instructions.length >= config.compiler.maxBankInstructions) {
+                errors += ErrorMessage(ErrorCode.TooManyInstructions, tl.lineIndex,
+                  s"Too many instructions in Bank #${bankNumber + 1}. Each bank may hold a maximum of " +
+                  s"${config.compiler.maxBankInstructions} instructions.")
+              } else {
+                bankBuilders(bankNumber).instructions += instruction
 
-                if (!labels.contains(bankNumber)) {
-                  labels(bankNumber) = mutable.Map[String, Int]()
+                currentLabelId.foreach { id: String =>
+                  val instructionIndex = bankBuilders(bankNumber).instructions.length - 1
+
+                  if (!labels.contains(bankNumber)) {
+                    labels(bankNumber) = mutable.Map[String, Int]()
+                  }
+
+                  if (labels(bankNumber).contains(id)) {
+                    throw new IllegalStateException("duplicate labels not caught by labelStrings")
+                  } else {
+                    labels(bankNumber)(id) = instructionIndex
+                    labelsByLabel(id) = instructionIndex
+                  }
+
+                  currentLabelId = mutable.Set()
                 }
-
-                if (labels(bankNumber).contains(id)) {
-                  throw new IllegalStateException("duplicate labels not caught by labelStrings")
-                } else {
-                  labels(bankNumber)(id) = instructionIndex
-                  labelsByLabel(id) = instructionIndex
-                }
-
-                currentLabelId = mutable.Set()
               }
 
             } else {
