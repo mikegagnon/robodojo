@@ -55,6 +55,8 @@ object InstructionTest extends TestSuite {
         val bot = Bot(board, PlayerColor.Blue, 0, 0)
         bot.mobile = false
 
+        board.addBot(bot)
+
         val moveInstruction = MoveInstruction(defaultSourceMap, 0, PlayerColor.Blue)
 
         val result = moveInstruction.execute(bot).get
