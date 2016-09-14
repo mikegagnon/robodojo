@@ -8,6 +8,7 @@ Robo Dojo is a simple virus-programming game.
 * [Debugging](##debugging)
 * [How to](##how-to)
 * [Open source](##open-source)
+* [Mailing list](##mailing-list)
 * [RoboCom](##robocom)
 
 ~ref
@@ -26,6 +27,14 @@ Robo Dojo is a simple virus-programming game.
 - [Mobility](##ref-mobility)
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
+
+~mailing-list
+## Mailing list
+
+Feel free to ask anything, or say anything.
+
+- robo-dojo-game@googlegroups.com
+- [Archive](https://groups.google.com/forum/#!forum/robo-dojo-game)
 
 ~how-to
 ## How to
