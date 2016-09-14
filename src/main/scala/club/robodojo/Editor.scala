@@ -157,7 +157,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
                     class="btn btn-default dark-border"
                     data-toggle="modal"
                     data-target="#${config.editor.selectBotModal}">
-              Select program
+              Load program
             </button>
 
             <!-- Select-bot Modal -->
@@ -166,7 +166,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
                 <div class="modal-content">
                   <div class="modal-header">
                     <button id="${config.editor.closeModalButton}" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="selectBotModalLabel">Select program</h4>
+                    <h4 class="modal-title" id="selectBotModalLabel">Load program</h4>
                   </div>
                   <div class="modal-body" id="${config.editor.modalBodyId}">
                     ${programSelection}
