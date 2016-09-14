@@ -198,7 +198,7 @@ There are 12 Robo Dojo instructions
 7. [<tt>scan</tt>](##scan-instruction)
 8. [<tt>set</tt>](##set-instruction)
 9. [<tt>sub</tt>](##sub-instruction)
-10. [<tt>tapout</tt>](##tapout-instruction)
+10. [<tt>crash</tt>](##crash-instruction)
 11. [<tt>trans</tt>](##trans-instruction)
 12. [<tt>turn</tt>](##turn-instruction)
 
@@ -262,7 +262,7 @@ There are 12 Robo Dojo instructions
     </tr>
     <tr>
         <td>Runtime exceptions</td>
-        <td>The bot taps out if:
+        <td>The bot crashes if:
             <ul>
                 <li>its instructions set is less than Advanced</li>
                 <li><tt>a</tt> < 1 or <tt>a</tt> > $banks</li>
@@ -277,8 +277,8 @@ There are 12 Robo Dojo instructions
 - [Forward bot](##ref-forward-bot)
 - [Instruction Set](##ref-instrset)
 
-~tapout-instruction
-## <tt>tapout</tt>
+~crash-instruction
+## <tt>crash</tt>
 
 <table>
     </tr>
@@ -758,7 +758,7 @@ The following instructions are in the Basic Instruction Set:
 - [<tt>move</tt>](##move-instruction)
 - [<tt>set a, b</tt>](##set-instruction)
 - [<tt>sub a, b</tt>](##sub-instruction)
-- [<tt>tapout</tt>](##tapout-instruction)
+- [<tt>crash</tt>](##crash-instruction)
 - [<tt>turn a</tt>](##turn-instruction) 
 
 ~ref-instrset-advanced
@@ -1171,7 +1171,7 @@ You have now learned all 12 Robo Dojo instructions.
 7. `scan #a`
 8. `set #a, b`
 9. `sub #a, b`
-10. `tapout`
+10. `crash`
 11. `trans a, b`
 12. `turn a`
 
@@ -1320,7 +1320,7 @@ For PV3, we rewrite `@foe` as follows:
 
     If (#20 == 0) {
         #20 = 1
-        infect with tapout malware
+        infect with crash malware
     } else {
         #20 = 0
         infect with virus
@@ -1416,8 +1416,8 @@ PV3 successfully completely eliminates Super Diamond.
         turn 1
         bjump 3, 1
         
-    bank tapout; 5
-        tapout
+    bank crash; 5
+        crash
 
 
 
@@ -1532,10 +1532,10 @@ If the first bank is empty, then the bot taps out from "Data Hunger."
 ## Prototype Virus 1
 
 Recall, [Super Diamond](##defeating-diamond) and [Bank Jumper](##bank-jumping)
-defeat individual bots by infecting them with tapout malware:
+defeat individual bots by infecting them with crash malware:
 
     bank foe
-        tapout
+        crash
 
 We are going to replace that payload with a simple virus:
 
@@ -1560,7 +1560,7 @@ on Super Diamond:
 Unfortunately, the virus is so effective it ends up
 [infecting Blue's bots](##pv1-self-infect) at the frontier.
 
-Furthermore, Prototype Virus 1 has no mechanism to tapout its opponent;
+Furthermore, Prototype Virus 1 has no mechanism to crash its opponent;
 it merely spreads a virus.
 
 ~pv1-program
@@ -1787,14 +1787,14 @@ comments.
         jump @start
 
     bank foe ; 4
-        tapout
+        crash
 
 ~wave
 ## Wave Virus
 
 
 
-Bank Jumper modified to use virus instead of tapout
+Bank Jumper modified to use virus instead of crash
 
     bank launcher ; 1
 
@@ -1894,8 +1894,8 @@ Wave Virus with submission hold
         turn 1
         bjump 3,1
         
-    bank tapout ;5
-        tapout
+    bank crash ;5
+        crash
 
 
         
@@ -1920,7 +1920,7 @@ is straightforward and simple.
 To implement it, we need to learn about [registers](##defeating-diamond-registers)
 and four new instructions:
 
-- [tapout](##defeating-diamond-tapout)
+- [crash](##defeating-diamond-crash)
 - [scan](##defeating-diamond-scan)
 - [comp](##defeating-diamond-comp)
 - [jump](##defeating-diamond-jump)
@@ -1933,15 +1933,15 @@ The battle should look something like [this](##Super-diamond-battle).
 
 The Reference-manual entries for:
 
-- [tapout](##tapout-instruction)
+- [crash](##crash-instruction)
 - [scan](##scan-instruction)
 - [comp](##comp-instruction)
 - [jump](##jump-instruction)
 
-~defeating-diamond-tapout
-## <tt>tapout</tt>
+~defeating-diamond-crash
+## <tt>crash</tt>
 
-When executed, the `tapout` instruction causes the bot to exit the board.
+When executed, the `crash` instruction causes the bot to exit the board.
 
 ~defeating-diamond-scan
 ## <tt>scan</tt>
@@ -2010,7 +2010,7 @@ The bot turns and moves in an endless loop.
 ## Super Diamond battle
 
 1. [Diamond (red) starts out with more bots](##ad-battle-1), since it's executing fewer instructions
-2. [Diamond begins to experience tapouts](##ad-battle-2)
+2. [Diamond begins to experience crashes](##ad-battle-2)
 3. [Super Diamond catches up with Diamond](##ad-battle-3)
 4. [Super Diamond overwhelms Diamond](##ad-battle-4)
 5. [Super Diamond wins](##ad-battle-5)
@@ -2058,14 +2058,14 @@ The red squares indicate a Red bot has just tapped out there.
         jump @start
 
         @foe
-        ; Transfer tapout-malware to the opponent
+        ; Transfer crash-malware to the opponent
         trans 2,1
         ; Make sure the opponent is active, so it can execute the foe bank
         set %active, 1
         jump @start
 
     bank foe
-        tapout
+        crash
 
 
 
@@ -2078,13 +2078,13 @@ The red squares indicate a Red bot has just tapped out there.
             clone self
             turn
         else if (forward cell is an opponent)
-            infect the opponent with tapout malware
+            infect the opponent with crash malware
         else if (forward cell is friendly)
             disinfect friend
             turn
 
-    bank self-destruct
-        self destruct
+    bank crash malware
+        crash
 
 ~blue-red-programs
 ## Infection & Disinfection

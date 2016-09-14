@@ -92,23 +92,23 @@ tournament.</p>
     jump @start
 
     @foe
-    ; Transfer tapout-malware to the opponent
+    ; Transfer crash-malware to the opponent
     trans 2,1
     ; Make sure the opponent is active, so it can execute the foe bank
     set %active, 1
     jump @start
 
 bank foe
-    tapout
+    crash
 </code></pre>
 </div>
 
 <div id='eng-virus-prototype'>
 <h2>Prototype Virus 1</h2>
 <p>Recall, <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#defeating-diamond','Super Diamond')">Super Diamond</a> and <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#bank-jumping','Bank Jumper')">Bank Jumper</a>
-defeat individual bots by infecting them with tapout malware:</p>
+defeat individual bots by infecting them with crash malware:</p>
 <pre><code>bank foe
-    tapout
+    crash
 </code></pre>
 <p>We are going to replace that payload with a simple virus:</p>
 <pre><code>bank foe
@@ -129,7 +129,7 @@ on Super Diamond:
 <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#pv-1-h','8')">8</a>, </p>
 <p>Unfortunately, the virus is so effective it ends up
 <a href="javascript:Sidenote.openColumnLoud('#eng-virus-prototype','#pv1-self-infect','infecting Blue&amp;#8217;s bots')">infecting Blue&#8217;s bots</a> at the frontier.</p>
-<p>Furthermore, Prototype Virus 1 has no mechanism to tapout its opponent;
+<p>Furthermore, Prototype Virus 1 has no mechanism to crash its opponent;
 it merely spreads a virus.</p>
 </div>
 
@@ -171,6 +171,33 @@ overwriting any bank that might already be there.</p>
 <li>An Advanced bot can execute Basic and Advanced instructions</li>
 <li>A Super bot can execute Basic, Advanced, and Super instructions</li>
 </ul>
+</div>
+
+<div id='crash-instruction'>
+<h2><tt>crash</tt></h2>
+<table>
+    </tr>
+        <td>Semantics</td>
+        <td>Removes the bot from the board</td>
+    </tr>
+    <tr>
+        <td>Data types</td>
+        <td>N/A</td>
+    </tr>
+    <tr>
+        <td>Instruction set</td>
+        <td>Basic</td>
+    </tr>
+    <tr>
+        <td>Number of cycles</td>
+        <td>1</td>
+    </tr>
+    <tr>
+        <td>Runtime exceptions</td>
+        <td>None</td>
+    </tr>
+
+</table>
 </div>
 
 <div id='ref-active'>
@@ -244,11 +271,6 @@ bank main ; 3
     jump @start
     jump @foe-loop
 </code></pre>
-</div>
-
-<div id='defeating-diamond-tapout'>
-<h2><tt>tapout</tt></h2>
-<p>When executed, the <code>tapout</code> instruction causes the bot to exit the board.</p>
 </div>
 
 <div id='compat-myster-diff'>
@@ -347,7 +369,7 @@ go into overtime, which means retrying the match in RoboCom until either:
     </tr>
     <tr>
         <td>Runtime exceptions</td>
-        <td>The bot taps out if:
+        <td>The bot crashes if:
             <ul>
                 <li>its instructions set is less than Advanced</li>
                 <li><tt>a</tt> < 1 or <tt>a</tt> > $banks</li>
@@ -395,8 +417,9 @@ go into overtime, which means retrying the match in RoboCom until either:
 The red squares indicate a Red bot has just tapped out there.</p>
 </div>
 
-<div id='ad-battle-3'>
-<p><img src="img/anti-diamond-3.png"></p>
+<div id='defeating-diamond-crash'>
+<h2><tt>crash</tt></h2>
+<p>When executed, the <code>crash</code> instruction causes the bot to exit the board.</p>
 </div>
 
 <div id='ad-battle-1'>
@@ -459,7 +482,7 @@ taps out from &#8220;Data Hunger.&#8221;</p>
 
 <div id='wave'>
 <h2>Wave Virus</h2>
-<p>Bank Jumper modified to use virus instead of tapout</p>
+<p>Bank Jumper modified to use virus instead of crash</p>
 <pre><code>bank launcher ; 1
 
     ; jump to bank 3 to evade Super Diamond's attack
@@ -557,8 +580,8 @@ bank virus ;4
     turn 1
     bjump 3,1
 
-bank tapout ;5
-    tapout
+bank crash ;5
+    crash
 </code></pre>
 </div>
 
@@ -694,7 +717,7 @@ bank main ; 3
     jump @start
 
 bank foe ; 4
-    tapout
+    crash
 </code></pre>
 </div>
 
@@ -801,7 +824,7 @@ Thus, it is able to both infect and eliminate Super Diamond bots.</p>
 <p>For PV3, we rewrite <code>@foe</code> as follows:</p>
 <pre><code>If (#20 == 0) {
     #20 = 1
-    infect with tapout malware
+    infect with crash malware
 } else {
     #20 = 0
     infect with virus
@@ -978,7 +1001,7 @@ parameters.</p>
 <li><code>scan #a</code></li>
 <li><code>set #a, b</code></li>
 <li><code>sub #a, b</code></li>
-<li><code>tapout</code></li>
+<li><code>crash</code></li>
 <li><code>trans a, b</code></li>
 <li><code>turn a</code></li>
 </ol>
@@ -1015,7 +1038,7 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#scan-instruction','&lt;tt&gt;scan&lt;/tt&gt;')"><tt>scan</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#set-instruction','&lt;tt&gt;set&lt;/tt&gt;')"><tt>set</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#sub-instruction','&lt;tt&gt;sub&lt;/tt&gt;')"><tt>sub</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#tapout-instruction','&lt;tt&gt;tapout&lt;/tt&gt;')"><tt>tapout</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#crash-instruction','&lt;tt&gt;crash&lt;/tt&gt;')"><tt>crash</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#trans-instruction','&lt;tt&gt;trans&lt;/tt&gt;')"><tt>trans</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instructions','#turn-instruction','&lt;tt&gt;turn&lt;/tt&gt;')"><tt>turn</tt></a></li>
 </ol>
@@ -1136,13 +1159,13 @@ bank 1 and PV1 operates out of bank 3.</p>
         clone self
         turn
     else if (forward cell is an opponent)
-        infect the opponent with tapout malware
+        infect the opponent with crash malware
     else if (forward cell is friendly)
         disinfect friend
         turn
 
-bank self-destruct
-    self destruct
+bank crash malware
+    crash
 </code></pre>
 </div>
 
@@ -1251,37 +1274,14 @@ Robo Dojo.</p>
 <p><strong>TODO</strong>: Explain failed compilation</p>
 </div>
 
+<div id='ad-battle-3'>
+<p><img src="img/anti-diamond-3.png"></p>
+</div>
+
 <div id='guide-hello-compile'>
 <h2>Compile button</h2>
 <p>When you click Compile, the board clears itself then uploads your program to a
 fresh bot, then randomly places the bot on the board.</p>
-</div>
-
-<div id='tapout-instruction'>
-<h2><tt>tapout</tt></h2>
-<table>
-    </tr>
-        <td>Semantics</td>
-        <td>Removes the bot from the board</td>
-    </tr>
-    <tr>
-        <td>Data types</td>
-        <td>N/A</td>
-    </tr>
-    <tr>
-        <td>Instruction set</td>
-        <td>Basic</td>
-    </tr>
-    <tr>
-        <td>Number of cycles</td>
-        <td>1</td>
-    </tr>
-    <tr>
-        <td>Runtime exceptions</td>
-        <td>None</td>
-    </tr>
-
-</table>
 </div>
 
 <div id='ref-parameters-writable'>
@@ -1420,8 +1420,8 @@ bank foe ; 4
     turn 1
     bjump 3, 1
 
-bank tapout; 5
-    tapout
+bank crash; 5
+    crash
 </code></pre>
 </div>
 
@@ -1830,7 +1830,7 @@ is straightforward and simple.</p>
 <p>To implement it, we need to learn about <a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-registers','registers')">registers</a>
 and four new instructions:</p>
 <ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-tapout','tapout')">tapout</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-crash','crash')">crash</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-scan','scan')">scan</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-comp','comp')">comp</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#defeating-diamond-jump','jump')">jump</a></li>
@@ -1840,7 +1840,7 @@ and four new instructions:</p>
 <h3>See also</h3>
 <p>The Reference-manual entries for:</p>
 <ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#tapout-instruction','tapout')">tapout</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#crash-instruction','crash')">crash</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#scan-instruction','scan')">scan</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#comp-instruction','comp')">comp</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#defeating-diamond','#jump-instruction','jump')">jump</a></li>
@@ -1944,7 +1944,7 @@ programming. This guide assumes you are already a programmer.</p>
 <h2>Super Diamond battle</h2>
 <ol>
 <li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-1','Diamond (red) starts out with more bots')">Diamond (red) starts out with more bots</a>, since it&#8217;s executing fewer instructions</li>
-<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience tapouts')">Diamond begins to experience tapouts</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-2','Diamond begins to experience crashes')">Diamond begins to experience crashes</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-3','Super Diamond catches up with Diamond')">Super Diamond catches up with Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-4','Super Diamond overwhelms Diamond')">Super Diamond overwhelms Diamond</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#Super-diamond-battle','#ad-battle-5','Super Diamond wins')">Super Diamond wins</a></li>
@@ -1989,7 +1989,7 @@ programming. This guide assumes you are already a programmer.</p>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instrset-basic','#move-instruction','&lt;tt&gt;move&lt;/tt&gt;')"><tt>move</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instrset-basic','#set-instruction','&lt;tt&gt;set a, b&lt;/tt&gt;')"><tt>set a, b</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instrset-basic','#sub-instruction','&lt;tt&gt;sub a, b&lt;/tt&gt;')"><tt>sub a, b</tt></a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#ref-instrset-basic','#tapout-instruction','&lt;tt&gt;tapout&lt;/tt&gt;')"><tt>tapout</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#ref-instrset-basic','#crash-instruction','&lt;tt&gt;crash&lt;/tt&gt;')"><tt>crash</tt></a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref-instrset-basic','#turn-instruction','&lt;tt&gt;turn a&lt;/tt&gt;')"><tt>turn a</tt></a> </li>
 </ul>
 </div>
