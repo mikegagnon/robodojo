@@ -28,19 +28,25 @@
         "sim.editor.preload.header.0.name": "Guide programs",
 
         "sim.editor.preload.header.0.program.0.name" : "Hello World",
-        "sim.editor.preload.header.0.program.0.body" : `bank main
+        "sim.editor.preload.header.0.program.0.body" : `; Hello World
+
+bank main
 move
 `,
 
         "sim.editor.preload.header.0.program.1.name" : "Replication",
-        "sim.editor.preload.header.0.program.1.body" : `bank main
+        "sim.editor.preload.header.0.program.1.body" : `; Replication
+
+bank main
 create 2,1,0
 trans 1,1
 set %active, 1
 `,
         
         "sim.editor.preload.header.0.program.2.name" : "Diamond",
-        "sim.editor.preload.header.0.program.2.body" : `bank main
+        "sim.editor.preload.header.0.program.2.body" : `; Diamond
+
+bank main
 create 2,1,0
 trans 1,1
 set %active, 1
@@ -48,7 +54,9 @@ turn 1
 `,
 
         "sim.editor.preload.header.0.program.3.name" : "Super Diamond",
-        "sim.editor.preload.header.0.program.3.body" : `bank main
+        "sim.editor.preload.header.0.program.3.body" : `; Super Diamond
+
+bank main
 
     @start
 
@@ -76,18 +84,20 @@ turn 1
     jump @start
 
     @foe
-    ; Transfer tapout-malware to the opponent
+    ; Transfer crash-malware to the opponent
     trans 2,1
     ; Make sure the opponent is active, so it can execute the foe bank
     set %active, 1
     jump @start
 
 bank foe
-    tapout
+    crash
 `,
 
         "sim.editor.preload.header.0.program.4.name" : "Bank Jumper",
-        "sim.editor.preload.header.0.program.4.body" : `bank launcher ; 1
+        "sim.editor.preload.header.0.program.4.body" : `; Bank Jumper
+
+bank launcher ; 1
 
     ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
     bjump 3,1
@@ -130,11 +140,13 @@ bank main ; 3
     jump @start
 
 bank foe ; 4
-    tapout
+    crash
 `,
 
         "sim.editor.preload.header.0.program.5.name" : "Prototype Virus 1",
-        "sim.editor.preload.header.0.program.5.body" : `bank launcher ; 1
+        "sim.editor.preload.header.0.program.5.body" : `; Prototype Virus 1
+
+bank launcher ; 1
 
     ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
     bjump 3,1
@@ -183,7 +195,9 @@ bank foe ; 4
 `,
 
         "sim.editor.preload.header.0.program.6.name" : "Prototype Virus 2",
-        "sim.editor.preload.header.0.program.6.body" : `bank launcher ; 1
+        "sim.editor.preload.header.0.program.6.body" : `; Prototype Virus 2
+
+bank launcher ; 1
 
     ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
     bjump 3,1
@@ -234,7 +248,9 @@ bank foe ; 4
 
 
         "sim.editor.preload.header.0.program.7.name" : "Prototype Virus 3",
-        "sim.editor.preload.header.0.program.7.body" : `bank launcher ; 1
+        "sim.editor.preload.header.0.program.7.body" : `; Prototype Virus 3
+
+bank launcher ; 1
 
     ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
     bjump 3,1
@@ -294,13 +310,15 @@ bank foe ; 4
     turn 1
     bjump 3, 1
 
-bank tapout; 5
-    tapout
+bank crash malware; 5
+    crash
 
 `,
 
         "sim.editor.preload.header.0.program.8.name" : "Empty Banks",
-        "sim.editor.preload.header.0.program.8.body" : `bank launcher ; 1
+        "sim.editor.preload.header.0.program.8.body" : `; Empty Banks
+
+bank launcher ; 1
 
     ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
     bjump 3,1
