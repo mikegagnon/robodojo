@@ -356,9 +356,9 @@ class Viz(val preload: createjs.LoadQueue, var board: Board)(implicit val config
         .getOrElse(false)
 
     //
-    if (!breakpointHit) controller.debugger.cycleToNum match {
-      case Some(cycleToNum) => {
-        if (board.cycleNum == cycleToNum) {
+    if (!breakpointHit) controller.debugger.stepToNum match {
+      case Some(stepToNum) => {
+        if (board.cycleNum == stepToNum) {
           breakpointHit = true
         }
       }

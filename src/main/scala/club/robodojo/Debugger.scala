@@ -39,7 +39,7 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
   var potentialBreakpoints = mutable.Map[Int, Breakpoint]()
 
   // TODO: document
-  var cycleToNum: Option[Int] = None
+  var stepToNum: Option[Int] = None
 
   /** End initialization **************************************************************************/
 
@@ -335,8 +335,8 @@ class Debugger(val controller: Controller, val viz: Viz)(implicit val config: Co
     jQuery("#" + config.debugger.outputId).html("")
   }
 
-  def cycleTo(cycleNum: Int): Unit = {
-    cycleToNum = Some(cycleNum)
+  def stepTo(stepNum: Int): Unit = {
+    stepToNum = Some(stepNum)
   }
 
   def getCycles(): Int = viz.board.cycleNum

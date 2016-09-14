@@ -54,10 +54,10 @@ object App extends JSApp {
   }
 
   @JSExport
-  def cycleTo(id: String, cycleNum: Int): Unit = {
+  def stepTo(id: String, cycleNum: Int): Unit = {
     activeInstanceId = Some(id)
     val robodojo = instances(id)
-    robodojo.controller.debugger.cycleTo(cycleNum)
+    robodojo.controller.debugger.stepTo(cycleNum)
   }
 
   @JSExport
