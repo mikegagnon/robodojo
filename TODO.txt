@@ -1,6 +1,0 @@
-Refactor:
-- Aggregate animations; perhaps a monoid
-- Test on Windows
-- Tests
-- Create object declarations; put functions in objects appropriately
-- Rename to Robodojo
