@@ -73,7 +73,7 @@ sealed abstract class Instruction {
       val message = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it only has the " +
+        s"The ${bot.playerColor} bot has crashed because it only has the " +
         s"<tt>${bot.instructionSet.str}</tt> instruction set, but it needs the " +
         s"<tt>${instructionSet.str}</tt> instruction set to execute the " +
         s"<tt>${instructionName}</tt> instruction."
@@ -245,7 +245,7 @@ case class MoveInstruction(
         val message = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it tried to move, but it is an " +
+        s"The ${bot.playerColor} bot has crashed because it tried to move, but it is an " +
         s"immobile bot."
 
       val errorCode = ErrorCode.CannotMoveImmobile
@@ -384,7 +384,7 @@ case class CreateInstruction(
     val messageHeader = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
+        s"The ${bot.playerColor} bot has crashed because it attempted to " +
         s"execute a <tt>create</tt> instruction with "
 
     if (childInstructionSetValue < 0 || childInstructionSetValue > 2) {
@@ -557,7 +557,7 @@ case class TransInstruction(
       val message = s"<p><span class='display-failure'>Error at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it attempted to " +
+        s"The ${bot.playerColor} bot has crashed because it attempted to " +
         s"execute a <tt>trans</tt> instruction with sourceBank == ${sourceBankIndex + 1}, but " +
         s"sourceBank must be >= 1 and <= ${bot.program.banks.size}"
 
@@ -775,10 +775,10 @@ case class CrashInstruction(
   def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durCrash
 
   def execute(bot: Bot): Option[Animation] = {
-      val message = s"<p><span class='display-failure'>Tap out at line ${lineIndex + 1} of " +
+      val message = s"<p><span class='display-failure'>Crash at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it executed the <tt>crash</tt> " +
+        s"The ${bot.playerColor} bot has crashed because it executed the <tt>crash</tt> " +
         s"instruction.</p>"
 
       val errorCode = ErrorCode.CrashError

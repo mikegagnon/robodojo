@@ -115,7 +115,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
         val message = s"<p><span class='display-failure'>Data Hunger in the ${playerColor} bot " +
           s"located at row ${row + 1}, column ${col + 1}</span>: The ${playerColor} bot has " +
-          s"tapped out because it performed an autoreboot with its first bank is empty.</p>"
+          s"crashed because it performed an autoreboot with its first bank is empty.</p>"
 
         val errorCode = ErrorCode.DataHunger
         val errorMessage = ErrorMessage(errorCode, 0, message)
@@ -159,7 +159,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
           val message = s"<p><span class='display-failure'>Data Hunger in the ${playerColor} bot " +
             s"located at row ${row + 1}, column ${col + 1}</span>: The ${playerColor} bot has " +
-            s"tapped out because it performed an autoreboot with its first bank is empty.</p>"
+            s"crashed because it performed an autoreboot with its first bank is empty.</p>"
 
           val errorCode = ErrorCode.DataHunger
           val errorMessage = ErrorMessage(errorCode, 0, message)
@@ -184,7 +184,7 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
       val message = s"<p><span class='display-failure'>Error in ${playerColor}'s bot' " +
         s"located at row ${row + 1}, column ${col + 1}</span>: " +
-        s"The ${playerColor} bot has tapped out because it attempted to " +
+        s"The ${playerColor} bot has crashed because it attempted to " +
         s"execute an empty first bank (bank ${bankIndex + 1})."
 
       val errorMessage = ErrorMessage(errorCode, 0, message)

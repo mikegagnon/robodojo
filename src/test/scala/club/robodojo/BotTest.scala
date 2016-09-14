@@ -28,7 +28,7 @@ object BotTest extends TestSuite {
         bot
       }
 
-      "empty bank leads to tapout"-{
+      "empty bank leads to crash"-{
         val bot = getBot(0, 0, Direction.Up)
 
         bot.board.matrix(0)(0) ==> Some(bot)

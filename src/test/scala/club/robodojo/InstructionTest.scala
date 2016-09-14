@@ -853,12 +853,12 @@ object InstructionTest extends TestSuite {
       }
     }
 
-    "tapout"-{
+    "crash"-{
       val board = new Board()
 
       val program: Program = Compiler.compile("""
         bank main
-          tapout
+          crash
         """, PlayerColor.Blue).right.get
 
       val bot = Bot(board, PlayerColor.Blue, 0, 0, Direction.Right, program)
@@ -871,7 +871,7 @@ object InstructionTest extends TestSuite {
       val animation = bot.cycle().get
 
       animation match {
-        case e: FatalErrorAnimation => e.errorMessage.errorCode ==> ErrorCode.Tapout
+        case e: FatalErrorAnimation => e.errorMessage.errorCode ==> ErrorCode.CrashError
         case _ => assert(false)
       }
 
