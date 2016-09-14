@@ -14,6 +14,8 @@ class Board(implicit val config: Config) {
 
   var victor: Option[PlayerColor.EnumVal] = None
 
+  val originalPlayerColors = mutable.Set[PlayerColor.EnumVal]()
+
   def deepCopy(): Board = {
     val newBoard = new Board()
     newBoard.cycleNum = cycleNum
@@ -42,6 +44,8 @@ class Board(implicit val config: Config) {
         }
 
         botCount(bot.playerColor) += 1
+
+        originalPlayerColors.add(bot.playerColor) 
       }
       case Some(_) => throw new IllegalArgumentException("matrix(r)(c) is already occupied")
     }
@@ -59,6 +63,10 @@ class Board(implicit val config: Config) {
   }
 
   def checkVictory(): Unit = {
+
+    if (originalPlayerColors.size == 1) {
+      return
+    }
 
     var colors: List[PlayerColor.EnumVal] = PlayerColor
       .colors
