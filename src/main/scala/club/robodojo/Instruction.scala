@@ -762,7 +762,7 @@ case class BjumpInstruction(
   def progress(bot: Bot, cycleNum: Int): Option[Animation] = None
 }
 
-case class TapoutInstruction(
+case class CrashInstruction(
     sourceMapInstruction: SourceMapInstruction,
     lineIndex: Int,
     // Whose program did this instruction come from originally?
@@ -772,16 +772,16 @@ case class TapoutInstruction(
   val instructionSet = InstructionSet.Basic
 
   // TODO: take into account remote access
-  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durTapout
+  def getRequiredCycles(bot: Bot): Int = config.sim.cycleCount.durCrash
 
   def execute(bot: Bot): Option[Animation] = {
       val message = s"<p><span class='display-failure'>Tap out at line ${lineIndex + 1} of " +
         s"${playerColor}'s program, executed by the " +
         s"${bot.playerColor} bot located at row ${bot.row + 1}, column ${bot.col + 1}</span>: " +
-        s"The ${bot.playerColor} bot has tapped out because it executed the <tt>tapout</tt> " +
+        s"The ${bot.playerColor} bot has tapped out because it executed the <tt>crash</tt> " +
         s"instruction.</p>"
 
-      val errorCode = ErrorCode.Tapout
+      val errorCode = ErrorCode.CrashError
       val errorMessage = ErrorMessage(errorCode, lineIndex, message)
 
       bot.board.removeBot(bot)

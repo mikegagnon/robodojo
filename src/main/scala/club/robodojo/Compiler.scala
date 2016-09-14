@@ -58,7 +58,7 @@ object ErrorCode {
   case object DataHunger extends RunTimeError
   case object InsufficientInstructionSet extends RunTimeError
   case object CannotMoveImmobile extends RunTimeError
-  case object Tapout extends RunTimeError
+  case object CrashError extends RunTimeError
 
 }
 
@@ -661,19 +661,19 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  def compileTapout(
+  def compileCrash(
       sourceMapInstruction: SourceMapInstruction,
       tl: TokenLine,
       playerColor: PlayerColor.EnumVal)
       (implicit config: Config): CompileLineResult =
 
     if (tl.tokens.length > 1) {
-      val message = "Too many parameters: the <tt>tapout</tt> instruction does not take any " +
+      val message = "Too many parameters: the <tt>crash</tt> instruction does not take any " +
         "parameters."
       val errorMessage = ErrorMessage(ErrorCode.TooManyParams, tl.lineIndex, message)
       CompileLineResult(None, Some(errorMessage))
     } else if (tl.tokens.length == 1) {
-      val instruction = TapoutInstruction(sourceMapInstruction, tl.lineIndex, playerColor)
+      val instruction = CrashInstruction(sourceMapInstruction, tl.lineIndex, playerColor)
       CompileLineResult(Some(instruction), None)
     } else {
       throw new IllegalStateException("This code shouldn't be reachable")
@@ -867,8 +867,8 @@ object Compiler {
           case "trans" => compileTrans(sourceMapInstruction, tl, playerColor)
           case "jump" => compileJump(sourceMapInstruction, tl, playerColor)
           case "bjump" => compileBjump(sourceMapInstruction, tl, playerColor)
-          case "die" => compileTapout(sourceMapInstruction, tl, playerColor)
-          case "tapout" => compileTapout(sourceMapInstruction, tl, playerColor)
+          case "die" => compileCrash(sourceMapInstruction, tl, playerColor)
+          case "crash" => compileCrash(sourceMapInstruction, tl, playerColor)
           case "scan" => compileScan(sourceMapInstruction, tl, playerColor)
           case "comp" => compileComp(sourceMapInstruction, tl)
           case "add" => compileAdd(sourceMapInstruction, tl)
