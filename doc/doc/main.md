@@ -28,6 +28,13 @@ Robo Dojo is a simple virus-programming game.
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 
+~open-source
+## Open Source
+
+Robo Dojo is dedicated to the public domain.
+
+The source code is on [Github](https://github.com/mikegagnon/robodojo).
+
 ~mailing-list
 ## Mailing list
 
