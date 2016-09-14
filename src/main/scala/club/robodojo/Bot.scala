@@ -62,7 +62,8 @@ class Bot(val board: Board, val playerColor: PlayerColor.EnumVal)(implicit val c
 
   var instructionIndex = 0
 
-  var cycleNum = 0
+  // To be more compatible with RoboCom, cycleNum should == 0 here
+  var cycleNum = 1
 
   // The number of cycles that must be executed before executing the current instruction
   var requiredCycles = 0
