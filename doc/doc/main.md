@@ -1,11 +1,11 @@
 
-Robo Dojo is a virus-programming game.
+Robo Dojo is a simple virus-programming game.
 
 * [Play Robo Dojo](http://robodojo.club)
 * [Introduction & Demos](##intro)
 * [Guide Book](##guide)
 * [Reference Manual](##ref)
-* [Debugging Manual](##debugging)
+* [Debugging Features](##debugging)
 * [RoboCom](##robocom)
 
 ~ref
@@ -24,6 +24,81 @@ Robo Dojo is a virus-programming game.
 - [Mobility](##ref-mobility)
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
+
+~debugging
+## Debugging Features
+
+- [Inspecting a bot](##debugging-inspection)
+- [Breakpoints](##debugging-breakpoints)
+- [<tt>initBot</tt>](##debugging-initBot)
+- [<tt>stepTo</tt>](##debugging-stepTo)
+
+~debugging-inspection
+## Inspecting a bot
+
+While the simulation is paused, you can inspect any bot simply by clicking on
+it.
+
+Inspecting a bot opens up the debugger beneath the board.
+
+<img src="img/debugger-01.png" >
+
+The debugger highlights the current instruction that is being executed,
+the cycle number for that instruction, and the values for all the possible
+parameters.
+
+~debugging-breakpoints
+## Breakpoints
+
+You can set a breakpoint on an instruction by clicking the gutter to the left
+of the instruction.
+
+A blue circle will appear there, indicating the breakpoint.
+
+Click the blue circle to remove the breakpoint.
+
+<img src="img/debugger-02.png" >
+
+~debugging-initBot
+## <tt>initBot</tt>
+
+When debugging a program it helps to have the bots start at the same position &
+facing the same direction every time.
+
+This way, every time you launch the simulation, the simulation will always
+progress the exact same way.
+
+To set the starting position for a bot, open your JavaScript console, and enter
+the following:
+
+`app.initBot("robo", color, row, col, direction)`
+
+### Example
+
+`app.initBot("robo", "blue", 1, 2, "right")`
+
+The above command will cause the initial blue bot to always appear
+at row 1, column 2, facing the right.
+
+~debugging-stepTo
+## <tt>stepTo</tt>
+
+The <tt>stepTo</tt> JavaScript command sets a breakpoint at a particular
+step.
+
+To use this command, open your JavaScript console and enter the following:
+
+`app.stepTo("robo", stepNumber)`
+
+### Example
+
+`app.stepTo("robo", 1000)`
+
+The above command will set a breakpoint at step number 1000.
+
+
+
+
 
 ~intro
 ## Introduction & Demos

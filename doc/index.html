@@ -371,13 +371,13 @@ go into overtime, which means retrying the match in RoboCom until either:
 </div>
 
 <div id='main'>
-<p>Robo Dojo is a virus-programming game.</p>
+<p>Robo Dojo is a simple virus-programming game.</p>
 <ul>
 <li><a href="http://robodojo.club">Play Robo Dojo</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#intro','Introduction &amp; Demos')">Introduction &amp; Demos</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide Book')">Guide Book</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference Manual')">Reference Manual</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging Manual')">Debugging Manual</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging Features')">Debugging Features</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a></li>
 </ul>
 </div>
@@ -931,20 +931,38 @@ should have the Super instruction set, since we want the child to be able to
 <code>create</code> a child of its own.</p>
 </div>
 
-<div id='why-virus'>
-<h2>Why use viruses?</h2>
-<p>It usually takes at least several hundred cycles to create a new bot.</p>
-<p>On the other hand,
-it only takes several tens of cycles to infect a bot with a small code bank.</p>
-<p>So, commandeering a bot is more efficient than creating a bot by an order of
-magnitude.</p>
+<div id='pv3-foe'>
+<h2>Actual code for <code>@foe</code> section of PV3</h2>
+<pre><code>@foe
+
+comp #20, 0
+jump @infect-with-virus
+
+set #20, 1
+trans 5,1
+jump @restart
+
+@infect-with-virus
+; LOOK HERE: Transfer self-destruct malware to the opponent
+set #20, 0
+trans 4,1
+
+@restart
+; Make sure the opponent is active, so it can execute the foe bank
+set %active, 1
+jump @start
+</code></pre>
 </div>
 
-<div id='brackets'>
-<h2>Note on brackets</h2>
-<p>I forgot about setting up byes until Round 2. In contrast to typical tournament
-brackets, I added the byes in Round 2 and 3. For our purposes,
-it doesn&#8217;t really matter.</p>
+<div id='debugging-inspection'>
+<h2>Inspecting a bot</h2>
+<p>While the simulation is paused, you can inspect any bot simply by clicking on
+it.</p>
+<p>Inspecting a bot opens up the debugger beneath the board.</p>
+<p><img src="img/debugger-01.png" ></p>
+<p>The debugger highlights the current instruction that is being executed,
+the cycle number for that instruction, and the values for all the possible
+parameters.</p>
 </div>
 
 <div id='review'>
@@ -1025,6 +1043,21 @@ turn #1
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#ref-parameters','Parameters')">Parameters</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#ref','#remote-access','Remote Access')">Remote Access</a></li>
 </ul>
+</div>
+
+<div id='debugging-initBot'>
+<h2><tt>initBot</tt></h2>
+<p>When debugging a program it helps to have the bots start at the same position &amp;
+facing the same direction every time.</p>
+<p>This way, every time you launch the simulation, the simulation will always
+progress the exact same way.</p>
+<p>To set the starting position for a bot, open your JavaScript console, and enter
+the following:</p>
+<p><code>app.initBot("robo", color, row, col, direction)</code></p>
+<h3>Example</h3>
+<p><code>app.initBot("robo", "blue", 1, 2, "right")</code></p>
+<p>The above command will cause the initial blue bot to always appear
+at row 1, column 2, facing the right.</p>
 </div>
 
 <div id='compat-mystery'>
@@ -2050,6 +2083,15 @@ value <code>0</code>.</p>
 <p><img src="img/infected-bluebot.png"></p>
 </div>
 
+<div id='debugging-breakpoints'>
+<h2>Breakpoints</h2>
+<p>You can set a breakpoint on an instruction by clicking the gutter to the left
+of the instruction.</p>
+<p>A blue circle will appear there, indicating the breakpoint.</p>
+<p>Click the blue circle to remove the breakpoint.</p>
+<p><img src="img/debugger-02.png" ></p>
+</div>
+
 <div id='remote-access'>
 <h2>Remote Access</h2>
 <p>Every bot can remotely access its <a href="javascript:Sidenote.openColumnLoud('#remote-access','#ref-forward-bot','forward bot&amp;#8217;s')">forward bot&#8217;s</a> data to a limited extent.</p>
@@ -2248,13 +2290,39 @@ bank foe ; 4
 </code></pre>
 </div>
 
-<div id='overview-5'>
-<h2>5. Red disinfects itself</h2>
-<p><img src="img/match-5.png" ></p>
-<p>Notice: the Red bot that was previously infected is now free of the Blue circle; the
-Red bot has been disinfected.</p>
-<p>Also, the Red square indicates that a Red bot had recently crashed in that
-cell.</p>
+<div id='debugging-stepTo'>
+<h2><tt>stepTo</tt></h2>
+<p>The <tt>stepTo</tt> JavaScript command sets a breakpoint at a particular
+step.</p>
+<p>To use this command, open your JavaScript console and enter the following:</p>
+<p><code>app.stepTo("robo", stepNumber)</code></p>
+<h3>Example</h3>
+<p><code>app.stepTo("robo", 1000)</code></p>
+<p>The above command will set a breakpoint at step number 1000.</p>
+</div>
+
+<div id='eng-virus'>
+<h2>Prototype Virus</h2>
+<p>We are going to fork Bank Jumper, and modify it to use a virus to defeat
+Super Diamond.</p>
+<h3>Sections</h3>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#why-virus','Why use viruses?')">Why use viruses?</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-timing','Timing concerns')">Timing concerns</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype','Prototype Virus 1')">Prototype Virus 1</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-2','Prototype Virus 2')">Prototype Virus 2</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-3','Prototype Virus 3')">Prototype Virus 3</a></li>
+</ul>
+</div>
+
+<div id='debugging'>
+<h2>Debugging Features</h2>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#debugging','#debugging-inspection','Inspecting a bot')">Inspecting a bot</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#debugging','#debugging-breakpoints','Breakpoints')">Breakpoints</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#debugging','#debugging-initBot','&lt;tt&gt;initBot&lt;/tt&gt;')"><tt>initBot</tt></a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#debugging','#debugging-stepTo','&lt;tt&gt;stepTo&lt;/tt&gt;')"><tt>stepTo</tt></a></li>
+</ul>
 </div>
 
 <div id='t821-demo'>
@@ -2304,27 +2372,13 @@ move
 <p><img src="img/match-8.png" ></p>
 </div>
 
-<div id='pv3-foe'>
-<h2>Actual code for <code>@foe</code> section of PV3</h2>
-<pre><code>@foe
-
-comp #20, 0
-jump @infect-with-virus
-
-set #20, 1
-trans 5,1
-jump @restart
-
-@infect-with-virus
-; LOOK HERE: Transfer self-destruct malware to the opponent
-set #20, 0
-trans 4,1
-
-@restart
-; Make sure the opponent is active, so it can execute the foe bank
-set %active, 1
-jump @start
-</code></pre>
+<div id='why-virus'>
+<h2>Why use viruses?</h2>
+<p>It usually takes at least several hundred cycles to create a new bot.</p>
+<p>On the other hand,
+it only takes several tens of cycles to infect a bot with a small code bank.</p>
+<p>So, commandeering a bot is more efficient than creating a bot by an order of
+magnitude.</p>
 </div>
 
 <div id='compatibility'>
@@ -2396,6 +2450,13 @@ in front of the bot.</p>
 <div id='t825-rd-demo'>
 <h2>T=825 in Robo Dojo</h2>
 <p><img src="img/compat-825-rd.png"></p>
+</div>
+
+<div id='brackets'>
+<h2>Note on brackets</h2>
+<p>I forgot about setting up byes until Round 2. In contrast to typical tournament
+brackets, I added the byes in Round 2 and 3. For our purposes,
+it doesn&#8217;t really matter.</p>
 </div>
 
 <div id='t822'>
@@ -2472,18 +2533,13 @@ bot has been infected by Blue.</p>
 <p><img src="img/match-4.png" ></p>
 </div>
 
-<div id='eng-virus'>
-<h2>Prototype Virus</h2>
-<p>We are going to fork Bank Jumper, and modify it to use a virus to defeat
-Super Diamond.</p>
-<h3>Sections</h3>
-<ul>
-<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#why-virus','Why use viruses?')">Why use viruses?</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-timing','Timing concerns')">Timing concerns</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype','Prototype Virus 1')">Prototype Virus 1</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-2','Prototype Virus 2')">Prototype Virus 2</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#eng-virus','#eng-virus-prototype-3','Prototype Virus 3')">Prototype Virus 3</a></li>
-</ul>
+<div id='overview-5'>
+<h2>5. Red disinfects itself</h2>
+<p><img src="img/match-5.png" ></p>
+<p>Notice: the Red bot that was previously infected is now free of the Blue circle; the
+Red bot has been disinfected.</p>
+<p>Also, the Red square indicates that a Red bot had recently crashed in that
+cell.</p>
 </div>
 
 <div id='overview-6'>
