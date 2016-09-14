@@ -15,6 +15,8 @@ import com.scalawarrior.scalajs.createjs
 
 import scala.util.Random
 
+case class InitPosition(row: Int, col: Int, direction: Direction.EnumVal)
+
 class Editor(val controller: Controller, val viz: Viz)(implicit val config: Config) {
 
   /** Begin initialization ************************************************************************/
@@ -41,6 +43,13 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
   }
 
+  var initPositions: mutable.HashMap[PlayerColor.EnumVal, Option[InitPosition]] =
+    mutable.HashMap(
+      PlayerColor.Blue -> None,
+      PlayerColor.Red -> None,
+      PlayerColor.Green -> None,
+      PlayerColor.Yellow -> None)
+
   // programs(playerColor) == the result of compiling playerColor's program
   var programs: HashMap[PlayerColor.EnumVal, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(
     PlayerColor.Blue -> Left(ArrayBuffer()),
@@ -61,6 +70,37 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
   cmEditor.getDoc().setValue(files(currentPlayerColor))
 
   /** End initialization **************************************************************************/
+
+  def setInitPosition(color: String, row: Int, col: Int, direction: String): Unit = {
+
+    val playerColor = color match {
+      case "blue" => PlayerColor.Blue
+      case "red" => PlayerColor.Red
+      case "green" => PlayerColor.Green
+      case "yellow" => PlayerColor.Yellow
+      case _ => {
+        println("Invalid color: " + color)
+        return
+      }
+    }
+
+    val dir = Direction.fromString(direction)
+
+    if (dir == Direction.NoDir) {
+      println("Invalid direction: " + direction)
+      return
+    }
+
+    if (row >= config.sim.numRows) {
+      println("Invalid row: " + row)
+    }
+
+    if (col >= config.sim.numCols) {
+      println("Invalid column: " + col)
+    }
+
+    initPositions(playerColor) = Some(InitPosition(row, col, dir))
+  }
 
   def addHtml(): Unit = {
 
@@ -189,7 +229,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
 
-    val defaultRow =
+    var defaultRow =
       playerColor match {
         case PlayerColor.Blue => config.sim.board.blueRow
         case PlayerColor.Red => config.sim.board.redRow
@@ -197,13 +237,18 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
         case PlayerColor.Yellow => config.sim.board.yellowRow
       }
 
-  val defaultCol =
+    var defaultCol =
       playerColor match {
         case PlayerColor.Blue => config.sim.board.blueCol
         case PlayerColor.Red => config.sim.board.redCol
         case PlayerColor.Green => config.sim.board.greenCol
         case PlayerColor.Yellow => config.sim.board.yellowCol
       }
+
+    initPositions(playerColor).foreach { initPosition: InitPosition =>
+      defaultRow = initPosition.row
+      defaultCol = initPosition.col
+    }
 
     // Cycle through row, col until you find an empty spot
     var row = if (defaultRow >= 0) defaultRow else Random.nextInt(config.sim.numRows)
@@ -214,13 +259,17 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       col = Random.nextInt(config.sim.numCols)
     }
 
-    val defaultDir =
+    var defaultDir : Direction.EnumVal =
       playerColor match {
         case PlayerColor.Blue => Direction.fromString(config.sim.board.blueDir)
         case PlayerColor.Red => Direction.fromString(config.sim.board.redDir)
         case PlayerColor.Green => Direction.fromString(config.sim.board.greenDir)
         case PlayerColor.Yellow => Direction.fromString(config.sim.board.yellowDir)
       }
+
+    initPositions(playerColor).foreach { initPosition: InitPosition =>
+      defaultDir = initPosition.direction
+    }
 
     val direction =
       defaultDir match {

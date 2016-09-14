@@ -67,6 +67,13 @@ object App extends JSApp {
     return robodojo.controller.debugger.getCycles()
   }
 
+  @JSExport
+  def initBot(id: String, color: String, row: Int, col: Int, direction: String): Unit = {
+    activeInstanceId = Some(id)
+    val robodojo = instances(id)
+    return robodojo.controller.editor.setInitPosition(color, row, col, direction)
+  }
+
 
   @JSExport
   def changeSpeed(id: String, cps: Int): Unit = {

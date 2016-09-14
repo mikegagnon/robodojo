@@ -9,9 +9,7 @@
   </head>
   <body>
 
-    <div id="robo1"></div>
-
-    <div id="robo2"></div>
+    <div id="robo"></div>
 
     <script type="text/javascript" src="./js/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="./js/bootstrap.min.js"></script>
@@ -23,19 +21,9 @@
       var app = club.robodojo.App()
 
       app.newRobodojo({
-        "id": "robo1",
+        "id": "robo",
         "viz.cellSize": 25,
         "compiler.safetyChecks": false,
-
-
-        "sim.board.blueRow": 1,
-        "sim.board.blueCol": 13,
-        "sim.board.blueDir": "up",
-
-        "sim.board.redRow": 2,
-        "sim.board.redCol": 11,
-        "sim.board.redDir": "down",
-
 
         "sim.editor.preload.header.0.name": "Guide programs",
 
@@ -368,15 +356,6 @@ bank main ; 3
     jump @foe-loop
 
 `
-      })
-
-
-
-      app.newRobodojo({
-        "id": "robo2",
-        "sim.numRows": 10,
-        "viz.cellSize": 16,
-        "compiler.safetyChecks": false
       })
 
       app.launch()
