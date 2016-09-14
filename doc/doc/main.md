@@ -5,7 +5,9 @@ Robo Dojo is a simple virus-programming game.
 * [Introduction & Demos](##intro)
 * [Guide Book](##guide)
 * [Reference Manual](##ref)
-* [Debugging Features](##debugging)
+* [Debugging](##debugging)
+* [How to](##how-to)
+* [Open source](##open-source)
 * [RoboCom](##robocom)
 
 ~ref
@@ -25,8 +27,51 @@ Robo Dojo is a simple virus-programming game.
 - [Parameters](##ref-parameters)
 - [Remote Access](##remote-access)
 
+~how-to
+## How to
+
+- [Save your program](##how-to-save)
+- [Edit a Red, Green, or Yellow program](##how-to-edit-red)
+- [Load a program into Red, Green or Yellow](##how-to-load-red)
+- [Adjust the speed](##how-to-speed)
+
+~how-to-speed
+## How to adjust the speed
+
+Use the speed slider.
+
+<img src="img/adjust-speed.png" >
+
+~how-to-edit-red
+## How to edit a Red, Green, or Yellow program
+
+Click the color-selection drop down, then choose your color.
+
+<img src="img/color-selection.png">
+
+~how-to-load-red
+## How to edit a Red, Green, or Yellow program
+
+Click the color-selection drop down, then choose your color.
+
+Then click the "Load Program" button.
+
+<img src="img/color-selection.png">
+
+
+~how-to-save
+## How to save your program
+
+At this time Robo Dojo does not provide any mechanism for you to save
+your programs in Robo Dojo (this is a beta release).
+
+Just copy and paste into your text editor and save
+there.
+
+Sorry.
+
 ~debugging
-## Debugging Features
+## Debugging
 
 - [Inspecting a bot](##debugging-inspection)
 - [Breakpoints](##debugging-breakpoints)

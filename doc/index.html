@@ -399,7 +399,9 @@ go into overtime, which means retrying the match in RoboCom until either:
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#intro','Introduction &amp; Demos')">Introduction &amp; Demos</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#guide','Guide Book')">Guide Book</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#ref','Reference Manual')">Reference Manual</a></li>
-<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging Features')">Debugging Features</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#debugging','Debugging')">Debugging</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#how-to','How to')">How to</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#main','#open-source','Open source')">Open source</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#main','#robocom','RoboCom')">RoboCom</a></li>
 </ul>
 </div>
@@ -729,6 +731,13 @@ propagating their Red banks. Thus, when a Red bot becomes infected, its
 neighboring Red bots disinfect the infected Red bot.</p>
 </div>
 
+<div id='how-to-load-red'>
+<h2>How to edit a Red, Green, or Yellow program</h2>
+<p>Click the color-selection drop down, then choose your color.</p>
+<p>Then click the &#8220;Load Program&#8221; button.</p>
+<p><img src="img/color-selection.png"></p>
+</div>
+
 <div id='t827-rc-demo'>
 <h2>T=827 in RoboCom</h2>
 <p><img src="img/compat-827-rc.png"></p>
@@ -954,6 +963,57 @@ should have the Super instruction set, since we want the child to be able to
 <code>create</code> a child of its own.</p>
 </div>
 
+<div id='pv2-program'>
+<h2>PV2 Program</h2>
+<pre><code>bank launcher ; 1
+
+    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
+    bjump 3,1
+
+bank 2
+
+bank main ; 3
+
+    @start
+
+    ; Register #1 = "empty", or "opponent", or "friend" 
+    scan #1
+
+    ; if "opponent" goto @foe
+    ; else goto @friend-or-empty
+    comp #1, 1
+    jump @friend-or-empty
+    jump @foe
+
+
+    @friend-or-empty
+
+    ; if "friend" skip the follow create instruction
+    comp #1, 2
+    create 2,4,0
+
+    ; LOOK HERE: Disinfect / initialize new bot
+    trans 1,1
+    trans 3,3
+    trans 4,4
+    set %active, 1
+    turn 1
+    jump @start
+
+    @foe
+    ; LOOK HERE: Transfer self-destruct malware to the opponent
+    trans 4,1
+    ; Make sure the opponent is active, so it can execute the foe bank
+    set %active, 1
+    jump @start
+
+bank foe ; 4
+    trans 1,1
+    turn 1
+    bjump 3, 1
+</code></pre>
+</div>
+
 <div id='pv3-foe'>
 <h2>Actual code for <code>@foe</code> section of PV3</h2>
 <pre><code>@foe
@@ -1167,6 +1227,12 @@ bank 1 and PV1 operates out of bank 3.</p>
 bank crash malware
     crash
 </code></pre>
+</div>
+
+<div id='how-to-speed'>
+<h2>How to adjust the speed</h2>
+<p>Use the speed slider.</p>
+<p><img src="img/adjust-speed.png" ></p>
 </div>
 
 <div id='scan-instruction'>
@@ -1956,6 +2022,12 @@ programming. This guide assumes you are already a programmer.</p>
 <p><img src="img/hello-world.png"></p>
 </div>
 
+<div id='how-to-edit-red'>
+<h2>How to edit a Red, Green, or Yellow program</h2>
+<p>Click the color-selection drop down, then choose your color.</p>
+<p><img src="img/color-selection.png"></p>
+</div>
+
 <div id='guide-hello-run'>
 <h2>Run your program</h2>
 <ol>
@@ -1976,6 +2048,15 @@ programming. This guide assumes you are already a programmer.</p>
 <h2><tt>add</tt> and <tt>sub</tt></h2>
 <p><code>add #a, b</code> adds <code>#a</code> and <code>b</code> together, then stores the result in <code>#a</code>.</p>
 <p><code>sub #a, b</code> subtracts <code>b</code> from <code>#a</code>, then stores the result in <code>#a</code>.</p>
+</div>
+
+<div id='how-to-save'>
+<h2>How to save your program</h2>
+<p>At this time Robo Dojo does not provide any mechanism for you to save
+your programs in Robo Dojo (this is a beta release).</p>
+<p>Just copy and paste into your text editor and save
+there.</p>
+<p>Sorry.</p>
 </div>
 
 <div id='ref-instrset-basic'>
@@ -2092,23 +2173,6 @@ of the instruction.</p>
 <p><img src="img/debugger-02.png" ></p>
 </div>
 
-<div id='remote-access'>
-<h2>Remote Access</h2>
-<p>Every bot can remotely access its <a href="javascript:Sidenote.openColumnLoud('#remote-access','#ref-forward-bot','forward bot&amp;#8217;s')">forward bot&#8217;s</a> data to a limited extent.</p>
-<p>The key is using <a href="javascript:Sidenote.openColumnLoud('#remote-access','#ref-parameters-remote','remote parameters')">remote parameters</a>.</p>
-<p>For example, a bot can obtain the number of banks in the forward bot, by
-using the <code>%banks</code> parameter.</p>
-<h3>Default values</h3>
-<p>If an instruction attempts to read a remote value, but the forward cell is empty,
-then the remote value is read as zero.</p>
-<h3>Remote-access cost</h3>
-<p>Every instruction requires a certain number of cycles to execute.</p>
-<p>When an instruction accesses a remote parameter (either reading or writing)
-then the instruction takes longer to execute.</p>
-<p>Specifically, the number of required cycles increases by <code>8</code> for every
-remote parameter that is accessed.</p>
-</div>
-
 <div id='rdrc-battles'>
 <h2>Tournament</h2>
 <p>To see how closely Robo Dojo matches RoboCom semantics, I ran a
@@ -2116,6 +2180,16 @@ Tournament of programs using <a href="javascript:Sidenote.openColumnLoud('#rdrc-
 <p>The <a href="javascript:Sidenote.openColumnLoud('#rdrc-battles','#rdrc-battles-details','results')">results</a> show that Robo Dojo semantics are similar
 to RoboCom semantics: of the 38 matches in the tournament, Robo Dojo and RoboCom produced different
 victors only four times.</p>
+</div>
+
+<div id='how-to'>
+<h2>How to</h2>
+<ul>
+<li><a href="javascript:Sidenote.openColumnLoud('#how-to','#how-to-save','Save your program')">Save your program</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#how-to','#how-to-edit-red','Edit a Red, Green, or Yellow program')">Edit a Red, Green, or Yellow program</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#how-to','#how-to-load-red','Load a program into Red, Green or Yellow')">Load a program into Red, Green or Yellow</a></li>
+<li><a href="javascript:Sidenote.openColumnLoud('#how-to','#how-to-speed','Adjust the speed')">Adjust the speed</a></li>
+</ul>
 </div>
 
 <div id='create-instruction'>
@@ -2239,55 +2313,21 @@ a cycle during T=821 after its mother</li>
 </ol>
 </div>
 
-<div id='pv2-program'>
-<h2>PV2 Program</h2>
-<pre><code>bank launcher ; 1
-
-    ; LOOK HERE: jump to bank 3 to evade Super Diamond's attack
-    bjump 3,1
-
-bank 2
-
-bank main ; 3
-
-    @start
-
-    ; Register #1 = "empty", or "opponent", or "friend" 
-    scan #1
-
-    ; if "opponent" goto @foe
-    ; else goto @friend-or-empty
-    comp #1, 1
-    jump @friend-or-empty
-    jump @foe
-
-
-    @friend-or-empty
-
-    ; if "friend" skip the follow create instruction
-    comp #1, 2
-    create 2,4,0
-
-    ; LOOK HERE: Disinfect / initialize new bot
-    trans 1,1
-    trans 3,3
-    trans 4,4
-    set %active, 1
-    turn 1
-    jump @start
-
-    @foe
-    ; LOOK HERE: Transfer self-destruct malware to the opponent
-    trans 4,1
-    ; Make sure the opponent is active, so it can execute the foe bank
-    set %active, 1
-    jump @start
-
-bank foe ; 4
-    trans 1,1
-    turn 1
-    bjump 3, 1
-</code></pre>
+<div id='remote-access'>
+<h2>Remote Access</h2>
+<p>Every bot can remotely access its <a href="javascript:Sidenote.openColumnLoud('#remote-access','#ref-forward-bot','forward bot&amp;#8217;s')">forward bot&#8217;s</a> data to a limited extent.</p>
+<p>The key is using <a href="javascript:Sidenote.openColumnLoud('#remote-access','#ref-parameters-remote','remote parameters')">remote parameters</a>.</p>
+<p>For example, a bot can obtain the number of banks in the forward bot, by
+using the <code>%banks</code> parameter.</p>
+<h3>Default values</h3>
+<p>If an instruction attempts to read a remote value, but the forward cell is empty,
+then the remote value is read as zero.</p>
+<h3>Remote-access cost</h3>
+<p>Every instruction requires a certain number of cycles to execute.</p>
+<p>When an instruction accesses a remote parameter (either reading or writing)
+then the instruction takes longer to execute.</p>
+<p>Specifically, the number of required cycles increases by <code>8</code> for every
+remote parameter that is accessed.</p>
 </div>
 
 <div id='debugging-stepTo'>
@@ -2316,7 +2356,7 @@ Super Diamond.</p>
 </div>
 
 <div id='debugging'>
-<h2>Debugging Features</h2>
+<h2>Debugging</h2>
 <ul>
 <li><a href="javascript:Sidenote.openColumnLoud('#debugging','#debugging-inspection','Inspecting a bot')">Inspecting a bot</a></li>
 <li><a href="javascript:Sidenote.openColumnLoud('#debugging','#debugging-breakpoints','Breakpoints')">Breakpoints</a></li>
