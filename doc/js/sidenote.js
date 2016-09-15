@@ -4,7 +4,7 @@
 
 var Sidenote = {
 
-  num_visible_columns: 3,
+  num_visible_columns: 2,
 
   min_column_width: 50,
 
