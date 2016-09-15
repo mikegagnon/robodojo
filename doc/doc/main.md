@@ -190,6 +190,7 @@ Click the demo, then click the Play button
 - [Diamond vs. Replication](../index.html?bh=Guide%20programs&bp=Diamond&rh=Guide%20programs&rp=Replication)
 - [Diamond vs. Super Diamond](../index.html?bh=Guide%20programs&bp=Diamond&rh=Guide%20programs&rp=Super%20Diamond)
 - [Prototype Virus 3 vs. Super Diamond](../index.html?bh=Guide%20programs&bp=Prototype%20Virus%203&rh=Guide%20programs&rp=Super%20Diamond)
+- [The Overkiller vs Seuche3](../index.html?bh=Rank%203&bp=The%20Overkiller&rh=Rank%205&rp=Seuche3)
 
 ~overview-1
 ## 1. Before match begins
