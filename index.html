@@ -76,14 +76,14 @@ turn 1
     jump @start
 
     @foe
-    ; Transfer tapout-malware to the opponent
+    ; Transfer crash-malware to the opponent
     trans 2,1
     ; Make sure the opponent is active, so it can execute the foe bank
     set %active, 1
     jump @start
 
 bank foe
-    tapout
+    crash
 `,
 
         "sim.editor.preload.header.0.program.4.name" : "Bank Jumper",
@@ -130,7 +130,7 @@ bank main ; 3
     jump @start
 
 bank foe ; 4
-    tapout
+    crash
 `,
 
         "sim.editor.preload.header.0.program.5.name" : "Prototype Virus 1",
@@ -294,8 +294,8 @@ bank foe ; 4
     turn 1
     bjump 3, 1
 
-bank tapout; 5
-    tapout
+bank crash; 5
+    crash
 
 `,
 
