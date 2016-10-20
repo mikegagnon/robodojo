@@ -1,5 +1,7 @@
 
 Robo Dojo is a simple virus-programming game.
+It clones the 1998 game [RoboCom](##robocom).
+
 
 * [Play Robo Dojo](http://robodojo.club)
 * [Introduction & Demos](##intro)
@@ -9,7 +11,6 @@ Robo Dojo is a simple virus-programming game.
 * [How to](##how-to)
 * [Open source](##open-source)
 * [Mailing list](##mailing-list)
-* [RoboCom](##robocom)
 
 ~ref
 ## Reference Manual
@@ -1176,8 +1177,6 @@ activate a deactivated bot, another but must set `#active` by using
 
 ~robocom
 ## RoboCom
-
-Robo Dojo clones the 1998 game [RoboCom](##robocom).
 
 RoboCom is no longer actively maintained but its website is archived
 [here](http://robocom.rrobek.de/). Here's a [screenshot](##robocomscreenshot).

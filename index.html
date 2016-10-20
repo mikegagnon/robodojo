@@ -355,7 +355,3846 @@ bank main ; 3
     jump @start
     jump @foe-loop
 
-`
+`,
+
+// From julypack
+
+        "sim.editor.preload.header.1.name": "Rank 1",
+
+        "sim.editor.preload.header.1.program.0.name" : "The Masterkiller 1",
+        "sim.editor.preload.header.1.program.0.body" : `; RoboCombat program
+
+Name The Masterkiller 1
+Author Nemo, This is not the original Masterkiller...
+;Country Germany
+
+Bank MasterJump
+ Bjump 9,1
+
+Bank Die
+ Die
+
+Bank 
+
+Bank
+
+Bank Masterkiller
+ @2
+ Scan   #1
+ Comp   #1,1
+ Jump   @create2
+ @destroy2
+ Set    %Active,0
+ Set    #1,%banks
+ @loop2
+ Trans  4,#1
+ Sub    #1,1
+ Comp   #1,0
+ Jump   @loop2
+ Jump   @fin2
+ @create2
+ Comp   #1,2
+ Jump   @goon2
+ Jump   @fin2
+ @goon2
+ Create 2,4,0
+ Scan   #1
+ Comp   #1,2
+ Jump   @destroy2
+ @fin2
+ Trans  2,2
+ Trans  3,1
+ Trans  3,3
+ Trans  4,4
+ Set    %Active,1
+ Turn   1
+ Jump   @2
+
+Bank TurnIt
+ Trans 1,1
+ Trans 1,3
+ Trans 1,4
+ Turn  1
+
+Bank EndKiller
+ @8
+ Scan   #1
+ Comp   #1,1
+ Jump   @create8
+ @destroy8
+ Set    %Active,0
+ Set    #1,%banks
+ @loop8
+ Trans  4,#1
+ Sub    #1,1
+ Comp   #1,0
+ Jump   @loop8
+ Set    %Active,1
+ @create8
+ Comp   #1,2
+ Jump   @goon8
+ Jump   @fin8
+ @goon8
+ Create 2,4,0
+ Scan   #1
+ Comp   #1,2
+ Jump   @destroy8
+ @fin8
+ Trans  2,2
+ Trans  3,1
+ Trans  3,3
+ Trans  4,4
+ Set    %Active,1
+ Turn   1
+ Jump   @8
+
+
+Bank Die
+ Die
+ 
+Bank Motherkiller
+ Set    #6,20
+ @1
+ Scan   #1
+ Comp   #1,1
+ Jump   @create
+ @destroy
+ Set    %Active,0
+ Set    #1,%banks
+ @loop
+ Trans  2,#1
+ Sub    #1,1
+ Comp   #1,0
+ Jump   @loop
+ Set    %Active,1
+ @create
+ Comp   #1,2
+ Jump   @goon
+ Jump   @fin
+ @goon
+ Create 2,4,0
+ Scan   #1
+ Comp   #1,2
+ Jump   @destroy
+ @fin
+ Trans  6,4
+ Trans  5,2
+ Trans  10,3
+ Trans  10,1
+ Set    %Active,1
+ Turn   1
+ Sub    #6,1
+ Comp   #6,0
+ Jump   @1
+ @3
+ @9
+ Scan   #1
+ Comp   #1,1
+ Jump   @create9
+ Set    %Active,0
+ Set    #1,%banks
+ @destroy9
+ @loop9
+ Trans  2,#1
+ Sub    #1,1
+ Comp   #1,0
+ Jump   @loop9
+ Set    %Active,1
+ @create9
+ Comp   #1,2
+ Jump   @goon9
+ Jump   @fin9
+ @goon9
+ Create 2,4,0
+ Scan   #1
+ Comp   #1,2
+ Jump   @destroy9
+ @fin9
+ Trans  7,2
+ Trans  8,4
+ Trans  10,3
+ Trans  10,1
+ Set    %Active,1
+ Turn   1
+ Jump   @3
+
+Bank LittleJump
+ BJump 2,1
+ `,
+
+        "sim.editor.preload.header.2.name": "Rank 2",
+
+        "sim.editor.preload.header.2.program.0.name" : "HotBot V2",
+        "sim.editor.preload.header.2.program.0.body" : `; RoboCombat program
+
+Name HotBot V2
+Author Hotblack
+Country Germany
+
+
+;*************************************** 1
+Bank Start
+BJump 13,1
+
+
+Bank 0
+Bank 1
+Bank 2
+Bank 3
+Bank 4
+Bank 5
+Bank 6
+Bank 7
+Bank 8
+Bank 9
+
+;*************************************** 2
+Bank BSE
+Create 2,2,0
+
+@MainBSE
+Trans 1,1
+Trans 1,3
+Trans 1,2
+
+@Turn
+Set %Active,1
+Turn 0
+Jump @MainBSE
+
+;*************************************** 3
+Bank Save
+@Phase1
+Add #6,1
+Comp #6,20
+Jump @Phase1_0
+Jump @Phase2
+
+@Phase1_0
+Create 2,3,0
+Trans 17,2
+Trans 18,3
+Trans 18,1
+Set %Active,1
+Turn 0
+Jump @Phase1
+
+
+@Phase2
+
+set %Active,1
+set #2,%banks
+@loop
+trans 16,#2
+sub #2,1
+comp #2,-1
+jump @loop
+
+Create 2,10,0
+Trans 14,9
+Trans 15,8
+
+Set #9,9
+@Phase2Force
+Trans 15,1
+Trans 15,2
+Trans 15,3
+Set %Active,1
+Sub #9,1
+Comp #9,0
+Jump @Phase2Force
+
+Turn 0
+Jump @Phase2
+
+;*************************************** 4
+Bank Pest
+@MainPest
+
+Comp %Banks,19
+Jump @next2
+Jump @next
+@next2
+Comp %Banks,10
+Jump @Kill
+
+@next
+Scan #1
+Comp #1,1
+Jump @noe
+
+@Kill
+set %Active,1
+set #2,%banks
+@loop1
+trans 10,#2
+sub #2,1
+comp #2,-1
+jump @loop1
+
+@noe
+Create 2,10,0
+Scan #1
+Comp #1,2
+Jump @MainPest
+Trans 8,8
+Trans 9,9
+
+Set #9,5
+@PestForce
+Trans 8,2
+Trans 8,1
+Set %Active,1
+Trans 8,3
+Trans 8,4
+Sub #9,1
+Comp #9,0
+Jump @PestForce
+
+Turn 0
+Jump @MainPest
+
+;*************************************** 5
+Bank ForceJumpTo9
+BJump 9,1
+
+;*************************************** 6
+Bank Leer
+
+;*************************************** 17
+Bank BSE2
+Set #2,3
+Comp $Banks,3
+Set #2,1
+
+Scan #1
+Comp #1,0
+Jump @MainBSE2
+Create 2,3,0
+
+@MainBSE2
+Trans 2,2
+Trans #2,1
+Trans #2,3
+Set %Active,1
+
+Comp %Banks,3
+Jump @q
+Jump @Turn1
+@q
+;Set %Active,0
+Trans #2,3
+Trans #2,6
+Trans #2,4
+Trans #2,5
+;Set %Active,1
+
+
+@Turn1
+Turn 0
+Jump @MainBSE2
+
+;*************************************** 18
+Bank Jump2
+BJump 2,1
+
+;*************************************** 19
+Bank Jump1
+BJump 1,1
+`,
+
+        "sim.editor.preload.header.3.name": "Rank 3",
+
+        "sim.editor.preload.header.3.program.0.name" : "Alien3.4",
+        "sim.editor.preload.header.3.program.0.body" : `Name Alien3.4
+Author Rodex, rodex@sci.fi
+Country Finland
+
+bank Queen
+      create 2,2,0
+      trans 2,1
+      trans 3,2
+      Set   %Active,3
+      turn  1
+
+bank Nest
+      turn  1
+      create 2,2,0
+      trans 1,1
+      trans 2,2
+      set   %active,3
+      turn  0
+@Nloop
+      create 1,2,1
+      trans 2,1
+      Set   %Active,3
+      jump  @Nloop
+
+bank Alien
+@Aloop
+      scan  #1
+      comp  #1,1
+      jump  @Anoenemy
+      set   %active,0
+      trans 2,2
+      trans 2,3
+      trans 2,4
+      trans 2,5
+      trans 2,%banks
+      trans 2,1
+      set   %active,1
+      jump  @Aloop
+@Anoenemy
+      comp  #1,2
+      jump  @Amove
+      turn  1
+@Amove
+      move
+
+
+
+`,
+
+        "sim.editor.preload.header.3.program.1.name" : "The Overkiller",
+        "sim.editor.preload.header.3.program.1.body" : `; RoboCombat program
+
+Name The Overkiller
+Author Ch. Hufgard
+;Country Germany
+
+
+Bank Overkiller
+ Scan   #1
+ Comp   #1,1
+ Jump   @create
+ Set    %Active,0
+ Set    #1,%banks
+ @destroy
+ @loop
+ Trans  2,#1
+ Sub    #1,1
+ Comp   #1,0
+ Jump   @loop
+ Set    %Active,1
+ @create
+ Comp   #1,2
+ Create 2,2,0
+ Scan   #1
+ Comp   #1,2
+ Jump   @destroy
+ Trans  1,1
+ Trans  2,2
+ @fin
+ Set    %Active,1
+ Turn   1
+
+Bank`,
+
+        "sim.editor.preload.header.4.name": "Rank 4",
+
+        "sim.editor.preload.header.4.program.0.name" : "Delusion 3.7",
+        "sim.editor.preload.header.4.program.0.body" : `;RoboCom program
+
+Name Delusion 3.7
+Author Dennis C. Bemmann
+Country Germany
+
+Bank Delusion Boot         ;1
+  BJump 2,1
+
+Bank Delusion Starter      ;2
+  Create 2, 4, 0
+  Trans  3, 1
+  Set    %active, 1
+  Trans  4, 3
+  Turn   0
+
+  Turn   0
+
+  Create 2, 4, 0
+  Trans  3, 1
+  Set    %active, 1
+  Trans  4, 3
+  Trans  5, 4
+  Turn   0
+
+  Create 2, 4, 0
+  Trans  3, 1
+  Set    %active, 1
+  Trans  4, 3
+  Trans  5, 4
+  Turn   0
+
+  Trans  5, 4
+  Turn   0
+
+  Create 2, 4, 0
+  Trans  3, 1
+  Set    %active, 1
+  Trans  4, 3
+  Trans  5, 4
+
+  Set    #active, 6
+
+  @reg
+  Turn   0
+  Trans  3, 1
+  Jump   @reg
+
+Bank Delusion 1         ;3
+  Create 2, 4, 0
+  Trans  1, 1
+  Set    %active, 1
+  BJump  3, @sc
+
+Bank Delusion 2         ;4
+  @sc
+  Scan   #7
+  Comp   #7, 1
+  BJump  3, @NoOp
+
+  Trans  4, 1
+
+  Trans  2, 2
+  Trans  2, 3
+  Trans  2, 1
+  Trans  2, 5           ; <--- V3.0 
+  Trans  2, 6           ; <--- V3.0 
+  Trans  2, 11          ; <--- V3.0 
+  Trans  2, 4           ; <--- V3.7
+
+;  Set #2, %Banks
+;  @TrNext
+;  Trans 2, 2
+;  Sub #2, 1
+;  Comp #2, 1
+;  Jump @TrNext
+
+  Set    %Active, 1
+  BJump  3, @sc
+
+  @NoOp
+  Comp   #7, 2
+  Create 2, 4, 0
+  Trans  3, 1
+  set    %active, 1
+  Trans  3, 3
+  Trans  4, 4
+  Trans  2, 2           ; <--- V3.0 
+  Turn   1
+  BJump  3, @sc
+
+Bank Frozen            ;5
+  Trans 1, 1
+  Turn  1`,
+
+
+        "sim.editor.preload.header.4.program.1.name" : "Goody2",
+        "sim.editor.preload.header.4.program.1.body" : `; RoboCombat program
+
+Name Goody2
+Author Martin Trautmann
+Country Germany
+
+Bank Jump
+bjump $Banks,2
+die
+
+Bank MiniSeuche
+bjump 2,2
+@mini
+turn 0
+trans 2,2
+trans 1,1
+set %active, 1
+add #14,1
+comp #14,20
+jump @mini
+die
+
+Bank run
+@move
+move
+@anfrun
+set %active, 0
+scan #1
+comp #1,1
+jump @harmlosr
+trans 2,2
+trans 1,1
+;trans 2,%Banks
+set %active, 1
+turn 1
+jump @anfrun
+@harmlosr
+set %active, 1
+comp #1,0
+turn 0
+jump @move
+
+Bank Kill
+@anf
+turn 0
+scan #1
+comp #1,2
+jump @nixkill
+set %active,0
+trans $Banks,%Banks
+trans 1,1
+set %active,1
+@nixkill
+comp #1,0
+die
+add #15,1
+comp #15,5
+jump @anf
+die
+
+
+Bank Creator
+@anfCreate
+turn 0
+scan #1
+comp #1,1
+jump @harmlos
+set %active, 0
+trans 4,1
+trans 1,2
+trans 1,3
+trans 4,%Banks
+set %active, 1
+jump @anfCreate
+@harmlos
+comp #1,2
+jump @nix
+@build
+trans 5,5
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+jump @anfCreate
+@nix
+create 1,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active,1
+create 2,5,0
+trans 4,4
+jump @build
+
+Bank Main
+turn 0
+create 2,5,0
+trans 5,5
+trans 4,4
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+bjump 5,1`,
+
+
+        "sim.editor.preload.header.4.program.2.name" : "LastHopeC",
+        "sim.editor.preload.header.4.program.2.body" : `; RoboCombat program
+
+Name LastHopeC
+Author Jens "Gacel" Rupp
+Country Germany
+
+Bank Boot
+bjump 2,1
+
+Bank Main
+create 2,3,0
+trans 4,1
+set %active,6
+turn 1
+create 2,3,0
+trans 4,1
+set %active,6
+turn 1
+create 2,3,0
+trans 4,1
+set %active,6
+turn 1
+create 2,3,0
+trans 4,1
+set %active,6
+turn 1
+
+trans 3,2
+turn 1
+trans 3,2
+turn 1
+trans 3,2
+turn 1
+trans 3,2
+turn 1
+
+@loop
+trans 3,1
+trans 3,2
+turn 1
+jump @loop
+
+Bank LastHope
+scan #5
+comp #5,1
+;jump @noenemy
+bjump 2,12
+
+@kill
+set #9,%banks
+set #3,0
+@next
+add #3,1
+trans 3,#3
+comp #3,#9
+;jump @lnext
+bjump 2,6
+set %active,6
+bjump 2,1
+
+@noenemy
+comp #5,2
+create 2,3,0
+scan #5
+comp #5,2
+jump @kill
+trans 2,2
+trans 2,1
+set %active,6
+turn 1
+bjump 2,1
+
+
+Bank Fill
+scan #5
+comp #5,0
+jump @trans
+create 2,3,0
+@trans
+trans 1,1
+set %active,6
+turn 1
+bjump 2,1
+
+`,
+
+
+        "sim.editor.preload.header.4.program.3.name" : "Test 3-1",
+        "sim.editor.preload.header.4.program.3.body" : `; RoboCombat program
+
+Name Test 3-1
+Author Harald Buck
+;Country Germany
+
+Bank S
+    Bjump 3,1
+
+Bank SAVE
+    Bjump 3,1
+
+Bank MAIN
+    create 2,4,1
+    trans 2,1
+    trans 2,2
+    trans 4,3
+    trans 5,4
+    set %Active,1
+    turn 1
+
+Bank REPLICATE
+
+    create 1,2,1
+    trans 4,1
+    set %active,1
+    turn 0
+    move 
+
+    create 2,4,1
+    trans 2,1
+    trans 2,2
+    trans 3,3
+    trans 4,4
+    set %Active,1
+    turn 1
+    move
+        
+Bank MINE
+@Mine0
+  Set %Active, 0     ; Deactivate potential enemy.
+  Scan #1            ; Scan the field.
+  Comp #1, 1         ; Is an enemy?
+  Jump @Mine2       ; No,
+  set #2,%Banks
+@Mine1
+  Trans 2, #2         ; Transfer Black Bank.
+  sub #2,1
+  comp #2,0
+  JUMP @Mine1       ; nicht 0
+  jump @Mine3
+@Mine2  
+  comp #1,2 ; own?
+  jump @Mine4   ;no
+@Mine3
+    set %Active,1
+    turn 0
+
+@Mine4
+ move                     ; Auto-Reboot
+`,
+
+        "sim.editor.preload.header.5.name": "Rank 5",
+
+        "sim.editor.preload.header.5.program.0.name" : "Seuche3",
+        "sim.editor.preload.header.5.program.0.body" : `; RoboCombat program
+
+Name Seuche3
+Author Matin und Flori
+Country Germany
+
+
+Bank InitialMain
+bjump 5,1
+
+Bank microvirus
+@anf
+trans 1,1
+trans 1,2
+turn 0
+add #19,1
+comp #19,4
+jump @anf
+die
+
+Bank NullenMain
+bjump 3,2
+@numain
+move
+scan #4
+comp #4,2
+jump @deakt
+set %active,1
+turn 0
+jump @numain
+@deakt
+set %active,0
+trans 2,1
+trans 2,2
+set %active,1
+comp #1,0
+turn 1
+jump @numain
+
+Bank NormaloMain
+bjump 4,2
+@normain
+move
+move
+scan #1
+comp #1,2
+jump @KeinEigener
+trans 3,3
+trans 4,4
+set %active,1
+turn 1
+jump @normain
+@KeinEigener
+comp #1,0
+jump @kill
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+create 1,3,1
+trans 3,3
+trans 2,2
+trans 3,1
+set %active, 1
+turn 0
+jump @normain
+@kill
+set %active, 0
+trans 2,1
+trans 2,2
+set %active, 1
+jump @normain
+
+Bank Häuptling
+set %active, 0
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+turn 1
+set %active, 0
+create 2,4,0
+trans 6,4
+trans 3,3
+trans 2,2
+trans 6,1
+set %active, 1
+turn 1
+set %active, 0
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+turn 1
+set %active, 0
+create 2,4,0
+trans 6,4
+trans 3,3
+trans 2,2
+trans 6,1
+set %active, 1
+turn 1
+
+Bank Nullenfactory
+bjump 4,3
+@factory
+turn 0
+scan #1
+comp #1,1
+jump @harmlos
+set %active, 0
+trans 2,1
+trans 2,2
+set %active, 1
+jump @factory
+@harmlos
+comp #2,2
+jump @create
+trans 3,3
+trans 4,4
+set %active, 1
+jump @factory
+@create
+create 1,3,1
+trans 3,3
+trans 2,2
+trans 3,1
+set %active, 1
+create 2,4,0
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active,1
+jump @factory`,
+
+
+        "sim.editor.preload.header.5.program.1.name" : "Zwei Arten",
+        "sim.editor.preload.header.5.program.1.body" : `; RoboCom Programm
+
+Name Zwei Arten
+Author Florian Fischer
+country Deutschland, 71364 Winnenden
+
+Bank InitialMain
+@Beginn
+create 2,2,1
+@RepToeter
+set %active,0
+trans 2,1
+trans 3,2
+set %active,1
+turn 1
+scan #1
+comp #1,2
+jump @KeinEigener
+comp %Banks,3
+jump @RepToeter
+jump @RepInfekt
+@KeinEigener
+comp #1,0
+trans 3,1
+create 2,3,1
+@RepInfekt
+set %active,0
+trans 4,1
+trans 5,2
+trans 3,3
+set %active,1
+turn 1
+scan #1
+comp #1,2
+jump @KeinEigener2
+comp %Banks,3
+jump @RepToeter
+jump @RepInfekt
+@KeinEigener2
+comp #1,0
+trans 3,1
+jump @Beginn
+
+Bank ToeterMain
+@Beginn2
+move
+move
+set %active,0
+scan #1
+comp #1,2
+jump @KeinEigener4
+comp %Banks,2
+jump @TurnL
+@RepToeter2
+trans 1,1
+trans 2,2
+jump @TurnR
+@KeinEigener4
+comp #1,1
+jump @Neuer2
+set #2,%Banks
+@zaehl
+trans 2,#2
+sub #2,1
+comp #2,0
+jump @zaehl
+jump @TurnL
+@Neuer2
+create 2,2,1
+jump @RepToeter2
+@TurnL
+set %active,1
+turn 0
+jump @Beginn2
+@TurnR
+set %active,1
+turn 1
+
+Bank Leer
+
+Bank InfektMain
+@Beginn3
+move
+move
+set %active,0
+scan #1
+comp #1,2
+jump @KeinEigener3
+comp %Banks,3
+jump @TurnR2
+@RepInfekt2
+trans 1,1
+trans 2,2
+trans 3,3
+jump @TurnL2
+@KeinEigener3
+comp #1,1
+jump @Neuer
+trans 2,1
+trans 3,2
+trans 3,3
+jump @TurnR2
+@Neuer
+create 2,3,1
+jump @RepInfekt2
+@TurnL2
+set %active,1
+turn 0
+jump @Beginn3
+@TurnR2
+set %active,1
+turn 1
+
+Bank Langvirus
+@Beginn4
+move
+set %active,0
+scan #1
+comp #1,2
+jump @KeinEigener5
+set #2,%Banks
+@zaehl2
+trans 2,#2
+sub #2,1
+comp #2,0
+jump @zaehl2
+jump @TurnL5
+@KeinEigener5
+comp #1,1
+jump @Beginn4
+set %active,1
+turn 1
+jump @Beginn4
+@TurnL5
+set %active,1
+turn 0
+`,
+
+
+        "sim.editor.preload.header.5.program.2.name" : "Alpha",
+        "sim.editor.preload.header.5.program.2.body" : `; RoboCombat program
+
+Name Alpha
+Author Nemo
+Country Deutschland
+
+Bank 
+ Scan #1
+ Comp #1,0
+ BJump 4,1
+ Create 2,6,0
+ Trans  1,1
+ Set %active,1
+ BJump 2,1
+
+Bank
+ Trans 2,2
+ Turn 1
+ Scan #1
+ BJump 3,1
+
+Bank
+ Trans 3,3
+ Comp #1,0
+ BJump 4,1
+ BJump 1,1
+
+Bank
+ Comp #1,1
+ BJump 5,1
+ Set %Active,0
+ Set #1,%banks
+ @Loop
+ Trans 6,#1
+ Sub #1,1
+ Comp #1,0
+ Jump @Loop
+ Set %Active,1
+ BJump 1,1
+
+Bank
+ Trans 1,1
+ Trans 4,4
+ Trans 5,5
+ Set %Active,1
+ BJump 2,1
+
+Bank
+ Die`,
+
+
+        "sim.editor.preload.header.5.program.3.name" : "Conciler",
+        "sim.editor.preload.header.5.program.3.body" : `; RoboCom program
+
+Name Conciler
+Author Dennis C. Bemmann
+Country Germany
+
+Bank BootCon
+  BJump 6, 1
+
+Bank 2Con
+  Trans 2, 2
+  Turn 1
+;  BJump 3, 1
+  BJump 4, 1
+  Trans 2, 2
+
+Bank 3Con
+  Trans 3, 3
+  Turn 1
+;  BJump 4, 1
+  BJump 5, @tr
+
+Bank 4Con
+  Trans 4, 4
+  Turn 1
+;  BJump 5, @tr
+  BJump 3, 1
+
+Bank Conciler
+  @tr
+  Trans 3, 3
+  Trans 1, 1
+  Scan #7
+  Sub #7, 1
+  Set %active, #7
+  Trans 2, 2
+  Trans 3, 3
+  Trans 4, 4
+  Scan #4
+  Comp #4, 1
+  Trans 5, 5
+  Trans 6, 6
+  Set %active, 1
+  Comp #4, 1
+  Jump @ck
+  Trans 3, 3
+  Trans 3, 3
+  Trans 3, 3
+  Trans 3, 3
+  Trans 6, 1
+
+  @ck
+  Turn 0
+  Comp %banks, 0
+  Jump @tr
+
+  @bld
+  Create 2, 6, 0
+  Jump @tr
+
+
+Bank StartCon
+  Create 2, 6, 0
+  Trans 8, 1
+  Set %active, 6
+  Trans 5, 5
+  Trans 2, 2
+  Trans 7, 1
+  Trans 3, 3
+  Trans 4, 4
+  Turn 0
+  Create 2, 6, 0
+  Trans 8, 1
+  Set %active, 6
+  Trans 5, 5
+  Trans 2, 2
+  Trans 7, 1
+  Trans 3, 3
+  Trans 4, 4
+  Turn 0
+  Create 2, 6, 0
+  Trans 8, 1
+  Set %active, 6
+  Trans 5, 5
+  Trans 2, 2
+  Trans 7, 1
+  Trans 3, 3
+  Trans 4, 4
+  Turn 0
+  Create 2, 6, 0
+  Trans 8, 1
+  Set %active, 6
+  Trans 5, 5
+  Trans 2, 2
+  Trans 7, 1
+  Trans 3, 3
+  Trans 4, 4
+  @endloop
+  Turn 0
+  Trans 6, 1
+  Trans 2, 2
+  Trans 3, 3
+  Trans 4, 4
+  Jump @endloop
+
+Bank 1Con
+  Trans 1, 1
+  Turn 1
+  BJump 2, 1
+
+Bank ConQuick
+  Create 2, 6, 0
+`,
+
+
+        "sim.editor.preload.header.5.program.4.name" : "Flooder 1.0",
+        "sim.editor.preload.header.5.program.4.body" : `Name Flooder 1.0
+Author Rodex, rodex@sci.fi
+
+; Little more complex that my usual bots..
+; Very efficient. Acts little like TheMob,
+; but have several advantages.. like FireWall
+; and Hitman. FireWall isn't actually a bot,
+; but more like actionmode, for basic flooder,
+; that has done it job. FireWall creates Hitmans
+; and turns back to flooder method, when in
+; danger. After defending it self ofcourse.
+; Hitman is purely hitman, it only act is to
+; seek enemy and destroy it.
+; Flooder is actually older bot than TheMob,
+; but can beat even TheMob.NextG.
+
+bank Starter            ;bank: 1
+      create 2,4,0
+      trans 2,1
+      trans 3,2
+      trans 4,3
+      set   %active,1
+      turn  1
+
+bank Flooder            ;bank: 2,1
+      set   #1,2
+@turn2
+      scan  #2
+      comp  #2,0
+      jump  @nope
+      create 2,4,0
+      trans 1,1
+      trans 2,2
+      trans 3,3
+      set   %active,1
+@nope
+      turn 0
+      sub   #1,1
+      comp  #1,0
+      jump  @turn2
+      bjump 2,1
+
+bank FireWall           ;bank: 3,2
+@next
+      scan  #1
+      comp  #1,0
+      jump  @friend?
+      create 1,2,1 
+      trans 3,1
+      trans 4,2
+      set   %active,1
+      jump  @activate
+@friend?
+      comp  #1,2
+      jump  @enemy
+@activate
+      turn  0
+      jump  @next     
+@enemy
+      set   %active,0
+;@transloop
+;      trans 4,#2
+;      sub   #2,1
+;      comp  #2,0
+;      jump  @transloop
+;      set   %active,1
+      turn  0
+      bjump  1,1
+
+bank Hitman             ;bank: 4,3,1
+@hitloop
+      scan  #1
+      comp  #1,1
+      jump  @notenemy
+      set   %active,0
+      set   #2,%banks
+@transhitloop
+      trans 2,#2
+      sub   #2,1
+      comp  #2,0
+      jump  @transhitloop
+      set   %active,1
+      jump  @hitloop
+@notenemy
+      comp  #1,2
+      jump  @movehitman
+      turn  1
+@movehitman
+      move
+
+
+`,
+
+
+        "sim.editor.preload.header.5.program.5.name" : "Goodymorph",
+        "sim.editor.preload.header.5.program.5.body" : `; RoboCombat program
+
+Name Goodymorph
+Author Martin Trautmann
+Country Germany
+
+Bank Jump
+bjump $Banks,2
+die
+
+Bank MiniSeuche
+bjump 2,2
+@mini
+turn 0
+trans 2,2
+trans 1,1
+set %active, 1
+add #14,1
+comp #14,50
+jump @mini
+die
+
+Bank run
+@move
+move
+@anfrun
+set %active, 0
+scan #1
+comp #1,1
+jump @harmlosr
+trans 2,2
+trans 1,1
+trans 3,%Banks
+set %active, 1
+turn 1
+jump @anfrun
+@harmlosr
+set %active, 1
+comp #1,2
+jump @move
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+jump @move
+
+Bank Kill
+@anf
+turn 0
+scan #1
+comp #1,2
+jump @nixkill
+set %active,0
+trans $Banks,%Banks
+trans 1,1
+set %active,1
+@nixkill
+comp #1,0
+die
+add #15,1
+comp #15,5
+jump @anf
+die
+
+
+Bank Creator
+@anfCreate
+turn 0
+scan #1
+comp #1,1
+jump @harmlos
+set %active, 0
+trans 4,1
+trans 1,2
+trans 1,3
+trans 4,%Banks
+set %active, 1
+jump @anfCreate
+@harmlos
+comp #1,2
+jump @nix
+@build
+trans 5,5
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+jump @anfCreate
+@nix
+create 1,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active,1
+create 2,5,0
+trans 4,4
+jump @build
+
+Bank Jump
+bjump $Banks,2
+die
+
+Bank Main
+turn 0
+create 2,5,0
+trans 5,5
+trans 4,4
+trans 3,3
+trans 2,2
+trans 6,1
+set %active, 1
+
+@anfMain
+turn 0
+scan #1
+comp #1,1
+jump @harmlosm
+set %active, 0
+trans 4,1
+trans 1,2
+trans 1,3
+trans 4,%Banks
+set %active, 1
+jump @anfMain
+@harmlosm
+comp #1,2
+jump @nixm
+@buildm
+trans 5,5
+trans 3,3
+trans 2,2
+trans 6,1
+set %active, 1
+jump @anfMain
+@nixm
+create 1,3,1
+trans 3,3
+trans 2,2
+trans 6,1
+set %active,1
+create 2,5,0
+trans 4,4
+jump @buildm
+`,
+
+        "sim.editor.preload.header.5.program.5.name" : "Lauf und Mine",
+        "sim.editor.preload.header.5.program.5.body" : `; RoboCom Programm
+
+Name Lauf und Mine
+Author Florian Fischer
+country Deutschland, 71364 Winnenden
+
+Bank InitialMain
+@Anfang1
+create 2,3,1
+@RepLaeufer
+set %active,0
+trans 2,1
+trans 3,2
+trans 4,3
+set %active,1
+turn 1
+scan #1
+comp #1,2
+jump @KeinEigener
+jump @RepLaeufer
+@KeinEigener
+comp #1,0
+trans 5,1
+jump @Anfang1
+
+Bank LaeuferMain
+@Anfang
+move
+move
+set %active,0
+scan #1
+comp #1,1
+jump @KeinFeind
+set #2,%Banks
+@zaehl
+trans 2,#2
+sub #2,1
+comp #2,0
+jump @zaehl
+set #20,1
+jump @TurnL
+@KeinFeind
+comp #1,0
+jump @Rep
+jump @MNeue
+@Rep
+comp %Banks,3
+jump @VorTurnL
+jump @RepW
+@MNeue
+comp #20,0
+jump @Mine
+create 2,3,1
+@RepW
+trans 1,1
+trans 3,3
+jump @MFertig
+@Mine
+create 1,2,0
+trans 3,1
+@MFertig
+trans 2,2
+set #20,0
+set %active,1
+turn 1
+jump @Anfang
+@VorTurnL
+set #20,0
+@TurnL
+set %active,1
+turn 0
+
+Bank MiniVirus
+@kill
+move
+scan #1
+comp #1,2
+jump @kill
+trans 1,1
+trans 1,2
+die
+
+Bank MineMain
+set %active,0
+scan #1
+comp #1,1
+jump @Turn
+set #2,%Banks
+@zaehl2
+trans 2,#2
+sub #2,1
+comp #2,0
+jump @zaehl2
+@Turn
+set %active,1
+turn 0
+
+Bank LeereBank`,
+
+
+        "sim.editor.preload.header.5.program.6.name" : "TheMob.NextG2",
+        "sim.editor.preload.header.5.program.6.body" : `name TheMob.NextG2
+author Rodex, rodex@sci.fi
+
+; Very simble idea of having mob of bots at field..
+; Seems _VERY_ efficient.. since there is no superior
+; way to win TheMob.. :)
+; Samekinda, than 'TheMob.NextG', but uses Hitman from
+; Floader, instead of implant. Hitman is ofcourse
+; modifiend to seek it's friends. I call that kinda hitman
+; a BackStabber. ;]
+; + More efficient offence. (same than in TheMob2)
+; + More efficient BackStabbers.
+
+bank MobNG2
+@again
+      scan  #1
+      comp  #1,1
+      jump  @notenemy
+      set   %active,0
+      set   #2,%banks
+@mouskis
+      trans 2,#2
+      sub   #2,1
+      comp  #2,0
+      set   %active,1
+      jump  @mouskis
+      jump  @again
+@notenemy
+      comp  #1,0
+      jump  @turn
+      create 2,2,0
+      trans 1,1
+      trans 2,2
+      set   %active,1
+@turn
+      turn  1
+
+bank BackStabber  ;Friend seekking hitman
+@hitloop
+      scan  #1
+      comp  #1,2
+      jump  @notfriend
+      set   %active,0
+      set   #2,%banks
+@transhitloop
+      trans 2,#2
+      sub   #2,1
+      comp  #2,0
+      jump  @transhitloop
+      set   %active,1
+      die
+@notfriend
+      comp  #1,1
+      jump  @movehitman
+      turn  0
+@movehitman
+      move
+
+`,
+
+
+        "sim.editor.preload.header.5.program.7.name" : "Rainman",
+        "sim.editor.preload.header.5.program.7.body" : `Name Rainman
+Author Peter Silie
+Country Germany
+
+Bank RAINMAN
+Turn 1
+Create 2, 3, 1
+Trans 2, 1
+Trans 3, 2
+Set %Active, 1
+Turn 1
+
+Bank GenNext
+Turn 1
+Trans 3, 1
+Trans 3, 2
+Create 1, 2, 1
+Trans 2, 1
+Set %Active, 1
+Turn 0
+Trans 3, 1
+Trans 3, 2
+Set %Active, 1
+Move
+
+Bank RUNNER
+@loop
+Scan #1
+Comp #1, 2
+Jump @ok
+Set %Active, 1
+Turn 1
+Move 
+Turn 0
+Jump @loop
+@ok 
+Trans 2, 1
+Trans 2, 2
+Trans 2, 3
+Trans 2, 4
+Set %Active, 1
+Move
+
+Bank EMPTY
+`,
+        "sim.editor.preload.header.5.program.8.name" : "Sweeper",
+        "sim.editor.preload.header.5.program.8.body" : `name Sweeper
+author Rodex, rodex@sci.fi
+country Finland
+
+
+bank Starter
+      bjump 3,1
+
+
+bank Sweeper
+@Sweep
+      scan  #1
+      comp  #1,1
+      jump  @ok
+      set   #2,%banks
+@inject      
+      trans 1,#2
+      sub   #2,1
+      comp  #2,0
+      jump  @inject
+      die
+@ok
+      comp  #1,0
+      jump  @trans
+      create 2,1,0
+@trans
+      trans 1,1
+      set   %active,6
+      turn  1
+      comp  $banks,1
+      add   #6,1
+      comp  #6,4
+      jump  @sweep
+      die
+
+bank Sweep
+@mainloop      
+      create 2,1,0
+      trans 2,1
+      set   %active,6
+      turn  0
+      jump  @mainloop
+`,
+
+        "sim.editor.preload.header.5.program.8.name" : "Tom Himself",
+        "sim.editor.preload.header.5.program.8.body" : `; RoboCom program
+
+Name Tom Himself
+Author Dennis C. Bemmann
+Country Germany
+
+Bank Boot
+  BJump 3, 1
+
+Bank Tom
+  @q
+  Comp   #active, 11
+  Sub    #active, 1
+  Turn   1
+
+  @t
+  Trans  2, 1
+  Trans  2, 2
+  Trans  2, 3
+
+  Scan   #4
+  Comp   #4, 1
+  Set    %active, #active
+
+  Turn   0
+  
+  Comp   %Banks, 0
+  BJump  2, 4
+  Create 2, 2, 0
+
+  Comp   #active, 1
+  BJump  2, 1
+  Die
+
+Bank Starter
+  Create 2, 2, 0
+  Trans  2, 1
+  Set    %active, 11
+  Trans  2, 2
+  Turn   1
+  Create 2, 2, 0
+  Trans  2, 1
+  Set    %active, 11
+  Trans  2, 2
+  Turn   1
+  Create 2, 2, 0
+  Trans  2, 1
+  Set    %active, 11
+  Trans  2, 2
+  Turn   1
+  Create 2, 2, 0
+  Trans  2, 1
+  Set    %active, 11
+  Trans  2, 2
+  Set    #active, 11
+  BJump  2, 1
+
+`,
+
+        "sim.editor.preload.header.6.name": "Rank 6",
+
+        "sim.editor.preload.header.6.program.0.name" : "Activator3",
+        "sim.editor.preload.header.6.program.0.body" : `; RoboCombat program
+
+Name Activator3
+Author Martin Trautmann
+Country Germany
+
+
+Bank Main
+set #1,$Banks
+bjump #1,1
+
+Bank Mini
+@ex
+trans 1,1
+set %active, 1
+turn 1
+jump @ex
+
+Bank Cotzi
+trans 1,1
+move
+trans 1,1
+move
+@cotz
+trans 1,1
+create 2,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+trans 1,1
+turn 0
+create 1,2,1
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+jump @cotz
+
+Bank Activator
+@turn
+trans 1,1
+set %active, 1
+turn 0
+set %active, 0
+scan #1
+comp #1,2
+jump @turn
+comp #1,1
+jump @create
+set #2,%Banks
+trans 2,#2
+jump @turn
+@create
+create 2,2,0
+trans 2,2
+
+Bank Acticotzi
+trans 1,1
+move
+trans 1,1
+move
+@accotz
+trans 1,1
+create 2,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+trans 1,1
+turn 0
+create 2,2,1
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+jump @accotz
+
+Bank Killer
+@go
+turn 0
+scan #1
+comp #1,1
+jump @mach
+set %active,0
+set #2, %banks
+trans 2,#2
+set %active,1
+jump @go
+@mach 
+comp #1,0
+jump @go
+create 1,3,0
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1 
+
+Bank Spion
+set #3,$Banks
+set #5,0
+set #6,0
+@anf
+comp #5,3
+jump @goon
+comp #6,4
+jump @goonn
+die
+@goonn
+add #6,1
+@goon
+add #5,1
+turn 1
+scan #1
+comp #1,2
+jump @anf
+set %active,0
+trans 1,1
+set #4,%Banks
+trans #3,#4
+set %active,1
+jump @anf
+
+
+Bank Creators
+move
+move
+turn 0
+create 2,3,0
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1 
+
+
+
+Bank exec
+create 2,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+create 2,3,1
+trans 5,3
+trans 2,2  ;trans 4,2
+trans 1,1
+set %active, 1
+turn 0
+create 2,4,1
+trans 8,4
+trans 6,3
+trans 7,2
+trans 1,1
+set %active, 1
+turn 0
+
+`,
+
+        "sim.editor.preload.header.6.program.1.name" : "Fruchtzwerk",
+        "sim.editor.preload.header.6.program.1.body" : `Name Fruchtzwerk
+Author Markus_Boehm
+
+Bank Killer
+  @Loop
+
+set %active, 0
+set #1, %banks
+
+comp #1,0
+jump @kill
+
+  create 2,2,0
+  trans 1,1
+  Set %Active, 1
+  turn 0
+jump @loop
+
+
+@kill
+trans 2,#1
+sub #1,1
+comp #1,0
+jump @kill
+
+set %active,1
+turn 0
+
+Bank killer2
+  Die`,
+
+        "sim.editor.preload.header.6.program.2.name" : "Kommari 2.1",
+        "sim.editor.preload.header.6.program.2.body" : `Name Kommari 2.1
+Author Juippi <juhoheik@lyseolukio2.kajaani.fi>
+Country Finland
+
+Bank ALKU  ; 1
+
+ Set #13, 666
+
+ Create 2, 4, 0  ; Tee tartuttajatehdas
+ Trans 2,1 ; Ohjelma sille (Tehdas1)
+ Trans 3,2 ; Levitt„j„n ohjelma
+ Trans 4,3 ; Levitett„v„ virus
+ Set %Active, 1
+
+ @Eityhj„„
+ Turn 1
+ Scan #1
+ Comp #1, 0
+ Jump @Eityhj„„
+
+Bank TEHDAS1 ; 2 : 1=oma 2=levitt„j„n ohjelma 3=virus 4=tyhj„
+; Itsest„ kopio
+ Set #13, 666   ; tunnistus
+
+@kloonaudu
+ Create 2, 4, 0
+ Trans 1, 1
+ Trans 2, 2
+ Trans 3, 3
+ Set %Active, 1
+
+@Eitilaa1
+ Turn 0
+ Scan #1
+ Comp #1, 0
+ Jump @Eitilaa1
+
+@tuota
+ Create 1,3,1 ; Tee levitt„j„
+ Trans 2,1 ; levitt„j„n ohjelma
+ Trans 3,2 ; virus
+ Set %Active, 1
+
+@Eitilaa2
+ Turn 1
+ Scan #1
+ Comp #1, 0
+ Jump @Eitilaa2
+
+
+Bank LEVITTŽJŽ ; 3 : Levitt„„ viruksen vihollisiin ja korjaa omat
+; 1=oma ohjelma, 2=virus, 3=tyhj„
+
+ Set #13, 666   ; tunnistus
+
+ @Liiku1
+ Move
+
+ Set %Active, 0  ; deaktivoi edess„
+ Scan #1         ; skannataan   0=tyhj„ 1=paha 2=oma
+ Comp #1, 2      ; onko oma?
+ Jump @eioma1    ; Jos ei, hyppy
+
+ Set #19, %Banks ; monta pankkia?
+ Comp #19, 3     ; toinen levitt„j„?
+ Jump @aktivoi1  ; no ei ole, ei r„vellet„
+
+ Trans 1, 1      ;
+ Trans 2, 2      ; j00, korjaamme
+ Trans 3, 3      ;
+
+ Jump @aktivoi1
+ @eioma1
+ Comp #1, 1      ; Onko vihollinen?
+ Jump @Liiku1    ; ei oo, joten on tyhj„ => liiku
+
+ Set #4, %Banks  ; tartuttajalooppi
+ Comp #4, 1
+ Jump @Transloop1  ; ei yksipankkinen => looppi
+
+ Jump @vainvirusta ; Jos vain yksipankkinen, apuvirusta ei voi laittaa
+
+ @Transloop1
+ Trans 3,#4      ; apuviirusta t„yteen vaan
+ Sub #4, 1
+ Comp #4, 1
+ Jump @Transloop1
+
+@vainvirusta
+ Trans 2, 1 ; itse virusohjelma
+
+ @aktivoi1
+ Set %Active, 1
+
+ @K„„nny1
+ Turn 0
+
+ ;Autoreboot
+
+; >>>>>>>>>>>>>>>>>>>>
+;  T„t„ levitet„„n!!!
+; >>>>>>>>>>>>>>>>>>>>
+
+
+Bank VIIRUZ   ; 4 : Virus
+
+ Comp #13, 666  ; jos ollaan v„„r„ss„ robossa, henkipois
+ Jump @alku
+ Die
+
+@Alku
+ Comp $Mobile, 1
+ Turn 1
+
+ Comp $Mobile, 0
+ Move
+
+ add #5, 1         ; Itsaricountteria isommalle
+ Comp #5, 30        ; Joko possahdetaan
+ Jump @eikuola
+ Die               ; No totta helevetiss„
+@eikuola
+
+ Set %Active, 0    ; deaktivoi
+ Scan #1           ; mit„ siell„ onkaan.. ?
+ Comp #1, 2        ; oma?
+ Jump @eioma
+
+; Joo, jez
+ Trans 1, 1     ; Ja virusta
+
+ Comp %Banks, 1         ; Onko yksipankkinen?
+ Jump @Eit1
+ Jump @Eitrans          ; joo, ei looppia
+@Eit1
+
+ Comp $Banks, 1         ; Onko minulla kakkospankkia?
+ Jump @Trans        ; on, looppiin vaan
+ Jump @Eitrans
+@Trans
+
+ Trans 2, 2
+ Trans 2, 3
+ Trans 2, 4
+
+@Eitrans
+
+ Jump @aktivoi
+
+ @eioma            
+ Comp #1, 1         ; vihollinen? jos ei, tyhj„„
+ Jump @Alku
+
+ @aktivoi
+ Set %Active, 1 ; viholliset aktivoidaan
+
+ Comp $Mobile, 0
+ Turn 1
+; Autoreboot
+`,
+
+        "sim.editor.preload.header.6.program.3.name" : "Einfachst-DM.DV",
+        "sim.editor.preload.header.6.program.3.body" : `; RoboCom Programm
+
+Name Einfachst-DM.DV
+Author Florian Fischer
+country Deutschland, 71364 Winnenden
+
+Bank Jump1
+bjump 5,1
+
+Bank Jump2
+bjump 5,1
+
+Bank MiniMain
+set %active,0
+scan #1
+comp #1,1
+jump @KF
+trans 2,1
+trans 2,2
+jump @Turn
+@KF
+comp #1,2
+create 2,2,0
+trans 1,1
+trans 2,2
+@Turn
+set %active,1
+turn 1
+
+Bank DrehVirus
+@Anfang2
+turn 1
+add #18,1
+comp #18,50
+jump @Next
+die
+@Next
+scan #1
+comp #1,2
+jump @Anfang2
+trans 1,1
+
+Bank FFInitMain
+@Anfang3
+create 2,2,0
+@Rep2
+set %active,0
+trans 3,1
+trans 4,2
+set %active,1
+@Turn2
+turn 1
+set %active,0
+scan #1
+comp #1,1
+jump @KF2
+set #2,%Banks
+@Zaehl
+trans 4,#2
+sub #2,1
+comp #2,0
+jump @Zaehl
+set %active,1
+jump @Turn2
+@KF2
+comp #1,0
+jump @Rep2
+jump @Anfang3
+
+; Ende
+
+; Aufheben:Drehvirus
+
+`,
+
+        "sim.editor.preload.header.6.program.4.name" : "DoomMob 1.6",
+        "sim.editor.preload.header.6.program.4.body" : `Name DoomMob 1.6
+Author Rodex, rodex@sci.fi
+Country Finland
+
+bank  start
+      bjump 3,1
+
+bank Doom
+@Dloop
+      turn 0
+      trans 1,1     
+      add   #7,1
+      comp  #7,4
+      die
+
+Bank DoomMob
+@loops      
+      scan  #1
+      comp  #1,1
+      jump  @Nope
+@kill      
+      set   %active,0
+      set   #2,%banks
+@Doomloop
+      trans 2,#2
+      sub   #2,1
+      comp  #2,-1
+      jump  @Doomloop
+      set   %active,4
+      jump  @loops
+@Nope
+      comp  #1,0
+      jump  @turn
+      create 2,4,0
+      trans 2,2
+      trans 3,3
+      trans 4,4
+      trans 4,1
+      set   %active,6
+@turn
+      comp  %active,6
+      jump  @kill
+      comp  #1,1
+      trans 4,1
+      turn  0
+      jump  @loops
+
+bank Continue
+      bjump 3,1
+`,
+
+        "sim.editor.preload.header.6.program.5.name" : "Geza’s McRobi",
+        "sim.editor.preload.header.6.program.5.body" : `Name Geza's McRobi
+Author Geza Herman
+
+Bank
+  Turn 0
+@Init
+  Set #2, 5
+@Friend
+  Set %Active, 1
+  Turn 1
+
+@ScanAgain
+  Scan #1
+  Comp #1, 1
+  Jump @NotEnemy
+
+  Trans 2, 1
+  Trans 2, 2
+  Trans 2, 3
+  Trans 2, 4
+  Trans 2, #2
+  Add   #2, 1
+  Comp  #2, 8
+  Jump  @ScanAgain
+  Jump  @Init
+
+@NotEnemy
+  Create 2, 2, 0
+  Trans 1, 1
+  Trans 2, 2
+  Jump @Friend
+
+Bank
+  Die
+`,
+
+        "sim.editor.preload.header.6.program.6.name" : "Martins Echter",
+        "sim.editor.preload.header.6.program.6.body" : `; RoboCombat program
+
+Name Martins Echter
+Author Martin Trautmann (MartinTrautmann@gmx.de)
+Country Schwabeländle 
+
+Bank Jump
+bjump 20,2
+
+Bank Kaes10
+die
+Bank Kaes11
+die
+Bank Kaes12
+die
+Bank Kaes13
+die
+Bank Kaes14
+die
+Bank Kaes15
+die
+Bank Kaes16
+die
+Bank Kaes17
+die
+Bank Kaes18
+die
+Bank Kaes19
+die
+
+Bank MiniSeuche
+bjump 2,2
+turn 0
+trans 2,2
+trans 2,1
+set %active, 1
+add #14,1
+comp #14,99
+bjump 2,2
+die
+
+Bank run
+@move
+move
+@anfrun
+set %active, 0
+scan #1
+comp #1,1
+jump @harmlosr
+trans 2,2
+trans 2,1
+jump @aktivieren
+@harmlosr
+comp #1,2
+jump @move
+@aktivieren
+set %active,1
+turn 0
+jump @anfrun
+
+Bank Kill
+bjump $Banks,2
+@anf
+turn 0
+scan #1
+comp #1,2
+jump @nixkill
+set %active,0
+set #2,%Banks
+@loop
+trans $Banks,#2
+sub #2,1
+comp #2,1
+jump @loop
+set %active,1
+@nixkill
+add #15,1
+comp #15,50
+jump @anf
+die
+
+
+Bank Creator
+@anfCreate
+turn 0
+scan #1
+comp #1,1
+jump @harmlos
+set %active, 0
+set #2,%Banks
+@Schleifenzaehlen
+trans 4,#2
+sub #2,1
+comp #2,1
+jump @Schleifenzaehlen
+set %active, 1
+trans 4,2
+jump @anfCreate
+@harmlos
+comp #1,0
+jump @eigener
+create 1,3,1
+trans 3,3
+trans 2,2
+trans 5,1
+set %active,1
+trans 5,1
+create 2,6,0
+@eigener
+trans 6,6
+trans 5,5
+trans 4,4
+trans 3,3
+trans 2,2
+trans 5,1
+set %active, 1
+jump @anfCreate
+
+Bank Jump
+bjump $Banks,2
+
+Bank Kaes7
+die
+Bank Kaes8
+die
+Bank Kaes9
+die
+
+Bank Main
+turn 0
+create 2,6,0
+trans 15,6
+trans 16,5
+trans 14,4
+trans 13,3
+trans 12,2
+trans 16,1
+set %active, 1
+turn 0
+create 2,6,0
+trans 15,6
+trans 16,5
+trans 14,4
+trans 13,3
+trans 12,2
+trans 16,1
+set %active, 1
+turn 0
+create 2,6,0
+trans 15,6
+trans 16,5
+trans 14,4
+trans 13,3
+trans 12,2
+trans 16,1
+set %active, 1
+turn 0
+create 2,6,0
+trans 15,6
+trans 16,5
+trans 14,4
+trans 13,3
+trans 12,2
+trans 16,1
+set %active, 1
+@anfmain
+scan #1
+comp #1,1
+jump @harmlosmain
+set %active,0
+set #2,%Banks
+@loopmain
+trans 4,#2
+sub #2,1
+comp #2,0
+jump @loopmain
+set %active,1
+turn 0
+jump @anfmain
+@harmlosmain
+comp #1,2
+create 2,6,0
+trans 15,6
+trans 16,5
+trans 14,4
+trans 13,3
+trans 12,2
+trans 16,1
+set %active, 1
+turn 0
+jump @anfmain
+
+Bank Kaes21
+bjump 20,1
+
+Bank Kaes22
+bjump 20,1
+
+Bank Kaes23
+bjump 20,1
+
+Bank Kaes24
+bjump 20,1
+
+Bank Kaes25
+bjump 20,1
+
+Bank Kaes26
+bjump 20,1
+
+Bank Kaes27
+bjump 20,1
+
+Bank Kaes28
+bjump 20,1
+
+Bank Kaes29
+bjump 20,1
+
+Bank Kaes30
+bjump 20,1
+`,
+
+        "sim.editor.preload.header.6.program.7.name" : "inter#active",
+        "sim.editor.preload.header.6.program.7.body" : `; RoboCom program
+
+Name inter#active
+Author Dennis C. Bemmann
+Country Germany
+
+; So this is inter#active
+; You're confused???
+; Well, me too!
+
+Bank Boot
+  BJump 2, 1
+
+Bank Build
+  Create 2, 2, 0
+  Trans  3, 1
+  Trans  4, 2
+  Set    %active, 2
+  Turn   0
+  Create 2, 2, 0
+  Trans  3, 1
+  Trans  4, 2
+  Set    %active, 2
+  Turn   0
+  Create 2, 2, 0
+  Trans  3, 1
+  Trans  4, 2
+  Set    %active, 2
+  Turn   0
+  Create 2, 2, 0
+  Trans  3, 1
+  Trans  4, 2
+  Set    %active, 2
+  Set    #active, 2
+  Jump   0
+
+Bank radio#active
+  Trans  1, 1
+  BJump  #active, 3
+  Die
+
+Bank inter#active
+  @cr
+  Create 2, 2, 0
+  Trans  1, 3
+  Trans  1, 1
+  Scan   %active
+  Comp   %active, 0
+  Trans  %active, 2
+  Turn   1
+  Comp   %banks,  0
+  BJump  %active, 2
+  Jump   @cr
+
+`,
+
+        "sim.editor.preload.header.6.program.8.name" : "Jo’s little",
+        "sim.editor.preload.header.6.program.8.body" : `; RoboCombat program
+
+Name <Jo's little>
+Author J”rg M.Kubitz
+
+; First a big roboter creates many average sized childs. Theese will produce
+; strong worriers which are to infect the oponent with a virus and kill nmys
+; sometimes.
+; Code is only running in Bank 1
+; The virus has to infect the other players in all banks 
+Bank dumMother
+ bjump 5,1
+bank dummy2
+bank dummy3
+bank dummy4
+
+Bank lMother
+@fuck
+   Create 2, 4, 1        ; Build first child
+   Trans  6, 1           ; Child prog
+   Trans  7, 2           ; worrier prog
+   Trans  8, 3           ; mine prog
+   Trans  9, 4           ; virus prog
+   Set    %Active, 1     ; Activate child
+   turn 1                ; turn around
+   jump @fuck            ; keep producing
+
+Bank lChilds
+   move
+   turn 0
+   move
+@fucker
+   Create 2, 4, 1        ; Build worrier
+   Trans  2, 1           ; worrier prog
+   Trans  3, 2           ; Mine prog
+   Trans  4, 3           ; virus prog
+   Set    %Active, 1     ; Activate worrier
+   turn 1                ; turn around
+   jump @fucker          ; keep fucking
+
+Bank lwary
+   Create 2, 3, 1        ; Build worrier
+   Trans  1, 1           ; worrier prog
+   Trans  3, 3           ; virus prog
+   Trans  2, 2           ; mine prog
+   Set    %Active, 1     ; Activate worrier
+   turn 1
+@anfang 
+@scanmain
+ scan #1                 ; "who is it?"
+ comp #1,1
+ jump @noenemy
+ @enemy
+ set %Active,0          ;deaktivate enemy
+  Set   #14, %banks
+  @EraseNexte
+  Trans 3, #14          ; Transfer virus bank 2 to enemy or tr. empty
+  Sub   #14, 1
+  Comp  #14, 0
+  Jump  @EraseNexte
+  Set   %Active, 1      ; Re-Activate
+  turn 1
+  jump @scanmain
+  
+  
+@noenemy
+   comp #1,0
+   jump @friend        ;a Place to go?
+   Create 2, 2, 0        ; Build mine
+   Trans  2, 1           ; mine prog
+   Trans  3, 2           ; virus prog
+ @friend
+   Set    %Active, 1     ; Activate worrier
+   turn 0
+;   move
+   jump @scanmain
+
+Bank MINE
+  @Loop
+  Turn 1             ; Turn right.
+  Scan #1            ; Scan the field.
+  Comp #1, 1         ; Is an enemy?
+  Jump @Loop         ; No, turn again.
+  Set %Active, 0     ; Deactivate potential enemy.
+  Trans 2, 1         ; Transfer Black Bank.
+  Trans 2, 2         ; Transfer Black Bank.
+  Set %Active, 1     ; Reactivate.
+                     ; Auto-Reboot
+
+
+Bank lVirus!         ; new-enemy-prog: deactivate your friends
+;dreh dich, infiziere Freunde mit Dir selbst und las Feinde in Ruhe
+@start
+ add #11,3
+comp $mobile,0
+move
+
+ @NextField
+  Scan   #12
+  Comp   #12, 1         ; Remote = friend ?
+  jump  @noenemyv
+  Turn 0
+  jump @nextfield
+  @noenemyv
+  Comp   #12, 2         ; Remote = friend ?
+  Jump   @start ; No, re-activate
+  Set    %Active, 0
+  Set   #14, %banks
+  @EraseNextf
+  Trans 1, #14          ; befalle alle B„nke
+  Sub   #14, 1
+  Comp  #14, 0
+  Jump  @EraseNextf
+  Set   %Active, 1      ; Re-Activate 
+  turn 0
+  jump @nextfield
+
+bank dummyb10
+bank dummyb11
+`,
+
+        "sim.editor.preload.header.6.program.9.name" : "Liquid Ice 1.2",
+        "sim.editor.preload.header.6.program.9.body" : `; RoboCom program
+
+Name Liquid Ice 1.2
+Author Dennis C. Bemmann
+Country Germany
+
+Bank Liquid Boot
+  Bjump 4, 1
+
+Bank Liquid Ice
+
+  jump @cb     ;BJump 2, @cb
+  jump @cb     ;BJump 2, @cb
+
+  @cb
+;  Comp $Banks, 0
+;  jump @make
+;  Set %active, 0
+
+  Scan #2
+  Comp #2, 1
+  jump @make
+  Set %active, 0
+
+  @tr
+  Trans $banks, 5
+  Trans $banks, 6
+  Set #2, %Banks
+  @dt
+  Trans $banks, #2
+  Sub #2, 1
+  Comp #2, 0
+  Jump @dt      ;  BJump 2, @dt
+  Set %active, 1
+
+;  Trans 2, 2
+;  Trans 2, 1
+;  Trans 2, 5
+;  Trans 2, 3
+;  Trans 2, 4
+;  Trans 2, 6
+
+  Turn 0
+
+  Comp %active, 199
+  Jump @cb    ; BJump 2, @cb
+  @special
+  ; . . . 
+
+  @make
+  Set #9, $banks
+  Add #9, 10
+  Comp #9, 11
+  Sub #9, 11
+  Create 2, #9, 0
+  Trans $banks, 1
+  set %active, 1
+  BJump $banks, @tr
+
+
+Bank Liquid Dummy
+  Die
+
+Bank Liquid Starter
+  Create 2, 1, 0
+  Trans 2, 1
+  Set %active, 1
+  Turn 0
+
+  Create 2, 2, 0
+  Trans 2, 1
+  Trans 2, 2
+  Set %active, 1
+  Turn 0
+
+  Create 2, 3, 0
+  Trans 2, 1
+  Trans 2, 3
+  Set %active, 1
+  Turn 0
+
+  Create 2, 4, 0
+  Trans 2, 1
+  Trans 2, 4
+  Set %active, 1
+  Turn 0
+
+
+  Create 2, 40, 1
+
+  Trans 2, 2
+  Trans 2, 1
+  Turn 0
+  Trans 2, 2
+  Trans 2, 1
+  Turn 0
+  Trans 2, 2
+  Trans 2, 1
+  Turn 0
+  Trans 2, 2
+  Trans 2, 1
+  Turn 0
+
+  BJump 6, 1
+  
+Bank Liquid Quick
+  Create 2, 2, 0
+  Trans 1, 1
+  Set %active, 1
+  Turn 1
+
+Bank Liquidizer
+  Create 2, 25, 1
+  Trans 7, 1
+  Set %active, 199
+  Turn 0
+  Trans 7, 1
+  Set %active, 199
+  Turn 0
+  Trans 7, 1
+  Set %active, 199
+  Turn 0
+  Trans 7, 1
+  Set %active, 199
+  Turn 0
+  Set %active, 0
+  @el
+  Turn 0
+  Set %active, 0
+  Jump @el
+
+Bank Meltdown
+  Set %active, 199
+  Trans 1, 1
+  Turn 1
+  Set %active, 199
+  Trans 1, 1
+  Turn 1
+  Set %active, 199
+  Trans 1, 1
+  Turn 1
+  Set %active, 199
+  Trans 1, 1
+  Turn 1
+  Set %active, 199
+  Trans 1, 1
+  Turn 1
+  Set %active, 199
+  Trans 1, 1
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+  Set #active, 0
+`,
+
+        "sim.editor.preload.header.6.program.10.name" : "Mikrovirus",
+        "sim.editor.preload.header.6.program.10.body" : `; RoboCombat program
+
+Name Mikrovirus
+Author Matin und Flori
+Country Germany
+
+
+Bank InitialMain
+bjump 5,1
+
+Bank Mikrovirus
+@anf
+trans 1,1
+trans 1,2
+turn 0
+add #19,1
+comp #19,4
+jump @anf
+die
+
+Bank NullenMain
+bjump 3,2
+@numain
+move
+scan #4
+comp #4,2
+jump @deakt
+set %active,1
+turn 0
+jump @numain
+@deakt
+set %active,0
+trans 2,1
+trans 2,2
+set %active,1
+comp #1,0
+turn 1
+jump @numain
+
+Bank NormaloMain
+bjump 4,2
+@normain
+move
+move
+scan #1
+comp #1,2
+jump @KeinEigener
+trans 3,3
+trans 4,4
+set %active,1
+turn 1
+jump @normain
+@KeinEigener
+comp #1,0
+jump @kill
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+create 1,4,1
+trans 3,3
+trans 2,2
+trans 3,1
+set %active, 1
+turn 0
+jump @normain
+@kill
+set %active, 0
+trans 2,1
+trans 2,2
+set %active, 1
+jump @normain
+
+Bank Häuptling
+set %active, 0
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+turn 1
+set %active, 0
+create 2,4,0
+trans 6,4
+trans 3,3
+trans 2,2
+trans 6,1
+set %active, 1
+turn 1
+
+Bank Nullenfactory
+bjump 4,2
+@factory
+turn 0
+scan #1
+comp #1,1
+jump @harmlos
+set %active, 0
+trans 2,1
+trans 2,2
+set %active, 1
+jump @factory
+@harmlos
+comp #2,2
+jump @create
+trans 3,3
+set %active, 1
+jump @factory
+@create
+create 1,4,1
+trans 3,3
+trans 2,2
+trans 3,1
+set %active, 1
+create 2,4,0
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active,1
+
+`,
+
+        "sim.editor.preload.header.6.program.11.name" : "Das Geschwür",
+        "sim.editor.preload.header.6.program.11.body" : `; RoboCombat program
+
+Name Das Geschwür
+Author Ch. Hufgard
+;Country Germany
+
+Bank Mother-Killer
+ Set    %Active,0
+ Scan   #1
+ Comp   #1,1
+ Jump   @Check
+ Jump   @destroy
+ @Check
+ Comp   #1,2
+ Jump   @produce
+ Jump   @ende
+ @produce 
+ Create 2,2,0
+ Trans  1,1
+ jump   @ende
+ @destroy
+ Set    #2,%banks
+ @loop
+ trans  2,#2
+ Sub    #2,1
+ Comp   #2,0
+ Jump   @loop
+ @ende
+ Set    %Active,1
+ Turn   0
+
+Bank Moving-Killer
+ move
+ move
+ move
+ Set    %Active,0
+ Scan   #1
+ Comp   #1,1
+ Jump   @Check2
+ Jump   @destroy2
+ @Check2
+ Comp   #1,2
+ Jump   @produce2
+ Jump   @ende2
+ @produce2
+ Create 2,2,1
+ Trans  1,1
+ jump   @ende2
+ @destroy2
+ Set    #2,%banks
+ @loop2
+ trans  2,#2
+ Sub    #2,1
+ Comp   #2,0
+ Jump   @loop2
+ @ende2
+ Set    %Active,1
+ Turn   0
+
+ `,
+
+        "sim.editor.preload.header.6.program.12.name" : "Nullen2",
+        "sim.editor.preload.header.6.program.12.body" : `; RoboCombat program
+
+Name Nullen2
+Author Matin und Flori
+Country Germany
+
+
+Bank InitialMain
+bjump 5,1
+
+Bank Mikrovirus
+@anf
+trans 1,1
+trans 1,2
+turn 0
+add #19,1
+comp #19,4
+jump @anf
+die
+
+Bank NullenMain
+bjump 3,2
+@numain
+move
+comp %Banks,4
+jump @deakt
+set %active,1
+turn 0
+jump @numain
+@deakt
+set %active,0
+comp %Banks,0
+turn 1
+
+Bank NormaloMain
+bjump 4,2
+@normain
+move
+move
+scan #1
+comp #1,2
+jump @KeinEigener
+trans 3,3
+trans 4,4
+set %active,1
+turn 1
+jump @normain
+@KeinEigener
+comp #1,0
+jump @kill
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+create 0,4,1
+trans 3,3
+trans 2,2
+trans 3,1
+set %active, 1
+turn 0
+jump @normain
+@kill
+set %active, 0
+trans 2,1
+trans 2,2
+set %active, 1
+jump @normain
+
+Bank Häuptling
+set %active, 0
+create 2,4,1
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active, 1
+turn 1
+set %active, 0
+create 2,4,0
+trans 6,4
+trans 3,3
+trans 2,2
+trans 6,1
+set %active, 1
+turn 1
+
+Bank Nullenfactory
+bjump 4,2
+@factory
+turn 0
+scan #1
+comp #1,1
+jump @harmlos
+set %active, 0
+trans 2,1
+trans 2,2
+set %active, 1
+jump @factory
+@harmlos
+comp #2,2
+jump @create
+trans 3,3
+set %active, 1
+jump @factory
+@create
+create 0,4,1
+trans 3,3
+trans 2,2
+trans 3,1
+set %active, 1
+create 2,4,0
+trans 4,4
+trans 3,3
+trans 2,2
+trans 4,1
+set %active,1
+
+`,
+
+        "sim.editor.preload.header.6.program.13.name" : "RecruteIT",
+        "sim.editor.preload.header.6.program.13.body" : `; Robocom RecruteIT
+Name RecruteIT
+Author Patrick Gholam
+Country Germany
+;e-mail: PGholam@t-online.de
+Bank born   
+    create 2,4,1        ; Neue Mutter1 bauen
+    trans 5,1       ; banks geben 
+    trans 2,2
+    trans 3,3
+    trans 4,4
+    set %active,1
+    turn 1
+    create 2,4,1        ; Neue Mutter2 bauen
+    trans 5,1       ; banks geben 
+    trans 2,2
+    trans 3,3
+    trans 4,4
+    set %active,1
+    bjump 4,1   ;jump ins Hauptprog
+
+Bank R_main     ; Bank des Recruter Mainprogs
+@loop2
+    
+    set %active,0   ; erst mal einschläfern
+    Scan   #1       ; Nachschauen
+    Comp   #1, 1    ; Feind?
+    jump @who       ; Nein, weiter mit who
+    @killerloop ; ja alle banks mit recruter vollschreiben 
+    add #5,1
+    comp #5, %banks
+    jump @giveit
+    trans 2,#5
+    set #5,0    
+    set %active,1   ; aufwecken
+    turn 1
+    jump @loop2
+    
+    @who
+    set %active,1   ; rest aufwecken 
+    Comp #1,0   ; leer?
+    turn 1      ; nein, ein eigener -> drehen   
+    move        ; leer oder schon gedreht ->bewegen
+
+    jump @loop2
+    
+    @giveit     ; banks geben
+    trans 2,#5
+    jump @killerloop    
+    
+Bank R_trans        ;Transferbank des Recruters
+@loop3
+    
+    add #2, 1   ; schleifenvariable
+    comp #2,31  ; schon 30x mal vorher durchlaufen?
+    jump @weiter    ; nein wieter
+    die     ; ja -> selbstmord
+    @weiter
+    set %active,0   ; erst mal einschläfern
+    Scan   #3       ; Nachschauen
+    Comp   #3, 2    ; ein eigener?
+    jump @who2      ; Nein, weiter mit who  ; 
+    @killerloop2    ; s.o.
+    add #6,1
+    comp #6, %banks
+    jump @giveit2
+    trans 1,#6
+    set #6,0    
+    set %active,1
+
+    @who2
+    set %active,1
+    comp #3,0   ; leer?
+    turn 1      ; nicht leer
+    move
+jump @loop3
+
+@giveit2
+trans 1,#6
+jump @killerloop2
+    
+Bank Produce
+
+
+@loop1
+    create 1,2,1    ;produziert eigene recruter
+    trans 2,1
+    trans 3,2
+    set %active,1
+    turn 1
+    jump @loop1
+
+Bank born1          ; fuer mobile mutter1
+    move 
+    move
+    create 2,4,1
+    trans 1,1
+    trans 2,2
+    trans 3,3
+    trans 4,4
+    set %active,1
+    move 
+    move
+    bjump 4,1
+
+
+`,
+
+        "sim.editor.preload.header.6.program.14.name" : "Simple",
+        "sim.editor.preload.header.6.program.14.body" : `; RoboCombat program
+
+Name Simple
+Author Martin Trautmann
+Country Germany
+
+
+Bank Main
+set #1,$Banks
+bjump #1,1
+
+Bank Mini
+@ex
+trans 1,1
+set %active, 1
+turn 1
+jump @ex
+
+Bank Cotzi
+trans 1,1
+move
+trans 1,1
+move
+trans 1,1
+create 2,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+create 1,2,1
+trans 2,2
+trans 1,1
+set %active, 1
+turn 1
+turn 1
+
+Bank exec
+create 2,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+turn 0
+
+;@ex
+;trans 1,1
+;set %active, 1
+;scan #2
+;comp #2,1
+;jump @harmlos
+;set #5,%Banks
+;trans 2,Banks
+;turn 0
+;jump @ex
+;@harmlos
+;turn 0
+
+`,
+
+        "sim.editor.preload.header.6.program.15.name" : "Styx",
+        "sim.editor.preload.header.6.program.15.body" : `Name Styx
+Author Peter Silie
+Country Germany
+
+Bank A
+   Create 2, 2, 1
+   Trans 2, 1
+   Set %Active, 1
+   Turn 1
+
+Bank NextGen
+   Trans 2, 2
+   Move
+   Trans 2, 3
+   Create 2, 2, 1
+   Trans 1, 1
+   Set %Active, 1
+   Turn 1
+   Move
+   Scan #1
+   Comp #1, 2
+   Trans 2, 1
+
+`,
+
+        "sim.editor.preload.header.6.program.16.name" : "Tie Fighter",
+        "sim.editor.preload.header.6.program.16.body" : `; RoboCombat program
+
+Name Tie Fighter
+Author Martin Trautmann, martintrautmann@gmx.de, Winnenden
+Country Germany
+
+Bank activate
+bjump 8,1
+
+
+Bank copy2
+trans $Banks,%Banks
+
+Bank copy3
+trans $Banks,%Banks
+
+Bank copy4
+trans $Banks,%Banks
+
+Bank copy5
+trans $Banks,%Banks
+
+Bank copy6
+trans $Banks,%Banks
+
+Bank Wall2 
+turn 0
+jump 0
+
+Bank Main
+create 2,2,0
+trans 10,1
+set %active,1
+trans 7,2
+turn 1
+create 2,2,0
+trans 10,1
+set %active,1
+trans 7,2
+turn 1
+create 2,4,0
+trans 11,1
+trans 7,2
+trans 9,3
+trans 13,4
+set %active,1
+turn 1
+create 2,2,0
+trans 10,1
+set %active,1
+trans 7,2
+bjump 1,1
+
+Bank activate
+set %active,1
+turn 0
+
+Bank Wall1
+turn 0
+create 1,1,0
+trans 2,1
+@jump2
+set %active,1
+jump @jump2
+
+
+Bank Wall3
+turn 0
+create 1,1,0
+trans 2,1
+set %active,1
+turn 0
+trans 3,1
+turn 1
+create 1,3,0
+@jump3
+trans 4,1
+jump @jump3
+
+Bank tie2
+trans 1,1
+
+Bank tie3
+trans 1,1
+
+Bank tie4
+trans 1,1
+
+Bank tie5
+trans 1,1
+
+Bank tie6
+trans 1,1
+
+Bank tie7
+trans 1,1
+`,
+
+        "sim.editor.preload.header.6.program.17.name" : "UltimaDefender",
+        "sim.editor.preload.header.6.program.17.body" : `; RoboCombat program
+
+Name UltimaDefender
+Author Nemo
+Country Deutschland
+
+
+Bank Main
+ BJump 11,1
+
+Bank 2
+ Die
+ @2
+ Create 2,10,0
+ Set #1,%banks
+ @loop
+ Trans 10,#1
+ sub #1,1
+ Comp #1,0
+ Jump @loop
+ Trans 9,1
+ Trans 9,9
+ Set %Active,1
+ Turn 1
+ Jump @2
+
+Bank 3
+
+Bank 4
+
+Bank
+Bank
+Bank
+Bank
+Bank
+ BJump 10,2
+
+Bank
+
+Bank
+ Set #6,40
+ @1
+ Create 2,10,0
+ Trans 9,1
+ Trans 9,9
+ Trans 2,10
+ Set %Active,6
+ Turn 1
+ Sub #6,1
+ Comp #6,0
+ Jump @1
+ @4
+ Trans 12,10
+ Turn 1
+ Jump @4
+
+Bank
+
+Bank 2
+ @3
+ Set #1,%banks
+ @loop3
+ Trans 10,#1
+ sub #1,1
+ Comp #1,0
+ Jump @loop3
+ Turn 1
+ Jump @3
+
+ `,
+
+        "sim.editor.preload.header.6.program.18.name" : "Zellwucher4",
+        "sim.editor.preload.header.6.program.18.body" : `; RoboCombat program
+
+Name Zellwucher4
+Author Martin Trautmann und Florian Fischer
+Country germany
+
+
+Bank Haupt (eins)
+create 2,3,0
+trans 2,1
+trans 3,2
+trans 5,3
+set %active,1
+turn 1
+create 1,2,1
+trans 3,1
+trans 5,2
+set %active,1
+turn 1
+create 2,3,0
+trans 4,1
+trans 3,2
+trans 5,3
+set %active,1
+turn 1
+bjump 7,1
+ 
+Bank Rechtswand
+create 2,3,0
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+turn 1
+create 1,2,1
+trans 2,1
+trans 3,2
+set %active,1
+create 2,3,0
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+turn 1
+turn 1
+@runde
+scan #2
+comp #2,1
+jump @nichtgegner
+set %active,0
+trans 5,1
+trans 5,2
+trans 5,3
+trans 5,4
+trans 5,5
+trans 5,6
+set %active, 1
+jump @runde
+@nichtgegner
+comp #2,0
+jump @repair
+create 1,2,1
+trans 2,1
+trans 3,2
+set %active,1
+jump @runde
+@repair
+scan #3
+comp #3,2
+jump @nichteigen
+set #10,%Banks
+comp #10,2
+jump @rep
+set %active,1
+turn 0
+jump @runde
+@rep
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+jump @repair
+@nichteigen
+set %active,0
+comp #3,0
+jump @kill
+create 2,3,0
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+jump @repair
+@kill
+trans 3,1
+trans 3,2
+trans 3,3
+trans 3,4
+trans 3,5
+trans 3,6
+set %active,1
+jump @repair
+
+Bank Hunter
+@neu
+move
+set %active,0
+scan #1
+comp #1,1
+jump @harmlos
+trans 2,1
+trans 2,2
+trans 2,3
+trans 2,4
+set %active,1
+turn 1
+jump @neu
+@harmlos
+comp #1,2
+jump @neu
+set %active,1
+turn 0
+
+Bank Linkswand
+create 1,2,1
+trans 2,1
+trans 3,2
+set %active,1
+create 2,3,0
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+turn 0
+create 2,3,0
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+turn 1
+turn 1
+@runde2
+scan #2
+comp #2,1
+jump @nichtgegner2
+set %active,0
+trans 5,1
+trans 5,2
+trans 5,3
+trans 5,4
+trans 5,5
+trans 5,6
+set %active, 1
+jump @runde2
+@nichtgegner2
+comp #2,0
+jump @repair2
+create 1,2,1
+trans 2,1
+trans 3,2
+set %active,1
+jump @runde2
+@repair2
+scan #3
+comp #3,2
+jump @nichteigen2
+set #10,%Banks
+comp #10,2
+jump @rep2
+set %active,1
+jump @runde2
+@rep2
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+turn 0
+jump @repair2
+@nichteigen2
+set %active,0
+comp #3,0
+jump @kill2
+create 2,3,0
+trans 1,1
+trans 2,2
+trans 3,3
+set %active,1
+jump @runde2
+@kill2
+trans 3,1
+trans 3,2
+trans 3,3
+trans 3,4
+trans 3,5
+trans 3,6
+set %active,1
+jump @repair2
+
+Bank kill
+set #3,0
+@anf
+set #2,0
+@start
+turn 0
+set %active, 0
+scan #1
+comp #1,2
+jump @nix
+trans 1,1
+set #5,%Banks
+trans 1,#5
+set %active, 1
+jump @start
+@nix
+set %active, 1
+add #2,1
+comp #2,3
+jump @start
+move
+add #3,1
+comp #3,3
+jump @anf
+die
+
+Bank erase
+
+Bank Häuptling
+@scan
+scan #1
+comp #1,1
+jump @create
+set %active, 0
+trans 6,1
+trans 6,2
+trans 6,3
+trans 6,4
+trans 6,5
+trans 6,6
+set %active, 1
+jump @scan
+@create
+create 2,3,1
+trans 8,1
+trans 3,2
+trans 5,3
+set %active,1
+jump @scan
+
+Bank go
+move
+move
+@creire
+create 2,3,1
+trans 3,3
+trans 2,2
+trans 1,1
+set %active, 1
+create 1,2,1
+trans 3,2
+trans 2,1
+set %active, 1
+turn 1
+jump @creire
+
+Bank warte`
+
+
       })
 
 
