@@ -2,6 +2,7 @@
 
 - [Demo](http://robodojo.club/index.html?bh=Rank%203&bp=The%20Overkiller&rh=Rank%205&rp=Seuche3) (after the demo loads, click the play button)
 - [Documentation](http://robodojo.club/doc)
+- The game is a clone of the 1998 game [RoboCom](http://robocom.rrobek.de)
 
 ## About
 Robo Dojo is a simple virus-programming game. 
