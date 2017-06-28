@@ -1,6 +1,5 @@
 package club.robodojo
 
-// TODO: rm
 import scala.collection.mutable.ArrayBuffer
 
 import scala.collection.mutable
@@ -12,7 +11,6 @@ import scala.collection.mutable
 // lineIndex specifies the line number of the line, but starting at zero instead of one.
 case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int) {
 
-  // TESTED
   override def equals(that: Any): Boolean =
     that match {
       case tl: TokenLine => tokens.sameElements(tl.tokens) &&
@@ -21,8 +19,6 @@ case class TokenLine(tokens: Array[String], originalLine: String, lineIndex: Int
       case _ => false
     }
   
-  // TESTED
-  // TODO: Lookup hashCode best practice. I just hacked this together.
   override def hashCode: Int = {
     var x = 13
     tokens.foreach { str: String => x *= (str.hashCode + 13)}
@@ -247,7 +243,6 @@ object Compiler {
       throw new IllegalArgumentException("Not a label: " + token)
     }
 
-  // TESTED
   def getParam(
       instructionName: String,
       parameterIndex: Int,
@@ -279,7 +274,6 @@ object Compiler {
     }
   }
 
-  // TESTED
   // The indices for where we should find commas
   def getCommaIndices(numParams: Int): Seq[Int] =
     (0 until numParams - 1)
@@ -287,7 +281,6 @@ object Compiler {
         paramIndex * 2 + 2
       }
 
-  // TESTED
   // Returns true iff there are commas in all the right places
   def foundCommas(numParams: Int, tl: TokenLine): Boolean =
     getCommaIndices(numParams)
@@ -295,7 +288,6 @@ object Compiler {
         tl.tokens(index) == ","
       }
 
-  // TESTED
   def parseParams(
       instructionName: String,
       tl: TokenLine,
@@ -347,7 +339,6 @@ object Compiler {
 
   /* End: reading parameters from a TokenLine *****************************************************/
 
-  // TESTED
   // TODO: deal with name, author country
   def tokenize(text: String)(implicit config: Config): Array[TokenLine] =
     text
@@ -393,13 +384,11 @@ object Compiler {
 
   def isWriteableKeyword(token: String): Boolean = writeableKeywords.contains(token)
 
-  // TODO: rm?
   def isReadable(token: String)(implicit config: Config): Boolean =
     isRegister(token) ||
     isReadableKeyword(token) ||
     isShort(token)
 
-  // TODO: rm?
   def isWriteable(token: String)(implicit config: Config): Boolean =
     isRegister(token) ||
     isWriteableKeyword(token)
@@ -410,7 +399,6 @@ object Compiler {
     CompileLineResult(None, Some(errorMessage))
   }
 
-  // TESTED
   def compileMove(
       sourceMapInstruction: SourceMapInstruction,
       tl: TokenLine,
@@ -429,7 +417,6 @@ object Compiler {
       throw new IllegalStateException("This code shouldn't be reachable")
     }
 
-  // TESTED
   def compileTurn(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)(implicit config: Config): CompileLineResult = {
 
     val parsed: Either[ErrorMessage, Seq[Param]] = parseParams("turn", tl, ReadableParamType)
@@ -446,7 +433,6 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TESTED
   def compileCreate(
       sourceMapInstruction: SourceMapInstruction, 
       tl: TokenLine,
@@ -523,7 +509,6 @@ object Compiler {
     CompileLineResult(Some(instruction), None)
   }
 
-  // TESTED
   def compileSet(sourceMapInstruction: SourceMapInstruction, tl: TokenLine)
       (implicit config: Config): CompileLineResult = {
 
@@ -794,7 +779,6 @@ object Compiler {
     newBanks
   }
 
-  // TESTED
   // We need playerColor because of run-time errors. Specifically, some instructions (such as the
   // CreateInstruction) need to report the color of the bot that that the instruction came from.
   // See for example CreateInstruction documentation and CreateInstruction.errorCheck(...).
