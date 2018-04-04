@@ -15,16 +15,18 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
   val id: String = params.getOrElse("id", "robodojo").asInstanceOf[String]
 
+  val defaultLocation = "foo?bh=Rank%203&bp=The%20Overkiller&rh=Rank%205&rp=Seuche3"
+
   // From dom.window.location
-  val location: String = params.getOrElse("location", "").asInstanceOf[String]
+  val location: String = params.getOrElse("location", defaultLocation).asInstanceOf[String]
 
   val urlParams: Map[String, String] =
     try {
 
-      val parts = location.split("\\?")
+      var parts = location.split("\\?")
 
       if (parts.length != 2) {
-        throw new IllegalArgumentException()
+        parts = defaultLocation.split("\\?")
       }
 
       parts(1)
