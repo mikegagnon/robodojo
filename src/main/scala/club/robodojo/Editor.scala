@@ -28,20 +28,30 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     PlayerColor.Green -> config.editor.defaultPrograms(2),
     PlayerColor.Yellow -> config.editor.defaultPrograms(3))
 
-  // Check for programs specified on the the url
-  config.programRefBlue.foreach { prb : ProgramRef =>
-    if (config.editor.preloadedPrograms.contains(prb.headerName) &&
-        config.editor.preloadedPrograms(prb.headerName).contains(prb.programName)) {
-      files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
+  config.competition match {
+    case Some(competition) => {
+      //println(config.editor.preloadedPrograms.keys)
+      files += PlayerColor.Blue -> config.editor.preloadedPrograms(competition.bot1.rank)(competition.bot1.name)
+      files += PlayerColor.Red -> config.editor.preloadedPrograms(competition.bot2.rank)(competition.bot2.name)
+    }
+    case None => {
+      // Check for programs specified on the the url
+      config.programRefBlue.foreach { prb : ProgramRef =>
+        if (config.editor.preloadedPrograms.contains(prb.headerName) &&
+            config.editor.preloadedPrograms(prb.headerName).contains(prb.programName)) {
+          files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
+        }
+      }
+
+      config.programRefRed.foreach { prr : ProgramRef =>
+        if (config.editor.preloadedPrograms.contains(prr.headerName) &&
+            config.editor.preloadedPrograms(prr.headerName).contains(prr.programName)) {
+          files += PlayerColor.Red -> config.editor.preloadedPrograms(prr.headerName)(prr.programName)
+        }
+      }
     }
   }
 
-  config.programRefRed.foreach { prr : ProgramRef =>
-    if (config.editor.preloadedPrograms.contains(prr.headerName) &&
-        config.editor.preloadedPrograms(prr.headerName).contains(prr.programName)) {
-      files += PlayerColor.Red -> config.editor.preloadedPrograms(prr.headerName)(prr.programName)
-    }
-  }
 
   var initPositions: mutable.HashMap[PlayerColor.EnumVal, Option[InitPosition]] =
     mutable.HashMap(
@@ -49,6 +59,16 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
       PlayerColor.Red -> None,
       PlayerColor.Green -> None,
       PlayerColor.Yellow -> None)
+  
+  config.competition match {
+    case Some(competition) => {
+      setInitPosition("blue", competition.bot1.position.get.row, competition.bot1.position.get.col, "up")
+      setInitPosition("red", competition.bot2.position.get.row, competition.bot2.position.get.col, "up")
+    }
+    case None => ()
+  }
+
+
 
   // programs(playerColor) == the result of compiling playerColor's program
   var programs: HashMap[PlayerColor.EnumVal, Either[ArrayBuffer[ErrorMessage], Program]] = HashMap(

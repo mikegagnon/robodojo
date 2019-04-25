@@ -12,7 +12,7 @@ object Config {
 case class ProgramRef(headerName: String, programName: String)
 
 case class BotPositionConfig(row: Int, col: Int)
-case class BotConfig(botName: String, position: Option[BotPositionConfig])
+case class BotConfig(rank: String, name: String, position: Option[BotPositionConfig])
 case class CompetitionConfig(bot1: BotConfig, bot2: BotConfig)
 
 // TODO: change defs to vals?
@@ -22,9 +22,9 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   val competition: Option[CompetitionConfig] = if (params.contains("competition")) {
     val competitionMap = params("competition").asInstanceOf[js.Dictionary[Any]].toMap
     val bot1Map = competitionMap("bot1").asInstanceOf[js.Dictionary[Any]].toMap
-    val bot1 = BotConfig(bot1Map("name").asInstanceOf[String], Some(BotPositionConfig(bot1Map("row").asInstanceOf[Int], bot1Map("col").asInstanceOf[Int])))
+    val bot1 = BotConfig(bot1Map("rank").asInstanceOf[String], bot1Map("name").asInstanceOf[String], Some(BotPositionConfig(bot1Map("row").asInstanceOf[Int], bot1Map("col").asInstanceOf[Int])))
     val bot2Map = competitionMap("bot2").asInstanceOf[js.Dictionary[Any]].toMap
-    val bot2 = BotConfig(bot2Map("name").asInstanceOf[String], Some(BotPositionConfig(bot2Map("row").asInstanceOf[Int], bot2Map("col").asInstanceOf[Int])))
+    val bot2 = BotConfig(bot2Map("rank").asInstanceOf[String], bot2Map("name").asInstanceOf[String], Some(BotPositionConfig(bot2Map("row").asInstanceOf[Int], bot2Map("col").asInstanceOf[Int])))
     Some(CompetitionConfig(bot1, bot2))
   } else {
     None
