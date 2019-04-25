@@ -16,7 +16,8 @@
     <script src="./js/easeljs-0.8.2.min.js"></script>
     <script src="./js/preloadjs-0.6.2.min.js"></script>
     <script src="./js/codemirror.js"></script>
-    <script type="text/javascript" src="./js/robodojo-opt.js"></script>
+    <!--<script type="text/javascript" src="./js/robodojo-opt.js"></script>-->
+    <script type="text/javascript" src="./target/scala-2.11/robodojo-fastopt.js"></script>
     <script type="text/javascript">
       var app = club.robodojo.App()
 
@@ -24,6 +25,18 @@
         "id": "robo1",
         "viz.cellSize": 25,
         "compiler.safetyChecks": false,
+        "competition": {
+          "bot1": {
+            "name": "The Overkiller",
+            "row": 0,
+            "col": 0
+          },
+          "bot2": {
+            "name": "Seuche3",
+            "row": 3,
+            "col": 3
+          }
+        },
 
         "sim.editor.preload.header.0.name": "Guide programs",
 
