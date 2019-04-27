@@ -247,7 +247,7 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
 
   }
 
-  def addBot(board: Board, playerColor: PlayerColor.EnumVal): Unit = {
+  def addBot(board: Board, playerColor: PlayerColor.EnumVal, position: Option[(Int, Int)] = None): Unit = {
 
     var defaultRow =
       playerColor match {
@@ -273,6 +273,11 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     // Cycle through row, col until you find an empty spot
     var row = if (defaultRow >= 0) defaultRow else Random.nextInt(config.sim.numRows)
     var col = if (defaultCol >= 0) defaultCol else Random.nextInt(config.sim.numCols)
+
+    position.foreach { case (r, c) =>
+      row = r
+      col = c
+    }
 
     while (board.matrix(row)(col).nonEmpty) {
       row = Random.nextInt(config.sim.numRows)
@@ -338,12 +343,25 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
 
     // For playerColor's whose program succeeded in compilation: add a bot to the board
-    PlayerColor.colors.foreach { playerColor =>
-      programs(playerColor) match {
-        case Left(_) => ()
-        case Right(_) => addBot(newBoard, playerColor)
+    (1 to 2000).foreach { _ =>
+      PlayerColor.colors.foreach { playerColor =>
+        programs(playerColor) match {
+          case Left(_) => ()
+          case Right(_) => addBot(newBoard, playerColor)
+        }
       }
     }
+
+    /*(0 to 5).foreach { r =>
+      (0 to 5).foreach { c =>
+        PlayerColor.colors.foreach { playerColor =>
+          programs(playerColor) match {
+            case Left(_) => ()
+            case Right(_) => addBot(newBoard, playerColor, Some((r,c )))
+          }
+        }
+      }
+    }*/
 
     viz.newBoard(newBoard)
 

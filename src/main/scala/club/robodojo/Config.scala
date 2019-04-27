@@ -80,8 +80,8 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
   object sim {
     val maxNumVariables = params.getOrElse("sim.maxNumVariables", 20).asInstanceOf[Int]
 
-    val numRows: Int = params.getOrElse("sim.numRows", 16).asInstanceOf[Int]
-    val numCols: Int = params.getOrElse("sim.numCols", 16).asInstanceOf[Int]
+    val numRows: Int = params.getOrElse("sim.numRows", 100).asInstanceOf[Int]
+    val numCols: Int = params.getOrElse("sim.numCols", 100).asInstanceOf[Int]
 
     object board {
 
