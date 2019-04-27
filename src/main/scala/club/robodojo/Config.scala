@@ -11,6 +11,8 @@ object Config {
 
 case class ProgramRef(headerName: String, programName: String)
 
+case class MonocultureConfig(numBots: Int, program: String)
+
 case class BotPositionConfig(row: Int, col: Int)
 case class BotConfig(rank: String, name: String, position: Option[BotPositionConfig])
 case class CompetitionConfig(bot1: BotConfig, bot2: BotConfig)
@@ -18,6 +20,15 @@ case class CompetitionConfig(bot1: BotConfig, bot2: BotConfig)
 // TODO: change defs to vals?
 // TODO: remove all SVG config vals
 class Config(params: Map[String, Any] = Map[String, Any]()) {
+
+  val monoculture: Option[MonocultureConfig] = if (params.contains("monoculture")) {
+    val monocultureMap = params("monoculture").asInstanceOf[js.Dictionary[Any]].toMap
+    val numBots = monocultureMap("numBots").asInstanceOf[Int]
+    val program = monocultureMap("program").asInstanceOf[String]
+    Some(MonocultureConfig(numBots, program))
+  } else {
+    None
+  }
 
   val competition: Option[CompetitionConfig] = if (params.contains("competition")) {
     val competitionMap = params("competition").asInstanceOf[js.Dictionary[Any]].toMap
@@ -253,9 +264,9 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
     val cellSize = params.getOrElse("viz.cellSize", 32).asInstanceOf[Int]
     val framesPerSecond = params.getOrElse("viz.framesPerSecond", 15).asInstanceOf[Int]
-    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 5000).asInstanceOf[Int]
-    val maxCyclesPerTick = params.getOrElse("viz.maxCyclesPerTick", 5000).asInstanceOf[Int]
-    val maxCyclesPerSecond = params.getOrElse("viz.maxCyclesPerSecond", 5000).asInstanceOf[Int]
+    val cyclesPerSecond = params.getOrElse("viz.cyclesPerSecond", 1000).asInstanceOf[Int]
+    val maxCyclesPerTick = params.getOrElse("viz.maxCyclesPerTick", 1000).asInstanceOf[Int]
+    val maxCyclesPerSecond = params.getOrElse("viz.maxCyclesPerSecond", 1000).asInstanceOf[Int]
 
     object canvas {
       val canvasId = id + "-canvas"

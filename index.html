@@ -25,6 +25,37 @@
         "id": "robo1",
         "viz.cellSize": 10,
         "compiler.safetyChecks": false,
+        "monoculture": {
+          "numBots": 2000,
+          "program": `bank main
+
+set #20, 0
+
+@top
+move
+scan #1
+turn 1
+move
+scan #2
+turn 0
+comp #1, 0
+jump @foundbot
+jump @top
+
+@foundbot
+comp #2, 0
+jump @foundbot2
+jump @top
+
+@foundbot2
+add #20, 1
+comp #20, 100
+jump @top
+turn 0
+set #20, 0
+
+jump @top`
+        },
         /*"competition": {
           "bot1": {
             "rank": "Rank 3",

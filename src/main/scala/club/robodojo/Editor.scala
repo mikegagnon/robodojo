@@ -28,26 +28,29 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     PlayerColor.Green -> config.editor.defaultPrograms(2),
     PlayerColor.Yellow -> config.editor.defaultPrograms(3))
 
-  config.competition match {
-    case Some(competition) => {
-      //println(config.editor.preloadedPrograms.keys)
-      files += PlayerColor.Blue -> config.editor.preloadedPrograms(competition.bot1.rank)(competition.bot1.name)
-      files += PlayerColor.Red -> config.editor.preloadedPrograms(competition.bot2.rank)(competition.bot2.name)
-    }
-    case None => {
-      // Check for programs specified on the the url
-      config.programRefBlue.foreach { prb : ProgramRef =>
-        if (config.editor.preloadedPrograms.contains(prb.headerName) &&
-            config.editor.preloadedPrograms(prb.headerName).contains(prb.programName)) {
-          files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
-        }
-      }
+  config.competition.foreach { competition => 
+    //println(config.editor.preloadedPrograms.keys)
+    files += PlayerColor.Blue -> config.editor.preloadedPrograms(competition.bot1.rank)(competition.bot1.name)
+    files += PlayerColor.Red -> config.editor.preloadedPrograms(competition.bot2.rank)(competition.bot2.name)
+  }
 
-      config.programRefRed.foreach { prr : ProgramRef =>
-        if (config.editor.preloadedPrograms.contains(prr.headerName) &&
-            config.editor.preloadedPrograms(prr.headerName).contains(prr.programName)) {
-          files += PlayerColor.Red -> config.editor.preloadedPrograms(prr.headerName)(prr.programName)
-        }
+  config.monoculture.foreach { monoculture =>
+    files += PlayerColor.Blue -> monoculture.program
+  }
+
+  if (config.competition.isEmpty && config.monoculture.isEmpty) {
+    // Check for programs specified on the the url
+    config.programRefBlue.foreach { prb : ProgramRef =>
+      if (config.editor.preloadedPrograms.contains(prb.headerName) &&
+          config.editor.preloadedPrograms(prb.headerName).contains(prb.programName)) {
+        files += PlayerColor.Blue -> config.editor.preloadedPrograms(prb.headerName)(prb.programName)
+      }
+    }
+
+    config.programRefRed.foreach { prr : ProgramRef =>
+      if (config.editor.preloadedPrograms.contains(prr.headerName) &&
+          config.editor.preloadedPrograms(prr.headerName).contains(prr.programName)) {
+        files += PlayerColor.Red -> config.editor.preloadedPrograms(prr.headerName)(prr.programName)
       }
     }
   }
@@ -343,7 +346,9 @@ class Editor(val controller: Controller, val viz: Viz)(implicit val config: Conf
     }
 
     // For playerColor's whose program succeeded in compilation: add a bot to the board
-    (1 to 2000).foreach { _ =>
+    val numBots = config.monoculture.map(_.numBots).getOrElse(1)
+
+    (1 to numBots).foreach { _ =>
       PlayerColor.colors.foreach { playerColor =>
         programs(playerColor) match {
           case Left(_) => ()
