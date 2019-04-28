@@ -106,6 +106,7 @@ class Config(params: Map[String, Any] = Map[String, Any]()) {
 
       val greenRow: Int = params.getOrElse("sim.board.greenRow", -1).asInstanceOf[Int]
       val greenCol: Int = params.getOrElse("sim.board.greemCol", -1).asInstanceOf[Int]
+      // TODO: greemDir is a typo
       val greenDir: String = params.getOrElse("sim.board.greemDir", "NoDir").asInstanceOf[String]
 
       val yellowRow: Int = params.getOrElse("sim.board.yellowRow", -1).asInstanceOf[Int]
