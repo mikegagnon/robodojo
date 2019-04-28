@@ -89,6 +89,13 @@ jump @top""")
       board.cycle()
     }
   }
+
+  def binaryMap = board.matrix.map { row =>
+      row.map {
+        case Some(_) => "1"
+        case _ => " "
+      }.mkString("")
+    }.mkString("\n")
 }
 
 object Experiment1Test extends TestSuite {
@@ -99,13 +106,7 @@ object Experiment1Test extends TestSuite {
     "Experiment 1"-{
       val experiment = new Experiment1(10000)
       experiment.run()
-      val values = experiment.board.matrix.map { row =>
-        row.map {
-          case Some(_) => "1"
-          case _ => " "
-        }.mkString("")
-      }.mkString("\n")
-      println(values)
+      println(experiment.binaryMap)
     }
   }
 }
