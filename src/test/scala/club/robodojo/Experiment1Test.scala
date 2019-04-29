@@ -137,6 +137,68 @@ jump @top""")
     count
   }
 
+
+
+  def assignGroups = {
+
+    val matrixGroups = Array.fill[Option[Int]](config.sim.numRows, config.sim.numCols)(None)
+    var nextId = 0
+
+    def assignToGroup(id: Int, r: Int, c: Int) : Boolean = {
+
+      val rr: Int = if (r == -1) {
+        config.sim.numRows - 1
+      } else if (r == config.sim.numRows) {
+        0
+      } else {
+        r
+      }
+
+      val cc: Int = if (c == -1) {
+        config.sim.numCols - 1
+      } else if (c == config.sim.numCols) {
+        0
+      } else {
+        c
+      }
+
+      board.matrix(rr)(cc) match {
+        case None => false // already visited
+        case Some(_) => matrixGroups(rr)(cc) match {
+          case None => {
+            matrixGroups(rr)(cc) = Some(id)
+            assignToGroup(id, rr - 1, cc)
+            assignToGroup(id, rr + 1, cc)
+            assignToGroup(id, rr, cc - 1)
+            assignToGroup(id, rr, cc + 1)
+            true
+          }
+          case Some(_) => false
+        }
+      }
+
+    }
+
+    (0 until board.config.sim.numRows).foreach { r => 
+      (0 until board.config.sim.numCols).foreach { c =>
+        if (assignToGroup(nextId, r, c)) {
+          nextId += 1
+        }
+        /*board.matrix(r)(c) match {
+          case Some(_) => assignToGroup(matrixGroups, r, c)
+          case _ => ()
+        }*/
+      }
+    }
+
+    matrixGroups.map { row =>
+        row.map {
+          case Some(groupId) => (groupId % 10).toString
+          case None => " "
+        }.mkString("")
+      }.mkString("\n")
+  }
+
   def densityMap(distance: Int) = {
     var min: Option[Double] = None
     var max: Option[Double] = None
@@ -177,6 +239,7 @@ object Experiment1Test extends TestSuite {
       val experiment = new Experiment1(1000, 10000)
       experiment.run()
       println(experiment.binaryMap)
+      println(experiment.assignGroups)
       /*val dm = experiment.densityMap(50).map { row =>
         row.map { count =>
           count//"%1d".format(count)
