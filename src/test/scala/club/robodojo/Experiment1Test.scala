@@ -6,13 +6,13 @@ import scala.collection.immutable.IndexedSeq
 import scala.scalajs.js
 import scala.util.Random
 
-class Experiment1(numCycles: Int) {
+class Experiment1(numBots: Int, numCycles: Int) {
 
   val params = Map[String, Any](
     "sim.numRows" -> 100,
     "sim.numCols" -> 100,
     "monoculture" ->  js.Dictionary[Any](
-      "numBots" -> 2000,
+      "numBots" -> numBots,
       "program" -> """bank main
 
 set #20, 0
@@ -51,7 +51,8 @@ jump @top""")
     case _ => throw new RuntimeException("bad program")
   }
 
-  val numBots = config.monoculture.get.numBots
+  //val numBots = 
+    config.monoculture.get.numBots
     (1 to numBots).foreach { _ =>
       addBot()
     }
@@ -96,6 +97,75 @@ jump @top""")
         case _ => " "
       }.mkString("")
     }.mkString("\n")
+
+  // TODO: document
+  def getCount(distance: Int, rCenter: Int, cCenter: Int) : Double = {
+    var rStart = rCenter - distance
+    var rEnd = rCenter + distance
+    var cSTart = cCenter - distance
+    var cEnd = cCenter + distance
+
+    // TODO: edge case off by one error?
+    val count = (rStart to rEnd).flatMap { r =>
+      (cSTart to cEnd).map { c =>
+
+        // TODO: off by one?
+        val rWrapped = if (r < 0) {
+          board.config.sim.numRows + r
+        } else if (r >= board.config.sim.numRows) {
+          r % board.config.sim.numRows
+        } else {
+          r
+        }
+
+        val cWrapped = if (c < 0) {
+          board.config.sim.numCols + c
+        } else if (c >= board.config.sim.numCols) {
+          c % board.config.sim.numCols
+        } else {
+          c
+        }
+
+        board.matrix(rWrapped)(cWrapped) match {
+          case Some(_) => 1
+          case _ => 0
+        }
+
+      }
+    }.sum
+
+    count
+  }
+
+  def densityMap(distance: Int) = {
+    var min: Option[Double] = None
+    var max: Option[Double] = None
+    val counts = (0 until board.config.sim.numRows).map { r => 
+      (0 until board.config.sim.numCols).map { c =>
+        val d = getCount(distance, r, c)
+        if (min == None) {
+          min = Some(d)
+          max = Some(d)
+        }
+
+        if (d < min.get)  {
+          min = Some(d)
+        } else if (d > max.get) {
+          max = Some(d)
+        }
+        d
+      }
+    }
+
+    val diff = max.get - min.get
+
+    counts.map { row =>
+      row.map { count =>
+        ((count - min.get.toDouble) / diff.toDouble * 10.0).toInt
+      }
+    }
+
+  }
 }
 
 object Experiment1Test extends TestSuite {
@@ -104,9 +174,15 @@ object Experiment1Test extends TestSuite {
 
   val tests = this {
     "Experiment 1"-{
-      val experiment = new Experiment1(10000)
+      val experiment = new Experiment1(1000, 10000)
       experiment.run()
       println(experiment.binaryMap)
+      /*val dm = experiment.densityMap(50).map { row =>
+        row.map { count =>
+          count//"%1d".format(count)
+        }.mkString("")
+      }.mkString("\n")
+      println(dm)*/
     }
   }
 }
